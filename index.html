@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E7C86">
+<title>Sổ hạnh kiểm 11D3</title>
+<style>
+/* ====================== TOKEN ====================== */
+:root{
+  --paper:#FFFFFF;
+  --bg:#F1F7F8;
+  --ink:#22383F;
+  --muted:#6C8A93;
+  --faint:#9CB4BB;
+  --rule:#DDE9EC;
+  --teal:#0E7C86;
+  --teal-ink:#0A5C64;
+  --teal-soft:#E2F2F4;
+  --green:#1E8449;
+  --green-soft:#E4F4E9;
+  --red:#C0392B;
+  --red-soft:#FBEAE7;
+  --amber:#B9761C;
+  --amber-soft:#FBF0DF;
+  --blue:#1F618D;
+  --blue-soft:#E4EFF7;
+  --shadow:0 8px 28px rgba(34,56,63,.14);
+  --nav-h:60px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Aptos','Aptos Display','Segoe UI Variable','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--bg); color:var(--ink);
+  font-size:16px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+.hide{display:none !important}
+
+/* ====================== ĐĂNG NHẬP ====================== */
+#login{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:32px 24px;max-width:460px;margin:0 auto}
+.mark{font-size:15px;letter-spacing:.02em;color:var(--muted)}
+.classname{font-size:64px;font-weight:800;letter-spacing:-.03em;line-height:.95;color:var(--teal-ink);margin:6px 0 2px}
+.sub{font-size:15px;color:var(--muted);margin-bottom:34px}
+.sub b{color:var(--ink);font-weight:600}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.inp{width:100%;padding:13px 14px;border:1.5px solid var(--rule);border-radius:12px;background:var(--paper);outline:none}
+.inp:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.btn{width:100%;padding:14px;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;font-size:16px}
+.btn:active{background:var(--teal-ink)}
+.btn.ghost{background:var(--paper);color:var(--teal-ink);border:1.5px solid var(--rule)}
+.btn.danger{background:var(--red)}
+.btn.sm{width:auto;padding:9px 14px;font-size:14px;border-radius:10px}
+.err{color:var(--red);font-size:14px;margin-top:12px;min-height:20px}
+.hint{font-size:13px;color:var(--faint);margin-top:20px;line-height:1.5}
+
+/* ====================== KHUNG APP ====================== */
+#app{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 8px)}
+header{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+.hbar{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.hbar h1{font-size:17px;font-weight:700;margin:0;flex:1;letter-spacing:-.01em}
+.hbar .who{font-size:12px;color:var(--muted);text-align:right;line-height:1.25}
+.hbar .who b{display:block;color:var(--ink);font-size:13px;font-weight:600}
+.weeks{display:flex;gap:7px;padding:0 16px 10px;overflow-x:auto;scrollbar-width:none}
+.weeks::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:7px 14px;border-radius:999px;border:1.5px solid var(--rule);background:var(--paper);font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.chip.tiny{padding:5px 11px;font-size:13px}
+.view{padding:14px 0 24px}
+.pad{padding:0 16px}
+.sechead{font-size:13px;font-weight:700;color:var(--muted);margin:20px 16px 8px;letter-spacing:.01em}
+.sechead:first-child{margin-top:4px}
+
+/* ====================== SỔ KẺ DÒNG ====================== */
+.register{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--rule);width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+.row:active{background:var(--teal-soft)}
+.row .idx{width:24px;font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;flex:0 0 24px}
+.row .nm{flex:1;min-width:0}
+.row .nm b{display:block;font-weight:600;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .nm span{font-size:12.5px;color:var(--muted)}
+.score{flex:0 0 auto;text-align:right}
+.score .n{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.score .l{font-size:11px;font-weight:700;display:block;margin-top:-2px}
+.r0{color:var(--green)} .r1{color:var(--blue)} .r2{color:var(--amber)} .r3{color:var(--red)}
+.zero{color:var(--faint)}
+.grouphead{padding:7px 16px;background:var(--bg);font-size:12px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--rule)}
+
+/* ====================== TÌM KIẾM / LỌC ====================== */
+.tools{padding:0 16px 12px;display:flex;gap:8px;align-items:center}
+.tools .inp{padding:10px 12px;border-radius:10px;font-size:15px}
+.filters{display:flex;gap:7px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+
+/* ====================== BẢNG MA TRẬN ====================== */
+.tablewrap{overflow-x:auto;background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+table{border-collapse:collapse;width:max-content;min-width:100%;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap;text-align:center}
+th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;font-size:12.5px;position:sticky;top:0;z-index:2}
+td.name,th.name{position:sticky;left:0;background:var(--paper);text-align:left;font-weight:600;z-index:1;min-width:150px;border-right:1px solid var(--rule)}
+th.name{background:var(--teal-soft);z-index:3}
+td.v{font-variant-numeric:tabular-nums;font-weight:700}
+.c0{background:var(--green-soft);color:var(--green)}
+.c1{background:var(--blue-soft);color:var(--blue)}
+.c2{background:var(--amber-soft);color:var(--amber)}
+.c3{background:var(--red-soft);color:var(--red)}
+
+/* ====================== THỐNG KÊ ====================== */
+.stats{display:flex;gap:8px;padding:0 16px 4px}
+.stat{flex:1;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:10px 12px;text-align:center}
+.stat .n{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.stat .l{font-size:11.5px;color:var(--muted);font-weight:600}
+
+/* ====================== BOTTOM NAV ====================== */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--paper);border-top:1px solid var(--rule);
+    display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+           font-size:11px;font-weight:600;color:var(--muted)}
+nav button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--teal)}
+
+/* ====================== BOTTOM SHEET ====================== */
+.scrim{position:fixed;inset:0;background:rgba(34,56,63,.45);z-index:50;opacity:0;pointer-events:none;transition:opacity .18s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--paper);
+       border-radius:20px 20px 0 0;box-shadow:var(--shadow);max-height:88dvh;display:flex;flex-direction:column;
+       transform:translateY(102%);transition:transform .22s cubic-bezier(.22,.7,.3,1)}
+.sheet.on{transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none}}
+.grab{width:38px;height:4px;border-radius:99px;background:var(--rule);margin:9px auto 4px}
+.sheet .top{padding:6px 18px 12px;border-bottom:1px solid var(--rule)}
+.sheet .top h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em}
+.sheet .top p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.sheet .body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+.seg{display:flex;gap:6px;padding:12px 18px 4px}
+.seg button{flex:1;padding:9px;border-radius:10px;background:var(--bg);font-weight:700;font-size:14.5px;color:var(--muted)}
+.seg button.on.minus{background:var(--red-soft);color:var(--red)}
+.seg button.on.plus{background:var(--green-soft);color:var(--green)}
+.item{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--rule);width:100%;text-align:left}
+.item:active{background:var(--bg)}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font-weight:500;font-size:15px;line-height:1.3}
+.item .t span{font-size:12px;color:var(--faint)}
+.item .p{flex:0 0 auto;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}
+.logline{display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid var(--rule);font-size:14px}
+.logline .t{flex:1;min-width:0}
+.logline .t b{font-weight:500;display:block}
+.logline .t span{font-size:11.5px;color:var(--faint)}
+.logline .x{flex:0 0 auto;padding:6px 9px;border-radius:8px;background:var(--bg);font-size:12px;font-weight:700;color:var(--red)}
+
+/* ====================== FORM / CÀI ĐẶT ====================== */
+.card{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:14px 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px}
+.lbl{font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
+.inp.s{padding:9px 11px;font-size:14.5px;border-radius:9px}
+textarea.inp{min-height:84px;resize:vertical;line-height:1.5}
+.rowbtns{display:flex;gap:8px;margin-top:12px}
+.rowbtns .btn{flex:1}
+.note{font-size:12.5px;color:var(--faint);line-height:1.5;padding:10px 16px}
+.editline{display:flex;gap:7px;align-items:center;padding:9px 16px;border-bottom:1px solid var(--rule)}
+.editline .inp{padding:8px 10px;font-size:14px;border-radius:8px}
+.editline .w1{flex:0 0 54px} .editline .w2{flex:1 1 auto;min-width:0} .editline .w3{flex:0 0 60px}
+.editline .del{flex:0 0 auto;padding:7px 9px;border-radius:8px;background:var(--red-soft);color:var(--red);font-weight:700;font-size:12px}
+
+/* ====================== TOAST ====================== */
+#toast{position:fixed;left:16px;right:16px;bottom:calc(var(--nav-h) + 18px + env(safe-area-inset-bottom));z-index:80;
+       background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;
+       box-shadow:var(--shadow);font-size:14.5px;transform:translateY(140%);transition:transform .2s;pointer-events:none}
+#toast.on{transform:translateY(0);pointer-events:auto}
+#toast .msg{flex:1}
+#toast .undo{font-weight:700;color:#7EDCE2;padding:4px 6px}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{padding:44px 28px;text-align:center;color:var(--muted);font-size:15px;line-height:1.55}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:5px}
+</style>
+</head>
+<body>
+
+<!-- ======================= ĐĂNG NHẬP ======================= -->
+<section id="login">
+  <div class="mark">Sổ theo dõi &amp; xếp loại hạnh kiểm</div>
+  <div class="classname">11D3</div>
+  <div class="sub">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
+
+  <div class="field">
+    <label for="lgEmail">Email</label>
+    <input id="lgEmail" class="inp" type="email" inputmode="email" autocomplete="username" placeholder="ten@gmail.com">
+  </div>
+  <div class="field">
+    <label for="lgPin">Mật khẩu</label>
+    <input id="lgPin" class="inp" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+  </div>
+  <button class="btn" id="lgBtn">Vào sổ</button>
+  <div class="err" id="lgErr"></div>
+
+  <div class="hint">Chỉ những email đã được cấp quyền mới vào được sổ. Lớp trưởng và bốn tổ trưởng ghi điểm; GVCN thêm quyền sửa sỹ số lớp và chốt nhận xét cuối tháng.</div>
+</section>
+
+<!-- ======================= APP ======================= -->
+<div id="app" class="hide">
+  <header>
+    <div class="hbar">
+      <h1 id="hTitle">Ghi điểm</h1>
+      <div class="who"><b id="hName">—</b><span id="hRole">—</span></div>
+    </div>
+    <div class="weeks" id="weekBar"></div>
+  </header>
+
+  <!-- GHI ĐIỂM -->
+  <section class="view" id="vGhi">
+    <div class="tools"><input id="q" class="inp" type="search" placeholder="Tìm tên học sinh…"></div>
+    <div class="filters" id="toFilter"></div>
+    <div class="register" id="listGhi"></div>
+  </section>
+
+  <!-- BẢNG LỚP -->
+  <section class="view hide" id="vBang">
+    <div class="note" id="bangNote"></div>
+    <div class="tablewrap"><table id="tblBang"></table></div>
+  </section>
+
+  <!-- TỔNG KẾT -->
+  <section class="view hide" id="vTong">
+    <div class="stats" id="statBar"></div>
+    <div class="note">Xếp loại tháng tính trên điểm trung bình tuần (tổng tháng chia số tuần), dùng chung thang điểm với tuần.</div>
+    <div class="register" id="listTong"></div>
+  </section>
+
+  <!-- CÀI ĐẶT -->
+  <section class="view hide" id="vCai"></section>
+
+  <nav>
+    <button data-v="ghi" class="on">
+      <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Ghi điểm</button>
+    <button data-v="bang">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>Bảng lớp</button>
+    <button data-v="tong">
+      <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>Tổng kết</button>
+    <button data-v="cai">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.5-2.6l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4Z"/></svg>Cài đặt</button>
+  </nav>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet">
+  <div class="grab"></div>
+  <div class="top"><h2 id="shTitle">—</h2><p id="shSub">—</p></div>
+  <div class="body" id="shBody"></div>
+</div>
+
+<div id="toast"><span class="msg" id="toastMsg"></span><button class="undo hide" id="toastUndo">Hoàn tác</button></div>
+
+<script>
+'use strict';
+
+/* ===== Backend Google Apps Script của lớp 11D3 (đã cố định) ===== */
+const GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbz1x-UG4_Rk3M3_APc-hJ0VHns2GfvPtR6T_F8nl4KlEHnNsiYGMbY0Vc4moiIRy8gO/exec';
+
+/* ---------------------------- lưu trữ an toàn ---------------------------- */
+const mem = {};
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return mem[k] ?? null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ mem[k]=v; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){ delete mem[k]; } }
+};
+
+const S = {
+  url: GAS_URL_DEFAULT || store.get('hk_url') || '',
+  token: store.get('hk_token') || '',
+  me:null, cfg:null, students:[], cong:[], tru:[],
+  entries:[], remarks:[],
+  thang:null, tuan:1, view:'ghi', filterTo:'all', q:'',
+  shMaHS:null, shTab:'tru', lastUndo:null
+};
+
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nz  = n => (n>0?'+':'') + n;
+
+/* ------------------------------- gọi API -------------------------------- */
+async function api(action, payload){
+  if(!S.url) throw new Error('Chưa có URL backend. Nhập ở màn hình đăng nhập.');
+  const res = await fetch(S.url, {
+    method:'POST', redirect:'follow',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({action, token:S.token, payload:payload||{}})
+  });
+  const j = await res.json();
+  if(!j.ok) throw new Error(j.error || 'Không rõ lỗi');
+  return j;
+}
+
+/* -------------------------------- toast --------------------------------- */
+let toastT=null;
+function toast(msg, undoFn){
+  clearTimeout(toastT);
+  $('#toastMsg').innerHTML = msg;
+  const u = $('#toastUndo');
+  u.classList.toggle('hide', !undoFn);
+  u.onclick = undoFn ? ()=>{ hideToast(); undoFn(); } : null;
+  $('#toast').classList.add('on');
+  toastT = setTimeout(hideToast, undoFn ? 5200 : 2400);
+}
+function hideToast(){ $('#toast').classList.remove('on'); }
+
+/* ------------------------------ đăng nhập ------------------------------- */
+$('#lgPin').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+$('#lgBtn').addEventListener('click', doLogin);
+
+async function doLogin(){
+  const btn=$('#lgBtn'), err=$('#lgErr');
+  err.textContent=''; btn.innerHTML='<span class="spin"></span>'; btn.disabled=true;
+  try{
+    const r = await api('login', {email:$('#lgEmail').value.trim(), pin:$('#lgPin').value.trim()});
+    S.token = r.token; store.set('hk_token', S.token);
+    await boot();
+  }catch(e){ err.textContent = e.message; }
+  finally{ btn.textContent='Vào sổ'; btn.disabled=false; }
+}
+
+async function boot(){
+  const b = await api('bootstrap');
+  S.me=b.me; S.cfg=b.cfg; S.students=b.students; S.cong=b.cong; S.tru=b.tru;
+  S.thang = S.cfg.thang;
+  S.filterTo = (S.me.role==='Tổ trưởng') ? String(S.me.to) : 'all';
+  await loadEntries();
+  $('#login').classList.add('hide');
+  $('#app').classList.remove('hide');
+  $('#hName').textContent = S.me.name;
+  $('#hRole').textContent = S.me.role + (S.me.role==='Tổ trưởng' ? ' · tổ '+S.me.to : '');
+  renderAll();
+}
+
+async function loadEntries(){
+  const r = await api('entries', {thang:S.thang});
+  S.entries = r.entries; S.remarks = r.remarks || [];
+}
+
+/* --------------------------- tính điểm & xếp loại ------------------------ */
+function weekScore(ma, tuan){
+  let s=0; for(const e of S.entries) if(e.maHS===ma && e.tuan===tuan) s+=e.diem; return s;
+}
+function weekSplit(ma, tuan){
+  let p=0,m=0; for(const e of S.entries) if(e.maHS===ma && e.tuan===tuan){ if(e.diem>0)p+=e.diem; else m+=e.diem; }
+  return {p,m};
+}
+function monthTotal(ma){
+  let s=0; for(let w=1;w<=S.cfg.soTuan;w++) s+=weekScore(ma,w); return s;
+}
+function monthAvg(ma){ return S.cfg.soTuan ? monthTotal(ma)/S.cfg.soTuan : 0; }
+function rankIdx(v){
+  const t=S.cfg.thresholds;
+  for(let i=0;i<t.length;i++) if(v >= t[i].san) return i;
+  return t.length-1;
+}
+function rankName(v){ return S.cfg.thresholds[rankIdx(v)].ten; }
+function activeStudents(){ return S.students.filter(s=>s.trangThai!=='Nghỉ học' && s.trangThai!=='Chuyển lớp'); }
+function stu(ma){ return S.students.find(s=>s.ma===ma); }
+function canScore(to){ return S.me.role!=='Tổ trưởng' || String(S.me.to)===String(to); }
+
+/* ------------------------------- render --------------------------------- */
+function renderAll(){ renderWeeks(); renderFilters(); renderGhi(); renderBang(); renderTong(); renderCai(); }
+
+function renderWeeks(){
+  const bar=$('#weekBar'); bar.innerHTML='';
+  const mSel=document.createElement('button');
+  mSel.className='chip tiny'; mSel.textContent='Tháng '+S.thang;
+  mSel.onclick=()=>openMonthPicker();
+  bar.appendChild(mSel);
+  for(let w=1; w<=S.cfg.soTuan; w++){
+    const b=document.createElement('button');
+    b.className='chip'+(w===S.tuan?' on':''); b.textContent='Tuần '+w;
+    b.onclick=()=>{ S.tuan=w; renderWeeks(); renderGhi(); };
+    bar.appendChild(b);
+  }
+}
+
+function openMonthPicker(){
+  let h='<div style="padding:6px 0">';
+  for(let m=1;m<=12;m++){
+    h+=`<button class="item" data-m="${m}"><div class="t"><b>Tháng ${m}</b></div>${m===S.thang?'<div class="p" style="color:var(--teal)">✓</div>':''}</button>`;
+  }
+  h+='</div>';
+  openSheet('Chọn tháng theo dõi', 'Năm học '+S.cfg.namHoc, h);
+  $$('#shBody [data-m]').forEach(b=>b.onclick=async()=>{
+    S.thang=Number(b.dataset.m); closeSheet();
+    toast('<span class="spin"></span> Đang tải tháng '+S.thang+'…');
+    try{ await loadEntries(); hideToast(); renderAll(); }catch(e){ toast(esc(e.message)); }
+  });
+}
+
+function renderFilters(){
+  const f=$('#toFilter'); f.innerHTML='';
+  const opts = S.me.role==='Tổ trưởng' ? [String(S.me.to)] : ['all','1','2','3','4'];
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='chip tiny'+(String(S.filterTo)===o?' on':'');
+    b.textContent = o==='all' ? 'Cả lớp' : 'Tổ '+o;
+    b.onclick=()=>{ S.filterTo=o; renderFilters(); renderGhi(); };
+    f.appendChild(b);
+  });
+}
+
+function renderGhi(){
+  const box=$('#listGhi');
+  const q=S.q.trim().toLowerCase();
+  let list=activeStudents().filter(s=>S.filterTo==='all'||String(s.to)===String(S.filterTo));
+  if(q) list=list.filter(s=>s.ten.toLowerCase().includes(q));
+  if(!list.length){ box.innerHTML='<div class="empty"><b>Không có học sinh nào</b>Thử xoá bớt từ khoá tìm kiếm.</div>'; return; }
+
+  let h='', curTo=null;
+  list.forEach((s,i)=>{
+    if(S.filterTo==='all' && s.to!==curTo){ curTo=s.to; h+=`<div class="grouphead">Tổ ${esc(curTo)}</div>`; }
+    const v=weekScore(s.ma,S.tuan), ri=rankIdx(v);
+    h+=`<button class="row" data-ma="${esc(s.ma)}">
+      <span class="idx">${i+1}</span>
+      <span class="nm"><b>${esc(s.ten)}</b><span>${esc(s.chucVu)}</span></span>
+      <span class="score"><span class="n ${v===0?'zero':'r'+ri}">${v===0?'0':nz(v)}</span>
+      <span class="l ${v===0?'zero':'r'+ri}">${esc(rankName(v))}</span></span>
+    </button>`;
+  });
+  box.innerHTML=h;
+  $$('#listGhi .row').forEach(b=>b.onclick=()=>openStudent(b.dataset.ma));
+}
+
+function renderBang(){
+  $('#bangNote').textContent = `Điểm tổng mỗi tuần của tháng ${S.thang}. Kéo ngang để xem hết. Màu thể hiện xếp loại tuần.`;
+  const list=activeStudents();
+  let h='<thead><tr><th class="name">Học sinh</th>';
+  for(let w=1;w<=S.cfg.soTuan;w++) h+=`<th>T${w}</th>`;
+  h+='<th>Tổng</th><th>TB</th><th>Xếp loại tháng</th></tr></thead><tbody>';
+  list.forEach(s=>{
+    h+=`<tr><td class="name">${esc(s.ten)}<div style="font-size:11px;color:var(--muted);font-weight:400">Tổ ${esc(s.to)}</div></td>`;
+    for(let w=1;w<=S.cfg.soTuan;w++){
+      const v=weekScore(s.ma,w);
+      h+=`<td class="v ${v===0?'':'c'+rankIdx(v)}">${v===0?'–':nz(v)}</td>`;
+    }
+    const t=monthTotal(s.ma), a=monthAvg(s.ma), ri=rankIdx(a);
+    h+=`<td class="v">${t===0?'–':nz(t)}</td><td class="v">${a.toFixed(1)}</td><td class="v c${ri}">${esc(rankName(a))}</td></tr>`;
+  });
+  $('#tblBang').innerHTML = h+'</tbody>';
+}
+
+function renderTong(){
+  const list=activeStudents();
+  const cnt=[0,0,0,0];
+  list.forEach(s=>cnt[rankIdx(monthAvg(s.ma))]++);
+  $('#statBar').innerHTML = S.cfg.thresholds.map((t,i)=>
+    `<div class="stat"><div class="n r${i}">${cnt[i]}</div><div class="l">${esc(t.ten)}</div></div>`).join('');
+
+  let h='';
+  list.forEach((s,i)=>{
+    const a=monthAvg(s.ma), t=monthTotal(s.ma), ri=rankIdx(a);
+    const rm=S.remarks.find(r=>r.maHS===s.ma);
+    const chot = rm && rm.xepLoai ? rm.xepLoai : '';
+    h+=`<button class="row" data-ma="${esc(s.ma)}">
+      <span class="idx">${i+1}</span>
+      <span class="nm"><b>${esc(s.ten)}</b><span>Tổ ${esc(s.to)}${rm&&rm.nhanXet?' · đã có nhận xét':''}</span></span>
+      <span class="score"><span class="n ${t===0?'zero':'r'+ri}">${t===0?'0':nz(t)}</span>
+      <span class="l ${'r'+ri}">${esc(chot||rankName(a))}${chot?' (chốt)':''}</span></span>
+    </button>`;
+  });
+  $('#listTong').innerHTML = h || '<div class="empty"><b>Chưa có học sinh</b>Kiểm tra lại danh sách lớp.</div>';
+  $$('#listTong .row').forEach(b=>b.onclick=()=>{
+    if(S.me.role==='GVCN'||S.me.role==='Quản trị') openRemark(b.dataset.ma); else openStudentMonth(b.dataset.ma);
+  });
+}
+
+/* ------------------------------ bottom sheet ---------------------------- */
+function openSheet(title, sub, html){
+  $('#shTitle').textContent=title; $('#shSub').textContent=sub; $('#shBody').innerHTML=html;
+  $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
+}
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
+$('#scrim').onclick=closeSheet;
+
+function openStudent(ma){
+  S.shMaHS=ma; S.shTab='tru'; drawStudentSheet();
+}
+
+function drawStudentSheet(){
+  const s=stu(S.shMaHS);
+  const {p,m}=weekSplit(s.ma,S.tuan), v=p+m;
+  const allowed=canScore(s.to);
+  const cat = (S.shTab==='tru' ? S.tru : S.cong).filter(c=>c.active);
+  const mine = S.entries.filter(e=>e.maHS===s.ma && e.tuan===S.tuan);
+
+  let h = `<div class="seg">
+      <button class="minus ${S.shTab==='tru'?'on':''}" data-tab="tru">Trừ điểm</button>
+      <button class="plus ${S.shTab==='cong'?'on':''}" data-tab="cong">Cộng điểm</button>
+    </div>`;
+
+  if(!allowed){
+    h += `<div class="empty"><b>Chỉ xem</b>Bạn phụ trách tổ ${esc(S.me.to)} nên không ghi điểm cho học sinh tổ ${esc(s.to)} được.</div>`;
+  }else{
+    let nhom=null;
+    cat.forEach(c=>{
+      if(c.nhom!==nhom){ nhom=c.nhom; h+=`<div class="grouphead">${esc(nhom)}</div>`; }
+      h+=`<button class="item" data-add="${esc(c.ma)}">
+            <span class="t"><b>${esc(c.noiDung)}</b><span>${esc(c.ma)}</span></span>
+            <span class="p ${c.diem<0?'r3':'r0'}">${nz(c.diem)}</span></button>`;
+    });
+    if(!cat.length) h+='<div class="empty"><b>Danh mục trống</b>Vào Cài đặt để thêm loại điểm.</div>';
+  }
+
+  h += `<div class="grouphead">Đã ghi trong tuần ${S.tuan} (${mine.length})</div>`;
+  if(!mine.length){
+    h += `<div class="note">Chưa có ghi nhận nào trong tuần này.</div>`;
+  }else{
+    mine.forEach(e=>{
+      h+=`<div class="logline"><span class="t"><b>${esc(e.noiDung||e.maMuc)}
+            <span style="font-weight:800" class="${e.diem<0?'r3':'r0'}">${nz(e.diem)}</span></b>
+            <span>${esc(e.luc)} · ${esc(e.nguoiGhi)}</span></span>
+            <button class="x" data-del="${esc(e.id)}">Xoá</button></div>`;
+    });
+  }
+
+  openSheet(s.ten, `Tổ ${s.to} · Tuần ${S.tuan}: cộng ${p} · trừ ${m} · tổng ${nz(v)} · ${rankName(v)}`, h);
+
+  $$('#shBody [data-tab]').forEach(b=>b.onclick=()=>{ S.shTab=b.dataset.tab; drawStudentSheet(); });
+  $$('#shBody [data-add]').forEach(b=>b.onclick=()=>addEntry(s, b.dataset.add));
+  $$('#shBody [data-del]').forEach(b=>b.onclick=()=>delEntry(b.dataset.del));
+}
+
+async function addEntry(s, maMuc){
+  const src = S.shTab==='tru' ? S.tru : S.cong;
+  const c = src.find(x=>x.ma===maMuc); if(!c) return;
+  toast('<span class="spin"></span> Đang ghi…');
+  try{
+    const r = await api('addEntries', {thang:S.thang, tuan:S.tuan, items:[{
+      maHS:s.ma, loai:(S.shTab==='tru'?'Trừ':'Cộng'), maMuc:c.ma, diem:c.diem, ghiChu:''
+    }]});
+    const id = r.ids[0];
+    S.entries.push({id, luc:'vừa xong', thang:S.thang, tuan:S.tuan, maHS:s.ma, to:s.to,
+      loai:(S.shTab==='tru'?'Trừ':'Cộng'), maMuc:c.ma, noiDung:c.noiDung, diem:c.diem,
+      nguoiGhi:S.me.email, ghiChu:''});
+    drawStudentSheet(); renderGhi(); renderBang(); renderTong();
+    toast(`${esc(s.ten)}: ${esc(c.noiDung)} <b>${nz(c.diem)}</b>`, ()=>delEntry(id, true));
+  }catch(e){ toast(esc(e.message)); }
+}
+
+async function delEntry(id, quiet){
+  if(!quiet) toast('<span class="spin"></span> Đang xoá…');
+  try{
+    await api('deleteEntry', {id});
+    S.entries = S.entries.filter(e=>e.id!==id);
+    if($('#sheet').classList.contains('on') && S.shMaHS) drawStudentSheet();
+    renderGhi(); renderBang(); renderTong();
+    toast('Đã xoá ghi nhận.');
+  }catch(e){ toast(esc(e.message)); }
+}
+
+function openStudentMonth(ma){
+  const s=stu(ma);
+  let h='';
+  for(let w=1;w<=S.cfg.soTuan;w++){
+    const v=weekScore(ma,w), sp=weekSplit(ma,w);
+    h+=`<div class="logline"><span class="t"><b>Tuần ${w}</b><span>cộng ${sp.p} · trừ ${sp.m}</span></span>
+        <span class="p r${rankIdx(v)}" style="font-weight:800">${nz(v)} · ${esc(rankName(v))}</span></div>`;
+  }
+  const rm=S.remarks.find(r=>r.maHS===ma);
+  if(rm && rm.nhanXet) h+=`<div class="grouphead">Nhận xét của GVCN</div><div class="note" style="color:var(--ink)">${esc(rm.nhanXet)}</div>`;
+  openSheet(s.ten, `Tổng tháng ${S.thang}: ${nz(monthTotal(ma))} · TB ${monthAvg(ma).toFixed(1)} · ${rankName(monthAvg(ma))}`, h);
+}
+
+function openRemark(ma){
+  const s=stu(ma), rm=S.remarks.find(r=>r.maHS===ma)||{xepLoai:'',nhanXet:''};
+  const auto=rankName(monthAvg(ma));
+  let h=`<div class="card" style="border-top:0">
+    <label class="lbl" for="rkXl">Xếp loại chốt (để trống = lấy theo tự động: ${esc(auto)})</label>
+    <select id="rkXl" class="inp s"><option value="">— theo tự động —</option>`;
+  S.cfg.thresholds.forEach(t=>h+=`<option ${rm.xepLoai===t.ten?'selected':''}>${esc(t.ten)}</option>`);
+  h+=`</select>
+    <label class="lbl" style="margin-top:12px" for="rkNx">Nhận xét cuối tháng</label>
+    <textarea id="rkNx" class="inp" placeholder="Nhận xét về ý thức, nề nếp, tiến bộ của học sinh…">${esc(rm.nhanXet)}</textarea>
+    <div class="rowbtns"><button class="btn ghost" id="rkCancel">Đóng</button><button class="btn" id="rkSave">Lưu nhận xét</button></div>
+  </div>`;
+  let w='';
+  for(let i=1;i<=S.cfg.soTuan;i++){ const v=weekScore(ma,i); w+=`Tuần ${i}: ${nz(v)} · `; }
+  openSheet(s.ten, w+`TB ${monthAvg(ma).toFixed(1)}`, h);
+  $('#rkCancel').onclick=closeSheet;
+  $('#rkSave').onclick=async()=>{
+    try{
+      await api('saveRemark', {thang:S.thang, maHS:ma, ten:s.ten, xepLoai:$('#rkXl').value, nhanXet:$('#rkNx').value});
+      const idx=S.remarks.findIndex(r=>r.maHS===ma);
+      const rec={maHS:ma, xepLoai:$('#rkXl').value, nhanXet:$('#rkNx').value};
+      if(idx>=0) S.remarks[idx]=rec; else S.remarks.push(rec);
+      closeSheet(); renderTong(); toast('Đã lưu nhận xét.');
+    }catch(e){ toast(esc(e.message)); }
+  };
+}
+
+/* ------------------------------- cài đặt -------------------------------- */
+function renderCai(){
+  const gv = S.me.role==='GVCN' || S.me.role==='Quản trị';
+  const admin = gv || S.me.role==='Lớp trưởng';
+  let h='';
+
+  if(admin){
+    h+=`<div class="sechead">Kỳ theo dõi</div><div class="card">
+      <div class="grid2">
+        <div><label class="lbl" for="cfThang">Tháng</label>
+          <select id="cfThang" class="inp s">${Array.from({length:12},(_,i)=>
+            `<option value="${i+1}" ${S.cfg.thang===i+1?'selected':''}>Tháng ${i+1}</option>`).join('')}</select></div>
+        <div><label class="lbl" for="cfTuan">Số tuần trong tháng</label>
+          <select id="cfTuan" class="inp s">${[1,2,3,4,5].map(n=>
+            `<option value="${n}" ${S.cfg.soTuan===n?'selected':''}>${n} tuần</option>`).join('')}</select></div>
+      </div></div>`;
+
+    h+=`<div class="sechead">Mốc điểm xếp loại (điểm sàn của một tuần)</div><div class="card">`;
+    S.cfg.thresholds.forEach((t,i)=>{
+      h+=`<div class="grid2" style="margin-bottom:8px">
+        <div><label class="lbl">Tên xếp loại ${i+1}</label>
+          <input class="inp s thName" data-i="${i}" value="${esc(t.ten)}"></div>
+        <div><label class="lbl">Đạt khi điểm ≥</label>
+          <input class="inp s thSan" data-i="${i}" type="number" value="${t.san}"></div></div>`;
+    });
+    h+=`<div class="note" style="padding:4px 0 0">Điểm được so từ trên xuống. Mức cuối là mức đáy, giữ số rất nhỏ (ví dụ −999).</div>
+      <div class="rowbtns"><button class="btn" id="cfSave">Lưu cấu hình</button></div></div>`;
+
+    h+=`<div class="sechead">Danh mục điểm trừ</div>${catalogHTML('tru')}`;
+    h+=`<div class="sechead">Danh mục điểm cộng</div>${catalogHTML('cong')}`;
+  }
+
+  if(gv){
+    h+=`<div class="sechead">Danh sách lớp (${activeStudents().length} học sinh đang học)</div>
+      <div class="card"><div class="rowbtns" style="margin-top:0">
+        <button class="btn ghost" id="hsAdd">Thêm học sinh</button>
+        <button class="btn ghost" id="hsList">Sửa / xoá học sinh</button></div></div>`;
+    h+=`<div class="sechead">Mật khẩu của thành viên</div>
+      <div class="card"><div class="rowbtns" style="margin-top:0">
+        <button class="btn ghost" id="pinReset">Đặt lại mật khẩu</button></div></div>`;
+  }
+
+  h+=`<div class="sechead">Tài khoản</div><div class="card">
+    <div style="font-size:14.5px;margin-bottom:10px"><b>${esc(S.me.name)}</b><br>
+      <span style="color:var(--muted);font-size:13px">${esc(S.me.email)} · ${esc(S.me.role)}</span></div>
+    <div class="rowbtns" style="margin-top:0">
+      <button class="btn ghost" id="myPin">Đổi mật khẩu</button>
+      <button class="btn danger" id="logout">Đăng xuất</button></div></div>`;
+
+  h+=`<div class="sechead">Dữ liệu</div><div class="card">
+    <div class="rowbtns" style="margin-top:0">
+      <button class="btn ghost" id="cfReload">Tải lại dữ liệu từ Google Sheet</button></div></div>
+    <div class="note">Mọi thay đổi trong app ghi thẳng vào Google Sheet của lớp.</div>`;
+
+  $('#vCai').innerHTML=h;
+  wireCai();
+}
+
+function catalogHTML(kind){
+  const arr = kind==='tru' ? S.tru : S.cong;
+  let h=`<div class="register" id="cat_${kind}">`;
+  arr.forEach((c,i)=>{
+    h+=`<div class="editline" data-k="${kind}" data-i="${i}">
+      <input class="inp w1 f-ma" value="${esc(c.ma)}" aria-label="Mã">
+      <input class="inp w2 f-nd" value="${esc(c.noiDung)}" aria-label="Nội dung">
+      <input class="inp w3 f-dm" type="number" value="${c.diem}" aria-label="Điểm">
+      <button class="del" data-del="${i}">Xoá</button></div>`;
+  });
+  h+=`</div><div class="card" style="border-top:0"><div class="rowbtns" style="margin-top:0">
+      <button class="btn ghost" data-addcat="${kind}">Thêm dòng</button>
+      <button class="btn" data-savecat="${kind}">Lưu danh mục</button></div></div>`;
+  return h;
+}
+
+function wireCai(){
+  const g=id=>$('#'+id);
+  if(g('cfSave')) g('cfSave').onclick=async()=>{
+    const th = S.cfg.thresholds.map((t,i)=>({
+      ten: $$('.thName')[i].value.trim() || t.ten,
+      san: Number($$('.thSan')[i].value)
+    }));
+    try{
+      await api('saveConfig', {thang:Number(g('cfThang').value), soTuan:Number(g('cfTuan').value), thresholds:th});
+      S.cfg.thresholds=th; S.cfg.soTuan=Number(g('cfTuan').value);
+      S.cfg.thang=Number(g('cfThang').value); S.thang=S.cfg.thang;
+      if(S.tuan>S.cfg.soTuan) S.tuan=S.cfg.soTuan;
+      await loadEntries(); renderAll(); toast('Đã lưu cấu hình.');
+    }catch(e){ toast(esc(e.message)); }
+  };
+
+  $$('[data-savecat]').forEach(b=>b.onclick=async()=>{
+    const kind=b.dataset.savecat;
+    const lines=$$(`#cat_${kind} .editline`);
+    const items=lines.map(l=>({
+      ma: l.querySelector('.f-ma').value.trim(),
+      nhom: (kind==='tru'?S.tru:S.cong)[Number(l.dataset.i)]?.nhom || 'Khác',
+      noiDung: l.querySelector('.f-nd').value.trim(),
+      diem: Number(l.querySelector('.f-dm').value),
+      active: true
+    })).filter(x=>x.ma && x.noiDung);
+    try{
+      await api('saveCatalog', {loai:kind, items});
+      if(kind==='tru') S.tru=items; else S.cong=items;
+      renderCai(); toast('Đã lưu danh mục.');
+    }catch(e){ toast(esc(e.message)); }
+  });
+
+  $$('[data-addcat]').forEach(b=>b.onclick=()=>{
+    const kind=b.dataset.addcat, arr = kind==='tru'?S.tru:S.cong;
+    const prefix = kind==='tru'?'T':'C';
+    arr.push({ma:prefix+String(arr.length+1).padStart(2,'0'), nhom:'Khác', noiDung:'', diem: kind==='tru'?-1:1, active:true});
+    renderCai();
+  });
+
+  $$('#vCai .del').forEach(b=>b.onclick=()=>{
+    const line=b.closest('.editline'), kind=line.dataset.k, i=Number(line.dataset.i);
+    (kind==='tru'?S.tru:S.cong).splice(i,1); renderCai();
+  });
+
+  if(g('hsAdd')) g('hsAdd').onclick=()=>openStudentForm(null);
+  if(g('hsList')) g('hsList').onclick=()=>openStudentList();
+  if(g('pinReset')) g('pinReset').onclick=()=>openPinReset();
+  g('myPin').onclick=()=>openMyPin();
+  g('logout').onclick=()=>{ store.del('hk_token'); location.reload(); };
+  g('cfReload').onclick=async()=>{ toast('<span class="spin"></span> Đang tải…');
+    try{ await boot(); toast('Đã cập nhật.'); }catch(e){ toast(esc(e.message)); } };
+}
+
+/* --------------------------- quản lý lớp (GVCN) -------------------------- */
+function openStudentList(){
+  let h='';
+  S.students.forEach((s,i)=>{
+    h+=`<button class="item" data-edit="${esc(s.ma)}">
+      <span class="t"><b>${esc(s.ten)}</b><span>${esc(s.ma)} · tổ ${esc(s.to)} · ${esc(s.trangThai)}</span></span>
+      <span class="p" style="color:var(--teal);font-size:13px">Sửa</span></button>`;
+  });
+  openSheet('Danh sách lớp', S.students.length+' học sinh', h);
+  $$('#shBody [data-edit]').forEach(b=>b.onclick=()=>openStudentForm(b.dataset.edit));
+}
+
+function openStudentForm(ma){
+  const s = ma ? stu(ma) : {ma:'', ten:'', to:'1', chucVu:'Học sinh', email:'', trangThai:'Đang học', ghiChu:''};
+  const isNew = !ma;
+  const nextMa = '11D3-' + String(S.students.length+1).padStart(2,'0');
+  const h=`<div class="card" style="border-top:0">
+    <div class="grid2">
+      <div><label class="lbl" for="fMa">Mã học sinh</label>
+        <input id="fMa" class="inp s" value="${esc(isNew?nextMa:s.ma)}" ${isNew?'':'readonly'}></div>
+      <div><label class="lbl" for="fTo">Tổ</label>
+        <select id="fTo" class="inp s">${[1,2,3,4].map(n=>`<option ${String(s.to)===String(n)?'selected':''}>${n}</option>`).join('')}</select></div>
+    </div>
+    <label class="lbl" style="margin-top:10px" for="fTen">Họ và tên</label>
+    <input id="fTen" class="inp s" value="${esc(s.ten)}">
+    <div class="grid2" style="margin-top:10px">
+      <div><label class="lbl" for="fCv">Chức vụ</label><input id="fCv" class="inp s" value="${esc(s.chucVu)}"></div>
+      <div><label class="lbl" for="fTt">Trạng thái</label>
+        <select id="fTt" class="inp s">${['Đang học','Chuyển lớp','Nghỉ học','Bảo lưu'].map(o=>
+          `<option ${s.trangThai===o?'selected':''}>${o}</option>`).join('')}</select></div>
+    </div>
+    <label class="lbl" style="margin-top:10px" for="fEm">Email (không bắt buộc)</label>
+    <input id="fEm" class="inp s" value="${esc(s.email)}">
+    <label class="lbl" style="margin-top:10px" for="fGc">Ghi chú</label>
+    <input id="fGc" class="inp s" value="${esc(s.ghiChu)}">
+    <div class="rowbtns"><button class="btn ghost" id="fCancel">Đóng</button>
+      <button class="btn" id="fSave">${isNew?'Thêm vào lớp':'Lưu thay đổi'}</button></div>
+    ${isNew?'':'<div class="rowbtns"><button class="btn danger" id="fDel">Xoá khỏi danh sách</button></div>'}
+  </div>`;
+  openSheet(isNew?'Thêm học sinh':'Sửa thông tin', isNew?'Nhập thông tin học sinh mới':esc(s.ma), h);
+  $('#fCancel').onclick=closeSheet;
+  $('#fSave').onclick=async()=>{
+    const rec={ma:$('#fMa').value.trim(), ten:$('#fTen').value.trim(), to:$('#fTo').value,
+               chucVu:$('#fCv').value.trim(), email:$('#fEm').value.trim(),
+               trangThai:$('#fTt').value, ghiChu:$('#fGc').value.trim()};
+    if(!rec.ma || !rec.ten){ toast('Cần có mã học sinh và họ tên.'); return; }
+    const list=S.students.slice();
+    const i=list.findIndex(x=>x.ma===rec.ma);
+    if(i>=0) list[i]=rec; else list.push(rec);
+    await pushStudents(list, isNew?'Đã thêm học sinh.':'Đã lưu thay đổi.');
+  };
+  if(!isNew) $('#fDel').onclick=async()=>{
+    if(!confirm('Xoá '+s.ten+' khỏi danh sách lớp? Các ghi nhận điểm cũ vẫn còn trong nhật ký.')) return;
+    await pushStudents(S.students.filter(x=>x.ma!==s.ma), 'Đã xoá khỏi danh sách.');
+  };
+}
+
+async function pushStudents(list, msg){
+  try{
+    const r = await api('saveStudents', {students:list});
+    S.students = r.students;
+    closeSheet(); renderAll(); toast(msg);
+  }catch(e){ toast(esc(e.message)); }
+}
+
+/* --------------------------------- PIN ---------------------------------- */
+function openMyPin(){
+  const h=`<div class="card" style="border-top:0">
+    <label class="lbl" for="p1">Mật khẩu hiện tại</label><input id="p1" class="inp s" type="password">
+    <label class="lbl" style="margin-top:10px" for="p2">Mật khẩu mới (ít nhất 4 ký tự)</label>
+    <input id="p2" class="inp s" type="password">
+    <div class="rowbtns"><button class="btn ghost" id="pCancel">Đóng</button><button class="btn" id="pSave">Đổi mật khẩu</button></div></div>`;
+  openSheet('Đổi mật khẩu', esc(S.me.email), h);
+  $('#pCancel').onclick=closeSheet;
+  $('#pSave').onclick=async()=>{
+    try{
+      const r=await api('changePin', {oldPin:$('#p1').value, newPin:$('#p2').value});
+      if(r.ok===false) throw new Error(r.error);
+      closeSheet(); toast('Đã đổi mật khẩu.');
+    }catch(e){ toast(esc(e.message)); }
+  };
+}
+
+function openPinReset(){
+  const h=`<div class="card" style="border-top:0">
+    <label class="lbl" for="rEm">Email tài khoản</label><input id="rEm" class="inp s" placeholder="ten@gmail.com">
+    <label class="lbl" style="margin-top:10px" for="rPin">Mật khẩu mới</label><input id="rPin" class="inp s">
+    <div class="rowbtns"><button class="btn ghost" id="rCancel">Đóng</button><button class="btn" id="rSave">Đặt lại</button></div>
+    <div class="note" style="padding:10px 0 0">Nhắc thành viên tự đổi lại mật khẩu riêng sau khi đăng nhập được.</div></div>`;
+  openSheet('Đặt lại mật khẩu', 'Quyền của GVCN và quản trị', h);
+  $('#rCancel').onclick=closeSheet;
+  $('#rSave').onclick=async()=>{
+    try{
+      const r=await api('resetPin', {email:$('#rEm').value.trim(), newPin:$('#rPin').value.trim()});
+      if(r.ok===false) throw new Error(r.error);
+      closeSheet(); toast('Đã đặt lại mật khẩu.');
+    }catch(e){ toast(esc(e.message)); }
+  };
+}
+
+/* ------------------------------ điều hướng ------------------------------ */
+const TITLES={ghi:'Ghi điểm', bang:'Bảng lớp', tong:'Tổng kết tháng', cai:'Cài đặt'};
+$$('nav button').forEach(b=>b.onclick=()=>{
+  S.view=b.dataset.v;
+  $$('nav button').forEach(x=>x.classList.toggle('on', x===b));
+  ['ghi','bang','tong','cai'].forEach(v=>$('#v'+v[0].toUpperCase()+v.slice(1)).classList.toggle('hide', v!==S.view));
+  $('#hTitle').textContent=TITLES[S.view];
+  $('#weekBar').classList.toggle('hide', S.view==='cai');
+});
+$('#q').addEventListener('input', e=>{ S.q=e.target.value; renderGhi(); });
+
+/* -------------------------- khôi phục phiên cũ -------------------------- */
+(async function(){
+  if(S.token && S.url){
+    try{ await boot(); }
+    catch(e){ store.del('hk_token'); S.token=''; $('#lgErr').textContent=e.message; }
+  }
+})();
+</script>
+</body>
+</html>
