@@ -21,7 +21,8 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
-  font-family:'Aptos','Aptos Display','Segoe UI Variable','Segoe UI',system-ui,-apple-system,sans-serif;
+  font-family:'Aptos','Aptos Display','Aptos Narrow','Segoe UI Variable Text','Segoe UI',
+    -apple-system,BlinkMacSystemFont,'SF Pro Text','Roboto','Noto Sans',system-ui,'Helvetica Neue',Arial,sans-serif;
   background:var(--bg);color:var(--ink);font-size:16px;line-height:1.45;
   -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;
 }
@@ -124,9 +125,12 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 
 /* thanh hành động khi chọn nhiều */
 #bulkbar{position:fixed;left:12px;right:12px;bottom:calc(var(--nav-h) + 14px + env(safe-area-inset-bottom));
-  z-index:45;background:var(--ink);color:#fff;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;
-  box-shadow:var(--shadow);transform:translateY(150%);transition:transform .2s}
-#bulkbar.on{transform:translateY(0)}
+  z-index:45;background:var(--ink);color:#fff;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);
+  transition:opacity .16s,transform .16s,visibility .16s}
+#bulkbar.on{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+#bulkbar .x{flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.16);color:#fff;
+  display:flex;align-items:center;justify-content:center}
 #bulkbar .c{flex:1;font-size:14.5px;font-weight:600}
 #bulkbar button{padding:8px 13px;border-radius:9px;font-size:14px;font-weight:700}
 #bulkbar .go{background:#fff;color:var(--ink)}
@@ -183,13 +187,24 @@ tr:hover td{background:var(--bg)} tr:hover td.name{background:var(--bg)}
 .remarkbox .h{font-size:11.5px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.03em}
 .remarkbox p{margin:5px 0 0;font-size:14.5px;line-height:1.55}
 
+.multistrip{display:flex;align-items:center;gap:8px;margin:0 16px 11px;padding:9px 10px 9px 13px;
+  border-radius:12px;background:var(--teal-soft);color:var(--teal-ink);font-size:13.5px;font-weight:600}
+.multistrip .t{flex:1;min-width:0}
+.multistrip button{flex:0 0 auto;padding:6px 11px;border-radius:9px;background:var(--paper);
+  font-size:13px;font-weight:700;color:var(--teal-ink);border:1px solid rgba(14,124,134,.18)}
+.multistrip button:hover{background:var(--bg2)}
+
 /* ───────────────────────── ĐIỀU HƯỚNG ───────────────────────── */
 #tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--paper);
         border-top:1px solid var(--rule);display:flex;padding-bottom:env(safe-area-inset-bottom)}
 #tabbar button{flex:1;height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;
         gap:3px;font-size:10.5px;font-weight:600;color:var(--muted)}
 .ic{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round}
+#tabbar button{position:relative}
 #tabbar button.on{color:var(--teal)}
+#tabbar button.on::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--teal)}
+#tabbar button.on .ic{stroke-width:2.15}
 
 /* ───────────────────────── PANEL (sheet / drawer) ───────────────────────── */
 .scrim{position:fixed;inset:0;background:rgba(34,56,63,.42);z-index:50;opacity:0;pointer-events:none;transition:opacity .18s}
@@ -235,8 +250,9 @@ tr:hover td{background:var(--bg)} tr:hover td.name{background:var(--bg)}
 
 #toast{position:fixed;left:16px;right:16px;bottom:calc(var(--nav-h) + 18px + env(safe-area-inset-bottom));z-index:80;
   background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;
-  box-shadow:var(--shadow);font-size:14.5px;transform:translateY(150%);transition:transform .2s;pointer-events:none}
-#toast.on{transform:translateY(0);pointer-events:auto}
+  box-shadow:var(--shadow);font-size:14.5px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);
+  transition:opacity .16s,transform .16s,visibility .16s}
+#toast.on{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
 #toast .msg{flex:1}
 #toast .undo{font-weight:700;color:#7EDCE2;padding:4px 6px}
 .spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.32);border-top-color:#fff;
@@ -267,6 +283,7 @@ tr:hover td{background:var(--bg)} tr:hover td.name{background:var(--bg)}
   .topline h1{font-size:22px}
   .periodbar{padding:0 28px 12px}
   .pad,.tools,.filters,.sechead,.note,.entry,.row,.kpi,.panelbox,.grouphead,.editline{padding-left:28px;padding-right:28px}
+  .multistrip{margin-left:28px;margin-right:28px}
   .sechead{margin-left:0;margin-right:0}
   .register,.tablewrap,.kpis,.panelbox{border-radius:14px;border:1px solid var(--rule);margin:0 28px}
   .register .row:last-child{border-bottom:0}
@@ -352,6 +369,11 @@ tr:hover td{background:var(--bg)} tr:hover td.name{background:var(--bg)}
           <button class="btn ghost sm" id="multiBtn">Chọn nhiều</button>
         </div>
         <div class="filters" id="toFilter"></div>
+        <div class="multistrip hide" id="multiStrip">
+          <span class="t" id="msTxt">Chạm vào học sinh để chọn</span>
+          <button id="msAll">Chọn tất cả</button>
+          <button id="msDone">Xong</button>
+        </div>
         <div class="register" id="listGhi"></div>
       </section>
 
@@ -372,8 +394,9 @@ tr:hover td{background:var(--bg)} tr:hover td.name{background:var(--bg)}
 </div>
 
 <div id="bulkbar">
+  <button class="x" id="bulkCancel" aria-label="Bỏ chọn">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   <span class="c" id="bulkCount">Đã chọn 0</span>
-  <button class="cx" id="bulkCancel">Bỏ chọn</button>
   <button class="go" id="bulkGo">Ghi điểm</button>
 </div>
 
@@ -698,11 +721,17 @@ function sparkline(ma){
   </svg>`;
 }
 
-function renderGhi(){
-  const box=$('#listGhi');
+function visibleStudents(){
   const q=S.q.trim().toLowerCase();
   let list=activeStudents().filter(s=>S.filterTo==='all'||String(s.to)===String(S.filterTo));
   if(q) list=list.filter(s=>s.ten.toLowerCase().includes(q));
+  return list;
+}
+
+function renderGhi(){
+  const box=$('#listGhi');
+  const list=visibleStudents();
+  $('#multiStrip').classList.toggle('hide', !S.multi);
   if(!list.length){ box.innerHTML='<div class="empty"><b>Không có học sinh nào</b>Thử xoá bớt từ khoá tìm kiếm.</div>'; return; }
 
   let h='', curTo=null;
@@ -728,10 +757,22 @@ function renderGhi(){
 }
 
 /* ── chọn nhiều ── */
-$('#multiBtn').onclick=()=>{ S.multi=!S.multi; S.sel.clear(); updateBulk(); renderGhi();
-  $('#multiBtn').textContent = S.multi ? 'Xong' : 'Chọn nhiều'; };
-$('#bulkCancel').onclick=exitMulti;
+$('#multiBtn').onclick=()=>{ S.multi ? exitMulti() : enterMulti(); };
+$('#bulkCancel').onclick=()=>{ S.sel.clear(); updateBulk(); renderGhi(); };
 $('#bulkGo').onclick=openBulkPanel;
+$('#msDone').onclick=exitMulti;
+$('#msAll').onclick=()=>{
+  const list=visibleStudents().filter(s=>canScore(s.to));
+  const allOn = list.length && list.every(s=>S.sel.has(s.ma));
+  allOn ? list.forEach(s=>S.sel.delete(s.ma)) : list.forEach(s=>S.sel.add(s.ma));
+  updateBulk(); renderGhi();
+};
+
+function enterMulti(){
+  S.multi=true; S.sel.clear();
+  $('#multiBtn').textContent='Xong';
+  updateBulk(); renderGhi();
+}
 
 function toggleSel(ma){
   const s=stu(ma); if(!canScore(s.to)){ toast('Bạn chỉ ghi điểm được cho tổ '+S.me.to+'.'); return; }
@@ -741,10 +782,19 @@ function toggleSel(ma){
 function updateBulk(){
   $('#bulkbar').classList.toggle('on', S.multi && S.sel.size>0);
   $('#bulkCount').textContent = 'Đã chọn '+S.sel.size+' học sinh';
+  const strip=$('#msTxt');
+  if(strip){
+    strip.textContent = S.sel.size ? 'Đã chọn '+S.sel.size+' học sinh' : 'Chạm vào học sinh để chọn';
+    const list=visibleStudents().filter(s=>canScore(s.to));
+    const allOn = list.length && list.every(s=>S.sel.has(s.ma));
+    $('#msAll').textContent = allOn ? 'Bỏ tất cả' : 'Chọn tất cả';
+  }
 }
 function exitMulti(){
-  S.multi=false; S.sel.clear(); updateBulk();
+  S.multi=false; S.sel.clear();
+  $('#bulkbar').classList.remove('on');
   const b=$('#multiBtn'); if(b) b.textContent='Chọn nhiều';
+  const ms=$('#multiStrip'); if(ms) ms.classList.add('hide');
   if(S.view==='ghi') renderGhi();
 }
 
