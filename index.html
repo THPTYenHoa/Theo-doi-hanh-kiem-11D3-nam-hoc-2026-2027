@@ -142,6 +142,36 @@ select.inp{appearance:none;cursor:pointer;padding-right:32px;
   font-size:13.5px;font-weight:700;color:var(--sub);transition:.14s}
 .segbar button.on{background:var(--teal);border-color:var(--teal);color:#fff}
 
+.helpbar{display:flex;align-items:center;gap:9px;margin:0 12px 11px;padding:9px 12px;border-radius:var(--r-md);
+  background:var(--pale);color:var(--teal-d);font-size:12.5px;font-weight:700;width:calc(100% - 24px);text-align:left}
+.helpbar:hover{background:var(--teal-xl)}
+.helpbar .qi{width:19px;height:19px;flex:none;border-radius:50%;background:var(--teal);color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:800}
+.helpbar .t{flex:1;min-width:0}
+.helpbar .go{font-size:15px;opacity:.6}
+
+.guideimg{margin:14px 16px;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+  background:var(--card);box-shadow:var(--sh-1)}
+.guideimg img{display:block;width:100%;height:auto}
+.guideimg .cap{display:flex;align-items:center;gap:8px;padding:9px 12px;border-top:1px solid var(--line2);
+  font-size:12px;color:var(--sub);font-weight:600}
+.guideimg .cap a{margin-left:auto;color:var(--teal-d);font-weight:700}
+.imgfail{padding:26px 18px;text-align:center;font-size:13.5px;color:var(--sub);line-height:1.6}
+.imgfail a{color:var(--teal-d);font-weight:700}
+
+details.acc{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  margin:0 16px 9px;overflow:hidden}
+details.acc summary{list-style:none;cursor:pointer;padding:12px 14px;font-size:14.5px;font-weight:700;
+  color:var(--teal-d);display:flex;align-items:center;gap:9px}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary .ic{width:19px;height:19px;flex:none}
+details.acc summary .ar{margin-left:auto;font-size:12px;color:var(--mute);transition:.15s}
+details.acc[open] summary{border-bottom:1px solid var(--line2)}
+details.acc[open] summary .ar{transform:rotate(90deg)}
+details.acc ul{margin:0;padding:11px 16px 13px 30px;display:flex;flex-direction:column;gap:8px}
+details.acc li{font-size:13.5px;line-height:1.6;color:var(--ink)}
+details.acc li b{color:var(--teal-d);font-weight:700}
+
 /* ═══════════════ SHELL ═══════════════ */
 #app{display:none;height:100%;flex-direction:column;overflow:hidden}
 #app.on{display:flex}
@@ -296,6 +326,104 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
   border:1px solid #F3E0BF}
 .remarkbox .h{font-size:11px;font-weight:800;color:var(--warn);text-transform:uppercase;letter-spacing:.05em}
 .remarkbox p{margin:5px 0 0;font-size:14px;line-height:1.6;color:#7A4E10}
+
+/* ═══════════════ HƯỚNG DẪN ═══════════════ */
+const GUIDE_ID = '158hmatZmbPsMzP96Eno62Q7ykwP7hRJ5';
+/* Thử lần lượt: ảnh đặt cạnh index.html trong repo → Drive → Drive dự phòng.
+   Muốn tải nhanh và chắc chắn nhất, chép file ảnh vào repo và đặt tên huong-dan.png */
+const GUIDE_IMG = [
+  'huong-dan.png',
+  'https://drive.google.com/thumbnail?id=' + GUIDE_ID + '&sz=w1600',
+  'https://lh3.googleusercontent.com/d/' + GUIDE_ID + '=w1600'
+];
+const GUIDE_OPEN = 'https://drive.google.com/file/d/' + GUIDE_ID + '/view';
+
+const HELP = {
+  ghi: { t:'Cách ghi điểm', items:[
+    ['Chọn đúng tuần trước','Thanh trên cùng là tháng và tuần đang ghi. Ghi nhầm tuần thì số liệu cả tháng lệch theo.'],
+    ['Ghi một học sinh','Chạm tên em đó, chọn tab Trừ điểm hoặc Cộng điểm, rồi chạm vào lý do. Lưu ngay, không cần bấm gì thêm.'],
+    ['Chạm nhầm','Có 5 giây để bấm Hoàn tác ở thông báo hiện dưới màn hình.'],
+    ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
+    ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
+    ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
+    ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
+  ]},
+  bang: { t:'Đọc bảng lớp', items:[
+    ['Nội dung bảng','Tổng điểm từng tuần của tháng đang chọn. Kéo ngang để xem hết các cột.'],
+    ['Màu ô','Xanh lá là Tốt, xanh dương là Khá, vàng là Trung bình, đỏ là Yếu.'],
+    ['Cột TB tuần','Tổng tháng chia số tuần. Xếp loại tháng lấy theo cột này, không lấy theo tổng.'],
+    ['Xem chi tiết','Chạm vào một dòng để mở toàn bộ ghi nhận trong tháng của em đó.'],
+    ['Dấu ✓','Xếp loại có dấu ✓ nghĩa là GVCN đã chốt tay, không lấy theo tính tự động.']
+  ]},
+  tk: { t:'Xem thống kê', items:[
+    ['Chọn kỳ','Ba nút Tuần / Tháng / Cả năm ở đầu trang. Đổi kỳ thì toàn bộ số liệu bên dưới đổi theo.'],
+    ['Ba bảng xếp hạng','Học sinh vi phạm nhiều nhất, học sinh được tuyên dương, và lỗi cả lớp hay mắc nhất.'],
+    ['So sánh tổ','Biểu đồ cột là điểm trung bình tuần của từng tổ, để biết tổ nào đang đuối.'],
+    ['Xu hướng','Đường biểu diễn điểm trung bình lớp qua các tháng, cho thấy lớp đang lên hay xuống.'],
+    ['Lần đầu hơi chậm','Mở lần đầu app tải dữ liệu cả năm học. Các lần sau lấy từ bộ nhớ nên nhanh.']
+  ]},
+  ls: { t:'Tra lịch sử và trích xuất', items:[
+    ['Bộ lọc','Lọc theo khoảng tháng, theo tổ, theo từng học sinh và theo loại điểm cộng hay trừ.'],
+    ['Nhận xét của GVCN','Chọn đúng một học sinh thì phần nhận xét từng tháng của GVCN hiện lên đầu danh sách.'],
+    ['Xuất CSV','Tải file mở được bằng Excel, gồm đầy đủ mọi dòng kèm người ghi và nhận xét.'],
+    ['In hoặc lưu PDF','Bản in của một học sinh có sẵn bảng điểm từng tháng và nhận xét, nộp bản giấy được luôn.'],
+    ['Giới hạn hiển thị','Màn hình chỉ hiện 400 ghi nhận mới nhất cho nhẹ. Cần đủ thì xuất CSV.']
+  ]},
+  cai: { t:'Cài đặt và phân quyền', items:[
+    ['Ai cũng làm được','Đổi mật khẩu riêng và xem Quy định tính điểm kèm diễn giải từng lỗi.'],
+    ['Lớp trưởng và GVCN','Đổi tháng theo dõi, số tuần, mốc xếp loại, và sửa danh mục điểm cộng — trừ.'],
+    ['Sửa một hạng mục','Chạm vào hạng mục để đổi tên, số điểm, nhóm, và viết phần diễn giải cho học sinh đọc.'],
+    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, và cấu hình email thông báo.'],
+    ['Google Sheet gốc','Nút hình bảng trên đầu màn hình mở dữ liệu gốc. Sửa tay trên Sheet xong quay lại app là tự cập nhật.']
+  ]}
+};
+
+function guideImgHTML(){
+  return `<div class="guideimg">
+    <img id="gImg" src="${GUIDE_IMG[0]}" alt="Ảnh hướng dẫn sử dụng sổ hạnh kiểm 11D3" data-try="0">
+    <div class="cap">Ảnh hướng dẫn nhanh — chạm để xem cỡ lớn
+      <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh gốc ›</a></div>
+  </div>`;
+}
+
+function openGuide(sec){
+  const keys=['ghi','bang','tk','ls','cai'];
+  const cur = sec || S.view;
+  let h = guideImgHTML();
+  h += `<div class="grouphead">Hướng dẫn từng mục</div>`;
+  keys.forEach(k=>{
+    h += `<details class="acc" ${k===cur?'open':''} data-sec="${k}">
+      <summary><svg class="ic" viewBox="0 0 24 24">${ICON[k]}</svg>${esc(HELP[k].t)}<span class="ar">›</span></summary>
+      <ul>${HELP[k].items.map(it=>`<li><b>${esc(it[0])}.</b> ${esc(it[1])}</li>`).join('')}</ul>
+    </details>`;
+  });
+  h += `<div class="note">Mật khẩu ban đầu: GVCN và quản trị dùng 4321, lớp trưởng và tổ trưởng dùng 11d3.
+        Vào Cài đặt để đổi mật khẩu riêng.</div>`;
+
+  openPanel('Hướng dẫn sử dụng', 'Sổ hạnh kiểm 11D3 · THPT Yên Hòa', h, 'guide');
+
+  const img=$('#gImg');
+  if(img){
+    img.onerror=()=>{
+      const n=Number(img.dataset.try)+1;
+      if(n < GUIDE_IMG.length){ img.dataset.try=n; img.src=GUIDE_IMG[n]; return; }
+      img.closest('.guideimg').innerHTML =
+        `<div class="imgfail">Chưa tải được ảnh hướng dẫn.<br>
+         Kiểm tra file trên Drive đã đặt quyền “Bất kỳ ai có đường liên kết” chưa.<br>
+         <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh trên Google Drive ›</a></div>`;
+    };
+    img.onclick=()=>window.open(GUIDE_OPEN,'_blank','noopener');
+  }
+}
+
+function renderHelpBar(){
+  const h=HELP[S.view];
+  const b=$('#helpBar');
+  if(!h){ b.classList.add('hide'); return; }
+  b.classList.remove('hide');
+  $('#helpTxt').textContent = h.t + ' — xem hướng dẫn';
+  b.onclick=()=>openGuide(S.view);
+}
 
 /* ═══════════════ ĐIỀU HƯỚNG ═══════════════ */
 #tabbar{position:fixed;left:0;right:0;bottom:0;z-index:120;display:flex;
@@ -505,6 +633,9 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
       <div class="topline">
         <h1 id="hTitle">Ghi điểm</h1>
         <div class="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">—</span></div>
+        <button class="iconbtn" id="hHelp" title="Hướng dẫn sử dụng">
+          <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>
+            <path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.4-2.8 4"/><path d="M12 17.4h.01"/></svg></button>
         <button class="iconbtn hide" id="hSheet" title="Mở Google Sheet gốc">
           <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/>
             <path d="M3 9h18M9 9v12"/></svg></button>
@@ -514,6 +645,9 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
     </header>
 
     <main id="scroll"><div class="wrap">
+      <button class="helpbar" id="helpBar">
+        <span class="qi">?</span><span class="t" id="helpTxt">Hướng dẫn</span><span class="go">›</span>
+      </button>
       <section class="view" id="vGhi">
         <div class="tools">
           <input id="q" class="inp s" type="search" placeholder="Tìm tên học sinh…">
@@ -770,6 +904,7 @@ function showApp(){
   $('#rlRole').textContent = S.me.role + (S.me.role==='Tổ trưởng' ? ' · tổ '+S.me.to : '');
   $('#rlAva').textContent = initials(S.me.name);
   $('#hAva').textContent = initials(S.me.name);
+  $('#hHelp').onclick=()=>openGuide(S.view);
   const sb=$('#hSheet');
   sb.classList.toggle('hide', !(isAdmin() && S.sheetUrl));
   sb.onclick=()=>window.open(S.sheetUrl,'_blank','noopener');
@@ -881,6 +1016,104 @@ function remarkOf(ma, thang){
   return S.remarks.find(r=>r.maHS===ma && r.thang===t);
 }
 
+/* ═══════════════ HƯỚNG DẪN ═══════════════ */
+const GUIDE_ID = '158hmatZmbPsMzP96Eno62Q7ykwP7hRJ5';
+/* Thử lần lượt: ảnh đặt cạnh index.html trong repo → Drive → Drive dự phòng.
+   Muốn tải nhanh và chắc chắn nhất, chép file ảnh vào repo và đặt tên huong-dan.png */
+const GUIDE_IMG = [
+  'huong-dan.png',
+  'https://drive.google.com/thumbnail?id=' + GUIDE_ID + '&sz=w1600',
+  'https://lh3.googleusercontent.com/d/' + GUIDE_ID + '=w1600'
+];
+const GUIDE_OPEN = 'https://drive.google.com/file/d/' + GUIDE_ID + '/view';
+
+const HELP = {
+  ghi: { t:'Cách ghi điểm', items:[
+    ['Chọn đúng tuần trước','Thanh trên cùng là tháng và tuần đang ghi. Ghi nhầm tuần thì số liệu cả tháng lệch theo.'],
+    ['Ghi một học sinh','Chạm tên em đó, chọn tab Trừ điểm hoặc Cộng điểm, rồi chạm vào lý do. Lưu ngay, không cần bấm gì thêm.'],
+    ['Chạm nhầm','Có 5 giây để bấm Hoàn tác ở thông báo hiện dưới màn hình.'],
+    ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
+    ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
+    ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
+    ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
+  ]},
+  bang: { t:'Đọc bảng lớp', items:[
+    ['Nội dung bảng','Tổng điểm từng tuần của tháng đang chọn. Kéo ngang để xem hết các cột.'],
+    ['Màu ô','Xanh lá là Tốt, xanh dương là Khá, vàng là Trung bình, đỏ là Yếu.'],
+    ['Cột TB tuần','Tổng tháng chia số tuần. Xếp loại tháng lấy theo cột này, không lấy theo tổng.'],
+    ['Xem chi tiết','Chạm vào một dòng để mở toàn bộ ghi nhận trong tháng của em đó.'],
+    ['Dấu ✓','Xếp loại có dấu ✓ nghĩa là GVCN đã chốt tay, không lấy theo tính tự động.']
+  ]},
+  tk: { t:'Xem thống kê', items:[
+    ['Chọn kỳ','Ba nút Tuần / Tháng / Cả năm ở đầu trang. Đổi kỳ thì toàn bộ số liệu bên dưới đổi theo.'],
+    ['Ba bảng xếp hạng','Học sinh vi phạm nhiều nhất, học sinh được tuyên dương, và lỗi cả lớp hay mắc nhất.'],
+    ['So sánh tổ','Biểu đồ cột là điểm trung bình tuần của từng tổ, để biết tổ nào đang đuối.'],
+    ['Xu hướng','Đường biểu diễn điểm trung bình lớp qua các tháng, cho thấy lớp đang lên hay xuống.'],
+    ['Lần đầu hơi chậm','Mở lần đầu app tải dữ liệu cả năm học. Các lần sau lấy từ bộ nhớ nên nhanh.']
+  ]},
+  ls: { t:'Tra lịch sử và trích xuất', items:[
+    ['Bộ lọc','Lọc theo khoảng tháng, theo tổ, theo từng học sinh và theo loại điểm cộng hay trừ.'],
+    ['Nhận xét của GVCN','Chọn đúng một học sinh thì phần nhận xét từng tháng của GVCN hiện lên đầu danh sách.'],
+    ['Xuất CSV','Tải file mở được bằng Excel, gồm đầy đủ mọi dòng kèm người ghi và nhận xét.'],
+    ['In hoặc lưu PDF','Bản in của một học sinh có sẵn bảng điểm từng tháng và nhận xét, nộp bản giấy được luôn.'],
+    ['Giới hạn hiển thị','Màn hình chỉ hiện 400 ghi nhận mới nhất cho nhẹ. Cần đủ thì xuất CSV.']
+  ]},
+  cai: { t:'Cài đặt và phân quyền', items:[
+    ['Ai cũng làm được','Đổi mật khẩu riêng và xem Quy định tính điểm kèm diễn giải từng lỗi.'],
+    ['Lớp trưởng và GVCN','Đổi tháng theo dõi, số tuần, mốc xếp loại, và sửa danh mục điểm cộng — trừ.'],
+    ['Sửa một hạng mục','Chạm vào hạng mục để đổi tên, số điểm, nhóm, và viết phần diễn giải cho học sinh đọc.'],
+    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, và cấu hình email thông báo.'],
+    ['Google Sheet gốc','Nút hình bảng trên đầu màn hình mở dữ liệu gốc. Sửa tay trên Sheet xong quay lại app là tự cập nhật.']
+  ]}
+};
+
+function guideImgHTML(){
+  return `<div class="guideimg">
+    <img id="gImg" src="${GUIDE_IMG[0]}" alt="Ảnh hướng dẫn sử dụng sổ hạnh kiểm 11D3" data-try="0">
+    <div class="cap">Ảnh hướng dẫn nhanh — chạm để xem cỡ lớn
+      <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh gốc ›</a></div>
+  </div>`;
+}
+
+function openGuide(sec){
+  const keys=['ghi','bang','tk','ls','cai'];
+  const cur = sec || S.view;
+  let h = guideImgHTML();
+  h += `<div class="grouphead">Hướng dẫn từng mục</div>`;
+  keys.forEach(k=>{
+    h += `<details class="acc" ${k===cur?'open':''} data-sec="${k}">
+      <summary><svg class="ic" viewBox="0 0 24 24">${ICON[k]}</svg>${esc(HELP[k].t)}<span class="ar">›</span></summary>
+      <ul>${HELP[k].items.map(it=>`<li><b>${esc(it[0])}.</b> ${esc(it[1])}</li>`).join('')}</ul>
+    </details>`;
+  });
+  h += `<div class="note">Mật khẩu ban đầu: GVCN và quản trị dùng 4321, lớp trưởng và tổ trưởng dùng 11d3.
+        Vào Cài đặt để đổi mật khẩu riêng.</div>`;
+
+  openPanel('Hướng dẫn sử dụng', 'Sổ hạnh kiểm 11D3 · THPT Yên Hòa', h, 'guide');
+
+  const img=$('#gImg');
+  if(img){
+    img.onerror=()=>{
+      const n=Number(img.dataset.try)+1;
+      if(n < GUIDE_IMG.length){ img.dataset.try=n; img.src=GUIDE_IMG[n]; return; }
+      img.closest('.guideimg').innerHTML =
+        `<div class="imgfail">Chưa tải được ảnh hướng dẫn.<br>
+         Kiểm tra file trên Drive đã đặt quyền “Bất kỳ ai có đường liên kết” chưa.<br>
+         <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh trên Google Drive ›</a></div>`;
+    };
+    img.onclick=()=>window.open(GUIDE_OPEN,'_blank','noopener');
+  }
+}
+
+function renderHelpBar(){
+  const h=HELP[S.view];
+  const b=$('#helpBar');
+  if(!h){ b.classList.add('hide'); return; }
+  b.classList.remove('hide');
+  $('#helpTxt').textContent = h.t + ' — xem hướng dẫn';
+  b.onclick=()=>openGuide(S.view);
+}
+
 /* ═══════════════ ĐIỀU HƯỚNG ═══════════════ */
 function buildNav(){
   $('#railNav').innerHTML = NAV.map(n=>
@@ -909,6 +1142,7 @@ async function go(v){
 /* ═══════════════ RENDER TỔNG ═══════════════ */
 function renderAll(){
   renderPeriod();
+  renderHelpBar();
   if(S.view==='ghi'){ renderFilters(); renderGhi(); }
   if(S.view==='bang') renderBang();
   if(S.view==='tk')   renderTK();
