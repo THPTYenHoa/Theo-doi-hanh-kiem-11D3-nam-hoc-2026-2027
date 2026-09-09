@@ -28,6 +28,11 @@
   --hdr:56px; --nav:62px; --rail:236px;
   --safe:env(safe-area-inset-bottom,0px);
   --font:Aptos,'Aptos Display','Be Vietnam Pro','Segoe UI',Calibri,system-ui,-apple-system,'Roboto',sans-serif;
+  /* bí danh giữ tương thích với tên biến đời trước */
+  --red:#C0392B; --green:#1E8449; --paper:#FFFFFF; --rule:#DEEAEC; --rule2:#EDF4F5;
+  --muted:#5C7A83; --faint:#8AA6AD; --teal-ink:#0A5C64; --teal-soft:#E6F3F4;
+  --red-soft:#FCEDEA; --green-soft:#E5F5EB; --amber-soft:#FDF2E1; --blue-soft:#E7F0F8;
+  --blue:#1F618D; --shadow:0 12px 44px rgba(27,51,58,.20); --nav-h:62px; --bg2:#E6F3F4;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -87,6 +92,55 @@ select.inp{appearance:none;cursor:pointer;padding-right:32px;
 .btn:disabled{opacity:.55;cursor:default}
 .err{color:var(--dang);font-size:13.5px;margin-top:12px;min-height:20px;font-weight:600}
 .hint{font-size:12.5px;color:var(--mute);margin-top:20px;line-height:1.6}
+
+.lglab{font-size:11.5px;font-weight:800;color:var(--sub);text-transform:uppercase;
+  letter-spacing:.7px;margin:0 2px 11px}
+.picgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.piccard{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:13px 12px;
+  display:flex;align-items:center;gap:11px;text-align:left;transition:.16s;box-shadow:var(--sh-1)}
+.piccard:hover{border-color:var(--teal-l);transform:translateY(-2px);box-shadow:var(--sh-2)}
+.piccard .av{width:38px;height:38px;border-radius:12px;background:var(--pale);color:var(--teal-d);
+  display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.piccard.gv .av{background:linear-gradient(135deg,var(--teal),#3FA7B0);color:#fff}
+.piccard b{display:block;font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
+.piccard span{display:block;font-size:11px;color:var(--mute);margin-top:1px;font-weight:600}
+.lgback{font-size:13px;font-weight:700;color:var(--teal-d);padding:7px 0;margin-bottom:6px}
+.whocard{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r-lg);padding:13px 14px;margin-bottom:16px;box-shadow:var(--sh-1)}
+.whocard .av{width:44px;height:44px;border-radius:13px;flex:none;display:grid;place-items:center;
+  font-weight:800;font-size:15px;background:linear-gradient(135deg,var(--teal),#3FA7B0);color:#fff}
+.whocard b{display:block;font-size:15.5px;font-weight:800}
+.whocard span{font-size:12px;color:var(--sub);font-weight:600}
+
+.iconbtn{width:33px;height:33px;border-radius:11px;background:rgba(255,255,255,.2);color:#fff;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;transition:.15s}
+.iconbtn:hover{background:rgba(255,255,255,.34)}
+.iconbtn .ic{width:18px;height:18px;stroke-width:2}
+
+.tag .x{margin-left:1px;width:15px;height:15px;border-radius:5px;display:inline-flex;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.09);font-size:11px;line-height:1;font-weight:800}
+.tag .x:hover{background:rgba(0,0,0,.2)}
+
+.toplist{display:flex;flex-direction:column}
+.toprow{display:flex;align-items:center;gap:11px;padding:10px 15px;border-bottom:1px solid var(--line2)}
+.toprow:last-child{border-bottom:0}
+.toprow .rk{width:26px;height:26px;border-radius:9px;flex:none;display:grid;place-items:center;
+  font-size:12px;font-weight:800;background:var(--paler);color:var(--sub)}
+.toprow.p1 .rk{background:linear-gradient(135deg,#F0C24B,#E3A21B);color:#fff}
+.toprow.p2 .rk{background:linear-gradient(135deg,#C9D6DA,#A9BCC2);color:#fff}
+.toprow.p3 .rk{background:linear-gradient(135deg,#E0AE86,#C98A5A);color:#fff}
+.toprow .bd{flex:1;min-width:0}
+.toprow .bd b{display:block;font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toprow .bd .mt{font-size:11.5px;color:var(--mute);font-weight:600;margin-top:1px}
+.toprow .bd .bar{height:5px;border-radius:99px;background:var(--line2);margin-top:6px;overflow:hidden}
+.toprow .bd .bar i{display:block;height:100%;border-radius:99px}
+.toprow .vl{flex:none;text-align:right;min-width:52px}
+.toprow .vl b{display:block;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.toprow .vl span{font-size:10.5px;color:var(--mute);font-weight:700}
+.segbar{display:flex;gap:6px;padding:0 12px 12px}
+.segbar button{flex:1;height:36px;border-radius:10px;background:var(--card);border:1.5px solid var(--line);
+  font-size:13.5px;font-weight:700;color:var(--sub);transition:.14s}
+.segbar button.on{background:var(--teal);border-color:var(--teal);color:#fff}
 
 /* ═══════════════ SHELL ═══════════════ */
 #app{display:none;height:100%;flex-direction:column;overflow:hidden}
@@ -359,6 +413,8 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
   .pad,.tools,.filters,.sechead{padding-left:26px;padding-right:26px}
   .sechead{margin-left:0;margin-right:0}
   .register,.panelbox,.tablewrap,.kpis,.multistrip,.remarkbox{margin-left:26px;margin-right:26px}
+  .segbar{padding-left:26px;padding-right:26px}
+  .toprow{padding-left:20px;padding-right:20px}
   .row,.entry,.grouphead,.editline{padding-left:20px;padding-right:20px}
   .kpi{padding:15px 18px}
   .kpis{grid-template-columns:repeat(4,1fr)}
@@ -405,17 +461,29 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
   <div class="classname">11D3</div>
   <div class="subline">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
 
-  <div class="fld">
-    <label for="lgEmail">Email</label>
-    <input id="lgEmail" class="inp" type="email" inputmode="email" autocomplete="username" placeholder="ten@gmail.com">
+  <div id="lgStep1">
+    <div class="lglab">Bạn là ai?</div>
+    <div class="picgrid" id="picGrid">
+      <div class="piccard"><span class="av"></span><span><b>Đang tải…</b></span></div>
+    </div>
   </div>
-  <div class="fld">
-    <label for="lgPin">Mật khẩu</label>
-    <input id="lgPin" class="inp" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+
+  <div id="lgStep2" class="hide">
+    <button class="lgback" id="lgBack">← Chọn người khác</button>
+    <div class="whocard" id="whoCard"></div>
+    <div class="fld hide" id="lgEmailFld">
+      <label for="lgEmail">Email</label>
+      <input id="lgEmail" class="inp" type="email" inputmode="email" autocomplete="username" placeholder="ten@gmail.com">
+    </div>
+    <div class="fld">
+      <label for="lgPin">Mật khẩu</label>
+      <input id="lgPin" class="inp" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+    </div>
+    <button class="btn" id="lgBtn">Vào sổ</button>
   </div>
-  <button class="btn" id="lgBtn">Vào sổ</button>
+
   <div class="err" id="lgErr"></div>
-  <div class="hint">Chỉ những email đã được cấp quyền mới vào được sổ. Tổ trưởng ghi điểm cho tổ mình, lớp trưởng ghi cả lớp, GVCN có toàn quyền.</div>
+  <div class="hint">Tổ trưởng ghi điểm cho tổ mình, lớp trưởng ghi cả lớp, GVCN có toàn quyền.</div>
  </div>
 </section>
 
@@ -437,6 +505,9 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
       <div class="topline">
         <h1 id="hTitle">Ghi điểm</h1>
         <div class="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">—</span></div>
+        <button class="iconbtn hide" id="hSheet" title="Mở Google Sheet gốc">
+          <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18M9 9v12"/></svg></button>
         <button class="ava" id="hAva" title="Tài khoản">—</button>
       </div>
       <div class="periodbar" id="periodBar"></div>
@@ -521,6 +592,7 @@ const S = {
   thang:null, tuan:1, view:'ghi', filterTo:'all', q:'',
   multi:false, sel:new Set(),
   ctxMa:null, ctxTab:'tru', panelKind:'', bulkNote:'',
+  members:null, pick:null, tkKy:'thang',
   lsFilter:{ tu:null, den:null, to:'all', hs:'all', loai:'all' },
   busy:false, lastSync:null, pollT:null
 };
@@ -594,14 +666,61 @@ function err(e){ toast(esc(e && e.message ? e.message : String(e))); }
 
 /* ═══════════════ ĐĂNG NHẬP ═══════════════ */
 $('#lgPin').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-$('#lgEmail').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#lgPin').focus(); });
 $('#lgBtn').addEventListener('click', doLogin);
+$('#lgBack').addEventListener('click', ()=>{
+  S.pick=null; $('#lgStep2').classList.add('hide'); $('#lgStep1').classList.remove('hide');
+  $('#lgErr').textContent='';
+});
+
+async function loadRoster(){
+  try{
+    const r = await api('roster');
+    S.members = r.members || [];
+  }catch(e){ S.members = null; }
+  drawPicker();
+}
+
+function drawPicker(){
+  const g=$('#picGrid');
+  if(!S.members){
+    g.innerHTML='';
+    $('#lgStep1').classList.add('hide');
+    $('#lgStep2').classList.remove('hide');
+    $('#lgEmailFld').classList.remove('hide');
+    $('#whoCard').innerHTML='<span class="av">?</span><span><b>Đăng nhập bằng email</b>'
+      +'<span>Không tải được danh sách thành viên</span></span>';
+    return;
+  }
+  g.innerHTML = S.members.map(m=>{
+    const gv = m.role==='GVCN'||m.role==='Quản trị';
+    const phu = m.role==='Tổ trưởng' ? 'Tổ trưởng tổ '+m.to : m.role;
+    return `<button class="piccard ${gv?'gv':''}" data-pick="${esc(m.id)}">
+      <span class="av">${esc(initials(m.ten))}</span>
+      <span><b>${esc(m.ten)}</b><span>${esc(phu)}</span></span></button>`;
+  }).join('');
+  $$('#picGrid [data-pick]').forEach(b=>b.onclick=()=>pickMember(b.dataset.pick));
+}
+
+function pickMember(id){
+  const m=S.members.find(x=>x.id===id); if(!m) return;
+  S.pick=m;
+  const gv = m.role==='GVCN'||m.role==='Quản trị';
+  $('#whoCard').innerHTML=`<span class="av">${esc(initials(m.ten))}</span>
+    <span><b>${esc(m.ten)}</b><span>${esc(m.role==='Tổ trưởng'?'Tổ trưởng tổ '+m.to:m.role)}</span></span>`;
+  $('#lgStep1').classList.add('hide');
+  $('#lgStep2').classList.remove('hide');
+  $('#lgEmailFld').classList.add('hide');
+  $('#lgErr').textContent='';
+  $('#lgPin').value=''; setTimeout(()=>$('#lgPin').focus(), 60);
+}
 
 async function doLogin(){
   const btn=$('#lgBtn'), box=$('#lgErr');
   box.textContent=''; btn.innerHTML='<span class="spin sm"></span>'; btn.disabled=true;
   try{
-    const r = await api('login', {email:$('#lgEmail').value.trim(), pin:$('#lgPin').value});
+    const body = S.pick ? {id:S.pick.id, pin:$('#lgPin').value}
+                        : {email:($('#lgEmail')||{value:''}).value.trim(), pin:$('#lgPin').value};
+    const r = await api('login', body);
     S.token=r.token; store.set('hk_token', S.token);
     store.del(CACHE_KEY);
     if(r.boot){
@@ -651,6 +770,9 @@ function showApp(){
   $('#rlRole').textContent = S.me.role + (S.me.role==='Tổ trưởng' ? ' · tổ '+S.me.to : '');
   $('#rlAva').textContent = initials(S.me.name);
   $('#hAva').textContent = initials(S.me.name);
+  const sb=$('#hSheet');
+  sb.classList.toggle('hide', !(isAdmin() && S.sheetUrl));
+  sb.onclick=()=>window.open(S.sheetUrl,'_blank','noopener');
   buildNav();
 }
 
@@ -845,9 +967,9 @@ function sparkline(ma){
   const y=v=>H-2-((v-lo)/rg)*(H-4);
   const d=vals.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
   const last=vals[vals.length-1];
-  const col=last<0?'var(--red)':last>0?'var(--green)':'var(--faint)';
+  const col=last<0?'#C0392B':last>0?'#1E8449':'#8AA6AD';
   return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-    <line x1="0" y1="${y(0).toFixed(1)}" x2="${W}" y2="${y(0).toFixed(1)}" stroke="var(--rule)" stroke-width="1"/>
+    <line x1="0" y1="${y(0).toFixed(1)}" x2="${W}" y2="${y(0).toFixed(1)}" stroke="#DEEAEC" stroke-width="1"/>
     <path d="${d}" fill="none" stroke="${col}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
   </svg>`;
 }
@@ -888,6 +1010,10 @@ function renderGhi(){
     const ma=b.dataset.ma;
     if(S.multi){ toggleSel(ma); } else { openStudent(ma); }
   });
+  $$('#listGhi [data-qdel]').forEach(x=>x.onclick=ev=>{
+    ev.stopPropagation(); ev.preventDefault();
+    delEntry(x.dataset.qdel);
+  });
 }
 
 function isoNow(){
@@ -912,8 +1038,10 @@ function rowExtra(s){
 
   if(list.length){
     const show=list.slice(0,3);
+    const xoaDuoc = canScore(s.to);
     h+='<span class="tagwrap">'+show.map(e=>
-      `<span class="tag ${e[E_DIEM]<0?'minus':'plus'}">${esc(e[E_ND]||e[E_MUC])} <b>${nz(e[E_DIEM])}</b></span>`).join('');
+      `<span class="tag ${e[E_DIEM]<0?'minus':'plus'}">${esc(e[E_ND]||e[E_MUC])} <b>${nz(e[E_DIEM])}</b>
+       ${xoaDuoc?`<span class="x" data-qdel="${esc(e[E_ID])}" title="Xoá mục này">✕</span>`:''}</span>`).join('');
     if(list.length>3) h+=`<span class="tag more">+${list.length-3} mục khác</span>`;
     h+='</span>';
 
@@ -1203,54 +1331,57 @@ function openStudentMonth(ma){
 
 /* ═══════════════ BIỂU ĐỒ SVG ═══════════════ */
 function svgCols(data, opts){
-  const o = Object.assign({w:640,h:210,pad:30,fmt:v=>v.toFixed(1)}, opts||{});
+  const o = Object.assign({w:660,h:230,pad:34,fmt:v=>v.toFixed(1)}, opts||{});
   if(!data.length) return '<div class="note">Chưa có dữ liệu.</div>';
   const vals=data.map(d=>d.v);
-  const hi=Math.max(0,...vals), lo=Math.min(0,...vals), rg=(hi-lo)||1;
-  const bw=(o.w-o.pad*2)/data.length, y0=o.h-26-((0-lo)/rg)*(o.h-52);
-  let s=`<svg viewBox="0 0 ${o.w} ${o.h}" style="width:100%;height:auto" role="img">`;
-  s+=`<line x1="${o.pad-6}" y1="${y0.toFixed(1)}" x2="${o.w-o.pad+6}" y2="${y0.toFixed(1)}" stroke="var(--rule)" stroke-width="1"/>`;
+  let hi=Math.max(0,...vals), lo=Math.min(0,...vals);
+  const span=Math.max(hi-lo, 2);                 // tránh giá trị bé xíu chiếm hết chiều cao
+  const mid=(hi+lo)/2; hi=mid+span/2; lo=mid-span/2;
+  if(lo>0) lo=0; if(hi<0) hi=0;
+  const rg=hi-lo;
+  const top=30, bot=34, plot=o.h-top-bot;
+  const bw=(o.w-o.pad*2)/data.length;
+  const Y=v=>top+(hi-v)/rg*plot;
+  const y0=Y(0);
+  let g=`<svg viewBox="0 0 ${o.w} ${o.h}" style="width:100%;height:auto" role="img">`;
+  g+=`<line x1="${o.pad-8}" y1="${y0.toFixed(1)}" x2="${o.w-o.pad+8}" y2="${y0.toFixed(1)}" stroke="#DEEAEC" stroke-width="1"/>`;
   data.forEach((d,i)=>{
-    const x=o.pad+i*bw+bw*0.22, w=bw*0.56;
-    const yv=o.h-26-((d.v-lo)/rg)*(o.h-52);
-    const top=Math.min(yv,y0), hh=Math.max(2,Math.abs(yv-y0));
-    const col=d.c || (d.v<0?'var(--red)':'var(--teal)');
-    s+=`<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}"
-         rx="3" fill="${col}" opacity=".9"/>`;
-    s+=`<text x="${(x+w/2).toFixed(1)}" y="${(d.v<0?top+hh+13:top-6).toFixed(1)}" text-anchor="middle"
-         font-size="12" font-weight="800" fill="${col}">${o.fmt(d.v)}</text>`;
-    s+=`<text x="${(x+w/2).toFixed(1)}" y="${o.h-7}" text-anchor="middle" font-size="11.5"
-         fill="var(--muted)">${esc(d.k)}</text>`;
+    const x=o.pad+i*bw+bw*0.26, w=bw*0.48;
+    const yv=Y(d.v), t=Math.min(yv,y0), hh=Math.max(3,Math.abs(yv-y0));
+    const col=d.c || (d.v<0?'#C0392B':d.v>0?'#0E7C86':'#C6DCDF');
+    g+=`<rect x="${x.toFixed(1)}" y="${t.toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" rx="4" fill="${col}"/>`;
+    const ly = d.v<0 ? t+hh+15 : t-9;
+    g+=`<text x="${(x+w/2).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-size="13" font-weight="800" fill="${col}">${o.fmt(d.v)}</text>`;
+    g+=`<text x="${(x+w/2).toFixed(1)}" y="${o.h-9}" text-anchor="middle" font-size="12" fill="#5C7A83" font-weight="600">${esc(d.k)}</text>`;
   });
-  return s+'</svg>';
+  return g+'</svg>';
 }
 
 function svgLine(data, opts){
-  const o = Object.assign({w:640,h:200,pad:32,fmt:v=>v.toFixed(1)}, opts||{});
+  const o = Object.assign({w:660,h:220,pad:34,fmt:v=>v.toFixed(1)}, opts||{});
   const pts=data.filter(d=>d.v!==null);
-  if(pts.length<1) return '<div class="note">Chưa có dữ liệu.</div>';
+  if(!pts.length) return '<div class="note">Chưa có dữ liệu.</div>';
   const vals=pts.map(d=>d.v);
-  const hi=Math.max(0,...vals), lo=Math.min(0,...vals), rg=(hi-lo)||1;
+  let hi=Math.max(0,...vals), lo=Math.min(0,...vals);
+  const span=Math.max(hi-lo,2), mid=(hi+lo)/2;
+  hi=mid+span/2; lo=mid-span/2; if(lo>0) lo=0; if(hi<0) hi=0;
+  const rg=hi-lo, top=30, bot=34, plot=o.h-top-bot;
   const X=i=>o.pad+i*((o.w-o.pad*2)/Math.max(1,data.length-1));
-  const Y=v=>o.h-28-((v-lo)/rg)*(o.h-54);
+  const Y=v=>top+(hi-v)/rg*plot;
   let d='', dots='', prev=-1;
-  data.forEach((p,i)=>{
-    if(p.v===null) return;
-    d += (prev<0?'M':'L')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1)+' ';
-    dots += `<circle cx="${X(i).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="3.6" fill="var(--paper)"
-              stroke="var(--teal)" stroke-width="2"/>
-             <text x="${X(i).toFixed(1)}" y="${(Y(p.v)-11).toFixed(1)}" text-anchor="middle" font-size="11.5"
-              font-weight="800" fill="var(--teal-ink)">${o.fmt(p.v)}</text>`;
+  data.forEach((pt,i)=>{
+    if(pt.v===null) return;
+    d += (prev<0?'M':'L')+X(i).toFixed(1)+' '+Y(pt.v).toFixed(1)+' ';
+    dots += `<circle cx="${X(i).toFixed(1)}" cy="${Y(pt.v).toFixed(1)}" r="4" fill="#fff" stroke="#0E7C86" stroke-width="2.2"/>
+             <text x="${X(i).toFixed(1)}" y="${(Y(pt.v)-12).toFixed(1)}" text-anchor="middle" font-size="12"
+              font-weight="800" fill="#0A5C64">${o.fmt(pt.v)}</text>`;
     prev=i;
   });
-  let s=`<svg viewBox="0 0 ${o.w} ${o.h}" style="width:100%;height:auto" role="img">`;
-  s+=`<line x1="${o.pad-8}" y1="${Y(0).toFixed(1)}" x2="${o.w-o.pad+8}" y2="${Y(0).toFixed(1)}"
-       stroke="var(--rule)" stroke-width="1" stroke-dasharray="3 3"/>`;
-  s+=`<path d="${d.trim()}" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
-  s+=dots;
-  data.forEach((p,i)=>{ s+=`<text x="${X(i).toFixed(1)}" y="${o.h-7}" text-anchor="middle" font-size="11.5"
-       fill="var(--muted)">${esc(p.k)}</text>`; });
-  return s+'</svg>';
+  let g=`<svg viewBox="0 0 ${o.w} ${o.h}" style="width:100%;height:auto" role="img">`;
+  g+=`<line x1="${o.pad-8}" y1="${Y(0).toFixed(1)}" x2="${o.w-o.pad+8}" y2="${Y(0).toFixed(1)}" stroke="#DEEAEC" stroke-width="1" stroke-dasharray="3 3"/>`;
+  g+=`<path d="${d.trim()}" fill="none" stroke="#0E7C86" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`+dots;
+  data.forEach((pt,i)=>{ g+=`<text x="${X(i).toFixed(1)}" y="${o.h-9}" text-anchor="middle" font-size="12" fill="#5C7A83" font-weight="600">${esc(pt.k)}</text>`; });
+  return g+'</svg>';
 }
 
 function hbars(rows, opts){
@@ -1265,64 +1396,132 @@ function hbars(rows, opts){
 }
 
 /* ═══════════════ THỐNG KÊ ═══════════════ */
+function tkEntries(){
+  if(S.tkKy==='tuan')  return S.entries.filter(e=>e[E_THANG]===S.thang && e[E_TUAN]===S.tuan);
+  if(S.tkKy==='thang') return S.entries.filter(e=>e[E_THANG]===S.thang);
+  return S.entries;
+}
+function tkThangCoDL(){ return [...new Set(S.entries.map(e=>e[E_THANG]))]; }
+function tkScore(ma){
+  if(S.tkKy==='tuan')  return weekScore(ma,S.tuan);
+  if(S.tkKy==='thang') return monthAvg(ma);
+  const ms=tkThangCoDL();
+  return ms.length ? ms.reduce((a,m)=>a+monthAvg(ma,m),0)/ms.length : 0;
+}
+function tkNhan(){
+  if(S.tkKy==='tuan')  return 'tuần '+S.tuan+' tháng '+S.thang;
+  if(S.tkKy==='thang') return 'tháng '+S.thang;
+  return 'cả năm học';
+}
+
+function topList(rows, opt){
+  const o=Object.assign({unit:'lượt', color:'b3', empty:'Chưa có dữ liệu.'}, opt||{});
+  if(!rows.length) return '<div class="empty"><b>Chưa có dữ liệu</b>'+esc(o.empty)+'</div>';
+  const max=Math.max(...rows.map(r=>Math.abs(r.v)),1);
+  return '<div class="toplist">'+rows.map((r,i)=>`
+    <div class="toprow ${i<3?'p'+(i+1):''}">
+      <span class="rk">${i+1}</span>
+      <span class="bd"><b>${esc(r.k)}</b>
+        ${r.sub?`<span class="mt">${esc(r.sub)}</span>`:''}
+        <span class="bar"><i class="${o.color}" style="width:${(Math.abs(r.v)/max*100).toFixed(1)}%"></i></span></span>
+      <span class="vl"><b class="${o.color==='b0'?'r0':'r3'}">${o.fmt?o.fmt(r.v):Math.abs(r.v)}</b>
+        <span>${esc(o.unit)}</span></span>
+    </div>`).join('')+'</div>';
+}
+
 function renderTK(){
   const list=activeStudents();
-  const ofMonth = S.entries.filter(e=>e[E_THANG]===S.thang);
-  const luotCong = ofMonth.filter(e=>e[E_DIEM]>0).length;
-  const luotTru  = ofMonth.filter(e=>e[E_DIEM]<0).length;
-  const tbLop = list.length ? list.reduce((a,s)=>a+monthAvg(s.ma),0)/list.length : 0;
+  const ofKy=tkEntries();
+  const luotCong=ofKy.filter(e=>e[E_DIEM]>0).length;
+  const luotTru =ofKy.filter(e=>e[E_DIEM]<0).length;
+  const tbLop = list.length ? list.reduce((a,x)=>a+tkScore(x.ma),0)/list.length : 0;
 
   const cnt=[0,0,0,0];
-  list.forEach(s=>cnt[rankIdx(monthAvg(s.ma))]++);
+  list.forEach(x=>cnt[rankIdx(tkScore(x.ma))]++);
   const tong=list.length||1;
 
-  let h=`<div class="kpis">
+  let h=`<div class="segbar">
+    <button data-ky="tuan"  class="${S.tkKy==='tuan'?'on':''}">Tuần ${S.tuan}</button>
+    <button data-ky="thang" class="${S.tkKy==='thang'?'on':''}">Tháng ${S.thang}</button>
+    <button data-ky="nam"   class="${S.tkKy==='nam'?'on':''}">Cả năm</button>
+  </div>`;
+
+  h+=`<div class="kpis">
     <div class="kpi"><div class="n">${list.length}</div><div class="l">Học sinh đang học</div>
-      <div class="sub">4 tổ · tháng ${S.thang}</div></div>
+      <div class="sub">Thống kê ${esc(tkNhan())}</div></div>
     <div class="kpi"><div class="n r0">${luotCong}</div><div class="l">Lượt điểm cộng</div>
-      <div class="sub">trong tháng ${S.thang}</div></div>
+      <div class="sub">${ofKy.filter(e=>e[E_DIEM]>0).reduce((a,e)=>a+e[E_DIEM],0)} điểm</div></div>
     <div class="kpi"><div class="n r3">${luotTru}</div><div class="l">Lượt điểm trừ</div>
-      <div class="sub">trong tháng ${S.thang}</div></div>
+      <div class="sub">${ofKy.filter(e=>e[E_DIEM]<0).reduce((a,e)=>a+e[E_DIEM],0)} điểm</div></div>
     <div class="kpi"><div class="n ${'r'+rankIdx(tbLop)}">${tbLop.toFixed(1)}</div>
       <div class="l">Điểm TB tuần của lớp</div><div class="sub">${esc(rankName(tbLop))}</div></div>
   </div>`;
 
-  h+=`<div class="sechead"><h2>Phân bố xếp loại tháng ${S.thang}</h2></div>
+  h+=`<div class="sechead"><h2>Phân bố xếp loại · ${esc(tkNhan())}</h2></div>
     <div class="panelbox"><div class="distbar">`;
   cnt.forEach((c,i)=>{ if(c) h+=`<div class="b${i}" style="width:${(c/tong*100).toFixed(1)}%">${c}</div>`; });
   h+=`</div><div class="legend">`+S.cfg.thresholds.map((t,i)=>
     `<span><i class="b${i}"></i>${esc(t.ten)} <b>${cnt[i]}</b></span>`).join('')+`</div></div>`;
 
-  const tos=['1','2','3','4'];
-  const toData=tos.map(t=>{
-    const g=list.filter(s=>String(s.to)===t);
-    return {k:'Tổ '+t, v:g.length? g.reduce((a,s)=>a+monthAvg(s.ma),0)/g.length : 0};
+  /* ── học sinh vi phạm nhiều nhất ── */
+  const viPham={};
+  ofKy.filter(e=>e[E_DIEM]<0).forEach(e=>{
+    const k=e[E_MA];
+    viPham[k]=viPham[k]||{n:0,d:0};
+    viPham[k].n++; viPham[k].d+=e[E_DIEM];
+  });
+  const topVP=Object.keys(viPham).map(ma=>{
+    const st=stu(ma);
+    return {k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+viPham[ma].d+' điểm', v:viPham[ma].n};
+  }).sort((a,b)=>b.v-a.v).slice(0,8);
+  h+=`<div class="sechead"><h2>Học sinh vi phạm nhiều nhất</h2></div>
+    <div class="register">${topList(topVP,{unit:'lượt',color:'b3',empty:'Không có vi phạm nào trong '+tkNhan()+'.'})}</div>`;
+
+  /* ── học sinh được tuyên dương ── */
+  const tuyenDuong={};
+  ofKy.filter(e=>e[E_DIEM]>0).forEach(e=>{
+    const k=e[E_MA]; tuyenDuong[k]=tuyenDuong[k]||{n:0,d:0};
+    tuyenDuong[k].n++; tuyenDuong[k].d+=e[E_DIEM];
+  });
+  const topTD=Object.keys(tuyenDuong).map(ma=>{
+    const st=stu(ma);
+    return {k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+tuyenDuong[ma].n+' lượt cộng', v:tuyenDuong[ma].d};
+  }).sort((a,b)=>b.v-a.v).slice(0,8);
+  h+=`<div class="sechead"><h2>Học sinh được tuyên dương</h2></div>
+    <div class="register">${topList(topTD,{unit:'điểm',color:'b0',fmt:v=>'+'+v,
+      empty:'Chưa có điểm cộng nào trong '+tkNhan()+'.'})}</div>`;
+
+  /* ── lỗi mắc nhiều nhất ── */
+  const byMuc={};
+  ofKy.filter(e=>e[E_DIEM]<0).forEach(e=>{
+    const k=e[E_ND]||e[E_MUC];
+    byMuc[k]=byMuc[k]||{n:0,hs:new Set()};
+    byMuc[k].n++; byMuc[k].hs.add(e[E_MA]);
+  });
+  const topLoi=Object.keys(byMuc).map(k=>({k, sub:byMuc[k].hs.size+' học sinh mắc', v:byMuc[k].n}))
+    .sort((a,b)=>b.v-a.v).slice(0,8);
+  h+=`<div class="sechead"><h2>Lỗi mắc nhiều nhất</h2></div>
+    <div class="register">${topList(topLoi,{unit:'lượt',color:'b3',empty:'Không có lỗi nào được ghi.'})}</div>`;
+
+  /* ── so sánh tổ ── */
+  const toData=['1','2','3','4'].map(t=>{
+    const g=list.filter(x=>String(x.to)===t);
+    return {k:'Tổ '+t, v: g.length? g.reduce((a,x)=>a+tkScore(x.ma),0)/g.length : 0};
   });
   h+=`<div class="sechead"><h2>Điểm trung bình tuần theo tổ</h2></div>
       <div class="panelbox">${svgCols(toData)}</div>`;
 
-  const trend=MONTHS_YEAR.map(m=>{
-    const has=S.entries.some(e=>e[E_THANG]===m);
-    if(!has) return {k:'T'+m, v:null};
-    return {k:'T'+m, v: list.reduce((a,s)=>a+monthAvg(s.ma,m),0)/(list.length||1)};
-  });
-  h+=`<div class="sechead"><h2>Xu hướng điểm TB lớp qua các tháng</h2></div>
-      <div class="panelbox">${svgLine(trend)}</div>`;
+  /* ── xu hướng theo tháng ── */
+  if(S.tkKy!=='tuan'){
+    const co=tkThangCoDL();
+    const trend=MONTHS_YEAR.map(m=>({k:'T'+m,
+      v: co.indexOf(m)===-1 ? null : list.reduce((a,x)=>a+monthAvg(x.ma,m),0)/(list.length||1)}));
+    h+=`<div class="sechead"><h2>Xu hướng điểm TB lớp qua các tháng</h2></div>
+        <div class="panelbox">${svgLine(trend)}</div>`;
+  }
 
-  const low=list.map(s=>({k:s.ten+' · tổ '+s.to, v:monthTotal(s.ma), ma:s.ma}))
-    .filter(x=>x.v<0).sort((a,b)=>a.v-b.v).slice(0,10);
-  h+=`<div class="sechead"><h2>Học sinh cần lưu ý — tháng ${S.thang}</h2></div>
-      <div class="panelbox">${hbars(low)}</div>`;
-
-  const byMuc={};
-  ofMonth.filter(e=>e[E_DIEM]<0).forEach(e=>{
-    const k=e[E_ND]||e[E_MUC]; byMuc[k]=(byMuc[k]||0)+1;
-  });
-  const topLoi=Object.keys(byMuc).map(k=>({k, v:byMuc[k]})).sort((a,b)=>b.v-a.v).slice(0,8);
-  h+=`<div class="sechead"><h2>Lỗi vi phạm phổ biến</h2></div>
-      <div class="panelbox">${hbars(topLoi.map(x=>({k:x.k, v:-x.v})), {fmt:v=>Math.abs(v)+' lượt'})}</div>`;
-
-  $('#vTK').innerHTML = h;
+  $('#vTK').innerHTML=h;
+  $$('#vTK [data-ky]').forEach(b=>b.onclick=()=>{ S.tkKy=b.dataset.ky; renderTK(); });
 }
 
 /* ═══════════════ LỊCH SỬ & TRÍCH XUẤT ═══════════════ */
@@ -1983,6 +2182,7 @@ function showLogin(msg){
   $('#loader').classList.add('hide');
   $('#login').classList.remove('hide');
   if(msg) $('#lgErr').textContent=msg;
+  if(!S.members) loadRoster();
 }
 
 (async function(){
