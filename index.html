@@ -346,6 +346,7 @@ const HELP = {
     ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
     ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
     ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
+    ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi tính điểm gốc hay nhân theo cấp số nhân đúng quy định trường.'],
     ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
   ]},
   bang: { t:'Đọc bảng lớp', items:[
@@ -360,6 +361,7 @@ const HELP = {
     ['Ba bảng xếp hạng','Học sinh vi phạm nhiều nhất, học sinh được tuyên dương, và lỗi cả lớp hay mắc nhất.'],
     ['So sánh tổ','Biểu đồ cột là điểm trung bình tuần của từng tổ, để biết tổ nào đang đuối.'],
     ['Xu hướng','Đường biểu diễn điểm trung bình lớp qua các tháng, cho thấy lớp đang lên hay xuống.'],
+    ['Chỉ tiêu của trường','Ô dưới phần phân bố xếp loại cho biết lớp được phép có bao nhiêu em xếp loại Khá, theo thứ hạng lớp trong trường.'],
     ['Lần đầu hơi chậm','Mở lần đầu app tải dữ liệu cả năm học. Các lần sau lấy từ bộ nhớ nên nhanh.']
   ]},
   ls: { t:'Tra lịch sử và trích xuất', items:[
@@ -373,7 +375,7 @@ const HELP = {
     ['Ai cũng làm được','Đổi mật khẩu riêng và xem Quy định tính điểm kèm diễn giải từng lỗi.'],
     ['Lớp trưởng và GVCN','Đổi tháng theo dõi, số tuần, mốc xếp loại, và sửa danh mục điểm cộng — trừ.'],
     ['Sửa một hạng mục','Chạm vào hạng mục để đổi tên, số điểm, nhóm, và viết phần diễn giải cho học sinh đọc.'],
-    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, và cấu hình email thông báo.'],
+    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, cấu hình email, và điền thứ hạng lớp để hiện chỉ tiêu xếp loại.'],
     ['Google Sheet gốc','Nút hình bảng trên đầu màn hình mở dữ liệu gốc. Sửa tay trên Sheet xong quay lại app là tự cập nhật.']
   ]}
 };
@@ -726,7 +728,7 @@ const S = {
   thang:null, tuan:1, view:'ghi', filterTo:'all', q:'',
   multi:false, sel:new Set(),
   ctxMa:null, ctxTab:'tru', panelKind:'', bulkNote:'',
-  members:null, pick:null, tkKy:'thang',
+  members:null, pick:null, tkKy:'thang', quyDinh:null,
   lsFilter:{ tu:null, den:null, to:'all', hs:'all', loai:'all' },
   busy:false, lastSync:null, pollT:null
 };
@@ -875,7 +877,7 @@ function saveCache(){
   try{
     store.set(CACHE_KEY, JSON.stringify({
       v:3, ts:Date.now(), me:S.me, cfg:S.cfg, students:S.students, cong:S.cong, tru:S.tru,
-      accounts:S.accounts, thongBao:S.thongBao, sheetUrl:S.sheetUrl, thang:S.thang,
+      accounts:S.accounts, thongBao:S.thongBao, sheetUrl:S.sheetUrl, quyDinh:S.quyDinh, thang:S.thang,
       entries:S.entries.filter(e=>e[E_THANG]===S.thang), remarks:S.remarks
     }));
   }catch(e){}
@@ -890,6 +892,7 @@ function applyBase(b){
   S.me=b.me; S.cfg=b.cfg; S.cong=b.cong; S.tru=b.tru;
   S.students=(b.students||[]).slice().sort(sortStudents);
   S.accounts=b.accounts||[]; S.thongBao=b.thongBao||null; S.sheetUrl=b.sheetUrl||'';
+  S.quyDinh=b.quyDinh||null;
   S.thang = b.thang || S.cfg.thang;
   if(S.tuan > S.cfg.soTuan) S.tuan = 1;
   S.filterTo = (S.me.role==='Tổ trưởng') ? String(S.me.to) : 'all';
@@ -1035,6 +1038,7 @@ const HELP = {
     ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
     ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
     ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
+    ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi tính điểm gốc hay nhân theo cấp số nhân đúng quy định trường.'],
     ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
   ]},
   bang: { t:'Đọc bảng lớp', items:[
@@ -1049,6 +1053,7 @@ const HELP = {
     ['Ba bảng xếp hạng','Học sinh vi phạm nhiều nhất, học sinh được tuyên dương, và lỗi cả lớp hay mắc nhất.'],
     ['So sánh tổ','Biểu đồ cột là điểm trung bình tuần của từng tổ, để biết tổ nào đang đuối.'],
     ['Xu hướng','Đường biểu diễn điểm trung bình lớp qua các tháng, cho thấy lớp đang lên hay xuống.'],
+    ['Chỉ tiêu của trường','Ô dưới phần phân bố xếp loại cho biết lớp được phép có bao nhiêu em xếp loại Khá, theo thứ hạng lớp trong trường.'],
     ['Lần đầu hơi chậm','Mở lần đầu app tải dữ liệu cả năm học. Các lần sau lấy từ bộ nhớ nên nhanh.']
   ]},
   ls: { t:'Tra lịch sử và trích xuất', items:[
@@ -1062,7 +1067,7 @@ const HELP = {
     ['Ai cũng làm được','Đổi mật khẩu riêng và xem Quy định tính điểm kèm diễn giải từng lỗi.'],
     ['Lớp trưởng và GVCN','Đổi tháng theo dõi, số tuần, mốc xếp loại, và sửa danh mục điểm cộng — trừ.'],
     ['Sửa một hạng mục','Chạm vào hạng mục để đổi tên, số điểm, nhóm, và viết phần diễn giải cho học sinh đọc.'],
-    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, và cấu hình email thông báo.'],
+    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, cấu hình email, và điền thứ hạng lớp để hiện chỉ tiêu xếp loại.'],
     ['Google Sheet gốc','Nút hình bảng trên đầu màn hình mở dữ liệu gốc. Sửa tay trên Sheet xong quay lại app là tự cập nhật.']
   ]}
 };
@@ -1388,14 +1393,16 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePanel(); });
 /* ── ghi điểm cho 1 học sinh ── */
 function openStudent(ma){ S.ctxMa=ma; S.ctxTab='tru'; drawStudentPanel(); }
 
-function catalogHTMLFor(tab){
+function catalogHTMLFor(tab, ma){
   const cat=(tab==='tru'?S.tru:S.cong).filter(c=>c.active);
   if(!cat.length) return '<div class="empty"><b>Danh mục trống</b>Vào Cài đặt để thêm loại điểm.</div>';
   let h='', nhom=null;
   cat.forEach(c=>{
     if(c.nhom!==nhom){ nhom=c.nhom; h+=`<div class="grouphead">${esc(nhom)}</div>`; }
+    const n = ma ? soLanMac(ma, c.ma) : 0;
     h+=`<button class="item" data-add="${esc(c.ma)}">
-          <span class="t"><b>${esc(c.noiDung)}</b><span>${esc(c.ma)}</span>
+          <span class="t"><b>${esc(c.noiDung)}</b>
+            <span>${esc(c.ma)}${n?' · đã mắc '+n+' lần trong tháng':''}</span>
             ${c.dienGiai?`<span class="dg">${esc(c.dienGiai)}</span>`:''}</span>
           <span class="p ${c.diem<0?'r3':'r0'}">${nz(c.diem)}</span></button>`;
   });
@@ -1412,7 +1419,7 @@ function drawStudentPanel(){
       <button class="minus ${S.ctxTab==='tru'?'on':''}" data-tab="tru">Trừ điểm</button>
       <button class="plus ${S.ctxTab==='cong'?'on':''}" data-tab="cong">Cộng điểm</button>
     </div>`;
-  h += allowed ? catalogHTMLFor(S.ctxTab)
+  h += allowed ? catalogHTMLFor(S.ctxTab, s.ma)
     : `<div class="empty"><b>Chỉ xem</b>Bạn phụ trách tổ ${esc(S.me.to)} nên không ghi điểm cho học sinh tổ ${esc(s.to)}.</div>`;
 
   h += `<div class="grouphead">Đã ghi trong tuần ${S.tuan} · ${mine.length} lượt</div>`;
@@ -1444,6 +1451,42 @@ function wirePanelEntries(){
   $$('#pBody [data-edit]').forEach(b=>b.onclick=()=>openEditEntry(b.dataset.edit));
 }
 
+function soLanMac(ma, maMuc){
+  return S.entries.filter(e=>e[E_MA]===ma && e[E_MUC]===maMuc && e[E_THANG]===S.thang).length;
+}
+function heSoTaiPham(){ return (S.quyDinh && S.quyDinh.heSoTaiPham) || 1; }
+function diemTaiPham(base, lanTruoc){
+  const k=heSoTaiPham();
+  if(k<=1 || lanTruoc<1) return base;
+  return base * Math.pow(k, lanTruoc);
+}
+
+/** Lỗi tái phạm: hỏi dùng điểm gốc hay điểm nhân theo cấp số nhân. */
+function hoiTaiPham(s, c, ghiChu){
+  const n = soLanMac(s.ma, c.ma);
+  const nhan = diemTaiPham(c.diem, n);
+  const h=`<div class="pcard">
+      <div style="font-size:14.5px;line-height:1.6">
+        <b>${esc(s.ten)}</b> đã bị ghi lỗi <b>${esc(c.noiDung)}</b>
+        <b>${n} lần</b> trong tháng ${S.thang}. Đây là lần thứ <b>${n+1}</b>.</div>
+      <div class="note" style="padding:9px 0 0">Quy định của trường: lỗi tái phạm tính theo cấp số nhân
+        với hệ số ${heSoTaiPham()}.</div>
+    </div>
+    <button class="item" data-tp="nhan"><span class="t"><b>Tính là tái phạm</b>
+      <span class="dg">Nhân theo cấp số nhân từ điểm gốc ${nz(c.diem)}</span></span>
+      <span class="p r3">${nz(nhan)}</span></button>
+    <button class="item" data-tp="goc"><span class="t"><b>Giữ điểm gốc</b>
+      <span class="dg">Dùng khi lỗi lần này không thuộc diện tái phạm</span></span>
+      <span class="p r3">${nz(c.diem)}</span></button>`;
+  openPanel('Lỗi tái phạm', esc(c.noiDung), h, 'taipham');
+  $$('#pBody [data-tp]').forEach(b=>b.onclick=()=>{
+    const diem = b.dataset.tp==='nhan' ? nhan : c.diem;
+    const note = b.dataset.tp==='nhan'
+      ? ('Tái phạm lần ' + (n+1) + (ghiChu?' · '+ghiChu:'')) : (ghiChu||'');
+    ghiThucTe([s.ma], c, 'Trừ', diem, note);
+  });
+}
+
 /* ── ghi điểm hàng loạt ── */
 function openBulkPanel(){
   const names=Array.from(S.sel).map(m=>stu(m).ten).join(', ');
@@ -1463,25 +1506,33 @@ function openBulkPanel(){
 }
 
 /* ── thêm / sửa / xoá bản ghi ── */
-async function addEntry(maList, maMuc, ghiChu){
+function addEntry(maList, maMuc, ghiChu){
   const src = S.ctxTab==='tru' ? S.tru : S.cong;
   const c = src.find(x=>x.ma===maMuc); if(!c) return;
   const loai = S.ctxTab==='tru' ? 'Trừ' : 'Cộng';
+  if(loai==='Trừ' && maList.length===1 && heSoTaiPham()>1 && soLanMac(maList[0], c.ma)>=1){
+    hoiTaiPham(stu(maList[0]), c, ghiChu); return;
+  }
+  return ghiThucTe(maList, c, loai, c.diem, ghiChu);
+}
+
+async function ghiThucTe(maList, c, loai, diem, ghiChu){
   toast('<span class="spin"></span> Đang ghi…');
   try{
-    const items = maList.map(ma=>({maHS:ma, loai:loai, maMuc:c.ma, diem:c.diem,
+    const items = maList.map(ma=>({maHS:ma, loai:loai, maMuc:c.ma, diem:diem,
                                    noiDung:c.noiDung, ghiChu:ghiChu||''}));
     const r = await api('addEntries', {thang:S.thang, tuan:S.tuan, items:items});
     const luc = /^\d{4}-\d{2}-\d{2}/.test(String(r.serverTime||'')) ? r.serverTime : isoNow();
     r.ids.forEach((id,i)=>{
       const s=stu(maList[i]);
       S.entries.push([id, luc, S.thang, S.tuan, s.ma, s.to,
-                      loai, c.ma, c.noiDung, c.diem, S.me.email, S.me.name, ghiChu||'']);
+                      loai, c.ma, c.noiDung, diem, S.me.email, S.me.name, ghiChu||'']);
     });
-    if(S.multi){ S.bulkNote=''; closePanel(); exitMulti(); } else { drawStudentPanel(); }
+    if(S.multi){ S.bulkNote=''; closePanel(); exitMulti(); }
+    else { S.ctxMa = maList[0]; drawStudentPanel(); }
     renderAll();
     const label = maList.length>1 ? maList.length+' học sinh' : stu(maList[0]).ten;
-    toast(`${esc(label)}: ${esc(c.noiDung)} <b>${nz(c.diem)}</b>`, ()=>{
+    toast(`${esc(label)}: ${esc(c.noiDung)} <b>${nz(diem)}</b>`, ()=>{
       r.ids.forEach(id=>delEntry(id, true));
     });
   }catch(e){ err(e); }
@@ -1663,6 +1714,37 @@ function topList(rows, opt){
     </div>`).join('')+'</div>';
 }
 
+/** Chỉ tiêu số học sinh xếp loại Khá, phụ thuộc thứ hạng lớp trong trường. */
+function chiTieuKha(){
+  const q=S.quyDinh;
+  if(!q || !q.xepThuLop || !q.chiTieu || !q.chiTieu.length) return null;
+  const r=q.chiTieu.find(x=>q.xepThuLop>=x.tu && q.xepThuLop<=x.den);
+  return r ? {thu:q.xepThuLop, min:r.min, max:r.max} : null;
+}
+function chiTieuHTML(cnt){
+  const ct=chiTieuKha();
+  if(!ct){
+    return `<div class="note" style="padding:11px 0 0">Chưa điền thứ hạng của lớp trong trường nên
+      chưa hiện chỉ tiêu số học sinh xếp loại Khá.${isGVCN()?' GVCN điền ở mục Cài đặt.':''}</div>`;
+  }
+  const kha=cnt[1], duoi=cnt[2]+cnt[3];
+  const qua = kha>ct.max;
+  const thieu = kha<ct.min;
+  const mau = qua ? 'var(--dang)' : (thieu ? 'var(--warn)' : 'var(--ok)');
+  const nen = qua ? 'var(--dang-bg)' : (thieu ? 'var(--warn-bg)' : 'var(--ok-bg)');
+  let ket;
+  if(qua)        ket = 'Đang vượt chỉ tiêu ' + (kha-ct.max) + ' em. Cần soát lại khi chốt xếp loại.';
+  else if(thieu) ket = 'Đang ít hơn chỉ tiêu tối thiểu ' + (ct.min-kha) + ' em.';
+  else           ket = 'Đang nằm trong chỉ tiêu.';
+  return `<div style="margin-top:12px;padding:11px 13px;border-radius:var(--r-md);background:${nen}">
+    <div style="font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:${mau}">
+      Chỉ tiêu xếp loại của trường</div>
+    <div style="font-size:14px;line-height:1.6;margin-top:4px">
+      Lớp xếp thứ <b>${ct.thu}</b> → chỉ tiêu <b>${ct.min}–${ct.max} học sinh</b> xếp loại Khá.<br>
+      Hiện có <b style="color:${mau}">${kha}</b> em Khá${duoi?` và ${duoi} em dưới mức Khá`:''}.
+      <span style="color:${mau};font-weight:700">${esc(ket)}</span></div></div>`;
+}
+
 function renderTK(){
   const list=activeStudents();
   const ofKy=tkEntries();
@@ -1695,7 +1777,8 @@ function renderTK(){
     <div class="panelbox"><div class="distbar">`;
   cnt.forEach((c,i)=>{ if(c) h+=`<div class="b${i}" style="width:${(c/tong*100).toFixed(1)}%">${c}</div>`; });
   h+=`</div><div class="legend">`+S.cfg.thresholds.map((t,i)=>
-    `<span><i class="b${i}"></i>${esc(t.ten)} <b>${cnt[i]}</b></span>`).join('')+`</div></div>`;
+    `<span><i class="b${i}"></i>${esc(t.ten)} <b>${cnt[i]}</b></span>`).join('')+`</div>`;
+  h+=chiTieuHTML(cnt)+`</div>`;
 
   /* ── học sinh vi phạm nhiều nhất ── */
   const viPham={};
@@ -1979,6 +2062,20 @@ function renderCai(){
   }
 
   if(gv){
+    const q=S.quyDinh||{xepThuLop:0,heSoTaiPham:2,chiTieu:[]};
+    h+=`<div class="sechead"><h2>Chỉ tiêu xếp loại của trường</h2></div><div class="panelbox">
+      <div class="grid2">
+        <div><label class="lbl" for="qdThu">Xếp thứ của lớp trong trường</label>
+          <select id="qdThu" class="inp s"><option value="0" ${q.xepThuLop?'':'selected'}>Chưa có</option>
+            ${Array.from({length:15},(_,i)=>`<option value="${i+1}" ${q.xepThuLop===i+1?'selected':''}>Thứ ${i+1}</option>`).join('')}</select></div>
+        <div><label class="lbl" for="qdHs">Hệ số tái phạm</label>
+          <input id="qdHs" class="inp s" type="number" min="1" step="1" value="${q.heSoTaiPham||2}"></div>
+      </div>
+      <div class="note" style="padding:9px 0 0">Thứ hạng lớp quyết định số học sinh được xếp loại Khá:
+        thứ 1–5 là 0–1 em, thứ 6–8 là 1–2 em, thứ 9–12 là 2–3 em, thứ 13–15 là 3–5 em.
+        Hệ số tái phạm dùng khi ghi lại một lỗi mà học sinh đã mắc trong tháng.</div>
+      <div class="rowbtns"><button class="btn" id="qdSave">Lưu chỉ tiêu</button></div></div>`;
+
     h+=`<div class="sechead"><h2>Danh sách lớp</h2></div><div class="panelbox">
       <div style="font-size:14px;margin-bottom:10px">${activeStudents().length} học sinh đang học
         <span style="color:var(--muted)">· tổng ${S.students.length} hồ sơ</span></div>
@@ -2116,6 +2213,14 @@ function wireCai(){
     const [k,i]=b.dataset.cedit.split(':'); openCatEdit(k, Number(i));
   });
 
+  if(g('qdSave')) g('qdSave').onclick=async()=>{
+    try{
+      const rec={xepThuLop:Number(g('qdThu').value), heSoTaiPham:Number(g('qdHs').value)||1};
+      await api('saveQuyDinh', rec);
+      S.quyDinh = Object.assign({chiTieu:[]}, S.quyDinh||{}, rec);
+      saveCache(); toast('Đã lưu chỉ tiêu xếp loại.');
+    }catch(e){ err(e); }
+  };
   if(g('hsList')) g('hsList').onclick=openStudentList;
   if(g('hsAdd'))  g('hsAdd').onclick=()=>openStudentForm(null);
   if(g('hsTo'))   g('hsTo').onclick=openBulkTo;
