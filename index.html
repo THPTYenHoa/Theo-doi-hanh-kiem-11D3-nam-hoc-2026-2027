@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C86">
 <title>Sổ hạnh kiểm 11D3</title>
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -418,7 +420,7 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
 </section>
 
 <!-- ═══════════════════ ỨNG DỤNG ═══════════════════ -->
-<div id="app" class="hide">
+<div id="app">
 
   <aside id="rail">
     <div class="brand"><div class="bm">11D3</div>
@@ -601,32 +603,78 @@ async function doLogin(){
   try{
     const r = await api('login', {email:$('#lgEmail').value.trim(), pin:$('#lgPin').value});
     S.token=r.token; store.set('hk_token', S.token);
-    await boot();
+    store.del(CACHE_KEY);
+    if(r.boot){
+      applyBase(r.boot);
+      if(r.boot.data){ S.entries=r.boot.data.entries||[]; S.remarks=r.boot.data.remarks||[];
+                       S.loaded=new Set([S.thang]); }
+      showApp(); renderAll(); saveCache(); startPoll();
+    }else{
+      await boot();
+    }
   }catch(e){ box.textContent = e.message; }
   finally{ btn.textContent='Vào sổ'; btn.disabled=false; }
 }
 
-async function boot(){
-  const b = await api('bootstrap');
-  S.me=b.me; S.cfg=b.cfg; S.students=b.students; S.cong=b.cong; S.tru=b.tru;
+const CACHE_KEY='hk_cache_v3';
+
+function saveCache(){
+  try{
+    store.set(CACHE_KEY, JSON.stringify({
+      v:3, ts:Date.now(), me:S.me, cfg:S.cfg, students:S.students, cong:S.cong, tru:S.tru,
+      accounts:S.accounts, thongBao:S.thongBao, sheetUrl:S.sheetUrl, thang:S.thang,
+      entries:S.entries.filter(e=>e[E_THANG]===S.thang), remarks:S.remarks
+    }));
+  }catch(e){}
+}
+function loadCache(){
+  try{ const c=JSON.parse(store.get(CACHE_KEY)||'null'); return (c && c.v===3 && c.cfg && c.me) ? c : null; }
+  catch(e){ return null; }
+}
+
+/** Nạp phần dữ liệu tĩnh vào state (dùng chung cho cache và phản hồi từ server). */
+function applyBase(b){
+  S.me=b.me; S.cfg=b.cfg; S.cong=b.cong; S.tru=b.tru;
+  S.students=(b.students||[]).slice().sort(sortStudents);
   S.accounts=b.accounts||[]; S.thongBao=b.thongBao||null; S.sheetUrl=b.sheetUrl||'';
-  S.students.sort(sortStudents);
-  S.thang = S.cfg.thang;
+  S.thang = b.thang || S.cfg.thang;
   if(S.tuan > S.cfg.soTuan) S.tuan = 1;
   S.filterTo = (S.me.role==='Tổ trưởng') ? String(S.me.to) : 'all';
-  S.entries=[]; S.remarks=[]; S.loaded=new Set(); S.allLoaded=false;
-  await loadMonths([S.thang]);
+}
 
+function showApp(){
   $('#login').classList.add('hide');
   $('#loader').classList.add('hide');
+  $('#app').classList.remove('hide');
   $('#app').classList.add('on');
-  ['rlName'].forEach(id=>$('#'+id).textContent=S.me.name);
+  $('#rlName').textContent = S.me.name;
   $('#rlRole').textContent = S.me.role + (S.me.role==='Tổ trưởng' ? ' · tổ '+S.me.to : '');
   $('#rlAva').textContent = initials(S.me.name);
   $('#hAva').textContent = initials(S.me.name);
   buildNav();
-  renderAll();
-  startPoll();
+}
+
+/** Vẽ app ngay từ cache, chưa cần chờ mạng. */
+function bootFromCache(c){
+  applyBase(c);
+  S.entries = c.entries || []; S.remarks = c.remarks || [];
+  S.loaded = new Set([S.thang]); S.allLoaded=false;
+  showApp(); renderAll();
+  S.lastSync = c.ts ? new Date(c.ts) : null; setSync('ok');
+}
+
+async function boot(silent){
+  const b = await api('bootstrap');
+  applyBase(b);
+  if(b.data){
+    S.entries = b.data.entries || []; S.remarks = b.data.remarks || [];
+    S.loaded = new Set([S.thang]); S.allLoaded=false;
+  }else{
+    S.entries=[]; S.remarks=[]; S.loaded=new Set(); S.allLoaded=false;
+    await loadMonths([S.thang]);
+  }
+  showApp(); renderAll(); saveCache();
+  if(!silent) startPoll();
 }
 
 async function loadMonths(list, force){
@@ -636,6 +684,7 @@ async function loadMonths(list, force){
   S.entries = S.entries.filter(e => need.indexOf(e[E_THANG])===-1).concat(r.entries);
   S.remarks = S.remarks.filter(x => need.indexOf(x.thang)===-1).concat(r.remarks||[]);
   need.forEach(m=>S.loaded.add(m));
+  saveCache();
 }
 async function loadAllMonths(force){
   if(S.allLoaded && !force) return;
@@ -1660,7 +1709,7 @@ function wireCai(){
   };
   $$('[data-tab2]').forEach(b=>b.onclick=()=>window.open(S.sheetUrl,'_blank','noopener'));
   g('myPw').onclick=openMyPassword;
-  g('logout').onclick=()=>{ store.del('hk_token'); location.reload(); };
+  g('logout').onclick=()=>{ store.del('hk_token'); store.del(CACHE_KEY); location.reload(); };
   g('dReload').onclick=()=>refresh(false);
   g('dAll').onclick=async()=>{
     toast('<span class="spin"></span> Đang tải cả năm…');
@@ -1938,6 +1987,17 @@ function showLogin(msg){
 
 (async function(){
   if(!S.token){ showLogin(); return; }
+  const c = loadCache();
+  if(c){
+    try{ bootFromCache(c); }catch(e){ /* cache hỏng thì bỏ qua */ }
+    startPoll();
+    try{ await boot(true); }
+    catch(e){
+      if(/đăng nhập/i.test(e.message)){ store.del('hk_token'); store.del(CACHE_KEY); S.token=''; showLogin(e.message); }
+      else setSync('off');
+    }
+    return;
+  }
   try{ await boot(); }
   catch(e){ store.del('hk_token'); S.token=''; showLogin(e.message); }
 })();
