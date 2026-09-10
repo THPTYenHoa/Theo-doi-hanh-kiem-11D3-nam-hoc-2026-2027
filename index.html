@@ -117,6 +117,9 @@ select.inp{appearance:none;cursor:pointer;padding-right:32px;
 .iconbtn:hover{background:rgba(255,255,255,.34)}
 .iconbtn .ic{width:18px;height:18px;stroke-width:2}
 
+.ev .x{width:19px;height:19px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--line2);color:var(--dang);font-size:11px;font-weight:800}
+.ev .x:hover{background:var(--dang-bg)}
 .tag .x{margin-left:1px;width:15px;height:15px;border-radius:5px;display:inline-flex;
   align-items:center;justify-content:center;background:rgba(0,0,0,.09);font-size:11px;line-height:1;font-weight:800}
 .tag .x:hover{background:rgba(0,0,0,.2)}
@@ -171,6 +174,57 @@ details.acc[open] summary .ar{transform:rotate(90deg)}
 details.acc ul{margin:0;padding:11px 16px 13px 30px;display:flex;flex-direction:column;gap:8px}
 details.acc li{font-size:13.5px;line-height:1.6;color:var(--ink)}
 details.acc li b{color:var(--teal-d);font-weight:700}
+
+.lgtabs{display:flex;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-md);
+  padding:4px;margin-bottom:18px;box-shadow:var(--sh-1)}
+.lgtabs button{flex:1;height:38px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--sub);transition:.14s}
+.lgtabs button.on{background:var(--teal);color:#fff}
+.phbox{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:16px;
+  box-shadow:var(--sh-1);margin-bottom:14px}
+.phbox h3{font-size:15.5px;font-weight:800;color:var(--teal-d);margin-bottom:7px}
+.phbox p{font-size:13.5px;color:var(--sub);line-height:1.65}
+.phbox ul{margin:9px 0 0 17px;font-size:13px;color:var(--sub);line-height:1.75}
+
+.micbtn{width:40px;height:40px;flex:none;border-radius:11px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--teal-d);display:flex;align-items:center;justify-content:center}
+.micbtn.rec{background:var(--dang);border-color:var(--dang);color:#fff;animation:pulse 1s infinite}
+.micbtn .ic{width:19px;height:19px}
+.microw{display:flex;gap:8px;align-items:flex-start;margin-top:5px}
+.microw textarea{flex:1}
+.michint{font-size:11.5px;color:var(--mute);margin-top:6px;font-weight:600}
+
+.hkcard{background:var(--card);border-bottom:1px solid var(--line2);padding:13px 14px}
+.hkcard:last-child{border-bottom:0}
+.hkhead{display:flex;align-items:center;gap:11px}
+.hkhead .nm{flex:1;min-width:0}
+.hkhead .nm b{display:block;font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hkhead .nm span{font-size:11.5px;color:var(--sub);font-weight:600}
+.hkhead .sc{flex:none;text-align:right}
+.hkhead .sc .n{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1;letter-spacing:-.03em}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:800;margin-top:3px}
+.badge.g0{background:var(--ok-bg);color:var(--ok)} .badge.g1{background:var(--info-bg);color:var(--info)}
+.badge.g2{background:var(--warn-bg);color:var(--warn)} .badge.g3{background:var(--dang-bg);color:var(--dang)}
+.mini{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.mini div{flex:1;min-width:56px;background:var(--paler);border-radius:9px;padding:6px 7px;text-align:center}
+.mini div .k{font-size:10px;color:var(--mute);font-weight:700;letter-spacing:.02em}
+.mini div .v{font-size:14.5px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:1px}
+.evlist{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.ev{display:flex;gap:8px;align-items:flex-start}
+.ev .pill{flex:none;min-width:34px;text-align:center;padding:2px 7px;border-radius:7px;
+  font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums}
+.ev .pill.m{background:var(--dang-bg);color:var(--dang)} .ev .pill.p{background:var(--ok-bg);color:var(--ok)}
+.ev .tx{flex:1;min-width:0;font-size:12.5px;line-height:1.5}
+.ev .tx b{font-weight:700}
+.ev .tx .who{color:var(--mute);font-weight:600;font-size:11px;display:block;margin-top:1px}
+.ev .tx .dg{display:block;margin-top:3px;font-size:12px;color:var(--ink);background:var(--paler);
+  border-left:2.5px solid var(--teal-xl);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:4px 8px}
+.gvbox{margin-top:10px;padding:8px 10px;border-radius:var(--r-sm);background:var(--warn-bg);
+  font-size:12.5px;line-height:1.55;color:#7A4E10}
+.gvbox b{color:var(--warn);font-weight:800}
+.viewtoggle{display:flex;gap:6px;padding:0 12px 11px}
+.viewtoggle button{height:30px;padding:0 12px;border-radius:9px;border:1.5px solid var(--line);
+  background:var(--card);font-size:12.5px;font-weight:700;color:var(--sub)}
+.viewtoggle button.on{background:var(--pale);border-color:var(--teal-l);color:var(--teal-d)}
 
 /* ═══════════════ SHELL ═══════════════ */
 #app{display:none;height:100%;flex-direction:column;overflow:hidden}
@@ -327,106 +381,6 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
 .remarkbox .h{font-size:11px;font-weight:800;color:var(--warn);text-transform:uppercase;letter-spacing:.05em}
 .remarkbox p{margin:5px 0 0;font-size:14px;line-height:1.6;color:#7A4E10}
 
-/* ═══════════════ HƯỚNG DẪN ═══════════════ */
-const GUIDE_ID = '158hmatZmbPsMzP96Eno62Q7ykwP7hRJ5';
-/* Thử lần lượt: ảnh đặt cạnh index.html trong repo → Drive → Drive dự phòng.
-   Muốn tải nhanh và chắc chắn nhất, chép file ảnh vào repo và đặt tên huong-dan.png */
-const GUIDE_IMG = [
-  'huong-dan.png',
-  'https://drive.google.com/thumbnail?id=' + GUIDE_ID + '&sz=w1600',
-  'https://lh3.googleusercontent.com/d/' + GUIDE_ID + '=w1600'
-];
-const GUIDE_OPEN = 'https://drive.google.com/file/d/' + GUIDE_ID + '/view';
-
-const HELP = {
-  ghi: { t:'Cách ghi điểm', items:[
-    ['Chọn đúng tuần trước','Thanh trên cùng là tháng và tuần đang ghi. Ghi nhầm tuần thì số liệu cả tháng lệch theo.'],
-    ['Ghi một học sinh','Chạm tên em đó, chọn tab Trừ điểm hoặc Cộng điểm, rồi chạm vào lý do. Lưu ngay, không cần bấm gì thêm.'],
-    ['Chạm nhầm','Có 5 giây để bấm Hoàn tác ở thông báo hiện dưới màn hình.'],
-    ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
-    ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
-    ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
-    ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi tính điểm gốc hay nhân theo cấp số nhân đúng quy định trường.'],
-    ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
-  ]},
-  bang: { t:'Đọc bảng lớp', items:[
-    ['Nội dung bảng','Tổng điểm từng tuần của tháng đang chọn. Kéo ngang để xem hết các cột.'],
-    ['Màu ô','Xanh lá là Tốt, xanh dương là Khá, vàng là Trung bình, đỏ là Yếu.'],
-    ['Cột TB tuần','Tổng tháng chia số tuần. Xếp loại tháng lấy theo cột này, không lấy theo tổng.'],
-    ['Xem chi tiết','Chạm vào một dòng để mở toàn bộ ghi nhận trong tháng của em đó.'],
-    ['Dấu ✓','Xếp loại có dấu ✓ nghĩa là GVCN đã chốt tay, không lấy theo tính tự động.']
-  ]},
-  tk: { t:'Xem thống kê', items:[
-    ['Chọn kỳ','Ba nút Tuần / Tháng / Cả năm ở đầu trang. Đổi kỳ thì toàn bộ số liệu bên dưới đổi theo.'],
-    ['Ba bảng xếp hạng','Học sinh vi phạm nhiều nhất, học sinh được tuyên dương, và lỗi cả lớp hay mắc nhất.'],
-    ['So sánh tổ','Biểu đồ cột là điểm trung bình tuần của từng tổ, để biết tổ nào đang đuối.'],
-    ['Xu hướng','Đường biểu diễn điểm trung bình lớp qua các tháng, cho thấy lớp đang lên hay xuống.'],
-    ['Chỉ tiêu của trường','Ô dưới phần phân bố xếp loại cho biết lớp được phép có bao nhiêu em xếp loại Khá, theo thứ hạng lớp trong trường.'],
-    ['Lần đầu hơi chậm','Mở lần đầu app tải dữ liệu cả năm học. Các lần sau lấy từ bộ nhớ nên nhanh.']
-  ]},
-  ls: { t:'Tra lịch sử và trích xuất', items:[
-    ['Bộ lọc','Lọc theo khoảng tháng, theo tổ, theo từng học sinh và theo loại điểm cộng hay trừ.'],
-    ['Nhận xét của GVCN','Chọn đúng một học sinh thì phần nhận xét từng tháng của GVCN hiện lên đầu danh sách.'],
-    ['Xuất CSV','Tải file mở được bằng Excel, gồm đầy đủ mọi dòng kèm người ghi và nhận xét.'],
-    ['In hoặc lưu PDF','Bản in của một học sinh có sẵn bảng điểm từng tháng và nhận xét, nộp bản giấy được luôn.'],
-    ['Giới hạn hiển thị','Màn hình chỉ hiện 400 ghi nhận mới nhất cho nhẹ. Cần đủ thì xuất CSV.']
-  ]},
-  cai: { t:'Cài đặt và phân quyền', items:[
-    ['Ai cũng làm được','Đổi mật khẩu riêng và xem Quy định tính điểm kèm diễn giải từng lỗi.'],
-    ['Lớp trưởng và GVCN','Đổi tháng theo dõi, số tuần, mốc xếp loại, và sửa danh mục điểm cộng — trừ.'],
-    ['Sửa một hạng mục','Chạm vào hạng mục để đổi tên, số điểm, nhóm, và viết phần diễn giải cho học sinh đọc.'],
-    ['Riêng GVCN','Sửa danh sách lớp, đổi tổ hàng loạt, quản lý tài khoản, cấu hình email, và điền thứ hạng lớp để hiện chỉ tiêu xếp loại.'],
-    ['Google Sheet gốc','Nút hình bảng trên đầu màn hình mở dữ liệu gốc. Sửa tay trên Sheet xong quay lại app là tự cập nhật.']
-  ]}
-};
-
-function guideImgHTML(){
-  return `<div class="guideimg">
-    <img id="gImg" src="${GUIDE_IMG[0]}" alt="Ảnh hướng dẫn sử dụng sổ hạnh kiểm 11D3" data-try="0">
-    <div class="cap">Ảnh hướng dẫn nhanh — chạm để xem cỡ lớn
-      <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh gốc ›</a></div>
-  </div>`;
-}
-
-function openGuide(sec){
-  const keys=['ghi','bang','tk','ls','cai'];
-  const cur = sec || S.view;
-  let h = guideImgHTML();
-  h += `<div class="grouphead">Hướng dẫn từng mục</div>`;
-  keys.forEach(k=>{
-    h += `<details class="acc" ${k===cur?'open':''} data-sec="${k}">
-      <summary><svg class="ic" viewBox="0 0 24 24">${ICON[k]}</svg>${esc(HELP[k].t)}<span class="ar">›</span></summary>
-      <ul>${HELP[k].items.map(it=>`<li><b>${esc(it[0])}.</b> ${esc(it[1])}</li>`).join('')}</ul>
-    </details>`;
-  });
-  h += `<div class="note">Mật khẩu ban đầu: GVCN và quản trị dùng 4321, lớp trưởng và tổ trưởng dùng 11d3.
-        Vào Cài đặt để đổi mật khẩu riêng.</div>`;
-
-  openPanel('Hướng dẫn sử dụng', 'Sổ hạnh kiểm 11D3 · THPT Yên Hòa', h, 'guide');
-
-  const img=$('#gImg');
-  if(img){
-    img.onerror=()=>{
-      const n=Number(img.dataset.try)+1;
-      if(n < GUIDE_IMG.length){ img.dataset.try=n; img.src=GUIDE_IMG[n]; return; }
-      img.closest('.guideimg').innerHTML =
-        `<div class="imgfail">Chưa tải được ảnh hướng dẫn.<br>
-         Kiểm tra file trên Drive đã đặt quyền “Bất kỳ ai có đường liên kết” chưa.<br>
-         <a href="${GUIDE_OPEN}" target="_blank" rel="noopener">Mở ảnh trên Google Drive ›</a></div>`;
-    };
-    img.onclick=()=>window.open(GUIDE_OPEN,'_blank','noopener');
-  }
-}
-
-function renderHelpBar(){
-  const h=HELP[S.view];
-  const b=$('#helpBar');
-  if(!h){ b.classList.add('hide'); return; }
-  b.classList.remove('hide');
-  $('#helpTxt').textContent = h.t + ' — xem hướng dẫn';
-  b.onclick=()=>openGuide(S.view);
-}
-
 /* ═══════════════ ĐIỀU HƯỚNG ═══════════════ */
 #tabbar{position:fixed;left:0;right:0;bottom:0;z-index:120;display:flex;
   height:calc(var(--nav) + var(--safe));padding-bottom:var(--safe);
@@ -543,7 +497,8 @@ function renderHelpBar(){
   .pad,.tools,.filters,.sechead{padding-left:26px;padding-right:26px}
   .sechead{margin-left:0;margin-right:0}
   .register,.panelbox,.tablewrap,.kpis,.multistrip,.remarkbox{margin-left:26px;margin-right:26px}
-  .segbar{padding-left:26px;padding-right:26px}
+  .segbar,.viewtoggle{padding-left:26px;padding-right:26px}
+  .hkcard{padding-left:20px;padding-right:20px}
   .toprow{padding-left:20px;padding-right:20px}
   .row,.entry,.grouphead,.editline{padding-left:20px;padding-right:20px}
   .kpi{padding:15px 18px}
@@ -591,11 +546,32 @@ function renderHelpBar(){
   <div class="classname">11D3</div>
   <div class="subline">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
 
+  <div class="lgtabs" id="lgTabs">
+    <button data-lt="canbo" class="on">Cán bộ lớp</button>
+    <button data-lt="gvcn">GVCN</button>
+    <button data-lt="ph">Phụ huynh</button>
+  </div>
+
   <div id="lgStep1">
-    <div class="lglab">Bạn là ai?</div>
+    <div class="lglab" id="lgLab">Bạn là ai?</div>
     <div class="picgrid" id="picGrid">
       <div class="piccard"><span class="av"></span><span><b>Đang tải…</b></span></div>
     </div>
+  </div>
+
+  <div id="lgPH" class="hide">
+    <div class="phbox">
+      <h3>Chế độ phụ huynh — chỉ xem</h3>
+      <p>Vào thẳng, không cần mật khẩu. Bạn xem được đầy đủ tình hình hạnh kiểm của cả lớp:</p>
+      <ul>
+        <li>Điểm và xếp loại từng tuần, từng tháng, cả học kỳ</li>
+        <li>Từng lỗi bị trừ, ai ghi nhận, ngày nào, kèm diễn giải</li>
+        <li>Các thành tích được cộng điểm</li>
+        <li>Nhận xét của giáo viên chủ nhiệm</li>
+      </ul>
+      <p style="margin-top:10px;color:var(--dang);font-weight:600">Không sửa, thêm hay xoá được bất kỳ dữ liệu nào.</p>
+    </div>
+    <button class="btn" id="lgPHBtn">Vào xem</button>
   </div>
 
   <div id="lgStep2" class="hide">
@@ -664,10 +640,7 @@ function renderHelpBar(){
         <div class="register" id="listGhi"></div>
       </section>
 
-      <section class="view hide" id="vBang">
-        <div class="note" id="bangNote"></div>
-        <div class="tablewrap"><table id="tblBang"></table></div>
-      </section>
+      <section class="view hide" id="vBang"></section>
 
       <section class="view hide" id="vTK"></section>
 
@@ -729,6 +702,7 @@ const S = {
   multi:false, sel:new Set(),
   ctxMa:null, ctxTab:'tru', panelKind:'', bulkNote:'',
   members:null, pick:null, tkKy:'thang', quyDinh:null,
+  lgTab:'canbo', hkKy:'thang', hkHK:1, hkView:'the',
   lsFilter:{ tu:null, den:null, to:'all', hs:'all', loai:'all' },
   busy:false, lastSync:null, pollT:null
 };
@@ -749,12 +723,13 @@ const ICON = {
   check:'<path d="m4 12 5 5L20 6"/>'
 };
 const NAV = [
-  {v:'ghi',  t:'Ghi điểm', el:'#vGhi'},
-  {v:'bang', t:'Bảng lớp', el:'#vBang'},
-  {v:'tk',   t:'Thống kê', el:'#vTK'},
-  {v:'ls',   t:'Lịch sử',  el:'#vLS'},
-  {v:'cai',  t:'Cài đặt',  el:'#vCai'}
+  {v:'ghi',  t:'Ghi điểm',            s:'Ghi điểm',  el:'#vGhi'},
+  {v:'bang', t:'Cập nhật hạnh kiểm',  s:'Hạnh kiểm', el:'#vBang'},
+  {v:'tk',   t:'Thống kê',            s:'Thống kê',  el:'#vTK'},
+  {v:'ls',   t:'Lịch sử',             s:'Lịch sử',   el:'#vLS'},
+  {v:'cai',  t:'Cài đặt',             s:'Cài đặt',   el:'#vCai'}
 ];
+function navItems(){ return isKhach() ? NAV.filter(n=>n.v!=='ghi') : NAV; }
 
 /* ═══════════════ GỌI API ═══════════════ */
 async function api(action, payload){
@@ -805,8 +780,35 @@ $('#lgPin').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 $('#lgBtn').addEventListener('click', doLogin);
 $('#lgBack').addEventListener('click', ()=>{
   S.pick=null; $('#lgStep2').classList.add('hide'); $('#lgStep1').classList.remove('hide');
-  $('#lgErr').textContent='';
+  $('#lgTabs').classList.remove('hide'); $('#lgErr').textContent='';
 });
+
+$$('#lgTabs [data-lt]').forEach(b=>b.onclick=()=>{
+  S.lgTab=b.dataset.lt;
+  $$('#lgTabs [data-lt]').forEach(x=>x.classList.toggle('on', x===b));
+  S.pick=null; $('#lgErr').textContent='';
+  $('#lgStep2').classList.add('hide');
+  $('#lgPH').classList.toggle('hide', S.lgTab!=='ph');
+  $('#lgStep1').classList.toggle('hide', S.lgTab==='ph');
+  if(S.lgTab!=='ph') drawPicker();
+});
+$('#lgPHBtn').onclick=doLoginKhach;
+
+async function doLoginKhach(){
+  const btn=$('#lgPHBtn'), box=$('#lgErr');
+  box.textContent=''; btn.innerHTML='<span class="spin sm"></span>'; btn.disabled=true;
+  try{
+    const r = await api('loginKhach');
+    S.token=r.token; store.set('hk_token', S.token); store.del(CACHE_KEY);
+    if(r.boot){
+      applyBase(r.boot);
+      if(r.boot.data){ S.entries=r.boot.data.entries||[]; S.remarks=r.boot.data.remarks||[];
+                       S.loaded=new Set([S.thang]); }
+      showApp(); renderAll(); saveCache(); startPoll();
+    }else{ await boot(); }
+  }catch(e){ box.textContent=e.message; }
+  finally{ btn.textContent='Vào xem'; btn.disabled=false; }
+}
 
 async function loadRoster(){
   try{
@@ -827,7 +829,14 @@ function drawPicker(){
       +'<span>Không tải được danh sách thành viên</span></span>';
     return;
   }
-  g.innerHTML = S.members.map(m=>{
+  const nhom = S.lgTab==='gvcn' ? 'gvcn' : 'canbo';
+  const list = S.members.filter(m=>(m.nhom || ((m.role==='GVCN'||m.role==='Quản trị')?'gvcn':'canbo'))===nhom);
+  $('#lgLab').textContent = S.lgTab==='gvcn' ? 'Giáo viên chủ nhiệm & quản trị' : 'Lớp trưởng và tổ trưởng';
+  if(!list.length){
+    g.innerHTML='<div class="phbox"><p>Chưa có tài khoản nào trong nhóm này.</p></div>';
+    return;
+  }
+  g.innerHTML = list.map(m=>{
     const gv = m.role==='GVCN'||m.role==='Quản trị';
     const phu = m.role==='Tổ trưởng' ? 'Tổ trưởng tổ '+m.to : m.role;
     return `<button class="piccard ${gv?'gv':''}" data-pick="${esc(m.id)}">
@@ -844,6 +853,7 @@ function pickMember(id){
   $('#whoCard').innerHTML=`<span class="av">${esc(initials(m.ten))}</span>
     <span><b>${esc(m.ten)}</b><span>${esc(m.role==='Tổ trưởng'?'Tổ trưởng tổ '+m.to:m.role)}</span></span>`;
   $('#lgStep1').classList.add('hide');
+  $('#lgTabs').classList.add('hide');
   $('#lgStep2').classList.remove('hide');
   $('#lgEmailFld').classList.add('hide');
   $('#lgErr').textContent='';
@@ -896,6 +906,7 @@ function applyBase(b){
   S.thang = b.thang || S.cfg.thang;
   if(S.tuan > S.cfg.soTuan) S.tuan = 1;
   S.filterTo = (S.me.role==='Tổ trưởng') ? String(S.me.to) : 'all';
+  if(isKhach() && S.view==='ghi') S.view='bang';
 }
 
 function showApp(){
@@ -912,6 +923,17 @@ function showApp(){
   sb.classList.toggle('hide', !(isAdmin() && S.sheetUrl));
   sb.onclick=()=>window.open(S.sheetUrl,'_blank','noopener');
   buildNav();
+  syncView();
+}
+
+/** Đồng bộ tiêu đề, section đang hiện và nút nav với S.view. */
+function syncView(){
+  const item = NAV.find(n=>n.v===S.view) || NAV[0];
+  S.view = item.v;
+  NAV.forEach(n=>$(n.el).classList.toggle('hide', n.v!==S.view));
+  $$('#railNav [data-v],#tabbar [data-v]').forEach(b=>b.classList.toggle('on', b.dataset.v===S.view));
+  $('#hTitle').textContent = item.t;
+  $('#periodBar').classList.toggle('hide', S.view==='cai' || S.view==='ls');
 }
 
 /** Vẽ app ngay từ cache, chưa cần chờ mạng. */
@@ -1007,13 +1029,28 @@ function activeStudents(){
   return S.students.filter(s=>s.trangThai!=='Nghỉ học' && s.trangThai!=='Chuyển lớp').sort(sortStudents);
 }
 function stu(ma){ return S.students.find(s=>s.ma===ma); }
-function canScore(to){ return S.me.role!=='Tổ trưởng' || String(S.me.to)===String(to); }
+function canScore(to){
+  if(isKhach()) return false;
+  return S.me.role!=='Tổ trưởng' || String(S.me.to)===String(to);
+}
+function isKhach(){ return S.me.role==='Phụ huynh'; }
 function isGVCN(){ return S.me.role==='GVCN' || S.me.role==='Quản trị'; }
 function isAdmin(){ return isGVCN() || S.me.role==='Lớp trưởng'; }
 function catItem(loai, ma){
   const src = loai==='Cộng' ? S.cong : S.tru;
   return src.find(c=>c.ma===ma);
 }
+function namHocParts(){
+  const m=/(\d{4})\D+(\d{4})/.exec(String((S.cfg&&S.cfg.namHoc)||''));
+  return m ? [m[1],m[2]] : ['',''];
+}
+/** T09/2026 · T01/2027 — tránh nhầm tháng đầu năm dương lịch. */
+function thangLabel(m, dai){
+  const p=namHocParts(), y = m>=8 ? p[0] : p[1];
+  return (dai?'Tháng ':'T') + String(m).padStart(2,'0') + (y?'/'+y:'');
+}
+const HK_THANG = { 1:[9,10,11,12,1], 2:[2,3,4,5] };
+
 function remarkOf(ma, thang){
   const t = thang==null ? S.thang : thang;
   return S.remarks.find(r=>r.maHS===ma && r.thang===t);
@@ -1041,12 +1078,13 @@ const HELP = {
     ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi tính điểm gốc hay nhân theo cấp số nhân đúng quy định trường.'],
     ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
   ]},
-  bang: { t:'Đọc bảng lớp', items:[
-    ['Nội dung bảng','Tổng điểm từng tuần của tháng đang chọn. Kéo ngang để xem hết các cột.'],
-    ['Màu ô','Xanh lá là Tốt, xanh dương là Khá, vàng là Trung bình, đỏ là Yếu.'],
-    ['Cột TB tuần','Tổng tháng chia số tuần. Xếp loại tháng lấy theo cột này, không lấy theo tổng.'],
-    ['Xem chi tiết','Chạm vào một dòng để mở toàn bộ ghi nhận trong tháng của em đó.'],
-    ['Dấu ✓','Xếp loại có dấu ✓ nghĩa là GVCN đã chốt tay, không lấy theo tính tự động.']
+  bang: { t:'Cập nhật hạnh kiểm', items:[
+    ['Chọn kỳ','Ba nút đầu trang: Tuần, Tháng, Học kỳ. Học kỳ 1 gồm 5 tháng, từ T09/2026 đến T01/2027.'],
+    ['Thẻ chi tiết','Mỗi học sinh một thẻ: điểm, xếp loại, từng lỗi bị trừ kèm người ghi và ngày, thành tích được cộng, diễn giải, và nhận xét của GVCN.'],
+    ['Bảng tổng hợp','Dạng bảng để nhìn nhanh cả lớp. Kéo ngang để xem hết cột.'],
+    ['Màu sắc','Xanh lá là Tốt, xanh dương là Khá, vàng là Trung bình, đỏ là Yếu.'],
+    ['Dấu ✓','Xếp loại có dấu ✓ nghĩa là GVCN đã chốt tay, không lấy theo tính tự động.'],
+    ['Xem đầy đủ','Chạm vào thẻ hoặc dòng bảng để mở toàn bộ ghi nhận của học sinh đó.']
   ]},
   tk: { t:'Xem thống kê', items:[
     ['Chọn kỳ','Ba nút Tuần / Tháng / Cả năm ở đầu trang. Đổi kỳ thì toàn bộ số liệu bên dưới đổi theo.'],
@@ -1121,21 +1159,17 @@ function renderHelpBar(){
 
 /* ═══════════════ ĐIỀU HƯỚNG ═══════════════ */
 function buildNav(){
-  $('#railNav').innerHTML = NAV.map(n=>
+  const items=navItems();
+  $('#railNav').innerHTML = items.map(n=>
     `<button data-v="${n.v}" class="${n.v===S.view?'on':''}">
        <svg class="ic" viewBox="0 0 24 24">${ICON[n.v]}</svg>${n.t}</button>`).join('');
-  $('#tabbar').innerHTML = NAV.map(n=>
+  $('#tabbar').innerHTML = items.map(n=>
     `<button data-v="${n.v}" class="${n.v===S.view?'on':''}">
-       <svg class="ic" viewBox="0 0 24 24">${ICON[n.v]}</svg>${n.t}</button>`).join('');
+       <svg class="ic" viewBox="0 0 24 24">${ICON[n.v]}</svg>${n.s}</button>`).join('');
   $$('[data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
 }
 async function go(v){
-  S.view=v;
-  $$('#railNav [data-v],#tabbar [data-v]').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
-  NAV.forEach(n=>$(n.el).classList.toggle('hide', n.v!==v));
-  $('#hTitle').textContent = NAV.find(n=>n.v===v).t;
-  $('#periodBar').classList.toggle('hide', v==='cai' || v==='ls');
-  exitMulti();
+  S.view=v; syncView(); exitMulti();
   if((v==='tk'||v==='ls') && !S.allLoaded){
     $(v==='tk'?'#vTK':'#vLS').innerHTML =
       '<div class="sechead"><h2>Đang tải dữ liệu cả năm học</h2></div>'+skeleton(7);
@@ -1159,7 +1193,7 @@ function renderAll(){
 function renderPeriod(){
   const bar=$('#periodBar'); bar.innerHTML='';
   const m=document.createElement('button');
-  m.className='chip month'; m.textContent='Tháng '+S.thang+' ▾';
+  m.className='chip month'; m.textContent=thangLabel(S.thang,true)+' ▾';
   m.onclick=openMonthPicker; bar.appendChild(m);
   for(let w=1; w<=S.cfg.soTuan; w++){
     const b=document.createElement('button');
@@ -1175,8 +1209,8 @@ function renderPeriod(){
 
 function openMonthPicker(){
   const h = '<div style="padding:6px 0">' + MONTHS_YEAR.map(m=>
-    `<button class="item" data-m="${m}"><span class="t"><b>Tháng ${m}</b>
-     <span>${S.loaded.has(m)?'đã tải':'chưa tải'}</span></span>
+    `<button class="item" data-m="${m}"><span class="t"><b>${esc(thangLabel(m,true))}</b>
+     <span>${S.loaded.has(m)?'đã tải':'chưa tải'}${HK_THANG[1].indexOf(m)>=0?' · học kỳ 1':' · học kỳ 2'}</span></span>
      ${m===S.thang?'<span class="p" style="color:var(--teal)">✓</span>':''}</button>`).join('') + '</div>';
   openPanel('Chọn tháng', 'Năm học '+S.cfg.namHoc, h);
   $$('#pBody [data-m]').forEach(b=>b.onclick=async()=>{
@@ -1276,23 +1310,18 @@ function rowExtra(s){
   let h='<span class="rowextra">';
 
   if(list.length){
-    const show=list.slice(0,3);
+    const show=list.slice(-4).reverse();
     const xoaDuoc = canScore(s.to);
-    h+='<span class="tagwrap">'+show.map(e=>
-      `<span class="tag ${e[E_DIEM]<0?'minus':'plus'}">${esc(e[E_ND]||e[E_MUC])} <b>${nz(e[E_DIEM])}</b>
-       ${xoaDuoc?`<span class="x" data-qdel="${esc(e[E_ID])}" title="Xoá mục này">✕</span>`:''}</span>`).join('');
-    if(list.length>3) h+=`<span class="tag more">+${list.length-3} mục khác</span>`;
-    h+='</span>';
-
-    const nguoi=[...new Set(list.map(e=>e[E_TEN]).filter(Boolean))];
-    const moi=list[list.length-1];
-    h+=`<span class="byline"><span>Xác nhận: <b>${esc(nguoi.slice(0,2).join(', '))}${nguoi.length>2?' +'+(nguoi.length-2):''}</b></span>
-        <span>${esc(ddmmyy(moi[E_LUC]))}</span>
-        <span>${list.length} lượt</span></span>`;
-
-    list.filter(e=>e[E_GC]).slice(0,2).forEach(e=>{
-      h+=`<span class="rownote">${esc(e[E_GC])}</span>`;
-    });
+    h+='<span class="evlist" style="margin-top:0">'+show.map(e=>
+      `<span class="ev">
+        <span class="pill ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span>
+        <span class="tx"><b>${esc(e[E_ND]||e[E_MUC])}</b>
+          <span class="who">${esc(e[E_TEN])} · ${esc(ddmmyy(e[E_LUC]))}</span>
+          ${e[E_GC]?`<span class="dg">${esc(e[E_GC])}</span>`:''}</span>
+        ${xoaDuoc?`<span class="x" data-qdel="${esc(e[E_ID])}" title="Xoá mục này"
+           style="flex:none;align-self:flex-start;margin-top:2px">✕</span>`:''}
+      </span>`).join('')+'</span>';
+    if(list.length>4) h+=`<span class="byline"><span>Còn ${list.length-4} ghi nhận nữa trong tuần</span></span>`;
   }
 
   if(rm && (rm.nhanXet||rm.xepLoai)){
@@ -1344,28 +1373,180 @@ function exitMulti(){
   if(S.view==='ghi') renderGhi();
 }
 
-/* ═══════════════ BẢNG LỚP ═══════════════ */
-function renderBang(){
-  $('#bangNote').textContent = `Tổng điểm mỗi tuần của tháng ${S.thang}. Ô màu thể hiện xếp loại tuần. Chạm tên để xem chi tiết.`;
-  const list=activeStudents();
-  let h='<thead><tr><th class="name">Học sinh</th>';
-  for(let w=1;w<=S.cfg.soTuan;w++) h+=`<th>Tuần ${w}</th>`;
-  h+='<th>Tổng</th><th>TB tuần</th><th>Xếp loại tháng</th></tr></thead><tbody>';
-  list.forEach(s=>{
-    h+=`<tr data-ma="${esc(s.ma)}" style="cursor:pointer"><td class="name">${esc(s.ten)}
-        <div style="font-size:11px;color:var(--muted);font-weight:400">Tổ ${esc(s.to)}</div></td>`;
+/* ═══════════════ CẬP NHẬT HẠNH KIỂM ═══════════════ */
+function hkMonths(){
+  if(S.hkKy==='hk') return HK_THANG[S.hkHK];
+  return [S.thang];
+}
+function hkMonthsCoDL(){
+  return hkMonths().filter(m=>S.entries.some(e=>e[E_THANG]===m));
+}
+function hkEntriesOf(ma){
+  const ms=hkMonths();
+  return S.entries.filter(e=>e[E_MA]===ma && ms.indexOf(e[E_THANG])>=0
+      && (S.hkKy==='tuan' ? e[E_TUAN]===S.tuan : true))
+    .sort((a,b)=> a[E_THANG]-b[E_THANG] || a[E_TUAN]-b[E_TUAN] || String(a[E_LUC]).localeCompare(String(b[E_LUC])));
+}
+function hkScoreOf(ma){
+  if(S.hkKy==='tuan')  return weekScore(ma,S.tuan);
+  if(S.hkKy==='thang') return monthAvg(ma);
+  const ms=hkMonthsCoDL();
+  return ms.length ? ms.reduce((a,m)=>a+monthAvg(ma,m),0)/ms.length : 0;
+}
+function hkNhan(){
+  if(S.hkKy==='tuan')  return 'Tuần '+S.tuan+' · '+thangLabel(S.thang,true);
+  if(S.hkKy==='thang') return thangLabel(S.thang,true);
+  const ms=HK_THANG[S.hkHK];
+  return 'Học kỳ '+S.hkHK+' · '+thangLabel(ms[0])+' – '+thangLabel(ms[ms.length-1]);
+}
+function hkRemarks(ma){
+  return S.remarks.filter(r=>r.maHS===ma && hkMonths().indexOf(r.thang)>=0 && (r.nhanXet||r.xepLoai))
+    .sort((a,b)=>hkMonths().indexOf(a.thang)-hkMonths().indexOf(b.thang));
+}
+
+function evHTML(e, keomThang){
+  return `<div class="ev">
+    <span class="pill ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span>
+    <span class="tx"><b>${esc(e[E_ND]||e[E_MUC])}</b>
+      <span class="who">${esc(e[E_TEN])} · ${esc(ddmmyy(e[E_LUC]))}${keomThang?' · tuần '+e[E_TUAN]+' '+esc(thangLabel(e[E_THANG])):' · tuần '+e[E_TUAN]}</span>
+      ${e[E_GC]?`<span class="dg">${esc(e[E_GC])}</span>`:''}</span></div>`;
+}
+
+function hkCard(s){
+  const list=hkEntriesOf(s.ma);
+  const sc=hkScoreOf(s.ma), ri=rankIdx(sc);
+  const rms=hkRemarks(s.ma);
+  const chot = rms.filter(r=>r.xepLoai).slice(-1)[0];
+  const cong=list.filter(e=>e[E_DIEM]>0).reduce((a,e)=>a+e[E_DIEM],0);
+  const tru =list.filter(e=>e[E_DIEM]<0).reduce((a,e)=>a+e[E_DIEM],0);
+
+  let mini='<div class="mini">';
+  if(S.hkKy==='tuan'){
+    mini+=`<div><div class="k">CỘNG</div><div class="v r0">${cong?'+'+cong:'0'}</div></div>
+           <div><div class="k">TRỪ</div><div class="v r3">${tru||'0'}</div></div>
+           <div><div class="k">TỔNG TUẦN</div><div class="v ${'r'+ri}">${nz(sc)}</div></div>`;
+  }else if(S.hkKy==='thang'){
     for(let w=1;w<=S.cfg.soTuan;w++){
       const v=weekScore(s.ma,w);
-      h+=`<td class="v ${v===0?'':'c'+rankIdx(v)}">${v===0?'–':nz(v)}</td>`;
+      mini+=`<div><div class="k">TUẦN ${w}</div><div class="v ${v===0?'zero':'r'+rankIdx(v)}">${v===0?'–':nz(v)}</div></div>`;
     }
-    const t=monthTotal(s.ma), a=monthAvg(s.ma), ri=rankIdx(a);
-    const rm=remarkOf(s.ma);
-    const nhan = rm && rm.xepLoai ? rm.xepLoai+' ✓' : rankName(a);
-    h+=`<td class="v">${t===0?'–':nz(t)}</td><td class="v">${a.toFixed(1)}</td>
-        <td class="v c${ri}">${esc(nhan)}</td></tr>`;
+    mini+=`<div><div class="k">TB TUẦN</div><div class="v ${'r'+ri}">${sc.toFixed(1)}</div></div>`;
+  }else{
+    HK_THANG[S.hkHK].forEach(m=>{
+      const co=S.entries.some(e=>e[E_THANG]===m);
+      const v=co?monthAvg(s.ma,m):null;
+      mini+=`<div><div class="k">${esc(thangLabel(m))}</div>
+        <div class="v ${v===null?'zero':'r'+rankIdx(v)}">${v===null?'–':v.toFixed(1)}</div></div>`;
+    });
+  }
+  mini+='</div>';
+
+  const show=list.slice(-6).reverse();
+  let ev='';
+  if(list.length){
+    ev='<div class="evlist">'+show.map(e=>evHTML(e, S.hkKy!=='tuan')).join('')+'</div>';
+    if(list.length>6) ev+=`<div class="michint">Còn ${list.length-6} ghi nhận nữa — chạm vào thẻ để xem hết.</div>`;
+  }else{
+    ev='<div class="michint">Không có ghi nhận nào trong kỳ này.</div>';
+  }
+
+  let gv='';
+  rms.forEach(r=>{
+    gv+=`<div class="gvbox"><b>GVCN ${esc(thangLabel(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}:</b>
+      ${esc(r.nhanXet||'(chỉ chốt xếp loại, không có nhận xét chữ)')}</div>`;
   });
-  $('#tblBang').innerHTML = h+'</tbody>';
-  $$('#tblBang tr[data-ma]').forEach(tr=>tr.onclick=()=>openStudentMonth(tr.dataset.ma));
+
+  return `<div class="hkcard" data-ma="${esc(s.ma)}" style="cursor:pointer">
+    <div class="hkhead">
+      <span class="nm"><b>${esc(s.ten)}</b><span>Tổ ${esc(s.to)} · ${esc(s.chucVu)}</span></span>
+      <span class="sc"><span class="n ${'r'+ri}">${S.hkKy==='tuan'?nz(sc):sc.toFixed(1)}</span>
+        <span class="badge g${ri}">${esc(chot?chot.xepLoai+' ✓':rankName(sc))}</span></span>
+    </div>
+    ${mini}${ev}${gv}
+  </div>`;
+}
+
+function hkTable(){
+  const list=activeStudents();
+  const ms=hkMonths();
+  let h='<div class="tablewrap"><table><thead><tr><th class="name">Học sinh</th>';
+  if(S.hkKy==='hk'){ ms.forEach(m=>h+=`<th>${esc(thangLabel(m))}</th>`); h+='<th>TB kỳ</th>'; }
+  else if(S.hkKy==='thang'){ for(let w=1;w<=S.cfg.soTuan;w++) h+=`<th>Tuần ${w}</th>`; h+='<th>Tổng</th><th>TB tuần</th>'; }
+  else { h+='<th>Cộng</th><th>Trừ</th><th>Tổng tuần</th>'; }
+  h+='<th>Xếp loại</th></tr></thead><tbody>';
+  list.forEach(s=>{
+    h+=`<tr data-ma="${esc(s.ma)}" style="cursor:pointer"><td class="name">${esc(s.ten)}
+        <div style="font-size:11px;color:var(--mute);font-weight:400">Tổ ${esc(s.to)}</div></td>`;
+    if(S.hkKy==='hk'){
+      ms.forEach(m=>{
+        const co=S.entries.some(e=>e[E_THANG]===m);
+        const v=co?monthAvg(s.ma,m):null;
+        h+=`<td class="v ${v===null?'':'c'+rankIdx(v)}">${v===null?'–':v.toFixed(1)}</td>`;
+      });
+      h+=`<td class="v">${hkScoreOf(s.ma).toFixed(1)}</td>`;
+    }else if(S.hkKy==='thang'){
+      for(let w=1;w<=S.cfg.soTuan;w++){
+        const v=weekScore(s.ma,w);
+        h+=`<td class="v ${v===0?'':'c'+rankIdx(v)}">${v===0?'–':nz(v)}</td>`;
+      }
+      const t=monthTotal(s.ma);
+      h+=`<td class="v">${t===0?'–':nz(t)}</td><td class="v">${monthAvg(s.ma).toFixed(1)}</td>`;
+    }else{
+      const sp=weekSplit(s.ma,S.tuan);
+      h+=`<td class="v r0">${sp.p?'+'+sp.p:'–'}</td><td class="v r3">${sp.m||'–'}</td>
+          <td class="v">${nz(sp.p+sp.m)}</td>`;
+    }
+    const sc=hkScoreOf(s.ma), ri=rankIdx(sc);
+    const chot=hkRemarks(s.ma).filter(r=>r.xepLoai).slice(-1)[0];
+    h+=`<td class="v c${ri}">${esc(chot?chot.xepLoai+' ✓':rankName(sc))}</td></tr>`;
+  });
+  return h+'</tbody></table></div>';
+}
+
+function renderBang(){
+  const list=activeStudents();
+  let h=`<div class="segbar">
+    <button data-hk="tuan"  class="${S.hkKy==='tuan'?'on':''}">Tuần ${S.tuan}</button>
+    <button data-hk="thang" class="${S.hkKy==='thang'?'on':''}">${esc(thangLabel(S.thang))}</button>
+    <button data-hk="hk"    class="${S.hkKy==='hk'?'on':''}">Học kỳ</button>
+  </div>`;
+
+  if(S.hkKy==='hk'){
+    h+=`<div class="viewtoggle">
+      <button data-hkn="1" class="${S.hkHK===1?'on':''}">Học kỳ 1 · T09/2026 – T01/2027</button>
+      <button data-hkn="2" class="${S.hkHK===2?'on':''}">Học kỳ 2</button></div>`;
+  }
+  h+=`<div class="viewtoggle">
+    <button data-hv="the" class="${S.hkView==='the'?'on':''}">Thẻ chi tiết</button>
+    <button data-hv="bang" class="${S.hkView==='bang'?'on':''}">Bảng tổng hợp</button>
+    <span style="flex:1"></span></div>`;
+
+  const cnt=[0,0,0,0];
+  list.forEach(x=>cnt[rankIdx(hkScoreOf(x.ma))]++);
+  h+=`<div class="kpis">`+S.cfg.thresholds.map((t,i)=>
+    `<div class="kpi"><div class="n ${'r'+i}">${cnt[i]}</div><div class="l">${esc(t.ten)}</div>
+     <div class="sub">${esc(hkNhan())}</div></div>`).join('')+`</div>`;
+
+  if(S.hkView==='bang'){
+    h+=`<div class="sechead"><h2>Bảng tổng hợp · ${esc(hkNhan())}</h2></div>`+hkTable();
+  }else{
+    h+=`<div class="sechead"><h2>Chi tiết từng học sinh · ${esc(hkNhan())}</h2></div>
+        <div class="register">`+ (list.length ? list.map(hkCard).join('')
+          : '<div class="empty"><b>Chưa có học sinh</b>Kiểm tra lại danh sách lớp.</div>') + `</div>`;
+  }
+
+  $('#vBang').innerHTML=h;
+  $$('#vBang [data-hk]').forEach(b=>b.onclick=async()=>{
+    S.hkKy=b.dataset.hk;
+    if(S.hkKy==='hk' && !S.allLoaded){
+      $('#vBang').innerHTML='<div class="sechead"><h2>Đang tải dữ liệu học kỳ</h2></div>'+skeleton(6);
+      try{ await loadAllMonths(); }catch(e){ err(e); }
+    }
+    renderBang();
+  });
+  $$('#vBang [data-hkn]').forEach(b=>b.onclick=()=>{ S.hkHK=Number(b.dataset.hkn); renderBang(); });
+  $$('#vBang [data-hv]').forEach(b=>b.onclick=()=>{ S.hkView=b.dataset.hv; renderBang(); });
+  $$('#vBang [data-ma]').forEach(x=>x.onclick=()=>openStudentMonth(x.dataset.ma));
 }
 
 /* ═══════════════ PANEL ═══════════════ */
@@ -1385,7 +1566,10 @@ function openPanel(title, sub, html, kind){
   $('#pTitle').textContent=title; $('#pSub').textContent=sub; $('#pBody').innerHTML=html;
   $('#panel').classList.add('on'); $('#scrim').classList.add('on');
 }
-function closePanel(){ S.panelKind=''; $('#panel').classList.remove('on'); $('#scrim').classList.remove('on'); }
+function closePanel(){
+  if(S.stopMic){ S.stopMic(); S.stopMic=null; }
+  S.panelKind=''; $('#panel').classList.remove('on'); $('#scrim').classList.remove('on');
+}
 $('#scrim').onclick=closePanel;
 $('#pClose').onclick=closePanel;
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePanel(); });
@@ -1420,7 +1604,9 @@ function drawStudentPanel(){
       <button class="plus ${S.ctxTab==='cong'?'on':''}" data-tab="cong">Cộng điểm</button>
     </div>`;
   h += allowed ? catalogHTMLFor(S.ctxTab, s.ma)
-    : `<div class="empty"><b>Chỉ xem</b>Bạn phụ trách tổ ${esc(S.me.to)} nên không ghi điểm cho học sinh tổ ${esc(s.to)}.</div>`;
+    : (isKhach()
+        ? `<div class="empty"><b>Chế độ phụ huynh</b>Bạn xem được toàn bộ thông tin nhưng không ghi hay sửa điểm.</div>`
+        : `<div class="empty"><b>Chỉ xem</b>Bạn phụ trách tổ ${esc(S.me.to)} nên không ghi điểm cho học sinh tổ ${esc(s.to)}.</div>`);
 
   h += `<div class="grouphead">Đã ghi trong tuần ${S.tuan} · ${mine.length} lượt</div>`;
   h += mine.length ? mine.map(entryHTML).join('')
@@ -1483,8 +1669,72 @@ function hoiTaiPham(s, c, ghiChu){
     const diem = b.dataset.tp==='nhan' ? nhan : c.diem;
     const note = b.dataset.tp==='nhan'
       ? ('Tái phạm lần ' + (n+1) + (ghiChu?' · '+ghiChu:'')) : (ghiChu||'');
-    ghiThucTe([s.ma], c, 'Trừ', diem, note);
+    hoiGhiChu([s.ma], c, 'Trừ', diem, note);
   });
+}
+
+/** Nhập bằng giọng nói cho một ô textarea. */
+function setupMic(btnId, txtId, hintId){
+  const SRc = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const btn=$('#'+btnId), txt=$('#'+txtId), hint=$('#'+hintId);
+  if(!btn||!txt) return;
+  if(!SRc){
+    btn.classList.add('hide');
+    if(hint) hint.textContent='Trình duyệt này chưa hỗ trợ nhập bằng giọng nói — gõ tay giúp mình nhé.';
+    return;
+  }
+  let r=null, dangNghe=false;
+  const reset=()=>{ dangNghe=false; btn.classList.remove('rec');
+    if(hint) hint.textContent='Bấm micro rồi nói, máy tự ghi thành chữ.'; };
+  btn.onclick=()=>{
+    if(dangNghe){ try{ r.stop(); }catch(e){} return; }
+    r=new SRc(); r.lang='vi-VN'; r.interimResults=true; r.continuous=true;
+    const base = txt.value ? txt.value.trim()+' ' : '';
+    r.onstart=()=>{ dangNghe=true; btn.classList.add('rec');
+      if(hint) hint.textContent='Đang nghe… bấm lại để dừng.'; };
+    r.onresult=ev=>{
+      let t='';
+      for(let i=ev.resultIndex;i<ev.results.length;i++) t+=ev.results[i][0].transcript;
+      txt.value = base + t;
+    };
+    r.onerror=e=>{ reset(); if(hint) hint.textContent='Không nghe được ('+e.error+'). Gõ tay giúp mình nhé.'; };
+    r.onend=reset;
+    try{ r.start(); }catch(e){ reset(); }
+  };
+  S.stopMic=()=>{ try{ r && r.stop(); }catch(e){} };
+}
+
+/** Hỏi diễn giải trước khi lưu điểm. */
+function hoiGhiChu(maList, c, loai, diem, preset){
+  const nhieu = maList.length>1;
+  const ten = nhieu ? maList.length+' học sinh' : stu(maList[0]).ten;
+  const h=`<div class="pcard">
+      <div style="font-size:15px;font-weight:700">${esc(ten)}</div>
+      <div style="font-size:13.5px;color:var(--sub);margin-top:3px">${esc(c.noiDung)}
+        <b class="${diem<0?'r3':'r0'}" style="font-size:15px">${nz(diem)}</b>
+        · tuần ${S.tuan} · ${esc(thangLabel(S.thang,true))}</div>
+      ${c.dienGiai?`<div class="note" style="padding:8px 0 0">${esc(c.dienGiai)}</div>`:''}
+    </div>
+    <div class="pform">
+      <label class="lbl" for="gcTxt">Diễn giải — ghi rõ vì sao, sẽ hiện ngay cạnh tên học sinh</label>
+      <div class="microw">
+        <textarea id="gcTxt" class="inp" placeholder="VD: muộn 10 phút tiết 1, không báo trước">${esc(preset||'')}</textarea>
+        <button class="micbtn" id="gcMic" title="Nói để nhập" aria-label="Nhập bằng giọng nói">
+          <svg class="ic" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/>
+            <path d="M12 18v4M8 22h8"/></svg></button>
+      </div>
+      <div class="michint" id="gcHint">Bấm micro rồi nói, máy tự ghi thành chữ.</div>
+      <div class="rowbtns">
+        <button class="btn ghost" id="gcSkip">Bỏ qua, lưu luôn</button>
+        <button class="btn" id="gcSave">Lưu điểm</button>
+      </div>
+    </div>`;
+  openPanel('Thêm diễn giải', diem<0?'Ghi điểm trừ':'Ghi điểm cộng', h, 'ghichu');
+  setupMic('gcMic','gcTxt','gcHint');
+  $('#gcSkip').onclick=()=>{ if(S.stopMic) S.stopMic(); ghiThucTe(maList, c, loai, diem, preset||''); };
+  $('#gcSave').onclick=()=>{ if(S.stopMic) S.stopMic(); ghiThucTe(maList, c, loai, diem, $('#gcTxt').value.trim()); };
 }
 
 /* ── ghi điểm hàng loạt ── */
@@ -1513,7 +1763,7 @@ function addEntry(maList, maMuc, ghiChu){
   if(loai==='Trừ' && maList.length===1 && heSoTaiPham()>1 && soLanMac(maList[0], c.ma)>=1){
     hoiTaiPham(stu(maList[0]), c, ghiChu); return;
   }
-  return ghiThucTe(maList, c, loai, c.diem, ghiChu);
+  return hoiGhiChu(maList, c, loai, c.diem, ghiChu);
 }
 
 async function ghiThucTe(maList, c, loai, diem, ghiChu){
@@ -1586,7 +1836,7 @@ function openStudentMonth(ma){
   const rm=remarkOf(ma);
   let h='';
   if(rm && (rm.nhanXet || rm.xepLoai)){
-    h+=`<div class="remarkbox" style="margin:14px 18px"><div class="h">Nhận xét của GVCN — tháng ${S.thang}</div>
+    h+=`<div class="remarkbox" style="margin:14px 18px"><div class="h">Nhận xét của GVCN — ${esc(thangLabel(S.thang,true))}</div>
         ${rm.xepLoai?`<p><b>Xếp loại chốt: ${esc(rm.xepLoai)}</b></p>`:''}
         ${rm.nhanXet?`<p>${esc(rm.nhanXet)}</p>`:''}</div>`;
   }
@@ -1597,14 +1847,14 @@ function openStudentMonth(ma){
       <span class="bd"><b>Tuần ${w}</b><span class="meta">cộng ${sp.p} · trừ ${sp.m} · ${rankName(v)}</span></span></div>`;
   }
   const list=entriesOf(ma,S.thang,null);
-  h+=`<div class="grouphead">Toàn bộ ghi nhận tháng ${S.thang} · ${list.length} lượt</div>`;
+  h+=`<div class="grouphead">Toàn bộ ghi nhận ${esc(thangLabel(S.thang,true))} · ${list.length} lượt</div>`;
   h+= list.length ? list.map(entryHTML).join('') : '<div class="note">Chưa có ghi nhận nào.</div>';
   h+=`<div class="pform"><div class="rowbtns" style="margin-top:0">
       <button class="btn ghost" id="mHist">Lịch sử cả năm</button>
       ${isGVCN()?'<button class="btn" id="mRemark">Nhận xét</button>':''}</div></div>`;
 
   openPanel(s.ten,
-    `Tổ ${s.to} · Tháng ${S.thang}: tổng ${nz(monthTotal(ma))} · TB ${monthAvg(ma).toFixed(1)} · ${rankName(monthAvg(ma))}`, h);
+    `Tổ ${s.to} · ${thangLabel(S.thang,true)}: tổng ${nz(monthTotal(ma))} · TB ${monthAvg(ma).toFixed(1)} · ${rankName(monthAvg(ma))}`, h);
   wirePanelEntries();
   $('#mHist').onclick=async()=>{
     closePanel();
@@ -2121,12 +2371,12 @@ function renderCai(){
 
   h+=`<div class="sechead"><h2>Tài khoản của tôi</h2></div><div class="panelbox">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-      <span class="ava">${esc(initials(S.me.name))}</span>
+      <span class="ava" style="background:var(--pale);color:var(--teal-d)">${esc(initials(S.me.name))}</span>
       <span><b style="font-size:15px">${esc(S.me.name)}</b><br>
-        <span style="color:var(--muted);font-size:13px">${esc(S.me.email)} · ${esc(S.me.role)}</span></span></div>
+        <span style="color:var(--muted);font-size:13px">${isKhach()?'Chế độ chỉ xem':esc(S.me.email)+' · '+esc(S.me.role)}</span></span></div>
     <div class="rowbtns" style="margin-top:0">
-      <button class="btn ghost" id="myPw">Đổi mật khẩu</button>
-      <button class="btn danger" id="logout">Đăng xuất</button></div></div>`;
+      ${isKhach()?'':'<button class="btn ghost" id="myPw">Đổi mật khẩu</button>'}
+      <button class="btn danger" id="logout">${isKhach()?'Thoát':'Đăng xuất'}</button></div></div>`;
 
   if(ad && S.sheetUrl){
     h+=`<div class="sechead"><h2>Google Sheet gốc</h2></div><div class="panelbox">
@@ -2246,7 +2496,7 @@ function wireCai(){
     catch(e){ toast('Không chép được, hãy dùng nút “Mở Google Sheet”.'); }
   };
   $$('[data-tab2]').forEach(b=>b.onclick=()=>window.open(S.sheetUrl,'_blank','noopener'));
-  g('myPw').onclick=openMyPassword;
+  if(g('myPw')) g('myPw').onclick=openMyPassword;
   g('logout').onclick=()=>{ store.del('hk_token'); store.del(CACHE_KEY); location.reload(); };
   g('dReload').onclick=()=>refresh(false);
   g('dAll').onclick=async()=>{
