@@ -7,7 +7,7 @@ const APP = 'thptyenhoa.github.io/Theo-doi-hanh-kiem-11D3-nam-hoc-2026-2027';
 global.window = {}; global.document = { createElement: () => ({ style: {} }), head: { appendChild() {} } }; global.localStorage = { getItem: () => null, setItem() {} };
 require(path.join(ROOT, 'mascot.js')); const M = global.window.MASCOT;
 const chibi = (emo, st) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(M.svg(emo, st || 'kawaii'));
-const VER = '3.3', TODAY = '10/2026';
+const VER = '3.4', TODAY = '10/2026';
 
 const CSS = `
 @page{size:1280px 720px;margin:0}
@@ -34,7 +34,7 @@ h2{font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.15;c
 .dk{position:absolute;right:36px;top:96px;width:690px;border-radius:12px;border:1px solid #D9E4E7;overflow:hidden;box-shadow:0 18px 40px rgba(20,40,50,.16)}
 .dk img{display:block;width:100%}
 .cover{background:linear-gradient(135deg,#E6F3F4 0%,#FFFFFF 55%,#FFF8EC 100%)}
-.cover .txt{top:120px;width:700px}
+.cover .txt{top:120px;width:900px}
 .cover .who{display:inline-block;margin-top:22px;padding:8px 16px;border-radius:999px;background:#0E7C86;color:#fff;font-weight:800;font-size:16px}
 .cover .chibi{position:absolute;right:120px;top:120px;width:380px;height:380px}
 .cover .meta{position:absolute;left:56px;bottom:60px;font-size:14px;color:#5C7A83;line-height:1.6}
@@ -58,8 +58,8 @@ const tip = (t, emo) => `<div class="tip"><img src="${chibi(emo || 'chi-tay')}">
 const phone = (a, b) => b ? `<div class="ph ph2a"><img src="${img(a)}"></div><div class="ph ph2b"><img src="${img(b)}"></div>` : `<div class="ph ph1"><img src="${img(a)}"></div>`;
 function slide(T, n, o) {
   if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">Hướng dẫn sử dụng</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p><span class="who">${o.who}</span></div>
-    <img class="chibi" src="${chibi(o.emo || 'chao', o.st)}"><div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
-  if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div><img class="chibi" src="${chibi(o.emo || 'chao', o.st)}"></section>`;
+    <div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
+  if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div></section>`;
   const w = o.wide ? `<div class="dk"><img src="${img(o.wide)}"></div>` : (o.shots ? phone(...o.shots) : '');
   const tw = o.wide ? 520 : (o.shots && o.shots[1] ? 560 : 640);
   return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}${o.right || ''}</section>`;
@@ -81,7 +81,12 @@ const DOCS = {
     { k: 'Báo cáo', h: 'Báo cáo tuần · tháng · học kỳ · cả năm', wide: 'd_bc', steps: ['Chọn kỳ: <b>Tuần · Tháng · Học kỳ · Cả năm</b> (theo tháng / tuần ở thanh trên).', '<b>In / Lưu PDF · Tải Excel · Tóm tắt gửi phụ huynh</b>.', '4 ô số kèm <b>▲▼ so với kỳ trước</b> (xanh tốt lên, đỏ kém đi).', 'Xếp loại + chỉ tiêu, biểu đồ, <b>thi đua tổ</b>, lỗi theo nhóm, tuyên dương.'] },
     { k: 'Báo cáo', h: 'Nhận xét tự soạn từ số liệu', wide: 'd_bc3', steps: ['<b>Nhận xét chung</b> soạn sẵn: sĩ số, vi phạm, xếp loại, lỗi hay mắc, tổ dẫn đầu, tuyên dương.', '<b>Phương hướng</b> gợi ý theo nhóm lỗi nhiều nhất.', '<b>Viết lại tự động</b> nếu muốn soạn lại từ số liệu mới nhất.'], tip: 'Cô sửa thẳng vào khung — máy tự lưu, bản in dùng đúng nội dung đã sửa. Phía trên có danh sách học sinh cần quan tâm kèm lý do.', emo: 'huong-dan' },
     { k: 'Báo cáo', h: 'In theo mẫu văn bản · gửi phụ huynh', steps: ['<b>In / Lưu PDF</b>: quốc hiệu, mục I–VII, chữ ký GVCN, phụ lục bảng từng học sinh.', '<b>Tải Excel</b>: toàn bộ số liệu báo cáo.', '<b>Tóm tắt gửi phụ huynh</b>: sao chép đoạn tin, dán vào nhóm Zalo.'], tip: 'Tóm tắt gửi phụ huynh chỉ nêu tên các em được tuyên dương — không nêu tên học sinh vi phạm.', emo: 'cam-on', right: `<img class="pp" src="${img('bc_print')}">` },
-    { k: 'Quản lý lớp', h: 'Tài khoản cán bộ lớp', shots: ['accounts', 'accform'], steps: ['<b>Cài đặt ▸ Tài khoản & phân quyền ▸ Thêm</b>.', 'Nhập <b>email</b> của em (email em dùng hằng ngày).', 'Chọn <b>vai trò</b>: Lớp trưởng (ghi cả lớp) hoặc Tổ trưởng.', 'Chọn <b>tổ phụ trách</b> ▸ <b>Thêm tài khoản</b>. Em đăng nhập bằng email + mã, không cần mật khẩu.'], tip: 'Khoá tạm một em: mở tài khoản ▸ Trạng thái: Đã khoá. Tài khoản quản trị hệ thống luôn giữ quyền để không bị khoá nhầm.', emo: 'nghiem' },
+    { k: 'Quản lý lớp', h: 'Ai được làm gì trong sổ', shots: ['quyen'], html: `<div class="grid3" style="grid-template-columns:1fr;gap:10px;margin-top:4px">
+      <div class="card"><b>GVCN — toàn quyền</b><span>Ghi điểm cả lớp, sửa danh mục, cấu hình; <strong>cấp quyền cho email khác</strong>, khoá / xoá tài khoản; <strong>đổi tổ</strong>, thêm, <strong>xoá học sinh</strong>.</span></div>
+      <div class="card"><b>Lớp trưởng</b><span>Ghi điểm cả lớp, sửa danh mục điểm và cấu hình kỳ theo dõi.</span></div>
+      <div class="card"><b>Tổ trưởng</b><span>Chỉ ghi điểm cho tổ mình.</span></div></div>`, tip: 'Máy chủ cũng kiểm tra lại quyền, nên dù ai cố tình gửi lệnh sai vai trò cũng bị chặn.', emo: 'nghiem' },
+    { k: 'Quản lý lớp', h: 'Học sinh: thêm · đổi tổ · xoá', shots: ['hs_to', 'hs_form'], steps: ['<b>Cài đặt ▸ Đổi tổ hàng loạt</b> ▸ chạm chọn các em.', 'Chọn <b>tổ mới</b>.', 'Bấm <b>Áp dụng</b> — đổi tổ cho tất cả các em đã chọn.', 'Sửa từng em: <b>Sửa danh sách</b> ▸ chạm tên ▸ đổi tổ, trạng thái, hoặc <b>Xoá khỏi danh sách</b>.'], tip: 'Em chuyển lớp / nghỉ học: nên bấm "Đánh dấu nghỉ học / chuyển lớp" thay vì xoá — em đó ẩn khỏi sổ nhưng vẫn giữ lịch sử điểm.', emo: 'huong-dan' },
+    { k: 'Quản lý lớp', h: 'Tài khoản cán bộ lớp', shots: ['accounts', 'accform'], steps: ['<b>Cài đặt ▸ Tài khoản & phân quyền ▸ Thêm</b>.', 'Nhập <b>email</b> của em (email em dùng hằng ngày).', 'Chọn <b>vai trò</b>: Lớp trưởng (ghi cả lớp) hoặc Tổ trưởng.', 'Chọn <b>tổ phụ trách</b> ▸ <b>Thêm tài khoản</b>. Em đăng nhập bằng email + mã, không cần mật khẩu.'], tip: 'Khoá tạm một em: mở tài khoản ▸ Trạng thái: Đã khoá. Bấm Xoá tài khoản để thu hồi quyền hẳn — có hiệu lực ngay.', emo: 'nghiem' },
     { k: 'Cá nhân hoá', h: 'Giao diện & nhân vật cô giáo', shots: ['theme', 'theme2'], steps: ['Chọn <b>nhân vật cô giáo</b> — cô Thảo chibi với 10 vai (chủ nhiệm, lên lớp, áo dài, Tết, STEM…) — hoặc tắt.', 'Chọn <b>chủ đề màu & hình nền</b>: Mận chín, Chàm màu nước, Vở ô ly, Hoa phượng…'], html: `<p class="lead" style="font-size:16px;margin-top:4px">GVCN bấm <b>"Đặt … làm mặc định cho cả lớp"</b> để mọi người (và trang phụ huynh) cùng dùng chủ đề đó.</p>` },
     { k: 'Phụ huynh', h: 'Gửi trang xem sổ cho phụ huynh', html: `<p class="lead">Phụ huynh <b>không cần đăng nhập</b>: mở đường link (hoặc quét mã QR) để tìm tên con, xem xếp loại theo tháng / học kỳ / cả năm, từng lỗi và lần được khen, tải PDF / Excel. Không sửa được dữ liệu, không xem được ảnh bằng chứng.</p>
       <div class="grid3"><div class="card"><b>Link</b><span>${APP}/phu-huynh.html</span></div><div class="card"><b>Hướng dẫn riêng</b><span>File HDSD_Phu_huynh.pdf (nút ? ▸ Hướng dẫn cho phụ huynh)</span></div><div class="card"><b>Gửi qua Zalo nhóm lớp</b><span>Dán link + file PDF hướng dẫn</span></div></div>`, shots: ['ph_prof'] },

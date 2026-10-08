@@ -206,6 +206,28 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && [...document.querySelectorAll('#vBC .panelbox')].every(e => e.getBoundingClientRect().right <= innerWidth + 1)), 'điện thoại: báo cáo không tràn ngang');
   await p.context().close();
 
+  // 14. v3.4 — quản lý lớp & phân quyền
+  p = await P({ as: 'gvcn' }); p.on('dialog', d => d.accept()); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('cai'); }); await W(500);
+  ok(await p.isVisible('#qTbl') && await p.isVisible('#accAdd') && await p.isVisible('#hsTo'), 'GVCN: thấy bảng phân quyền, tài khoản, đổi tổ, danh sách lớp');
+  await p.click('#accAdd'); await W(300); await p.fill('#aEm', 'totruong3@example.com'); await p.fill('#aTen', 'Tổ trưởng 3'); await p.selectOption('#aRole', 'Tổ trưởng'); await p.selectOption('#aTo', '3');
+  await p.click('#aSave'); await W(500);
+  const sa = p.M.CALLS.filter(c => c.a === 'saveAccounts').pop();
+  ok(sa && sa.p.accounts.some(a => a.email === 'totruong3@example.com' && a.role === 'Tổ trưởng' && a.to === '3'), 'GVCN cấp quyền cho email mới (tổ trưởng tổ 3)');
+  await p.click('#hsTo'); await W(300); for (const i of [0, 1]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
+  await p.selectOption('#btTo', '4'); await p.click('#btSave'); await W(500);
+  ok(p.M.D.students.filter(s => s.to === '4').length === 12, 'đổi tổ hàng loạt: 2 bạn sang tổ 4');
+  const ma0 = await p.evaluate(() => S.students[5].ma);
+  await p.evaluate(ma => openStudentForm(ma), ma0); await W(300);
+  ok(await p.isVisible('#fNghi'), 'có nút "Đánh dấu nghỉ học / chuyển lớp" (giữ lịch sử)');
+  await p.click('#fDel'); await W(600);
+  ok(!p.M.D.students.some(s => s.ma === ma0), 'GVCN xoá được học sinh');
+  await p.context().close();
+  p = await P({ as: 'lt' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1000);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('cai'); }); await W(500);
+  ok(!(await p.isVisible('#accAdd')) && !(await p.isVisible('#hsTo')) && /Quyền của bạn/.test(await p.textContent('#vCai')), 'lớp trưởng: không có tài khoản / đổi tổ / xoá học sinh, thấy "Quyền của bạn"');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');

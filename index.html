@@ -2682,7 +2682,7 @@ function openAccountForm(email){
       <button class="btn ghost" id="aReset">Đặt lại mật khẩu</button>
       <button class="btn danger" id="aDel">Xoá tài khoản</button></div>`}
     <div class="note" style="padding:12px 0 0">Vai trò quyết định phạm vi ghi điểm: Tổ trưởng chỉ ghi cho tổ mình,
-      Lớp trưởng ghi cả lớp và sửa danh mục, GVCN/Quản trị toàn quyền.</div>
+      Lớp trưởng ghi cả lớp và sửa danh mục, GVCN toàn quyền.</div>
   </div>`;
   openPanel(isNew?'Thêm tài khoản':'Sửa tài khoản', isNew?'Cấp quyền vào sổ':esc(a.email), h);
   $('#aCancel').onclick=closePanel;
@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.3"></script>
+<script src="updates/notes.js?v=3.4"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.3';
+const HK_VER='3.4';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -4346,5 +4346,53 @@ function bcCopyFallback(t,done){ const ta=document.createElement('textarea'); ta
 if(S.me) buildNav();
 </script>
 
+<script id="v34-js">
+'use strict';
+/* ══ v3.4 — QUẢN LÝ LỚP & PHÂN QUYỀN rõ ràng ══
+   GVCN / Quản trị: thêm, sửa, khoá, xoá tài khoản (cấp quyền cho email khác), đổi tổ (học sinh + tổ phụ trách của tổ trưởng),
+   thêm / xoá học sinh. Lớp trưởng: ghi cả lớp + danh mục, cấu hình. Tổ trưởng: ghi tổ mình. (Backend kiểm lại mọi quyền.) */
+/* bảng gọn cho điện thoại; chú thích cột ở dòng dưới */
+const QUYEN=[['GVCN','Cả lớp','✓','✓','✓'],['Quản trị','Cả lớp','✓','✓','✓'],['Lớp trưởng','Cả lớp','✓','—','—'],['Tổ trưởng','Tổ mình','—','—','—']];
+function quyenHTML(){
+  const ad=S.me&&S.me.role==='Quản trị';   /* dòng Quản trị chỉ hiện với chính tài khoản quản trị */
+  return `<div class="tablewrap"><table class="bct qt" style="font-size:13px"><tr><th>Vai trò</th><th>Ghi điểm</th><th>Danh mục</th><th>Học sinh</th><th>Tài khoản</th></tr>
+    ${QUYEN.filter(r=>ad||r[0]!=='Quản trị').map(r=>`<tr${S.me&&S.me.role===r[0]?' style="background:var(--pale)"':''}><td><b>${r[0]}</b></td>${r.slice(1).map(x=>`<td style="${x==='✓'?'color:var(--ok);font-weight:800':x==='—'?'color:var(--mute)':''}">${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
+}
+const renderCai34=renderCai;
+window.renderCai=renderCai=function(){
+  renderCai34.apply(this,arguments);
+  const box=$('#vCai'); if(!box) return;
+  const hs=[...box.querySelectorAll('.sechead h2')].find(h=>/Danh sách lớp/.test(h.textContent));
+  if(isGVCN() && hs){
+    hs.textContent='Học sinh: thêm · đổi tổ · xoá';
+    hs.closest('.sechead').insertAdjacentHTML('beforebegin',`<div class="sechead"><h2>Phân quyền trong sổ</h2></div><div class="panelbox" id="qTbl">${quyenHTML()}
+      <div class="note" style="padding:8px 0 0">Danh mục = danh mục điểm, cấu hình kỳ · Học sinh = thêm, đổi tổ, xoá · Tài khoản = cấp / khoá quyền cho email khác.</div>
+      <div class="note" style="padding:6px 0 0">Chỉ <b>GVCN</b> được cấp quyền cho email khác (mục Tài khoản bên dưới), đổi tổ, thêm hoặc xoá học sinh.</div></div>`);
+  }else if(!isGVCN() && !isKhach()){
+    box.insertAdjacentHTML('beforeend',`<div class="sechead"><h2>Quyền của bạn</h2></div><div class="panelbox">${quyenHTML()}
+      <div class="note" style="padding:10px 0 0">Cần thêm tài khoản, đổi tổ hoặc xoá học sinh? Nhờ cô <b>GVCN</b>.</div></div>`);
+  }
+};
+const accForm34=openAccountForm;
+window.openAccountForm=openAccountForm=function(email){
+  accForm34.apply(this,arguments);
+  const ro=$('#aRole'); if(ro && S.me.role!=='Quản trị' && ro.value!=='Quản trị') [...ro.options].forEach(o=>{ if(o.value==='Quản trị') o.remove(); });
+  const n=[...$$('#pBody .note')].pop();
+  if(n) n.innerHTML='<b>Vai trò:</b> Tổ trưởng ghi điểm tổ mình · Lớp trưởng ghi cả lớp, sửa danh mục · <b>GVCN toàn quyền</b> (cấp quyền, đổi tổ, xoá học sinh).<br>Người được thêm đăng nhập bằng đúng email này và nhận mã 6 số — không cần mật khẩu. Khoá / xoá có hiệu lực ngay.';
+  const d=$('#aDel'); if(d){ const o=d.onclick; d.onclick=async()=>{ const me=String(S.me.email||'').toLowerCase(); if(String(email||'').toLowerCase()===me){ toast('Không tự xoá tài khoản của chính mình.'); return; } return o&&o(); }; }
+};
+const stuForm34=openStudentForm;
+window.openStudentForm=openStudentForm=function(ma){
+  stuForm34.apply(this,arguments);
+  const d=$('#fDel'); if(!d) return;
+  d.insertAdjacentHTML('beforebegin','<button class="btn ghost" id="fNghi">Đánh dấu nghỉ học / chuyển lớp</button>');
+  $('#fNghi').onclick=()=>{ $('#fTt').value='Chuyển lớp'; toast('Đã chọn "Chuyển lớp" — bấm Lưu thay đổi. Học sinh ẩn khỏi danh sách nhưng giữ lịch sử điểm.'); $('#fTt').focus(); };
+  const s=stu(ma), o=d.onclick;
+  d.onclick=async()=>{ if(!confirm('XOÁ HẲN '+(s?s.ten:'')+' khỏi danh sách lớp?\n\nNếu học sinh chỉ chuyển lớp / nghỉ học, nên chọn "Đánh dấu nghỉ học / chuyển lớp" để giữ hồ sơ.')) return;
+    window.__noConfirm=1; try{ const c=window.confirm; window.confirm=()=>true; await o(); window.confirm=c; }finally{ window.__noConfirm=0; } };
+};
+</script>
+
+<style id="v34-css">.bct.qt{width:100%;min-width:0;table-layout:fixed} .bct.qt td,.bct.qt th{padding:7px 8px;white-space:normal} .bct.qt th:first-child,.bct.qt td:first-child{width:27%} @media (max-width:760px){ .bct.qt{font-size:12px!important} .bct.qt td,.bct.qt th{padding:6px 5px} }</style>
 </body>
 </html>

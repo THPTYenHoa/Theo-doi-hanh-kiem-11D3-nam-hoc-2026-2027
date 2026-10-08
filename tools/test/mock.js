@@ -2,7 +2,7 @@
    newPage(browser, {as:'gvcn'|'lt'|'tt'|'ph'|null, lag, mobile, failWrite, flaky}) ; page.M.CALLS ghi mọi lệnh gọi. */
 const HO = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Ngô'];
 const DEM = ['Minh', 'Thu', 'Gia', 'Bảo', 'Ngọc', 'Hải', 'Khánh', 'Phương', 'Đức', 'Thanh'];
-const TEN = ['An', 'Bình', 'Chi', 'Dũng', 'Giang', 'Hà', 'Hưng', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Tú', 'Vy'];
+const TEN = ['An', 'Bình', 'Chi', 'Dũng', 'Hằng', 'Hà', 'Hưng', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Tú', 'Vy'];
 const TINY = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkaPhfDwAEZAJXIp2LhQAAAABJRU5ErkJggg==';
 function rnd(seed) { let s = seed; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
 function build() {
@@ -86,6 +86,8 @@ async function newPage(browser, o = {}) {
       else if (o.drop && o.drop.addEntries > 0) { o.drop.addEntries--; const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, '1', x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); (M.RID = M.RID || {})[p.rid] = { ok: true, ids: out.map(e => e[0]) }; return route.abort(); }
       else if (o.failWrite) res = { ok: false, error: 'Lỗi ghi (giả lập)' }; else { const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, (D.students.find(s => s.ma === x.maHS) || {}).to, x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); res = { ok: true, ids: out.map(e => e[0]) }; if (p.rid) (M.RID = M.RID || {})[p.rid] = res; } }
     else if (a === 'deleteEntry') { D.entries = D.entries.filter(e => e[0] !== p.id); res = { ok: true }; }
+    else if (a === 'saveStudents') { M.saved = (M.saved || 0) + 1; if (who !== 'gvcn') res = { ok: false, error: 'Chỉ GVCN hoặc quản trị được sửa danh sách lớp.' }; else { D.students = p.students; res = { ok: true, students: p.students }; } }
+    else if (a === 'saveAccounts') { res = who !== 'gvcn' ? { ok: false, error: 'Chỉ GVCN hoặc quản trị được sửa tài khoản.' } : { ok: true }; }
     else res = { ok: true };
     if (/^(addEntries|deleteEntry|updateEntry|addEvidence|delEvidence|saveRemark)$/.test(a) && res && res.ok && !res.dup) M.rev++;
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(res) });
