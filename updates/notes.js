@@ -1,6 +1,24 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-09-v3.1", version: "3.1", date: "2026-10-09",
+    title: "Ảnh bằng chứng, hướng dẫn từng bước và cô Thảo chibi",
+    summary: "Đính kèm ảnh chụp / tài liệu cho mỗi lần khen hoặc trừ điểm, hướng dẫn tận tay theo từng vai trò, giao diện sạch hơn và cô Thảo chibi đồng hành.",
+    items: [
+      { type: "new", title: "Ảnh / tài liệu bằng chứng",
+        text: "Khi ghi điểm, ở bước diễn giải bấm <b>Chụp ảnh</b> hoặc <b>Chọn ảnh / tài liệu</b> (biên bản, giấy khen, PDF…). Sau này bấm biểu tượng 📎 cạnh ghi nhận để xem lại hoặc thêm. File lưu trong thư mục Drive riêng của lớp — chỉ GVCN và cán bộ lớp xem được.",
+        img: "updates/v3.1/bang-chung.jpg" },
+      { type: "new", title: "Hướng dẫn từng bước theo vai trò",
+        text: "Lần đầu đăng nhập, cô Thảo chibi chỉ tận tay từng nút: GVCN 11 bước, cán bộ lớp 9 bước, phụ huynh 9 bước. Xem lại bất cứ lúc nào ở nút <b>?</b> ▸ <b>Hướng dẫn từng bước</b>, kèm file PDF hướng dẫn cho từng vai trò.",
+        img: "updates/v3.1/huong-dan.jpg" },
+      { type: "new", title: "Cô Thảo chibi đồng hành",
+        text: "Cô vui khi học sinh được khen, buồn khi trừ điểm, nghiêm khi tái phạm lần 2 và \"giận\" khi vi phạm nhiều lần. Cô có 10 vai (chủ nhiệm, lên lớp, áo dài, Tết, STEM, Trung thu…) tự đổi theo chủ đề; trang phụ huynh cô chào \"các bác\", gọi \"các con\". Đổi vai hoặc tắt ở <b>Giao diện ▸ Nhân vật cô giáo</b>.",
+        img: "updates/v3.1/co-giao.jpg" },
+      { type: "imp", title: "Giao diện sạch, gọn hơn",
+        text: "Thanh trên cùng và các khung chi tiết chuyển sang nền trắng, chữ rõ; trên điện thoại bỏ bớt nút để màn hình thoáng hơn." }
+    ]
+  },
+  {
     id: "2026-10-09-v3.0", version: "3.0", date: "2026-10-09",
     title: "Sổ hạnh kiểm phiên bản mới",
     summary: "Đăng nhập bằng email, ghi điểm không phải chờ, tra cứu học sinh trong 1 giây, đổi màu và hình nền theo ý thích, trang riêng cho phụ huynh.",

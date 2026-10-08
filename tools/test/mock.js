@@ -3,6 +3,7 @@
 const HO = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Ngô'];
 const DEM = ['Minh', 'Thu', 'Gia', 'Bảo', 'Ngọc', 'Hải', 'Khánh', 'Phương', 'Đức', 'Thanh'];
 const TEN = ['An', 'Bình', 'Chi', 'Dũng', 'Giang', 'Hà', 'Hưng', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Tú', 'Vy'];
+const TINY = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkaPhfDwAEZAJXIp2LhQAAAABJRU5ErkJggg==';
 function rnd(seed) { let s = seed; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
 function build() {
   const r = rnd(7), students = [];
@@ -41,6 +42,7 @@ async function newPage(browser, o = {}) {
   const page = await ctx.newPage();
   const D = build(), M = page.M = { CALLS: [], D };
   if (o.as) await ctx.addInitScript(t => { try { localStorage.setItem('hk_token', t); } catch (_) {} }, 'tok.' + o.as);
+  if (!o.tour) await ctx.addInitScript(() => { try { ['hk_tour_gvcn', 'hk_tour_cb', 'hkph_tour'].forEach(k => localStorage.setItem(k, '1')); } catch (_) {} });
   if (o.time) await page.clock.setFixedTime(new Date(o.time));
   await page.route(/script\.google\.com/, async route => {
     const req = route.request(); let body = {};
@@ -63,6 +65,11 @@ async function newPage(browser, o = {}) {
           : (M.otpAt = Date.now(), M.otpEmail = em, { ok: true, gap: 45, name: ME[who2].name }); }
     else if (a === 'otpVerify') { const who2 = EMAILS[String(p.email || '').toLowerCase()];
       res = p.code === '123456' && who2 ? (() => { const b = base(); b.me = ME[who2]; return { ok: true, token: 'tok.' + who2, me: ME[who2], boot: b }; })() : { ok: false, error: 'Mã chưa đúng. Còn 4 lần thử.' }; }
+    else if (a === 'addEvidence') { M.EV = M.EV || {}; const id = 'F' + (Object.keys(M.EV).length + 1); M.EV[id] = { n: p.name, m: p.mime, data: p.data };
+      (p.entryIds || []).forEach(eid => { const e = D.entries.find(x => x[0] === eid); if (e) e[13] = (e[13] ? e[13] + ';' : '') + id + '|' + p.name + '|' + p.mime; });
+      res = { ok: true, file: { id, n: p.name, m: p.mime } }; }
+    else if (a === 'getEvidence') { const f = (M.EV || {})[p.id] || { n: 'anh.jpg', m: 'image/png', data: TINY }; res = { ok: true, name: f.n, mime: f.m, data: f.data }; }
+    else if (a === 'delEvidence') { const e = D.entries.find(x => x[0] === p.entryId); if (e) e[13] = String(e[13] || '').split(';').filter(x => x.indexOf(p.fileId + '|') !== 0).join(';'); res = { ok: true }; }
     else if (a === 'saveTheme') { M.theme = p.theme; res = { ok: true, theme: p.theme }; }
     else if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
     else if (a === 'login') res = (body.payload && body.payload.pin) ? Object.assign({ token: 'tok.' + ({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }, { boot: (who2 => { const b = base(); b.me = ME[who2]; return b; })({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }) : { ok: false, error: 'Sai mật khẩu' };
@@ -78,4 +85,4 @@ async function newPage(browser, o = {}) {
   });
   return page;
 }
-module.exports = { newPage, build, ME };
+module.exports = { newPage, build, ME, TINY };
