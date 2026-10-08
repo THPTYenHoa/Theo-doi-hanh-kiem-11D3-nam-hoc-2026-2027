@@ -1,6 +1,21 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-10-v3.4", version: "3.4", date: "2026-10-10",
+    title: "Quản lý lớp và phân quyền rõ ràng",
+    summary: "Chỉ GVCN và Quản trị được cấp quyền cho email khác, đổi tổ, thêm hoặc xoá học sinh. Thêm / khoá tài khoản có hiệu lực ngay.",
+    items: [
+      { type: "new", title: "Bảng phân quyền",
+        text: "Vào <b>Cài đặt</b> ▸ <b>Phân quyền trong sổ</b> để xem ai được làm gì. <b>GVCN / Quản trị</b> toàn quyền: cấp quyền cho email khác, khoá / xoá tài khoản, đổi tổ, thêm, xoá học sinh. Lớp trưởng ghi cả lớp và sửa danh mục; tổ trưởng ghi tổ mình.",
+        img: "updates/v3.4/phan-quyen.jpg" },
+      { type: "imp", title: "Đổi tổ, xoá học sinh an toàn hơn",
+        text: "<b>Cài đặt ▸ Đổi tổ hàng loạt</b> ▸ chạm chọn các em ▸ chọn tổ mới ▸ Áp dụng. Khi sửa một em có nút <b>Đánh dấu nghỉ học / chuyển lớp</b> — em đó ẩn khỏi sổ nhưng vẫn giữ lịch sử điểm; chỉ xoá hẳn khi thật cần.",
+        img: "updates/v3.4/hoc-sinh.jpg" },
+      { type: "fix", title: "Tài khoản có hiệu lực ngay",
+        text: "Thêm email mới thì người đó đăng nhập được ngay; khoá hoặc xoá tài khoản thì người đó mất quyền ngay (trước đây có thể phải chờ vài phút)." }
+    ]
+  },
+  {
     id: "2026-10-09-v3.3", version: "3.3", date: "2026-10-09",
     title: "Báo cáo tuần, tháng, học kỳ, cả năm",
     summary: "Menu mới Báo cáo: số liệu so với kỳ trước, thi đua tổ, lỗi thường gặp, tuyên dương, học sinh cần quan tâm, lời nhận xét tự soạn — in đúng mẫu văn bản, tải Excel, gửi tóm tắt cho phụ huynh.",

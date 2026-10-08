@@ -74,3 +74,10 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   (`bcPeriod`, kỳ trước `prev`), số liệu `bcStats` (xếp loại dùng `xlOf` ⇒ tôn trọng xếp loại GVCN đã chốt), so kỳ trước `dl()`.
 - Lời văn `bcAuto` (nhận xét chung + phương hướng theo nhóm lỗi `GOI_Y`), GVCN sửa được, lưu `localStorage.hk_bc_<kỳ>`; đang gõ thì không vẽ lại.
 - Xuất: `bcPrint` (mẫu văn bản: quốc hiệu, mục I–VII, chữ ký, phụ lục) · `bcExcel` (CSV) · `bcCopy` (tóm tắt Zalo — KHÔNG nêu tên học sinh vi phạm).
+
+## v3.4 — Quản lý lớp & phân quyền
+- **Chỉ GVCN / Quản trị** (`isGVCN()`, backend kiểm lại): `saveAccounts` (cấp quyền email khác, khoá / xoá), `saveStudents` (thêm, đổi tổ, xoá HS).
+  Lớp trưởng: ghi cả lớp + danh mục + cấu hình; Tổ trưởng: ghi tổ mình. Bảng `QUYEN` (`v34-js`) hiện trong Cài đặt (`#qTbl`; cán bộ lớp thấy "Quyền của bạn").
+- Backend `apiSaveAccounts` gọi `cacheClear(true)` (trước đó thiếu ⇒ đệm `hk_acc` 30 phút). Không tự xoá tài khoản của mình; xoá HS có lựa chọn
+  "Đánh dấu nghỉ học / chuyển lớp" (giữ lịch sử). Mock `saveStudents` / `saveAccounts` chặn khi không phải GVCN.
+- HDSD: bìa và trang phân cách **không** có chibi (người dùng yêu cầu).

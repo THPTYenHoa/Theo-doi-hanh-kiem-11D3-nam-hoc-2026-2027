@@ -63,6 +63,12 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.evaluate(() => { const h = [...document.querySelectorAll('#vCai .sechead')].find(x => /Tài khoản/.test(x.textContent)); h && h.scrollIntoView(); }); await W(300);
   await shot(p, 'accounts', [['#accAdd', 1, 'tr'], ['#vCai [data-acc]', 2]]);
   await p.click('#accAdd'); await W(400); await shot(p, 'accform', [['#aEm', 1], ['#aRole', 2], ['#aTo', 3, 'tr'], ['#aSave', 4, 'tr']]);
+  await p.evaluate(() => { closePanel(); document.querySelector('#qTbl').scrollIntoView({ block: 'start' }); document.querySelector('#scroll').scrollBy(0, -60); }); await W(300);
+  await shot(p, 'quyen', [['#qTbl table', 1], ['#hsList', 2], ['#hsTo', 3, 'tr']]);
+  await p.click('#hsTo'); await W(300); for (const i of [0, 2]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
+  await shot(p, 'hs_to', [['#pBody .item .check.on', 1], ['#btTo', 2], ['#btSave', 3]]);
+  await p.evaluate(() => { closePanel(); openStudentForm(S.students[3].ma); }); await W(400);
+  await shot(p, 'hs_form', [['#fTo', 1, 'tr'], ['#fTt', 2, 'tr'], ['#fNghi', 3], ['#fDel', 4]]);
   await p.evaluate(() => { closePanel(); THEME.open(); }); await W(500); await shot(p, 'theme', [['#mscGrid', 1]]);
   await p.evaluate(() => { const g = [...document.querySelectorAll('#pBody .thgrp')][1]; g && g.scrollIntoView(); }); await W(300); await shot(p, 'theme2', [['#pBody .thgrid:nth-of-type(2)', 1]]);
   await p.evaluate(() => closePanel()); await W(200);
