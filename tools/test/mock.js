@@ -40,7 +40,10 @@ const ME = { gvcn: { name: 'Cô Chủ Nhiệm', role: 'GVCN', email: 'gvcn@examp
 async function newPage(browser, o = {}) {
   const ctx = await browser.newContext(Object.assign(o.mobile ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 } : { viewport: { width: 1360, height: 860 } }, { locale: 'vi-VN' }, o.ctx || {}));
   const page = await ctx.newPage();
-  const D = build(), M = page.M = { CALLS: [], D };
+  const D = build(), M = page.M = { CALLS: [], D, rev: 1 };
+  /* v3.2: người khác ghi / xoá (giả lập) ⇒ đổi rev */
+  M.ext = (ma, muc, diem, who = 'Lớp trưởng') => { const s = D.students.find(x => x.ma === ma); const e = ['X' + Date.now() + Math.random().toString(36).slice(2, 5), '2026-10-08 10:05', 10, 1, ma, s.to, diem < 0 ? 'Trừ' : 'Cộng', 'T01', muc, diem, 'loptruong@example.com', who, '']; D.entries.push(e); M.rev++; return e[0]; };
+  M.extDel = id => { D.entries = D.entries.filter(e => e[0] !== id); M.rev++; };
   if (o.as) await ctx.addInitScript(t => { try { localStorage.setItem('hk_token', t); } catch (_) {} }, 'tok.' + o.as);
   if (!o.tour) await ctx.addInitScript(() => { try { ['hk_tour_gvcn', 'hk_tour_cb', 'hkph_tour'].forEach(k => localStorage.setItem(k, '1')); } catch (_) {} });
   if (o.time) await page.clock.setFixedTime(new Date(o.time));
@@ -56,7 +59,7 @@ async function newPage(browser, o = {}) {
       accounts: [{ email: 'gvcn@example.com', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', active: true }],
       thongBao: { mode: 'Ngay', emails: '', nguong: 0, baoCong: true }, sheetUrl: 'https://docs.google.com/spreadsheets/d/FAKE/edit',
       quyDinh: { xepThuLop: 5, heSoTaiPham: 2, chiTieu: [{ tu: 1, den: 5, min: 0, max: 1 }, { tu: 6, den: 8, min: 1, max: 2 }] }, thang: 10, theme: M.theme || '',
-      data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks } });
+      data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks }, rev: o.oldBackend ? undefined : String(M.rev) });
     let res;
     if (o.lag) await new Promise(r => setTimeout(r, o.lag));
     if (a === 'otpStart') { const em = String(p.email || '').toLowerCase(); const who2 = EMAILS[em];
@@ -75,12 +78,16 @@ async function newPage(browser, o = {}) {
     else if (a === 'login') res = (body.payload && body.payload.pin) ? Object.assign({ token: 'tok.' + ({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }, { boot: (who2 => { const b = base(); b.me = ME[who2]; return b; })({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }) : { ok: false, error: 'Sai mật khẩu' };
     else if (a === 'loginKhach') { res = { ok: true, token: 'tok.ph', boot: base() }; res.boot.me = ME.ph; }
     else if (a === 'bootstrap') res = who ? base() : { ok: false, error: 'Phiên đăng nhập hết hạn' };
+    else if (a === 'sync') { res = o.oldBackend ? { ok: false, error: 'Không nhận ra yêu cầu: sync' }
+      : (p.rev === String(M.rev) ? { ok: true, rev: String(M.rev), same: true }
+      : { ok: true, rev: String(M.rev), entries: D.entries.filter(e => !p.thangs || p.thangs.includes(e[2])).map(e => e.slice()), remarks: D.remarks }); }
     else if (a === 'entries') { const th = p.thangs; res = { ok: true, entries: D.entries.filter(e => !th || th.includes(e[2])), remarks: D.remarks }; }
     else if (a === 'addEntries') { if (p.rid && M.RID && M.RID[p.rid]) { res = M.RID[p.rid]; }
       else if (o.drop && o.drop.addEntries > 0) { o.drop.addEntries--; const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, '1', x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); (M.RID = M.RID || {})[p.rid] = { ok: true, ids: out.map(e => e[0]) }; return route.abort(); }
       else if (o.failWrite) res = { ok: false, error: 'Lỗi ghi (giả lập)' }; else { const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, (D.students.find(s => s.ma === x.maHS) || {}).to, x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); res = { ok: true, ids: out.map(e => e[0]) }; if (p.rid) (M.RID = M.RID || {})[p.rid] = res; } }
     else if (a === 'deleteEntry') { D.entries = D.entries.filter(e => e[0] !== p.id); res = { ok: true }; }
     else res = { ok: true };
+    if (/^(addEntries|deleteEntry|updateEntry|addEvidence|delEvidence|saveRemark)$/.test(a) && res && res.ok && !res.dup) M.rev++;
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(res) });
   });
   return page;

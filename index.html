@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 /* ═══════════════ TOKENS ═══════════════ */
 :root{
@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.1"></script>
+<script src="updates/notes.js?v=3.2"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.1';
+const HK_VER='3.2';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3747,5 +3747,328 @@ THEME.open=function(){
   $$('#mscGrid [data-msc]').forEach(b=>b.onclick=()=>{ MASCOT.set(b.dataset.msc); THEME.open(); if(b.dataset.msc!=='off') MASCOT.say('vui','Cô sẽ đồng hành cùng lớp nhé!'); });
 };
 </script>
+<style id="v32-css">
+/* ══ v3.2 — sinh động hơn: thẻ tổng quan tuần, avatar theo tổ, nhãn xếp loại có nền, hiệu ứng thêm / xoá mượt ══ */
+:root{--t1c:#0E7C86;--t2c:#6B4FA0;--t3c:#C2761C;--t4c:#B4436C}
+#vGhi{min-width:0}
+#v32h{contain:inline-size;min-width:0;margin:4px 12px 12px;border-radius:18px;background:linear-gradient(135deg,var(--card) 0%,var(--paler) 55%,var(--pale) 100%);
+  border:1px solid var(--line);box-shadow:var(--sh-1);padding:14px;position:relative;overflow:hidden}
+#v32h::after{content:"";position:absolute;right:-60px;top:-70px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--teal-xl) 0%,transparent 70%);opacity:.55;pointer-events:none}
+#v32h .top{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+#v32h .msc{flex:none;width:58px;height:58px;display:grid;place-items:center}
+#v32h .msc img,#v32h .msc svg{width:58px;height:58px}
+#v32h .hi{flex:1;min-width:0}
+#v32h .hi b{display:block;font-size:17px;font-weight:800;color:var(--teal-d);line-height:1.25}
+#v32h .hi span{display:block;font-size:12.5px;color:var(--sub);margin-top:2px}
+#v32h .hi em{font-style:normal}
+#v32live{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--ok);background:var(--ok-bg);
+  border-radius:99px;padding:4px 10px;white-space:nowrap}
+#v32live i{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;animation:v32p 1.8s infinite}
+#v32live.off{color:var(--mute);background:var(--line2)} #v32live.off i{animation:none}
+#v32live.sync{color:var(--info);background:var(--info-bg)}
+@keyframes v32p{0%{box-shadow:0 0 0 0 rgba(30,132,73,.45)}70%{box-shadow:0 0 0 7px rgba(30,132,73,0)}100%{box-shadow:0 0 0 0 rgba(30,132,73,0)}}
+#v32h .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;position:relative;z-index:1}
+#v32h .tl{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:9px 10px;text-align:left;transition:transform .15s,border-color .15s,box-shadow .15s}
+#v32h .tl:hover{transform:translateY(-1px);box-shadow:var(--sh-2)}
+#v32h .tl.on{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-xl)}
+#v32h .tl .n{font-size:22px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+#v32h .tl .l{font-size:11.5px;color:var(--sub);font-weight:700;margin-top:2px;line-height:1.3}
+#v32h .tl .ic2{float:right;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:800}
+#v32h .tl.bad .n{color:var(--dang)} #v32h .tl.bad .ic2{background:var(--dang-bg);color:var(--dang)}
+#v32h .tl.good .n{color:var(--ok)} #v32h .tl.good .ic2{background:var(--ok-bg);color:var(--ok)}
+#v32h .tl.warn .n{color:var(--warn)} #v32h .tl.warn .ic2{background:var(--warn-bg);color:var(--warn)}
+#v32h .tl.tot .n{color:var(--teal-d)} #v32h .tl.tot .ic2{background:var(--pale);color:var(--teal)}
+#v32h .feed{margin-top:12px;position:relative;z-index:1}
+#v32h .feed h5{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+#v32h .fl{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+#v32h .fl::-webkit-scrollbar{display:none}
+#v32h .fi{flex:none;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 10px;max-width:270px;text-align:left}
+#v32h .fi .tx{min-width:0}
+#v32h .fi .tx b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v32h .fi .tx span{display:block;font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v32h .fi .pt{flex:none;font-weight:800;font-size:12.5px;border-radius:7px;padding:2px 6px}
+#v32h .fi .pt.m{background:var(--dang-bg);color:var(--dang)} #v32h .fi .pt.p{background:var(--ok-bg);color:var(--ok)}
+#v32h .clr{position:relative;z-index:1;margin-top:9px;font-size:12px;color:var(--teal-d);font-weight:700;background:var(--pale);border-radius:8px;padding:5px 10px}
+/* avatar theo tổ */
+.av32{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;letter-spacing:.02em}
+.av32.t1{background:var(--t1c)} .av32.t2{background:var(--t2c)} .av32.t3{background:var(--t3c)} .av32.t4{background:var(--t4c)}
+.av32.sm{width:28px;height:28px;font-size:10.5px}
+.row .idx{display:none}
+/* nhãn xếp loại có nền */
+.row .score{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.row .score .l{border-radius:99px;padding:1px 8px;font-size:11px}
+.row .score .l.r0{background:var(--ok-bg)} .row .score .l.r1{background:var(--info-bg)}
+.row .score .l.r2{background:var(--warn-bg)} .row .score .l.r3{background:var(--dang-bg)}
+.row .score .l.zero{background:var(--line2)}
+/* đầu nhóm tổ */
+.grouphead.g32{display:flex;align-items:center;gap:8px}
+.grouphead.g32 i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.grouphead.g32 em{margin-left:auto;font-style:normal;font-weight:700;letter-spacing:0;text-transform:none;color:var(--sub);font-size:11.5px}
+/* hiệu ứng: mục mới trượt vào, mục xoá thu gọn, điểm đổi nảy lên */
+@keyframes v32in{0%{opacity:0;transform:translateY(-6px) scale(.98);background:var(--teal-xl)}35%{opacity:1;transform:none}100%{background:transparent}}
+.ev.fresh,.entry.fresh{animation:v32in 1.6s cubic-bezier(.2,.8,.2,1) both;border-radius:9px}
+.ev,.entry{transition:opacity .2s,transform .2s,max-height .25s,margin .25s,padding .25s}
+.ev.out,.entry.out{opacity:0;transform:translateX(18px);max-height:0!important;margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;overflow:hidden}
+@keyframes v32bu{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
+@keyframes v32fd{0%{background:var(--dang-bg)}100%{background:transparent}}
+@keyframes v32fu{0%{background:var(--ok-bg)}100%{background:transparent}}
+.row.bump .score .n{animation:v32bu .5s cubic-bezier(.3,1.6,.5,1)}
+.row.bump.down{animation:v32fd 1.4s ease-out} .row.bump.up{animation:v32fu 1.4s ease-out}
+/* thông báo người khác vừa ghi */
+#v32pop{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:9000;transform:translate(-50%,-140%);transition:transform .35s cubic-bezier(.2,.9,.25,1.2);
+  display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-3);padding:9px 14px 9px 10px;max-width:min(440px,calc(100vw - 24px))}
+#v32pop.on{transform:translate(-50%,0)}
+#v32pop .tx{font-size:13px;line-height:1.4;min-width:0} #v32pop .tx span{display:block;font-size:11.5px;color:var(--mute)}
+#v32pop .lv{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ok);animation:v32p 1.8s infinite}
+/* thẻ số liệu ở Hạnh kiểm / Thống kê */
+.kpis{gap:8px;background:transparent;border:0;box-shadow:none}
+.kpi{border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-1);position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal-l)}
+.kpi:has(.n.r0)::before{background:var(--ok)} .kpi:has(.n.r1)::before{background:var(--info)}
+.kpi:has(.n.r2)::before{background:var(--warn)} .kpi:has(.n.r3)::before{background:var(--dang)}
+@media (max-width:760px){
+  #v32h{margin:2px 10px 10px;padding:12px}
+  #v32h .msc,#v32h .msc img,#v32h .msc svg{width:48px;height:48px}
+  #v32h .hi b{font-size:15.5px}
+  #v32h .tiles{gap:6px}
+  #v32h .tl{padding:8px 7px;border-radius:11px}
+  #v32h .tl .n{font-size:19px} #v32h .tl .l{font-size:10.5px}
+  #v32h .tl .ic2{display:none}
+  .av32{width:30px;height:30px;font-size:11px}
+  #v32h{padding:10px 10px 9px;border-radius:15px}
+  #v32h .msc,#v32h .msc img,#v32h .msc svg{width:40px;height:40px}
+  #v32h .top{gap:9px} #v32h .hi b{font-size:15px} #v32h .hi span{font-size:11.5px;margin-top:0} #v32h .hi .ph{display:none}
+  #v32live{padding:3px 8px;font-size:11px}
+  #v32h .tiles{margin-top:8px}
+  #v32h .tl{padding:6px 7px 5px} #v32h .tl .n{font-size:17px} #v32h .tl .l{font-size:10.5px;margin-top:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #v32h .feed{margin-top:7px} #v32h .feed h5{display:none}
+  #v32h .fi:not(:first-child){display:none} #v32h .fi{max-width:none;width:100%;padding:5px 8px;border-radius:10px}
+  #v32h .fi .av32{display:none}
+}
+#v32h .tl .ls{display:none}
+@media (max-width:760px){ #v32h .tl .lf{display:none} #v32h .tl .ls{display:inline} }
+@media (min-width:761px){ #v32h{margin-left:26px;margin-right:26px} }
+@media (prefers-reduced-motion:reduce){ .ev.fresh,.entry.fresh,.row.bump,.row.bump .score .n,#v32live i,#v32pop .lv{animation:none!important} }
+</style>
+<script id="v32-js">
+'use strict';
+/* ══ v3.2 — NHANH & TRỰC TIẾP ══
+   1. ĐỒNG BỘ TRỰC TIẾP (LIVE): hỏi backend `sync` ~4 giây/lần khi đang mở app (kèm `rev`); chưa ai ghi ⇒ máy chủ trả ngay "không đổi"
+      (không đọc Sheet); có thay đổi ⇒ nhận dữ liệu tháng đang xem, mục mới của người khác hiện kèm hiệu ứng + thông báo nhỏ.
+      Ẩn tab ⇒ dừng; mở lại / có mạng ⇒ hỏi ngay. Backend cũ (chưa có `sync`) ⇒ quay về đồng bộ 60 giây như trước.
+   2. MƯỢT: mục vừa thêm trượt vào (FRESH), mục xoá thu gọn rồi mới biến mất, điểm đổi thì nảy lên + nháy màu.
+   3. SINH ĐỘNG: thẻ tổng quan tuần (cô Thảo chào, 4 ô số bấm để lọc, "vừa cập nhật"), avatar theo tổ, nhãn xếp loại có nền.
+   4. NHANH KHI MỞ: font chữ không chặn hiển thị; đánh thức máy chủ ngay ở màn đăng nhập. */
+const FRESH=new Map();                                  /* id → lúc bắt đầu hiệu ứng */
+const FRESH_MS=1600;
+function freshAt(id){
+  if(FRESH.has(id)) return FRESH.get(id);
+  for(const t in HQ.map) if(HQ.map[t]===id && FRESH.has(t)) return FRESH.get(t);
+  return 0;
+}
+function freshAttr(id){ const t=freshAt(id), el=Date.now()-t; return (t && el<FRESH_MS) ? ` fresh" style="animation-delay:-${el}ms` : ''; }
+function markFresh(ids){ const now=Date.now(); ids.forEach(id=>FRESH.set(id,now)); setTimeout(()=>{ const n=Date.now(); FRESH.forEach((v,k)=>{ if(n-v>FRESH_MS) FRESH.delete(k); }); },FRESH_MS+200); }
+const ini2=n=>{ const p=String(n||'').trim().split(/\s+/); return ((p.length>1?p[p.length-2][0]:'')+(p[p.length-1]||'?')[0]).toUpperCase(); };
+const avHTML=(s,sm)=>`<span class="av32 t${esc(String(s&&s.to||'1'))}${sm?' sm':''}">${esc(ini2(s&&s.ten))}</span>`;
+function agoTxt(luc){
+  const m=/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/.exec(String(luc||'')); if(!m) return '';
+  const d=new Date(+m[1],m[2]-1,+m[3],+m[4],+m[5]), s=(Date.now()-d)/1000;
+  if(s<60) return 'vừa xong'; if(s<3600) return Math.floor(s/60)+' phút trước'; if(s<86400) return Math.floor(s/3600)+' giờ trước';
+  if(s<7*86400) return Math.floor(s/86400)+' ngày trước'; return m[3]+'/'+m[2];
+}
+
+/* ── 2. hiệu ứng trong danh sách & bảng học sinh ── */
+const rowExtra32=rowExtra;
+window.rowExtra=rowExtra=function(s){
+  let h=rowExtra32(s); if(!h) return h;
+  const show=entriesOf(s.ma,S.thang,S.tuan).slice(-4).reverse(); let i=0;
+  return h.replace(/<span class="ev">/g, m=>{ const e=show[i++]; return e ? `<span class="ev${freshAttr(e[E_ID])}" data-eid="${esc(e[E_ID])}">` : m; });
+};
+const entryHTML32=entryHTML;
+window.entryHTML=entryHTML=function(e){ const h=entryHTML32(e); return h.replace('<div class="entry"', `<div class="entry${freshAttr(e[E_ID])}" data-eid="${esc(e[E_ID])}"`); };
+const PREV={k:'',m:{}};
+const renderGhi32=renderGhi;
+window.renderGhi=renderGhi=function(){
+  renderGhi32.apply(this,arguments);
+  const k=S.thang+'|'+S.tuan, same=PREV.k===k, nm={};
+  $$('#listGhi .row').forEach(b=>{
+    const s=stu(b.dataset.ma); if(!s) return;
+    const nmEl=b.querySelector('.nm'); if(nmEl && !b.querySelector('.av32')) nmEl.insertAdjacentHTML('beforebegin', avHTML(s));
+    const v=weekScore(s.ma,S.tuan); nm[s.ma]=v;
+    if(same && PREV.m[s.ma]!==undefined && PREV.m[s.ma]!==v){ b.classList.add('bump', v<PREV.m[s.ma]?'down':'up'); setTimeout(()=>b.classList.remove('bump','up','down'),1500); }
+  });
+  PREV.k=k; PREV.m=nm;
+  $$('#listGhi .grouphead').forEach(g=>{
+    const to=(g.textContent.match(/\d+/)||[''])[0]; if(!to || g.classList.contains('g32')) return;
+    const list=visibleStudents().filter(s=>String(s.to)===to), tong=list.reduce((a,s)=>a+weekScore(s.ma,S.tuan),0);
+    g.classList.add('g32'); g.innerHTML=`<i style="background:var(--t${to}c)"></i>Tổ ${esc(to)}<em>${list.length} bạn · ${tong>0?'+':''}${tong} điểm tuần</em>`;
+  });
+  v32Hero();
+};
+/* bộ lọc nhanh từ thẻ tổng quan */
+const vis32=visibleStudents;
+window.visibleStudents=visibleStudents=function(){
+  let l=vis32.apply(this,arguments); const f=S.v32f; if(!f) return l;
+  const wk=ma=>entriesOf(ma,S.thang,S.tuan);
+  if(f==='bad')  l=l.filter(s=>wk(s.ma).some(e=>e[E_DIEM]<0));
+  if(f==='good') l=l.filter(s=>wk(s.ma).some(e=>e[E_DIEM]>0));
+  if(f==='warn') l=l.filter(s=>rankIdx(weekScore(s.ma,S.tuan))>0);
+  return l;
+};
+/* xoá: thu gọn mục trên màn hình rồi mới xoá dữ liệu */
+const delEntry32=delEntry;
+window.delEntry=delEntry=async function(id){
+  const els=$$('[data-eid="'+String(id).replace(/"/g,'')+'"]').filter(x=>x.offsetParent);
+  if(els.length && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    els.forEach(x=>{ x.style.maxHeight=x.offsetHeight+'px'; x.offsetHeight; x.classList.add('out'); });
+    await new Promise(r=>setTimeout(r,220));
+  }
+  return delEntry32.apply(this,arguments);
+};
+/* thêm: đánh dấu mục mới để trượt vào */
+const ghiThucTe32=ghiThucTe;
+window.ghiThucTe=ghiThucTe=async function(){
+  const before=new Set(S.entries.map(e=>e[E_ID]));
+  const p=ghiThucTe32.apply(this,arguments);
+  markFresh(S.entries.filter(e=>!before.has(e[E_ID])).map(e=>e[E_ID]));
+  return p;
+};
+
+/* ── 3. thẻ tổng quan tuần ── */
+let heroN={};
+function countUp(el,to){
+  const from=heroN[el.dataset.k]; heroN[el.dataset.k]=to;
+  if(from===undefined || from===to || matchMedia('(prefers-reduced-motion:reduce)').matches){ el.textContent=el.dataset.fmt?el.dataset.fmt.replace('#',to):to; return; }
+  const t0=performance.now(), d=450;
+  const f=t=>{ const k=Math.min(1,(t-t0)/d), v=Math.round(from+(to-from)*(1-Math.pow(1-k,3))); el.textContent=el.dataset.fmt?el.dataset.fmt.replace('#',v):v; if(k<1) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+}
+function v32Hero(){
+  const vg=$('#vGhi'); if(!vg || !S.me || !S.cfg) return;
+  let h=$('#v32h');
+  if(!h){ h=document.createElement('div'); h.id='v32h'; vg.insertBefore(h, vg.firstChild); }
+  const f0=S.v32f; S.v32f=null; const list=visibleStudents(); S.v32f=f0;
+  const wk=S.entries.filter(e=>e[E_THANG]===S.thang && e[E_TUAN]===S.tuan && list.some(s=>s.ma===e[E_MA]));
+  const nBad=wk.filter(e=>e[E_DIEM]<0).length, nGood=wk.filter(e=>e[E_DIEM]>0).length;
+  const nWarn=list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))>0).length;
+  const pTot=list.length?Math.round(100*list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))===0).length/list.length):0;
+  const gv=S.me.role==='GVCN'||S.me.role==='Quản trị';
+  const hi=gv?'Chào cô '+esc(ten1(S.me.name))+'!':'Chào '+esc(ten1(S.me.name))+'!';
+  const emo=nBad===0?(nGood?'vui':'chao'):(nWarn>=Math.max(5,list.length/3)?'lo-lang':nGood>=nBad?'co-vu':'huong-dan');
+  const pham=S.filterTo==='all'?'Cả lớp '+esc(S.cfg.lop||'11D3'):'Tổ '+esc(S.filterTo);
+  const feed=S.entries.filter(e=>e[E_THANG]===S.thang && list.some(s=>s.ma===e[E_MA])).slice().sort((a,b)=>String(b[E_LUC]).localeCompare(String(a[E_LUC]))).slice(0,6);
+  const sig=[S.thang,S.tuan,S.filterTo,f0,emo,feed.map(e=>e[E_ID]+e[E_DIEM]).join(),window.MASCOT&&MASCOT.style()].join('|');
+  if(h.dataset.sig!==sig){
+    h.dataset.sig=sig; heroN={};
+    const T=(k,cls,ic,l,ls,fmt)=>`<button class="tl ${cls}${f0===k?' on':''}" data-f="${k}"><span class="ic2">${ic}</span><div class="n" data-k="${k}"${fmt?` data-fmt="${fmt}"`:''}>0</div><div class="l"><span class="lf">${l}</span><span class="ls">${ls}</span></div></button>`;
+    h.innerHTML=`<div class="top"><span class="msc">${window.MASCOT&&MASCOT.style()!=='off'?MASCOT.img(emo,58):''}</span>
+      <div class="hi"><b>${hi}</b><span><em class="ph">${pham} · </em>Tuần ${S.tuan} · ${esc(thangLabel(S.thang,true))}</span></div><span id="v32live"><i></i><span>Trực tiếp</span></span></div>
+      <div class="tiles">${T('bad','bad','−','Lượt trừ điểm','Lượt trừ')}${T('good','good','+','Lượt khen','Lượt khen')}${T('warn','warn','!','Cần nhắc nhở','Cần nhắc')}${T('tot','tot','✓','Đạt loại Tốt','Đạt Tốt','#%')}</div>
+      ${f0?`<button class="clr" id="v32clr">Đang lọc: ${{bad:'bạn bị trừ điểm',good:'bạn được khen',warn:'bạn cần nhắc nhở'}[f0]} · Bỏ lọc ✕</button>`:''}
+      ${feed.length?`<div class="feed"><h5>Vừa cập nhật trong tháng</h5><div class="fl">${feed.map(e=>{ const s=stu(e[E_MA]);
+        return `<button class="fi" data-ma="${esc(e[E_MA])}">${avHTML(s,1)}<span class="tx"><b>${esc(ten1(s&&s.ten))} · ${esc(e[E_ND]||e[E_MUC])}</b><span>${esc(e[E_TEN])} · ${esc(agoTxt(e[E_LUC]))}</span></span><span class="pt ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span></button>`; }).join('')}</div></div>`:''}`;
+    $$('#v32h [data-f]').forEach(b=>b.onclick=()=>{ const k=b.dataset.f; if(k==='tot') return; S.v32f=S.v32f===k?null:k; renderGhi(); });
+    const c=$('#v32clr'); if(c) c.onclick=()=>{ S.v32f=null; renderGhi(); };
+    $$('#v32h .fi').forEach(b=>b.onclick=()=>openStudent(b.dataset.ma));
+  }
+  [['bad',nBad],['good',nGood],['warn',nWarn],['tot',pTot]].forEach(([k,v])=>{ const el=h.querySelector('.n[data-k="'+k+'"]'); if(el) countUp(el,v); });
+  liveBadge();
+}
+
+/* ── 1. ĐỒNG BỘ TRỰC TIẾP ── */
+const LIVE={rev:null,t:null,busy:false,fails:0,off:false,last:0,act:Date.now(),started:false};
+function liveBadge(){
+  const b=$('#v32live'); if(!b) return;
+  const ok=!LIVE.off && LIVE.last && Date.now()-LIVE.last<30000 && navigator.onLine!==false;
+  b.className=ok?'':(LIVE.off?'off':(LIVE.fails?'off':'sync'));
+  b.lastElementChild.textContent=ok?'Trực tiếp':(LIVE.off?'Tự cập nhật 1 phút':(LIVE.fails?'Mất kết nối':'Đang kết nối…'));
+}
+function liveSched(ms){ clearTimeout(LIVE.t); LIVE.t=setTimeout(liveTick, ms); }
+function liveGap(){
+  if(LIVE.fails) return Math.min(30000, 3000*Math.pow(2,LIVE.fails));
+  return Date.now()-LIVE.act>120000 ? 15000 : 4000;               /* không thao tác 2 phút ⇒ thưa hơn */
+}
+async function liveTick(){
+  if(LIVE.off || !S.token || !S.me || !S.cfg) return liveSched(5000);
+  if(document.visibilityState==='hidden') return;                  /* mở lại tab ⇒ visibilitychange gọi tiếp */
+  if(LIVE.busy || HQ.run || HQ.list.some(o=>!o.err)) return liveSched(1500);
+  LIVE.busy=true; const th=S.thang;
+  try{
+    const r=await rawApi('sync',{rev:LIVE.rev, thangs:[th]},15000);
+    LIVE.fails=0; LIVE.last=Date.now();
+    if(!r.same && th===S.thang && !(HQ.run || HQ.list.some(o=>!o.err))) await liveApply(r, th);
+    if(r.rev) LIVE.rev=r.rev;
+  }catch(e){
+    if(e.srv && /Không nhận ra yêu cầu/.test(e.message||'')){ LIVE.off=true; liveBadge(); return; }   /* backend cũ */
+    if(e.srv && /đăng nhập|Phiên/i.test(e.message||'')){ LIVE.off=true; liveBadge(); return; }
+    LIVE.fails++;
+  }finally{ LIVE.busy=false; liveBadge(); }
+  liveSched(liveGap());
+}
+async function liveApply(r, th){
+  const before=new Map(S.entries.filter(e=>e[E_THANG]===th).map(e=>[e[E_ID],e]));
+  const inc=(r.entries||[]).filter(e=>e[E_THANG]===th);
+  const incIds=new Set(inc.map(e=>e[E_ID]));
+  const gone=[...before.keys()].filter(id=>!isTmp(id) && !incIds.has(id));
+  const added=inc.filter(e=>!before.has(e[E_ID]));
+  const changed=inc.filter(e=>{ const o=before.get(e[E_ID]); return o && (o[E_DIEM]!==e[E_DIEM] || o[E_GC]!==e[E_GC] || o[E_TUAN]!==e[E_TUAN] || o[13]!==e[13]); });
+  const rmChanged=JSON.stringify(S.remarks.filter(x=>x.thang===th))!==JSON.stringify(r.remarks||[]);
+  if(!gone.length && !added.length && !changed.length && !rmChanged) return;
+  /* mục bị người khác xoá: thu gọn trước */
+  const els=gone.flatMap(id=>$$('[data-eid="'+id+'"]').filter(x=>x.offsetParent));
+  if(els.length){ els.forEach(x=>{ x.style.maxHeight=x.offsetHeight+'px'; x.offsetHeight; x.classList.add('out'); }); await new Promise(z=>setTimeout(z,220)); }
+  S.entries=S.entries.filter(e=>e[E_THANG]!==th).concat(inc.map(e=>e.slice()));
+  S.remarks=S.remarks.filter(x=>x.thang!==th).concat(r.remarks||[]);
+  S.loaded.add(th); hqOverlay();
+  const mine=e=>String(e[E_EM]||'').toLowerCase()===String(S.me.email||'').toLowerCase();
+  const others=added.filter(e=>!mine(e));
+  markFresh(others.concat(changed).map(e=>e[E_ID]));
+  if(S.allLoaded){ clearTimeout(LIVE.yt); LIVE.yt=setTimeout(()=>{ loadAllMonths(true).catch(()=>{}); }, 20000); }   /* các tháng khác: làm mới sau */
+  saveCache();
+  if(S.view==='cai') return;                                        /* đang sửa cài đặt ⇒ không vẽ lại form */
+  renderAll();
+  const typing=document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && document.activeElement.closest('#pBody');
+  if(S.panelKind==='student' && S.ctxMa && !typing) drawStudentPanel();
+  if(S.panelKind==='profile' && S.ctxMa && !typing && window.openProfile){ try{ openProfile(S.ctxMa); }catch(_){} }
+  if(others.length) livePop(others);
+}
+function livePop(list){
+  let p=$('#v32pop'); if(!p){ p=document.createElement('div'); p.id='v32pop'; document.body.appendChild(p); }
+  const e=list[list.length-1], s=stu(e[E_MA]);
+  p.innerHTML=`<span class="lv"></span>${avHTML(s,1)}<span class="tx">${list.length>1?`<b>${esc(e[E_TEN])}</b> vừa ghi <b>${list.length}</b> mục mới`
+    :`<b>${esc(e[E_TEN])}</b> vừa ghi: ${esc(ten1(s&&s.ten))} <b class="${e[E_DIEM]<0?'r3':'r0'}">${nz(e[E_DIEM])}</b>`}<span>${esc(e[E_ND]||e[E_MUC])}</span></span>`;
+  p.onclick=()=>{ p.classList.remove('on'); if(s) openStudent(s.ma); };
+  requestAnimationFrame(()=>p.classList.add('on'));
+  clearTimeout(livePop.t); livePop.t=setTimeout(()=>p.classList.remove('on'),4200);
+}
+['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,()=>{ const was=Date.now()-LIVE.act>120000; LIVE.act=Date.now(); if(was && LIVE.started) liveSched(200); },{passive:true,capture:true}));
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && LIVE.started){ LIVE.act=Date.now(); liveSched(150); } });
+addEventListener('online',()=>{ if(LIVE.started){ LIVE.fails=0; liveSched(100); } });
+addEventListener('focus',()=>{ if(LIVE.started && Date.now()-LIVE.last>3000) liveSched(100); });
+setInterval(liveBadge,5000);
+/* thay vòng 60 giây cũ: đồng bộ trực tiếp + làm mới cả năm 10 phút/lần */
+window.startPoll=startPoll=function(){
+  clearInterval(S.pollT);
+  S.pollT=setInterval(()=>{ if(document.visibilityState==='visible' && !S.busy && (LIVE.off || Date.now()-fullAt>600000)) refresh(true); }, LIVE.off?60000:120000);
+  if(!LIVE.started){ LIVE.started=true; liveSched(800); }
+};
+/* rev đi kèm bootstrap / otpVerify ⇒ lần hỏi đầu tiên không phải tải lại dữ liệu */
+const applyBase32=applyBase;
+window.applyBase=applyBase=function(b){ applyBase32.apply(this,arguments); if(b && b.rev) LIVE.rev=b.rev; };
+/* ghi xong ⇒ hỏi ngay để thấy trạng thái đã xác nhận */
+const hqStep32=hqStep;
+hqStep=async function(){ const had=HQ.list.length; await hqStep32.apply(this,arguments); if(had && !HQ.list.length && LIVE.started) liveSched(600); };
+/* màn đăng nhập: đánh thức máy chủ Apps Script (lần gọi đầu thường chậm 2–4 giây) */
+let woke=0;
+function wake(){ if(Date.now()-woke<240000) return; woke=Date.now(); try{ fetch(GAS_URL,{method:'GET',credentials:'omit',cache:'no-store'}).catch(()=>{}); }catch(_){} }
+const showLogin32=showLogin;
+window.showLogin=showLogin=function(){ wake(); return showLogin32.apply(this,arguments); };
+document.addEventListener('input',e=>{ if(e.target && e.target.id==='lgEm') wake(); },true);
+/* chủ đề mặc định cũng có nền nhẹ */
+const thApply32=THEME.apply;
+THEME.apply=function(t){ thApply32.apply(this,arguments); const c=(t||THEME.cur()); if(c.id==='mac-dinh') document.documentElement.style.setProperty('--hk-bgimg', themePattern(c)); };
+</script>
+
 </body>
 </html>

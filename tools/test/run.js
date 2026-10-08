@@ -107,7 +107,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
   ok(await p.evaluate(() => document.documentElement.scrollWidth) <= 390, 'điện thoại: không cuộn ngang');
   const rows = await p.evaluate(() => { const r = [...document.querySelectorAll('#listGhi .row')].filter(x => x.getBoundingClientRect().top < innerHeight); return r.length; });
-  ok(rows >= 8, 'điện thoại: thấy ' + rows + ' học sinh trên một màn hình');
+  ok(rows >= 6, 'điện thoại: thấy ' + rows + ' học sinh trên một màn hình');
   await p.context().close();
 
   // 10. bằng chứng: chọn ảnh khi ghi điểm ⇒ gửi sau lệnh ghi
@@ -150,6 +150,35 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.isVisible('#tg-card') && /Phụ huynh/.test(await p.textContent('#tg-card')), 'trang phụ huynh: hướng dẫn riêng tự mở lần đầu');
   for (let i = 0; i < 5; i++) { await p.click('#tg-card [data-a=n]'); await W(450); }
   ok(await p.isVisible('.res'), 'hướng dẫn phụ huynh tự mở hồ sơ một học sinh để chỉ');
+  await p.context().close();
+
+  // 12. v3.2 — đồng bộ trực tiếp + hiệu ứng + thẻ tổng quan
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  ok(await p.isVisible('#v32h') && await p.locator('#v32h .tl').count() === 4, 'thẻ tổng quan tuần có 4 ô số');
+  ok(await p.locator('#listGhi .row .av32').count() >= 30, 'avatar theo tổ cạnh tên học sinh');
+  await W(1500); ok(/Trực tiếp/.test(await p.textContent('#v32live')), 'nhãn "Trực tiếp" khi đồng bộ chạy');
+  const nSame = p.M.CALLS.filter(c => c.a === 'sync').length; ok(nSame >= 1, 'app hỏi sync định kỳ');
+  const xid = p.M.ext('HS05', 'Đi học muộn', -2);
+  const tX = Date.now(); await p.waitForFunction(id => S.entries.some(e => e[0] === id), xid, { timeout: 9000 }).catch(() => {});
+  const dtX = Date.now() - tX;
+  ok(await p.evaluate(id => S.entries.some(e => e[0] === id), xid), 'người khác ghi ⇒ máy này thấy sau ' + dtX + ' ms (không cần tải lại)');
+  await W(200); ok(await p.locator('#v32pop.on').count() === 1 && /Lớp trưởng/.test(await p.textContent('#v32pop')), 'hiện thông báo nhỏ "Lớp trưởng vừa ghi…"');
+  ok(await p.locator(`#listGhi .ev.fresh[data-eid="${xid}"]`).count() === 1, 'mục mới trượt vào (hiệu ứng)');
+  p.M.extDel(xid); await p.waitForFunction(id => !S.entries.some(e => e[0] === id), xid, { timeout: 9000 }).catch(() => {});
+  ok(await p.evaluate(id => !S.entries.some(e => e[0] === id), xid), 'người khác xoá ⇒ máy này tự gỡ');
+  const syncN = p.M.CALLS.filter(c => c.a === 'sync').length, entN = p.M.CALLS.filter(c => c.a === 'entries' || c.a === 'bootstrap').length;
+  await W(4500); ok(p.M.CALLS.filter(c => c.a === 'sync').length > syncN && p.M.CALLS.filter(c => c.a === 'entries' || c.a === 'bootstrap').length === entN, 'không có gì mới ⇒ chỉ hỏi sync nhẹ, không tải lại dữ liệu');
+  await p.click('#v32h [data-f=bad]'); await W(200);
+  const nb = await p.locator('#listGhi .row').count(); ok(nb > 0 && nb < 40 && await p.isVisible('#v32clr'), 'bấm ô "Lượt trừ điểm" ⇒ lọc ' + nb + ' bạn');
+  await p.click('#v32clr'); await W(200); ok(await p.locator('#listGhi .row').count() === 40, 'bỏ lọc ⇒ đủ cả lớp');
+  const did = await p.evaluate(() => { const e = document.querySelector('#listGhi .ev[data-eid]'); return e && e.dataset.eid; });
+  await p.evaluate(id => { delEntry(id); }, did); await W(80);
+  ok(await p.locator(`#listGhi .ev.out[data-eid="${did}"]`).count() === 1, 'xoá: mục thu gọn mượt trước khi biến mất');
+  await W(400); ok(await p.evaluate(id => !S.entries.some(e => e[0] === id), did), 'xoá xong');
+  await p.context().close();
+  p = await P({ as: 'gvcn', oldBackend: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(2500);
+  ok(/1 phút/.test(await p.textContent('#v32live')), 'backend cũ (chưa có sync) ⇒ tự quay về cập nhật 1 phút, không lỗi');
   await p.context().close();
 
   // 9. trang phụ huynh

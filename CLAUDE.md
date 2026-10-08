@@ -54,3 +54,15 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   (bộ không ghi tên = `chu-nhiem`). Ảnh theo ảnh thật của cô — **không** đưa ảnh thật vào repo). Video Veo nền xanh ⇒
   `ffmpeg -i x.mp4 -vf "chromakey=0x00FF00:0.18:0.08,scale=360:-1" -loop 0 -c:v libwebp_anim -q:v 70 x.webp`.
 - **PDF hướng dẫn**: `tools/guide/cap.js` (ảnh, dữ liệu giả) → `tools/guide/build.js` → `docs/HDSD_GVCN.pdf`, `HDSD_Can_bo_lop.pdf`, `HDSD_Phu_huynh.pdf`.
+
+## v3.2 — trực tiếp & nhanh
+- **Đồng bộ trực tiếp `LIVE`** (khối `v32-js`): backend `sync` {rev, thangs} (file `DongBo.gs`): mọi lần ghi gọi `cacheClear` ⇒ đổi `rev`;
+  `rev` không đổi ⇒ trả `same` ngay (không đọc Sheet). App hỏi 4 giây/lần khi đang mở (15 giây nếu không thao tác 2 phút, dừng khi ẩn tab,
+  chờ khi hàng đợi ghi đang chạy); có thay đổi ⇒ thay dữ liệu tháng đang xem, `hqOverlay`, mục mới của người khác hiện hiệu ứng + `#v32pop`.
+  Backend cũ ("Không nhận ra yêu cầu") ⇒ `LIVE.off`, quay về làm mới 60 s. Trang phụ huynh: `sync` 15 giây/lần.
+- Backend: `ss()` / `sheet()` mở 1 lần mỗi lượt gọi; đệm `hk_e_<k?><rev>_<tháng>` (khoá gắn rev, phụ huynh đệm riêng — không lộ mã file bằng chứng);
+  `cacheClear()` (ghi điểm) chỉ đổi rev, `cacheClear(true)` (cấu hình, danh mục, HS, tài khoản) xoá thêm `hk_static` / `hk_acc` / `hk_boot2`.
+- **Hiệu ứng**: `FRESH` (id → lúc thêm) ⇒ lớp `.fresh` + `animation-delay` âm (vẽ lại không giật); xoá ⇒ `.out` 220 ms rồi mới xoá;
+  điểm tuần đổi ⇒ `.row.bump`. Phần tử ghi nhận có `data-eid`.
+- **Thẻ tổng quan** `#v32h` (`v32Hero`): ô bấm để lọc (`S.v32f` bọc `visibleStudents`), dải "Vừa cập nhật", nhãn `#v32live`. Avatar `.av32.t<tổ>`.
+- Mock: `p.M.ext(ma, nộiDung, điểm)` / `p.M.extDel(id)` giả lập người khác ghi / xoá; `{oldBackend:true}` = backend chưa có `sync`.

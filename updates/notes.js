@@ -1,6 +1,21 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-09-v3.2", version: "3.2", date: "2026-10-09",
+    title: "Sổ cập nhật trực tiếp, mở nhanh hơn, giao diện sinh động",
+    summary: "Ai ghi điểm, các máy khác thấy ngay sau vài giây — không cần tải lại. Thêm / xoá mượt mà, có thẻ tổng quan tuần và avatar từng bạn.",
+    items: [
+      { type: "new", title: "Cập nhật trực tiếp",
+        text: "Khi lớp trưởng hoặc tổ trưởng ghi / xoá điểm, máy của cô <b>tự hiện thay đổi sau vài giây</b>, kèm thông báo nhỏ \"Lớp trưởng vừa ghi…\" ở trên cùng. Nhãn <b>● Trực tiếp</b> màu xanh nghĩa là sổ đang đồng bộ. Trang phụ huynh cũng tự cập nhật.",
+        img: "updates/v3.2/truc-tiep.jpg" },
+      { type: "new", title: "Thẻ tổng quan tuần",
+        text: "Đầu trang Ghi điểm có cô Thảo chào, 4 ô: <b>Lượt trừ · Lượt khen · Cần nhắc nhở · Đạt Tốt</b>. Bấm vào một ô để <b>lọc nhanh</b> các bạn tương ứng; dải \"Vừa cập nhật\" cho biết ai vừa ghi gì.",
+        img: "updates/v3.2/tong-quan.jpg" },
+      { type: "imp", title: "Thêm / xoá mượt, mở sổ nhanh hơn",
+        text: "Mục vừa ghi trượt vào, mục xoá thu gọn lại, điểm thay đổi sẽ nảy lên để dễ nhận ra. Máy chủ đọc Google Sheet ít hơn nên đăng nhập và lưu nhanh hơn; mở lại sổ hiện ngay từ dữ liệu đã lưu trên máy." }
+    ]
+  },
+  {
     id: "2026-10-09-v3.1", version: "3.1", date: "2026-10-09",
     title: "Ảnh bằng chứng, hướng dẫn từng bước và cô Thảo chibi",
     summary: "Đính kèm ảnh chụp / tài liệu cho mỗi lần khen hoặc trừ điểm, hướng dẫn tận tay theo từng vai trò, giao diện sạch hơn và cô Thảo chibi đồng hành.",
