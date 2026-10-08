@@ -3651,7 +3651,7 @@ function roleKey(){ return isGVCN()?'gvcn':(S.me&&S.me.role==='Lớp trưởng'?
 function firstRow(){ return '#listGhi .row'; }
 const TOURS={
   gvcn:()=>[
-    {t:'Chào cô! Đây là Sổ hạnh kiểm 11D3', d:'Hướng dẫn nhanh khoảng 1 phút cho <b>GVCN</b>. Bấm <b>Tiếp</b> (hoặc phím →) để đi từng bước, <b>Bỏ qua</b> nếu đã quen.', pre:()=>{ closePanel(); go('ghi'); }},
+    {t:'Chào cô Thảo! Đây là Sổ hạnh kiểm 11D3', d:'Hướng dẫn nhanh khoảng 1 phút cho <b>GVCN</b>. Bấm <b>Tiếp</b> (hoặc phím →) để đi từng bước, <b>Bỏ qua</b> nếu đã quen.', pre:()=>{ closePanel(); go('ghi'); }},
     {el:'#periodBar', t:'Chọn tháng và tuần', d:'Mọi điểm ghi vào <b>tháng + tuần</b> đang chọn ở thanh này. Bấm tên tháng để đổi tháng.'},
     {el:firstRow(), t:'Ghi điểm cho một học sinh', d:'Chạm vào tên học sinh ▸ chọn <b>Trừ điểm</b> hoặc <b>Cộng điểm</b> ▸ chạm lý do ▸ thêm diễn giải, ảnh bằng chứng nếu cần ▸ <b>Lưu điểm</b>. Điểm hiện ngay, máy tự lưu phía sau.'},
     {el:'#multiBtn', t:'Ghi cho nhiều em một lượt', d:'Bấm <b>Chọn nhiều</b>, tick các em ▸ <b>Ghi điểm</b> ▸ chọn lý do. Dùng cho lỗi tập thể hoặc khen thưởng chung.'},
@@ -3664,15 +3664,15 @@ const TOURS={
     {el:'#hHelp', t:'Xem lại hướng dẫn', d:'Bấm nút <b>?</b> bất cứ lúc nào để xem lại hướng dẫn từng bước hoặc tải file PDF hướng dẫn. Chúc cô một năm học nhẹ nhàng!'}
   ],
   cb:()=>[
-    {t:'Chào bạn! Đây là Sổ hạnh kiểm 11D3', d:'Hướng dẫn nhanh cho <b>'+(S.me.role==='Lớp trưởng'?'lớp trưởng':'tổ trưởng tổ '+esc(S.me.to))+'</b>. Bấm <b>Tiếp</b> để đi từng bước.', pre:()=>{ closePanel(); go('ghi'); }},
-    {el:'#periodBar', t:'Kiểm tra tuần trước khi ghi', d:'Điểm ghi vào <b>tháng + tuần</b> đang chọn. Ghi nhầm tuần thì điểm cả tháng sẽ lệch — hãy chọn đúng tuần trước.'},
-    {el:'#toFilter', t:'Lọc theo tổ', d:S.me.role==='Tổ trưởng'?'Bạn chỉ ghi được cho <b>tổ mình</b>; học sinh tổ khác hiện chữ "chỉ xem".':'Lớp trưởng ghi được cả lớp. Bấm Tổ 1–4 để xem nhanh từng tổ.'},
+    {t:'Cô Thảo chào em!', d:'Cô hướng dẫn nhanh cho <b>'+(S.me.role==='Lớp trưởng'?'lớp trưởng':'tổ trưởng tổ '+esc(S.me.to))+'</b> nhé. Em bấm <b>Tiếp</b> để đi từng bước.', pre:()=>{ closePanel(); go('ghi'); }},
+    {el:'#periodBar', t:'Kiểm tra tuần trước khi ghi', d:'Điểm ghi vào <b>tháng + tuần</b> đang chọn. Ghi nhầm tuần thì điểm cả tháng sẽ lệch — em nhớ chọn đúng tuần trước nhé.'},
+    {el:'#toFilter', t:'Lọc theo tổ', d:S.me.role==='Tổ trưởng'?'Em chỉ ghi được cho <b>tổ mình</b>; các bạn tổ khác hiện chữ "chỉ xem".':'Lớp trưởng ghi được cả lớp. Em bấm Tổ 1–4 để xem nhanh từng tổ.'},
     {el:firstRow(), t:'Ghi điểm', d:'Chạm tên bạn cần ghi ▸ <b>Trừ điểm</b> / <b>Cộng điểm</b> ▸ chạm lý do ▸ ghi rõ vì sao (bấm micro để nói) ▸ <b>Lưu điểm</b>.'},
     {el:firstRow(), t:'Chụp ảnh bằng chứng', d:'Ở bước diễn giải, bấm <b>Chụp ảnh</b> hoặc <b>Chọn ảnh / tài liệu</b> để lưu bằng chứng (biên bản, giấy khen…). Sau này bấm biểu tượng 📎 để xem lại.'},
     {el:'#multiBtn', t:'Ghi cho nhiều bạn', d:'<b>Chọn nhiều</b> ▸ tick các bạn ▸ <b>Ghi điểm</b>. Lỡ tay thì bấm <b>Hoàn tác</b> ở thông báo dưới màn hình trong 5 giây.'},
-    {el:'#hkq, .topline .sync', t:'Đã lưu chưa?', d:'Chip <b>Đang lưu… → Đã lưu vào sổ</b>. Mạng yếu cứ để máy tự gửi lại, đừng ghi lại lần nữa.'},
+    {el:'#hkq, .topline .sync', t:'Đã lưu chưa?', d:'Chip <b>Đang lưu… → Đã lưu vào sổ</b>. Mạng yếu em cứ để máy tự gửi lại, đừng ghi lại lần nữa nhé.'},
     {el:'#hFind', t:'Tra cứu bạn trong lớp', d:'Kính lúp ▸ gõ tên ▸ xem toàn bộ điểm, vi phạm, khen thưởng cả năm.'},
-    {el:'#hHelp', t:'Cần xem lại?', d:'Nút <b>?</b> mở lại hướng dẫn này bất cứ lúc nào. Cảm ơn bạn đã giúp lớp!'}
+    {el:'#hHelp', t:'Cần xem lại?', d:'Nút <b>?</b> mở lại hướng dẫn này bất cứ lúc nào. Cô cảm ơn em đã giúp lớp nhé!'}
   ]
 };
 function startTour(kind){
@@ -3742,7 +3742,7 @@ THEME.open=function(){
   const opts=[{id:'auto',ten:'Tự theo chủ đề'}].concat(MASCOT.STYLES).concat([{id:'off',ten:'Tắt nhân vật'}]);
   $('#pBody').insertAdjacentHTML('afterbegin',`<div class="thgrp">Nhân vật cô giáo</div><div class="thgrid" id="mscGrid">${opts.map(o=>`<button class="thc ${o.id===cur?'on':''}" data-msc="${o.id}">
     <span class="pv" style="display:grid;place-items:center;background:var(--paler)">${o.id==='off'?'<span style="font-size:12px;color:var(--mute)">Không hiện</span>':MASCOT.img('vui',62,o.id==='auto'?st:o.id)}</span>
-    <span class="ck">✓</span><b>${esc(o.ten)}</b><span>${o.id==='auto'?'Đang dùng: '+esc((MASCOT.STYLES.find(x=>x.id===st)||{ten:'—'}).ten):o.id==='off'?'Không phản ứng khi ghi điểm':'Phong cách chibi'}</span></button>`).join('')}</div>
+    <span class="ck">✓</span><b>${esc(o.ten)}</b><span>${o.id==='auto'?'Đang dùng: '+esc((MASCOT.STYLES.find(x=>x.id===st)||{ten:'—'}).ten):o.id==='off'?'Không phản ứng khi ghi điểm':esc(o.mo||'')}</span></button>`).join('')}</div>
     <div class="thnote">Cô giáo chibi đọc hướng dẫn và phản ứng khi ghi điểm: vui khi khen, buồn khi trừ điểm, nghiêm khi tái phạm. Hình vẽ tạm sẽ được thay bằng bộ ảnh chibi khi có.</div>`);
   $$('#mscGrid [data-msc]').forEach(b=>b.onclick=()=>{ MASCOT.set(b.dataset.msc); THEME.open(); if(b.dataset.msc!=='off') MASCOT.say('vui','Cô sẽ đồng hành cùng lớp nhé!'); });
 };

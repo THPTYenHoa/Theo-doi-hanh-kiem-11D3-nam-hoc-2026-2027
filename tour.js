@@ -66,7 +66,7 @@
   function draw() {
     var s = st.steps[st.i], n = st.steps.length, card = el('tg-card');
     var emo = s.emo || (st.i === 0 ? 'chao' : st.i === n - 1 ? 'cam-on' : s.el ? 'chi-tay' : 'huong-dan');
-    var av = (window.MASCOT && MASCOT.style() !== 'off') ? '<span class="tgm">' + MASCOT.img(emo, 58) + '</span>' : '';
+    var av = (window.MASCOT && MASCOT.style() !== 'off') ? '<span class="tgm">' + MASCOT.img(emo, 58, 'tour') + '</span>' : '';
     card.innerHTML = av + '<div class="st">' + (st.title ? st.title + ' · ' : '') + 'Bước ' + (st.i + 1) + '/' + n + '</div><h4>' + s.t + '</h4><p>' + (s.d || '') + '</p>' +
       '<div class="bar"><i style="width:' + Math.round((st.i + 1) / n * 100) + '%"></i></div>' +
       '<div class="bt"><button class="sk" data-a="x">Bỏ qua</button><button class="b" data-a="b"' + (st.i ? '' : ' disabled') + '>Quay lại</button>' +

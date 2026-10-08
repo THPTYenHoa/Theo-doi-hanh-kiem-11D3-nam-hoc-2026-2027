@@ -45,7 +45,9 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   (file ở thư mục Drive riêng tư, cần quyền Drive: chạy `capQuyenBangChung` một lần trong trình soạn). Admin cố định: `ADMIN_EMAILS` (backend).
 - **Hướng dẫn từng bước** `tour.js` (`TOUR.run`): GVCN 11 bước, cán bộ lớp 9 bước (`TOURS` trong `v31-js`), phụ huynh 9 bước (`phu-huynh.html`);
   tự chạy lần đầu (`hk_tour_gvcn` / `hk_tour_cb` / `hkph_tour`), mở lại ở nút ?. Mock mặc định đánh dấu đã xem; `{tour:true}` để thử.
-- **Nhân vật cô giáo** `mascot.js` (`MASCOT.say/img`): ảnh `mascot/<phong-cách>/<biểu-cảm>.webp` (có thể là WebP động), thiếu ⇒ chibi SVG;
+- **Nhân vật cô Thảo** `mascot.js` (`MASCOT.say/img`): kính cận gọng đen, mặt tròn phúc hậu; 10 vai `STYLES` (`chu-nhiem` mặc định, `giang-day` cho hướng dẫn,
+  `ao-dai` tự bật 14–22/11, …) ghép theo chủ đề `BY_THEME`. **Xưng hô**: với phụ huynh cô xưng "cô", gọi "các bác", học sinh là "các con / con X";
+  với cán bộ lớp gọi "em"; GVCN: "Chào cô Thảo!". Ảnh `mascot/<vai>/<biểu-cảm>.webp` (có thể là WebP động), thiếu ⇒ chibi SVG;
   hiệu ứng hành động CSS `.m-<biểu-cảm>`; phản ứng khi ghi điểm (`mReact`: vui / khen-lon / buon / nghiem lần 2 / gian lần 3+ hoặc ≥6 lỗi/tháng).
   Prompt: `docs/prompt-chibi.md` (theo ảnh thật của cô — **không** đưa ảnh thật vào repo). Video Veo nền xanh ⇒
   `ffmpeg -i x.mp4 -vf "chromakey=0x00FF00:0.18:0.08,scale=360:-1" -loop 0 -c:v libwebp_anim -q:v 70 x.webp`.
