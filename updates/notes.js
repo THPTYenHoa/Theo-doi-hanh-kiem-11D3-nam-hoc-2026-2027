@@ -1,6 +1,21 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-09-v3.3", version: "3.3", date: "2026-10-09",
+    title: "Báo cáo tuần, tháng, học kỳ, cả năm",
+    summary: "Menu mới Báo cáo: số liệu so với kỳ trước, thi đua tổ, lỗi thường gặp, tuyên dương, học sinh cần quan tâm, lời nhận xét tự soạn — in đúng mẫu văn bản, tải Excel, gửi tóm tắt cho phụ huynh.",
+    items: [
+      { type: "new", title: "Menu Báo cáo",
+        text: "Bấm <b>Báo cáo</b> ▸ chọn <b>Tuần · Tháng · Học kỳ · Cả năm</b>. Có điểm TB lớp, lượt vi phạm / khen, tỉ lệ đạt Tốt kèm <b>▲▼ so với kỳ trước</b>, thi đua giữa các tổ, vi phạm theo nhóm, tuyên dương, các em tiến bộ và danh sách <b>cần quan tâm</b> (bấm tên để mở hồ sơ).",
+        img: "updates/v3.3/bao-cao.jpg" },
+      { type: "new", title: "Nhận xét tự soạn, in đúng mẫu",
+        text: "Phần <b>Nhận xét chung</b> và <b>Phương hướng</b> được soạn sẵn từ số liệu; cô sửa trực tiếp, máy tự lưu. Bấm <b>In / Lưu PDF</b> ra văn bản có quốc hiệu, các mục I–VII, chữ ký GVCN và phụ lục bảng từng học sinh.",
+        img: "updates/v3.3/ban-in.jpg" },
+      { type: "new", title: "Excel và tóm tắt gửi phụ huynh",
+        text: "<b>Tải Excel</b> lấy toàn bộ số liệu báo cáo. <b>Tóm tắt gửi phụ huynh</b> sao chép sẵn đoạn tin để dán vào nhóm Zalo — chỉ nêu tên các em được tuyên dương, <b>không nêu tên học sinh vi phạm</b>." }
+    ]
+  },
+  {
     id: "2026-10-09-v3.2", version: "3.2", date: "2026-10-09",
     title: "Sổ cập nhật trực tiếp, mở nhanh hơn, giao diện sinh động",
     summary: "Ai ghi điểm, các máy khác thấy ngay sau vài giây — không cần tải lại. Thêm / xoá mượt mà, có thẻ tổng quan tuần và avatar từng bạn.",
