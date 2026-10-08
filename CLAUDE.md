@@ -66,3 +66,9 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   điểm tuần đổi ⇒ `.row.bump`. Phần tử ghi nhận có `data-eid`.
 - **Thẻ tổng quan** `#v32h` (`v32Hero`): ô bấm để lọc (`S.v32f` bọc `visibleStudents`), dải "Vừa cập nhật", nhãn `#v32live`. Avatar `.av32.t<tổ>`.
 - Mock: `p.M.ext(ma, nộiDung, điểm)` / `p.M.extDel(id)` giả lập người khác ghi / xoá; `{oldBackend:true}` = backend chưa có `sync`.
+
+## v3.3 — Báo cáo
+- Menu **Báo cáo** (`#vBC`, khối `v33-js`, `NAV` thêm `bc`, ẩn với phụ huynh): kỳ `S.bcKy` tuần / tháng / hk / nam theo tháng-tuần đang chọn
+  (`bcPeriod`, kỳ trước `prev`), số liệu `bcStats` (xếp loại dùng `xlOf` ⇒ tôn trọng xếp loại GVCN đã chốt), so kỳ trước `dl()`.
+- Lời văn `bcAuto` (nhận xét chung + phương hướng theo nhóm lỗi `GOI_Y`), GVCN sửa được, lưu `localStorage.hk_bc_<kỳ>`; đang gõ thì không vẽ lại.
+- Xuất: `bcPrint` (mẫu văn bản: quốc hiệu, mục I–VII, chữ ký, phụ lục) · `bcExcel` (CSV) · `bcCopy` (tóm tắt Zalo — KHÔNG nêu tên học sinh vi phạm).

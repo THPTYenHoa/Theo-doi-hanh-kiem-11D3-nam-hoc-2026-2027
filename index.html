@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.2"></script>
+<script src="updates/notes.js?v=3.3"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.2';
+const HK_VER='3.3';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -4068,6 +4068,282 @@ document.addEventListener('input',e=>{ if(e.target && e.target.id==='lgEm') wake
 /* chủ đề mặc định cũng có nền nhẹ */
 const thApply32=THEME.apply;
 THEME.apply=function(t){ thApply32.apply(this,arguments); const c=(t||THEME.cur()); if(c.id==='mac-dinh') document.documentElement.style.setProperty('--hk-bgimg', themePattern(c)); };
+</script>
+
+<style id="v33-css">
+/* ══ v3.3 — BÁO CÁO tuần / tháng / học kỳ / cả năm ══ */
+.bchead{display:flex;align-items:center;gap:12px;margin:2px 12px 12px;padding:14px;border-radius:18px;border:1px solid var(--line);
+  background:linear-gradient(135deg,var(--card),var(--paler) 60%,var(--pale));box-shadow:var(--sh-1)}
+.bchead .msc{flex:none;width:56px;height:56px} .bchead .msc img,.bchead .msc svg{width:56px;height:56px}
+.bchead .tt{flex:1;min-width:0} .bchead .tt small{display:block;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.bchead .tt b{display:block;font-size:18px;font-weight:800;color:var(--teal-d);line-height:1.25}
+.bchead .tt span{display:block;font-size:12.5px;color:var(--sub);margin-top:2px}
+.bcacts{display:flex;flex-wrap:wrap;gap:8px;margin:0 12px 12px}
+.bcacts button{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-radius:11px;font-weight:700;font-size:13.5px;
+  background:var(--card);border:1px solid var(--line);color:var(--ink)}
+.bcacts button.p{background:var(--teal);border-color:var(--teal);color:#fff}
+.bcacts button svg{width:17px;height:17px}
+.bcacts button:hover{box-shadow:var(--sh-2)}
+.kpi .dl{display:inline-block;margin-top:4px;font-size:11px;font-weight:800;border-radius:99px;padding:1px 7px}
+.dl.good{background:var(--ok-bg);color:var(--ok)} .dl.bad{background:var(--dang-bg);color:var(--dang)} .dl.eq{background:var(--line2);color:var(--sub)}
+.bcgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.bcgrid>div{min-width:0}
+#vBC{min-width:0}
+.bcacts .sh{display:none}
+.bct{width:100%;min-width:0;font-size:13.5px}
+.bct td,.bct th{padding:8px 10px;border-bottom:1px solid var(--line2);text-align:left;white-space:nowrap}
+.bct td.n,.bct th.n{text-align:right;font-variant-numeric:tabular-nums}
+.bct tr.top1 td:first-child b{color:#B8860B}
+.bcrk{display:inline-grid;place-items:center;min-width:42px;height:22px;border-radius:99px;font-size:11.5px;font-weight:800;padding:0 7px}
+.bcrk.k1{background:#FFF3C4;color:#8A6500} .bcrk.k2{background:#ECEFF2;color:#5A6670} .bcrk.k3{background:#F8E3D3;color:#8A4B1E} .bcrk.k4{background:var(--line2);color:var(--sub)}
+.bccare{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line2)}
+.bccare:last-child{border-bottom:0}
+.bccare .bd{flex:1;min-width:0} .bccare .bd b{font-size:14.5px} .bccare .bd span{display:block;font-size:12px;color:var(--sub);margin-top:2px;line-height:1.5}
+.bccare .tag{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:2px 8px;background:var(--dang-bg);color:var(--dang)}
+.bccare .tag.w{background:var(--warn-bg);color:var(--warn)}
+.bctxt{margin:0 12px}
+.bctxt label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--teal-d);margin:10px 0 6px}
+.bctxt label button{margin-left:auto;font-size:12px;color:var(--teal-d);background:var(--pale);border-radius:8px;padding:3px 9px;font-weight:700}
+.bctxt textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:14px;line-height:1.6;background:var(--card);resize:vertical}
+.bctxt textarea:focus{outline:2px solid var(--teal-xl);border-color:var(--teal)}
+.bcdet{margin:0 12px}
+.bcdet summary{cursor:pointer;font-weight:800;color:var(--teal-d);font-size:13.5px;padding:10px 2px}
+.bcmini{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 14px}
+.bcmini span{font-size:12.5px;background:var(--ok-bg);color:var(--ok);border-radius:99px;padding:3px 10px;font-weight:700}
+@media (min-width:761px){ .bchead,.bcacts,.bctxt,.bcdet{margin-left:26px;margin-right:26px} .bcgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 18px;margin:0 26px} .bcgrid .sechead{margin-left:0;margin-right:0} .bcgrid .register,.bcgrid .panelbox{margin-left:0;margin-right:0} }
+@media (max-width:760px){ .bchead .tt b{font-size:16px} .bchead .msc,.bchead .msc img,.bchead .msc svg{width:44px;height:44px} .bcacts button{flex:1;justify-content:center;padding:0 8px;font-size:13px;white-space:nowrap} .bcacts .lg{display:none} .bcacts .sh{display:inline} }
+/* bản in báo cáo */
+@media print{
+  #printArea .bcdoc{font-family:"Times New Roman",Times,serif;font-size:12.5pt;line-height:1.45;color:#000}
+  #printArea .bcdoc .hd{width:100%;border:0;margin-bottom:10pt} #printArea .bcdoc .hd td{border:0;text-align:center;vertical-align:top;font-size:12pt;padding:0}
+  #printArea .bcdoc h1{text-align:center;font-size:15pt;color:#000;margin:14pt 0 2pt;text-transform:uppercase}
+  #printArea .bcdoc .sub{text-align:center;color:#000;font-size:12pt;margin-bottom:10pt}
+  #printArea .bcdoc h2{font-size:13pt;margin:12pt 0 4pt}
+  #printArea .bcdoc p{margin:0 0 5pt;text-align:justify;white-space:pre-line}
+  #printArea .bcdoc table.t{width:100%;border-collapse:collapse;font-size:11pt;margin:4pt 0 6pt}
+  #printArea .bcdoc table.t th,#printArea .bcdoc table.t td{border:1px solid #444;padding:3pt 5pt;font-size:10.5pt}
+  #printArea .bcdoc table.t th{background:#eee !important;text-align:center}
+  #printArea .bcdoc .sig{width:100%;margin-top:18pt} #printArea .bcdoc .sig td{border:0;text-align:center;width:50%;vertical-align:top}
+  #printArea .bcdoc .pb{page-break-before:always}
+}
+</style>
+<script id="v33-js">
+'use strict';
+/* ══ v3.3 — BÁO CÁO (menu "Báo cáo", #vBC) ══
+   Kỳ: Tuần · Tháng · Học kỳ · Cả năm (theo tháng / tuần đang chọn ở thanh trên), so với kỳ trước.
+   Mục: tổng quan (có ▲▼ so kỳ trước) · kết quả xếp loại + chỉ tiêu · diễn biến theo tuần / tháng · thi đua tổ · vi phạm theo nhóm +
+   lỗi thường gặp · tuyên dương / tiến bộ · học sinh cần quan tâm · nhận xét chung + phương hướng (tự soạn, sửa được, lưu trên máy
+   localStorage hk_bc_<kỳ>) · bảng tổng hợp từng học sinh.
+   Xuất: In / PDF (mẫu văn bản: quốc hiệu, mục La Mã, chữ ký GVCN) · Excel (CSV) · Sao chép tóm tắt gửi nhóm phụ huynh
+   (KHÔNG nêu tên học sinh vi phạm). */
+ICON.bc='<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>';
+NAV.splice(NAV.findIndex(n=>n.v==='tk')+1,0,{v:'bc',t:'Báo cáo',s:'Báo cáo',el:'#vBC'});
+(function(){ const tk=$('#vTK'); if(tk && !$('#vBC')){ const s=document.createElement('section'); s.className='view hide'; s.id='vBC'; tk.after(s); } })();
+const navItems33=navItems;
+window.navItems=navItems=function(){ return navItems33.apply(this,arguments).filter(n=>n.v!=='bc' || !isKhach()); };
+S.bcKy=S.bcKy||'thang';
+const go33=go;
+window.go=go=async function(v){
+  if(v==='bc' && !S.allLoaded){ S.view=v; syncView(); exitMulti(); $('#vBC').innerHTML='<div class="sechead"><h2>Đang tải dữ liệu cả năm học</h2></div>'+skeleton(6);
+    try{ await loadAllMonths(); }catch(e){ err(e); } }
+  return go33.apply(this,arguments);
+};
+const renderAll33=renderAll;
+window.renderAll=renderAll=function(){ renderAll33.apply(this,arguments); if(S.view==='bc') renderBC(); };
+
+/* ── kỳ báo cáo ── */
+const f1=v=>(Math.round(v*10)/10).toFixed(1);
+function hkOf(m){ return HK_THANG[1].indexOf(m)>=0?1:2; }
+function bcPeriod(ky){
+  ky=ky||S.bcKy; const m=S.thang, i=MONTHS_YEAR.indexOf(m), pm=i>0?MONTHS_YEAR[i-1]:null;
+  if(ky==='tuan') return {key:'t'+m+'w'+S.tuan, ky, months:[m], tuan:S.tuan, nhan:'tuần '+S.tuan+' '+thangLabel(m,true).toLowerCase(), TIT:'TUẦN '+S.tuan+' – '+thangLabel(m,true).toUpperCase(),
+    prev: S.tuan>1?{months:[m],tuan:S.tuan-1,nhan:'tuần '+(S.tuan-1)}:(pm?{months:[pm],tuan:S.cfg.soTuan,nhan:'tuần '+S.cfg.soTuan+' tháng '+pm}:null)};
+  if(ky==='thang') return {key:'t'+m, ky, months:[m], nhan:thangLabel(m,true).toLowerCase(), TIT:thangLabel(m,true).toUpperCase(), prev: pm?{months:[pm],nhan:'tháng '+pm}:null};
+  if(ky==='hk'){ const k=hkOf(m); return {key:'hk'+k, ky, months:HK_THANG[k], nhan:'học kỳ '+(k===1?'I':'II'), TIT:'HỌC KỲ '+(k===1?'I':'II'), prev: k===2?{months:HK_THANG[1],nhan:'học kỳ I'}:null}; }
+  return {key:'nam', ky:'nam', months:MONTHS_YEAR.slice(), nhan:'cả năm học', TIT:'CẢ NĂM HỌC', prev:null};
+}
+const inP=(e,P)=>P.months.indexOf(e[E_THANG])>=0 && (!P.tuan || e[E_TUAN]===P.tuan);
+function bcScore(ma,P){
+  if(P.tuan) return weekScore(ma,P.tuan,P.months[0]);
+  const ms=P.months.filter(m=>S.entries.some(e=>e[E_THANG]===m));
+  return ms.length? ms.reduce((a,m)=>a+monthAvg(ma,m),0)/ms.length : 0;
+}
+function bcXL(ma,P){ if(P.tuan){ const sc=bcScore(ma,P), i=rankIdx(sc); return {sc,i,ten:rankName(sc)}; } const x=xlOf(ma,P.months); return {sc:bcScore(ma,P),i:x.i,ten:x.ten}; }
+function nhomOf(e){ const c=catItem(e[E_LOAI]==='Cộng'?'Cộng':'Trừ', e[E_MUC]); return (c&&c.nhom)||'Khác'; }
+function bcStats(P){
+  const list=activeStudents(), E=S.entries.filter(e=>inP(e,P)&&list.some(s=>s.ma===e[E_MA]));
+  const tru=E.filter(e=>e[E_DIEM]<0), cong=E.filter(e=>e[E_DIEM]>0);
+  const xl={}; list.forEach(s=>xl[s.ma]=bcXL(s.ma,P));
+  const cnt=[0,0,0,0]; list.forEach(s=>cnt[Math.min(3,xl[s.ma].i)]++);
+  const tb=list.length? list.reduce((a,s)=>a+xl[s.ma].sc,0)/list.length : 0;
+  const to=['1','2','3','4'].map(t=>{ const g=list.filter(s=>String(s.to)===t), ge=E.filter(e=>String(e[E_TO])===t||g.some(s=>s.ma===e[E_MA]));
+    return {t, n:g.length, tru:ge.filter(e=>e[E_DIEM]<0).length, cong:ge.filter(e=>e[E_DIEM]>0).length, sum:ge.reduce((a,e)=>a+e[E_DIEM],0),
+      tb:g.length?g.reduce((a,s)=>a+xl[s.ma].sc,0)/g.length:0, tot:g.filter(s=>xl[s.ma].i===0).length}; }).filter(x=>x.n);
+  to.sort((a,b)=>b.tb-a.tb || a.tru-b.tru); to.forEach((x,i)=>x.rk=i+1);
+  const nhom={}; tru.forEach(e=>{ const k=nhomOf(e); nhom[k]=nhom[k]||{n:0,d:0}; nhom[k].n++; nhom[k].d+=e[E_DIEM]; });
+  const loi={}; tru.forEach(e=>{ const k=e[E_ND]||e[E_MUC]; loi[k]=loi[k]||{n:0,hs:new Set(),nhom:nhomOf(e)}; loi[k].n++; loi[k].hs.add(e[E_MA]); });
+  const topLoi=Object.keys(loi).map(k=>({k,n:loi[k].n,hs:loi[k].hs.size,nhom:loi[k].nhom})).sort((a,b)=>b.n-a.n);
+  const by={}; E.forEach(e=>{ const o=by[e[E_MA]]=by[e[E_MA]]||{p:0,m:0,np:0,nm:0,muc:{}}; if(e[E_DIEM]>0){o.p+=e[E_DIEM];o.np++;} else {o.m+=e[E_DIEM];o.nm++; o.muc[e[E_ND]||e[E_MUC]]=(o.muc[e[E_ND]||e[E_MUC]]||0)+1;} });
+  const khen=Object.keys(by).filter(ma=>by[ma].p>0).map(ma=>({ma,p:by[ma].p,n:by[ma].np})).sort((a,b)=>b.p-a.p||b.n-a.n).slice(0,8);
+  const care=list.map(s=>{ const o=by[s.ma]||{nm:0,muc:{}}, x=xl[s.ma], re=Object.keys(o.muc).filter(k=>o.muc[k]>=2), why=[];
+      if(x.i>=2) why.push('xếp loại '+x.ten.replace(' ✓',''));
+      if(o.nm>=3) why.push(o.nm+' lượt vi phạm');
+      if(re.length) why.push('tái phạm: '+re.map(k=>k+' ('+o.muc[k]+' lần)').join(', '));
+      return why.length?{s,x,why,nm:o.nm,muc:o.muc,lv:x.i>=3||o.nm>=5?2:1}:null; }).filter(Boolean).sort((a,b)=>b.lv-a.lv||b.nm-a.nm);
+  let tienBo=[];
+  if(P.prev){ tienBo=list.map(s=>({s,d:xl[s.ma].sc-bcScore(s.ma,P.prev),pv:bcScore(s.ma,P.prev)})).filter(x=>x.pv<0 && x.d>0.0001).sort((a,b)=>b.d-a.d).slice(0,6); }
+  return {list,E,tru,cong,xl,cnt,tb,to,nhom,topLoi,khen,care,tienBo, dTru:tru.reduce((a,e)=>a+e[E_DIEM],0), dCong:cong.reduce((a,e)=>a+e[E_DIEM],0)};
+}
+function bcPrevStats(P){ if(!P.prev) return null; const Q=Object.assign({},P.prev,{ky:P.ky}); return bcStats(Q); }
+function dl(cur,prev,goodUp,fmt){ if(prev==null) return ''; const d=cur-prev; if(Math.abs(d)<0.05) return '<span class="dl eq">= kỳ trước</span>';
+  const good=goodUp?d>0:d<0; return `<span class="dl ${good?'good':'bad'}">${d>0?'▲':'▼'} ${fmt?fmt(Math.abs(d)):Math.abs(d)} so kỳ trước</span>`; }
+
+/* ── lời văn tự soạn ── */
+const GOI_Y={'Nề nếp':'Cán bộ lớp kiểm tra giờ giấc, đồng phục đầu buổi; nhắc nhở ngay khi phát hiện.',
+  'Học tập':'Phối hợp giáo viên bộ môn kiểm tra bài tập về nhà; duy trì "đôi bạn cùng tiến".',
+  'Kỷ luật':'Quản lý điện thoại theo quy định; trao đổi riêng với các em vi phạm nhiều lần.',
+  'Vệ sinh':'Phân công trực nhật rõ ràng theo tổ; tổ trưởng kiểm tra cuối buổi.'};
+function bcAuto(P,st,pv){
+  const L=S.cfg.lop||'11D3', n=st.list.length, ten=S.cfg.thresholds.map(t=>t.ten), pc=k=>n?Math.round(st.cnt[k]*100/n):0;
+  let a=`Trong ${P.nhan}, lớp ${L} có ${n} học sinh đang học. Lớp ghi nhận ${st.tru.length} lượt vi phạm (${st.dTru} điểm) và ${st.cong.length} lượt được cộng điểm (+${st.dCong} điểm); điểm trung bình tuần của lớp đạt ${f1(st.tb)}, tương đương mức ${rankName(st.tb)}`;
+  if(pv){ const d=st.tb-pv.tb; a+= Math.abs(d)<0.05?`, giữ nguyên so với ${P.prev.nhan}.`:`, ${d>0?'tăng':'giảm'} ${f1(Math.abs(d))} điểm so với ${P.prev.nhan}.`; } else a+='.';
+  a+=`\nKết quả xếp loại: ${ten.map((t,i)=>st.cnt[i]?`${st.cnt[i]} em ${t} (${pc(i)}%)`:'').filter(Boolean).join(', ')}.`;
+  if(st.topLoi.length) a+=`\nLỗi thường gặp: ${st.topLoi.slice(0,3).map(x=>`${x.k.toLowerCase()} (${x.n} lượt)`).join(', ')}.`;
+  if(st.to.length) a+=`\nThi đua giữa các tổ: Tổ ${st.to[0].t} dẫn đầu (TB ${f1(st.to[0].tb)})${st.to.length>1?`, Tổ ${st.to[st.to.length-1].t} cần cố gắng hơn`:''}.`;
+  if(st.khen.length) a+=`\nTuyên dương các em: ${st.khen.slice(0,5).map(k=>stu(k.ma).ten).join(', ')}.`;
+  if(st.care.length) a+=`\nCó ${st.care.length} em cần được quan tâm, nhắc nhở thêm.`;
+  const nh=Object.keys(st.nhom).sort((x,y)=>st.nhom[y].n-st.nhom[x].n);
+  let b=nh.slice(0,3).map(k=>'- '+(GOI_Y[k]||('Nhắc nhở các lỗi nhóm "'+k+'".'))).join('\n');
+  if(st.care.length) b+=(b?'\n':'')+`- Trao đổi với phụ huynh ${st.care.length} em cần quan tâm; theo dõi sát trong ${P.ky==='tuan'?'tuần':'tháng'} tới.`;
+  b+=(b?'\n':'')+'- Tiếp tục tuyên dương kịp thời các em có tiến bộ, khuyến khích phong trào thi đua giữa các tổ.';
+  return {nx:a,ph:b};
+}
+function bcTxt(P,st,pv){ let o={}; try{ o=JSON.parse(localStorage.getItem('hk_bc_'+P.key)||'{}'); }catch(_){}
+  const au=bcAuto(P,st,pv); return {nx:o.nx!=null?o.nx:au.nx, ph:o.ph!=null?o.ph:au.ph, au}; }
+function bcSave(P,k,v){ try{ const o=JSON.parse(localStorage.getItem('hk_bc_'+P.key)||'{}'); if(v==null) delete o[k]; else o[k]=v; localStorage.setItem('hk_bc_'+P.key,JSON.stringify(o)); }catch(_){} }
+
+/* ── bảng từng học sinh ── */
+function bcCols(P){
+  if(P.tuan) return [{h:'Lượt trừ',f:s=>{ const n=S.entries.filter(e=>e[E_MA]===s.ma&&inP(e,P)&&e[E_DIEM]<0).length; return n||''; }},
+                     {h:'Lượt cộng',f:s=>{ const n=S.entries.filter(e=>e[E_MA]===s.ma&&inP(e,P)&&e[E_DIEM]>0).length; return n||''; }}];
+  if(P.months.length===1) return Array.from({length:S.cfg.soTuan},(_,i)=>({h:'T'+(i+1),f:s=>{ const has=S.entries.some(e=>e[E_MA]===s.ma&&e[E_THANG]===P.months[0]&&e[E_TUAN]===i+1); return has?nz(weekScore(s.ma,i+1,P.months[0])):'' ; }}));
+  return P.months.filter(m=>S.entries.some(e=>e[E_THANG]===m)).map(m=>({h:'Th'+m,f:s=>f1(monthAvg(s.ma,m))}));
+}
+
+/* ── vẽ ── */
+function renderBC(){
+  const box=$('#vBC'); if(!box || !S.cfg) return;
+  if(box.contains(document.activeElement) && /TEXTAREA/.test(document.activeElement.tagName)) return;   /* đang gõ nhận xét */
+  const P=bcPeriod(), st=bcStats(P), pv=bcPrevStats(P), T=bcTxt(P,st,pv), th=S.cfg.thresholds;
+  const nTot=st.cnt[0], gv=isGVCN();
+  let h=`<div class="segbar">${[['tuan','Tuần '+S.tuan],['thang','Tháng '+S.thang],['hk','Học kỳ '+(hkOf(S.thang)===1?'I':'II')],['nam','Cả năm']].map(([k,l])=>`<button data-bk="${k}" class="${S.bcKy===k?'on':''}">${l}</button>`).join('')}</div>`;
+  h+=`<div class="bchead"><span class="msc">${window.MASCOT&&MASCOT.style()!=='off'?MASCOT.img(st.care.length>st.list.length/4?'lo-lang':nTot>=st.list.length/2?'vui':'huong-dan',56):''}</span>
+    <div class="tt"><small>Báo cáo hạnh kiểm</small><b>Lớp ${esc(S.cfg.lop||'11D3')} · ${esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))}</b>
+    <span>${[S.cfg.truong,'Năm học '+(S.cfg.namHoc||''),P.prev?'so sánh với '+P.prev.nhan:''].filter(Boolean).map(esc).join(' · ')}</span></div></div>`;
+  h+=`<div class="bcacts"><button class="p" id="bcPrint"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg><span class="lg">In / Lưu PDF</span><span class="sh">In / PDF</span></button>
+    <button id="bcXls"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></svg><span class="lg">Tải Excel</span><span class="sh">Excel</span></button>
+    <button id="bcCopy"><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="lg">Tóm tắt gửi phụ huynh</span><span class="sh">Gửi PH</span></button></div>`;
+  /* 1. tổng quan */
+  h+=`<div class="kpis" style="margin-bottom:4px">
+    <div class="kpi"><div class="n ${'r'+rankIdx(st.tb)}">${f1(st.tb)}</div><div class="l">Điểm TB tuần của lớp · ${esc(rankName(st.tb))}</div>${dl(st.tb,pv&&pv.tb,true,f1)}</div>
+    <div class="kpi"><div class="n r3">${st.tru.length}</div><div class="l">Lượt vi phạm · ${st.dTru} điểm</div>${dl(st.tru.length,pv&&pv.tru.length,false)}</div>
+    <div class="kpi"><div class="n r0">${st.cong.length}</div><div class="l">Lượt được khen · +${st.dCong} điểm</div>${dl(st.cong.length,pv&&pv.cong.length,true)}</div>
+    <div class="kpi"><div class="n r0">${st.list.length?Math.round(nTot*100/st.list.length):0}%</div><div class="l">Đạt loại ${esc(th[0].ten)} · ${nTot}/${st.list.length} em</div>${dl(nTot,pv&&pv.cnt[0],true)}</div></div>`;
+  h+='<div class="bcgrid"><div>';
+  /* 2. xếp loại */
+  const tong=st.list.length||1;
+  h+=`<div class="sechead"><h2>Kết quả xếp loại</h2></div><div class="panelbox"><div class="distbar">${st.cnt.map((c,i)=>c?`<div class="b${i}" style="width:${(c/tong*100).toFixed(1)}%">${c}</div>`:'').join('')}</div>
+    <div class="legend">${th.map((t,i)=>`<span><i class="b${i}"></i>${esc(t.ten)} <b>${st.cnt[i]}</b>${pv?` <em style="font-style:normal;color:var(--mute);font-weight:600">(kỳ trước ${pv.cnt[i]})</em>`:''}</span>`).join('')}</div>${P.ky!=='tuan'?chiTieuHTML(st.cnt):''}</div>`;
+  /* 3. diễn biến */
+  if(P.months.length===1 && !P.tuan){
+    const wk=Array.from({length:S.cfg.soTuan},(_,i)=>({k:'Tuần '+(i+1),v:st.list.length?st.list.reduce((a,s)=>a+weekScore(s.ma,i+1,P.months[0]),0)/st.list.length:0}));
+    h+=`<div class="sechead"><h2>Điểm TB lớp theo tuần</h2></div><div class="panelbox">${svgCols(wk)}</div>`;
+  }else if(!P.tuan){
+    const ms=P.months.filter(m=>S.entries.some(e=>e[E_THANG]===m));
+    h+=`<div class="sechead"><h2>Điểm TB lớp theo tháng</h2></div><div class="panelbox">${svgLine(P.months.map(m=>({k:'T'+m,v:ms.indexOf(m)>=0?st.list.reduce((a,s)=>a+monthAvg(s.ma,m),0)/(st.list.length||1):null})))}</div>`;
+  }
+  /* 4. thi đua tổ */
+  h+=`<div class="sechead"><h2>Thi đua giữa các tổ</h2></div><div class="register tablewrap"><table class="bct"><tr><th>Hạng</th><th>Tổ</th><th class="n">Sĩ số</th><th class="n">Vi phạm</th><th class="n">Khen</th><th class="n">TB tuần</th><th class="n">Đạt Tốt</th></tr>
+    ${st.to.map(x=>`<tr><td><span class="bcrk k${Math.min(4,x.rk)}">${['Nhất','Nhì','Ba','Tư'][x.rk-1]||x.rk}</span></td><td><b>Tổ ${x.t}</b></td><td class="n">${x.n}</td><td class="n r3">${x.tru}</td><td class="n r0">${x.cong}</td><td class="n"><b class="r${rankIdx(x.tb)}">${f1(x.tb)}</b></td><td class="n">${x.tot}/${x.n}</td></tr>`).join('')}</table></div>`;
+  h+='</div><div>';
+  /* 5. vi phạm theo nhóm */
+  const nk=Object.keys(st.nhom).sort((a,b)=>st.nhom[b].n-st.nhom[a].n);
+  h+=`<div class="sechead"><h2>Vi phạm theo nhóm</h2></div><div class="panelbox">${nk.length?hbars(nk.map(k=>({k:k+' · '+st.nhom[k].n+' lượt',v:st.nhom[k].d}))):'<div class="note" style="padding:0">Không có vi phạm nào.</div>'}</div>`;
+  h+=`<div class="sechead"><h2>Lỗi thường gặp</h2></div><div class="register">${topList(st.topLoi.slice(0,6).map(x=>({k:x.k,sub:x.nhom+' · '+x.hs+' học sinh',v:x.n})),{unit:'lượt',color:'b3',empty:'Không có lỗi nào.'})}</div>`;
+  /* 6. tuyên dương / tiến bộ */
+  h+=`<div class="sechead"><h2>Tuyên dương</h2></div><div class="register">${topList(st.khen.slice(0,6).map(k=>({k:stu(k.ma).ten,sub:'Tổ '+stu(k.ma).to+' · '+k.n+' lượt khen',v:k.p})),{unit:'điểm',color:'b0',fmt:v=>'+'+v,empty:'Chưa có điểm cộng nào.'})}
+    ${st.tienBo.length?`<div class="note" style="padding:10px 14px 0;font-weight:700;color:var(--teal-d)">Tiến bộ so với ${esc(P.prev.nhan)}</div><div class="bcmini">${st.tienBo.map(x=>`<span>${esc(x.s.ten)} ▲${f1(x.d)}</span>`).join('')}</div>`:''}</div>`;
+  h+='</div></div>';
+  /* 7. cần quan tâm */
+  h+=`<div class="sechead" style="${innerWidth>760?'margin-left:26px;margin-right:26px':''}"><h2>Học sinh cần quan tâm (${st.care.length})</h2></div><div class="register">${st.care.length?st.care.slice(0,15).map(c=>`<button class="bccare" data-ma="${esc(c.s.ma)}" style="width:100%;text-align:left">${avHTML(c.s)}<span class="bd"><b>${esc(c.s.ten)}</b> <span>Tổ ${esc(c.s.to)} · ${esc(c.why.join(' · '))}</span></span><span class="tag ${c.lv>1?'':'w'}">${c.lv>1?'Cần trao đổi PH':'Nhắc nhở'}</span></button>`).join(''):'<div class="empty"><b>Không có em nào cần lưu ý</b>Cả lớp đang thực hiện tốt nề nếp.</div>'}</div>`;
+  /* 8. nhận xét + phương hướng */
+  h+=`<div class="bctxt"><label>Nhận xét chung <button data-auto="nx">Viết lại tự động</button></label><textarea id="bcNx"${gv?'':' readonly'}>${esc(T.nx)}</textarea>
+    <label>Phương hướng ${P.ky==='tuan'?'tuần':P.ky==='thang'?'tháng':'kỳ'} tới <button data-auto="ph">Viết lại tự động</button></label><textarea id="bcPh"${gv?'':' readonly'}>${esc(T.ph)}</textarea>
+    <div class="note" style="padding:6px 2px 0">Lời văn được soạn sẵn từ số liệu; ${gv?'cô sửa trực tiếp — máy tự lưu, bản in dùng đúng nội dung này.':'chỉ GVCN sửa được.'}</div></div>`;
+  /* 9. bảng từng học sinh */
+  const cols=bcCols(P);
+  h+=`<details class="bcdet"><summary>Bảng tổng hợp từng học sinh (${st.list.length} em)</summary><div class="register tablewrap" style="margin:0"><table class="bct"><tr><th>#</th><th>Họ tên</th><th>Tổ</th>${cols.map(c=>`<th class="n">${c.h}</th>`).join('')}<th class="n">TB</th><th>Xếp loại</th></tr>
+    ${st.list.map((s,i)=>{ const x=st.xl[s.ma]; return `<tr><td>${i+1}</td><td><b>${esc(s.ten)}</b></td><td>${esc(s.to)}</td>${cols.map(c=>`<td class="n">${c.f(s)}</td>`).join('')}<td class="n"><b>${f1(x.sc)}</b></td><td><span class="r${x.i}" style="font-weight:800">${esc(x.ten)}</span></td></tr>`; }).join('')}</table></div></details>`;
+  box.innerHTML=h;
+  $$('#vBC [data-bk]').forEach(b=>b.onclick=()=>{ S.bcKy=b.dataset.bk; renderBC(); });
+  $$('#vBC [data-ma]').forEach(b=>b.onclick=()=>openProfile(b.dataset.ma));
+  ['nx','ph'].forEach(k=>{ const ta=$('#bc'+(k==='nx'?'Nx':'Ph')); if(ta) ta.oninput=()=>bcSave(P,k,ta.value); });
+  $$('#vBC [data-auto]').forEach(b=>b.onclick=()=>{ const k=b.dataset.auto; bcSave(P,k,null); const ta=$('#bc'+(k==='nx'?'Nx':'Ph')); if(ta) ta.value=T.au[k]; toast('Đã soạn lại từ số liệu mới nhất.'); });
+  $('#bcPrint').onclick=()=>bcPrint(P);
+  $('#bcXls').onclick=()=>bcExcel(P);
+  $('#bcCopy').onclick=()=>bcCopy(P);
+}
+
+/* ── xuất ── */
+function bcPrint(P){
+  const st=bcStats(P), pv=bcPrevStats(P), T=bcTxt(P,st,pv), th=S.cfg.thresholds, n=st.list.length||1, d=new Date(), cols=bcCols(P);
+  const tr=(cells,tag)=>'<tr>'+cells.map(c=>`<${tag||'td'}>${c}</${tag||'td'}>`).join('')+'</tr>';
+  let h=`<div class="bcdoc"><table class="hd"><tr><td>${esc(String(S.cfg.truong||'TRƯỜNG THPT YÊN HÒA').toUpperCase())}<br><b>LỚP ${esc(S.cfg.lop||'11D3')}</b></td>
+    <td><b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><br><b><u>Độc lập – Tự do – Hạnh phúc</u></b></td></tr></table>
+    <h1>Báo cáo tình hình hạnh kiểm ${esc(P.TIT)}</h1><div class="sub">Năm học ${esc(S.cfg.namHoc||'')}</div>`;
+  h+=`<h2>I. Tình hình chung</h2><p>${esc(T.nx)}</p>`;
+  h+=`<table class="t">${tr(['Chỉ số','Kỳ này'].concat(pv?['Kỳ trước ('+esc(P.prev.nhan)+')']:[]),'th')}
+    ${tr(['Điểm TB tuần của lớp',f1(st.tb)].concat(pv?[f1(pv.tb)]:[]))}${tr(['Lượt vi phạm (điểm)',st.tru.length+' ('+st.dTru+')'].concat(pv?[pv.tru.length+' ('+pv.dTru+')']:[]))}
+    ${tr(['Lượt được khen (điểm)',st.cong.length+' (+'+st.dCong+')'].concat(pv?[pv.cong.length+' (+'+pv.dCong+')']:[]))}</table>`;
+  h+=`<h2>II. Kết quả xếp loại</h2><table class="t">${tr(['Xếp loại'].concat(th.map(t=>esc(t.ten))),'th')}${tr(['Số học sinh'].concat(st.cnt.map(c=>c)))}${tr(['Tỉ lệ'].concat(st.cnt.map(c=>Math.round(c*100/n)+'%')))}${pv?tr(['Kỳ trước'].concat(pv.cnt.map(c=>c))):''}</table>`;
+  h+=`<h2>III. Thi đua giữa các tổ</h2><table class="t">${tr(['Hạng','Tổ','Sĩ số','Lượt vi phạm','Lượt khen','Điểm TB tuần','Đạt Tốt'],'th')}${st.to.map(x=>tr([x.rk,'Tổ '+x.t,x.n,x.tru,x.cong,f1(x.tb),x.tot])).join('')}</table>`;
+  h+=`<h2>IV. Vi phạm theo nhóm và lỗi thường gặp</h2><table class="t">${tr(['Nội dung','Nhóm','Số lượt','Số học sinh'],'th')}${st.topLoi.slice(0,10).map(x=>tr([esc(x.k),esc(x.nhom),x.n,x.hs])).join('')||tr(['Không có vi phạm','','',''])}</table>`;
+  h+=`<h2>V. Tuyên dương</h2><p>${st.khen.length?st.khen.map(k=>esc(stu(k.ma).ten)+' (+'+k.p+')').join('; ')+'.':'Chưa có.'}${st.tienBo.length?'\nTiến bộ so với '+esc(P.prev.nhan)+': '+st.tienBo.map(x=>esc(x.s.ten)).join(', ')+'.':''}</p>`;
+  h+=`<h2>VI. Học sinh cần quan tâm</h2>${st.care.length?`<table class="t">${tr(['STT','Họ tên','Tổ','Nội dung','Biện pháp'],'th')}${st.care.map((c,i)=>tr([i+1,esc(c.s.ten),esc(c.s.to),esc(c.why.join('; ')),c.lv>1?'Trao đổi phụ huynh':'Nhắc nhở'])).join('')}</table>`:'<p>Không có.</p>'}`;
+  h+=`<h2>VII. Phương hướng ${P.ky==='tuan'?'tuần':P.ky==='thang'?'tháng':'kỳ'} tới</h2><p>${esc(T.ph)}</p>`;
+  h+=`<table class="sig"><tr><td></td><td><i>Hà Nội, ngày ${d.getDate()} tháng ${d.getMonth()+1} năm ${d.getFullYear()}</i><br><b>GIÁO VIÊN CHỦ NHIỆM</b><br><i>(Ký, ghi rõ họ tên)</i><br><br><br><br><b>${esc(S.cfg.gvcn||'')}</b></td></tr></table>`;
+  h+=`<div class="pb"></div><h2>Phụ lục: Bảng tổng hợp hạnh kiểm từng học sinh</h2><table class="t">${tr(['STT','Họ tên','Tổ'].concat(cols.map(c=>c.h),['TB','Xếp loại']),'th')}
+    ${st.list.map((s,i)=>{ const x=st.xl[s.ma]; return tr([i+1,esc(s.ten),esc(s.to)].concat(cols.map(c=>c.f(s)),[f1(x.sc),esc(x.ten)])); }).join('')}</table></div>`;
+  $('#printArea').innerHTML=h; setTimeout(()=>window.print(),60);
+}
+function bcExcel(P){
+  const st=bcStats(P), cols=bcCols(P), q=v=>{ v=String(v==null?'':v); return /[",\n;]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const R=[['BÁO CÁO HẠNH KIỂM '+P.TIT+' – LỚP '+(S.cfg.lop||'11D3')],['Năm học '+(S.cfg.namHoc||'')],[],
+    ['Điểm TB tuần của lớp',f1(st.tb)],['Lượt vi phạm',st.tru.length,'Điểm',st.dTru],['Lượt khen',st.cong.length,'Điểm',st.dCong],[],
+    ['Xếp loại'].concat(S.cfg.thresholds.map(t=>t.ten)),['Số học sinh'].concat(st.cnt),[],
+    ['Thi đua tổ','Sĩ số','Vi phạm','Khen','TB tuần','Đạt Tốt']].concat(st.to.map(x=>['Tổ '+x.t,x.n,x.tru,x.cong,f1(x.tb),x.tot]),[[],
+    ['STT','Họ tên','Tổ'].concat(cols.map(c=>c.h),['TB','Xếp loại'])],
+    st.list.map((s,i)=>{ const x=st.xl[s.ma]; return [i+1,s.ten,s.to].concat(cols.map(c=>c.f(s)),[f1(x.sc),x.ten]); }));
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['﻿'+R.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  a.download='Bao_cao_hanh_kiem_'+P.key+'_'+(S.cfg.lop||'11D3')+'.csv'; document.body.appendChild(a); a.click(); a.remove();
+  toast('Đã tải file Excel báo cáo.');
+}
+function bcCopy(P){
+  const st=bcStats(P), pv=bcPrevStats(P), n=st.list.length||1, th=S.cfg.thresholds;
+  let t=`[Lớp ${S.cfg.lop||'11D3'}] Báo cáo hạnh kiểm ${P.nhan}\n`;
+  t+=`• Điểm TB tuần của lớp: ${f1(st.tb)} (${rankName(st.tb)})${pv?`, ${st.tb>=pv.tb?'tăng':'giảm'} ${f1(Math.abs(st.tb-pv.tb))} so với ${P.prev.nhan}`:''}\n`;
+  t+=`• Xếp loại: ${th.map((x,i)=>st.cnt[i]?`${x.ten} ${st.cnt[i]} em (${Math.round(st.cnt[i]*100/n)}%)`:'').filter(Boolean).join(', ')}\n`;
+  t+=`• ${st.cong.length} lượt được khen, ${st.tru.length} lượt vi phạm\n`;
+  if(st.topLoi.length) t+=`• Lỗi cần nhắc các con: ${st.topLoi.slice(0,3).map(x=>x.k.toLowerCase()).join(', ')}\n`;
+  if(st.khen.length) t+=`• Tuyên dương: ${st.khen.slice(0,5).map(k=>stu(k.ma).ten).join(', ')}\n`;
+  if(st.to.length) t+=`• Tổ dẫn đầu thi đua: Tổ ${st.to[0].t}\n`;
+  t+=`Các bác xem chi tiết của con tại: ${location.origin+location.pathname.replace(/index\.html$/,'').replace(/\/?$/,'/')}phu-huynh.html\nCô cảm ơn các bác đã đồng hành cùng các con ạ!`;
+  const done=()=>toast('Đã sao chép tóm tắt — dán vào nhóm Zalo phụ huynh. (Không nêu tên học sinh vi phạm.)');
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,()=>bcCopyFallback(t,done)); else bcCopyFallback(t,done);
+}
+function bcCopyFallback(t,done){ const ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); done(); }catch(_){ openPanel('Tóm tắt gửi phụ huynh','Chép đoạn dưới',`<textarea style="width:100%;min-height:300px">${esc(t)}</textarea>`); } ta.remove(); }
+/* nút trên thanh nhanh: Ctrl+K có lệnh mở báo cáo */
+if(S.me) buildNav();
 </script>
 
 </body>

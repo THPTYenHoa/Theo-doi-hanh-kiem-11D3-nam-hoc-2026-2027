@@ -181,6 +181,31 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/1 phút/.test(await p.textContent('#v32live')), 'backend cũ (chưa có sync) ⇒ tự quay về cập nhật 1 phút, không lỗi');
   await p.context().close();
 
+  // 13. v3.3 — báo cáo
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.click('#railNav [data-v=bc]'); await W(1200);
+  ok(await p.isVisible('#vBC .bchead') && /Tháng 10\/2026/.test(await p.textContent('#vBC .bchead')), 'menu Báo cáo: báo cáo tháng đang chọn');
+  ok(/so kỳ trước/.test(await p.textContent('#vBC .kpis')), 'có so sánh với tháng trước');
+  ok(await p.locator('#vBC .bct tr').count() >= 5 && /Nhất/.test(await p.textContent('#vBC')), 'bảng thi đua tổ có xếp hạng');
+  ok(/Trong tháng 10\/2026, lớp/.test(await p.inputValue('#bcNx')), 'nhận xét chung tự soạn từ số liệu');
+  await p.fill('#bcPh', 'Phương hướng cô tự viết'); await p.evaluate(() => { document.activeElement.blur(); renderAll(); });
+  ok(await p.inputValue('#bcPh') === 'Phương hướng cô tự viết', 'nội dung cô sửa được giữ lại');
+  await p.evaluate(() => { window.print = () => { window.__pr = 1; }; }); await p.click('#bcPrint'); await W(200);
+  const pr = await p.evaluate(() => document.querySelector('#printArea').textContent);
+  ok(/CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM/.test(pr) && /Phương hướng cô tự viết/.test(pr) && /GIÁO VIÊN CHỦ NHIỆM/.test(pr), 'bản in: quốc hiệu, nội dung đã sửa, chữ ký GVCN');
+  for (const k of ['tuan', 'hk', 'nam']) { await p.click(`#vBC [data-bk=${k}]`); await W(250); }
+  ok(/Cả năm học/.test(await p.textContent('#vBC .bchead')), 'đổi kỳ: tuần / học kỳ / cả năm');
+  const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#bcXls')]);
+  ok(/Bao_cao_hanh_kiem_nam/.test(dl.suggestedFilename()), 'tải Excel báo cáo');
+  await p.context().close();
+  p = await P({ as: 'tt', mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.click('#tabbar [data-v=bc]'); await W(1200);
+  ok(await p.evaluate(() => document.querySelector('#bcNx').readOnly), 'tổ trưởng xem được báo cáo, không sửa lời nhận xét');
+  ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && [...document.querySelectorAll('#vBC .panelbox')].every(e => e.getBoundingClientRect().right <= innerWidth + 1)), 'điện thoại: báo cáo không tràn ngang');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');
