@@ -33,7 +33,7 @@ function build() {
   return { students, tru, cong, entries, remarks };
 }
 const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt' };
-const ME = { gvcn: { name: 'Cô Chủ Nhiệm', role: 'GVCN', email: 'gvcn@example.com', to: '' },
+const ME = { gvcn: { name: 'Nguyễn Thu Thảo', role: 'GVCN', email: 'gvcn@example.com', to: '' },
   lt: { name: 'Nguyễn Minh An', role: 'Lớp trưởng', email: 'loptruong@example.com', to: '1' },
   tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@example.com', to: '2' },
   ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' } };
@@ -56,7 +56,7 @@ async function newPage(browser, o = {}) {
     const who = (tok.match(/^tok\.(\w+)/) || [])[1];
     const cfg = { namHoc: '2026 - 2027', thang: 10, soTuan: 4, thresholds: [{ ten: 'Tốt', san: 0 }, { ten: 'Khá', san: -6 }, { ten: 'Trung bình', san: -12 }, { ten: 'Yếu', san: -9999 }] };
     const base = () => ({ ok: true, me: ME[who] || ME.ph, cfg, students: D.students, cong: D.cong, tru: D.tru,
-      accounts: [{ email: 'gvcn@example.com', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', active: true }],
+      accounts: [{ email: 'gvcn@example.com', ten: 'Nguyễn Thu Thảo', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', active: true }],
       thongBao: { mode: 'Ngay', emails: '', nguong: 0, baoCong: true }, sheetUrl: 'https://docs.google.com/spreadsheets/d/FAKE/edit',
       quyDinh: { xepThuLop: 5, heSoTaiPham: 2, chiTieu: [{ tu: 1, den: 5, min: 0, max: 1 }, { tu: 6, den: 8, min: 1, max: 2 }] }, thang: 10, theme: M.theme || '',
       data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks }, rev: o.oldBackend ? undefined : String(M.rev) });
@@ -74,7 +74,7 @@ async function newPage(browser, o = {}) {
     else if (a === 'getEvidence') { const f = (M.EV || {})[p.id] || { n: 'anh.jpg', m: 'image/png', data: TINY }; res = { ok: true, name: f.n, mime: f.m, data: f.data }; }
     else if (a === 'delEvidence') { const e = D.entries.find(x => x[0] === p.entryId); if (e) e[13] = String(e[13] || '').split(';').filter(x => x.indexOf(p.fileId + '|') !== 0).join(';'); res = { ok: true }; }
     else if (a === 'saveTheme') { M.theme = p.theme; res = { ok: true, theme: p.theme }; }
-    else if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
+    else if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Nguyễn Thu Thảo', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
     else if (a === 'login') res = (body.payload && body.payload.pin) ? Object.assign({ token: 'tok.' + ({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }, { boot: (who2 => { const b = base(); b.me = ME[who2]; return b; })({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }) : { ok: false, error: 'Sai mật khẩu' };
     else if (a === 'loginKhach') { res = { ok: true, token: 'tok.ph', boot: base() }; res.boot.me = ME.ph; }
     else if (a === 'bootstrap') res = who ? base() : { ok: false, error: 'Phiên đăng nhập hết hạn' };

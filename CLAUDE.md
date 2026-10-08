@@ -54,6 +54,8 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   (bộ không ghi tên = `chu-nhiem`). Ảnh theo ảnh thật của cô — **không** đưa ảnh thật vào repo). Video Veo nền xanh ⇒
   `ffmpeg -i x.mp4 -vf "chromakey=0x00FF00:0.18:0.08,scale=360:-1" -loop 0 -c:v libwebp_anim -q:v 70 x.webp`.
 - **PDF hướng dẫn**: `tools/guide/cap.js` (ảnh, dữ liệu giả) → `tools/guide/build.js` → `docs/HDSD_GVCN.pdf`, `HDSD_Can_bo_lop.pdf`, `HDSD_Phu_huynh.pdf`.
+  + **`docs/HDSD_Day_du.pdf`** (bìa, mục lục, 3 phần có trang phân cách — ghép tự động từ 3 bộ trang trong `build.js`). Mock GVCN tên "Nguyễn Thu Thảo"
+  (ảnh hiện "Chào cô Thảo!"); vai Quản trị không gọi "cô".
 
 ## v3.2 — trực tiếp & nhanh
 - **Đồng bộ trực tiếp `LIVE`** (khối `v32-js`): backend `sync` {rev, thangs} (file `DongBo.gs`): mọi lần ghi gọi `cacheClear` ⇒ đổi `rev`;

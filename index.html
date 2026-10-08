@@ -3954,7 +3954,7 @@ function v32Hero(){
   const nWarn=list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))>0).length;
   const pTot=list.length?Math.round(100*list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))===0).length/list.length):0;
   const gv=S.me.role==='GVCN'||S.me.role==='Quản trị';
-  const hi=gv?'Chào cô '+esc(ten1(S.me.name))+'!':'Chào '+esc(ten1(S.me.name))+'!';
+  const hi=S.me.role==='GVCN'?'Chào cô '+esc(ten1(S.me.name))+'!':'Chào '+esc(ten1(S.me.name))+'!';   /* Quản trị (không phải cô chủ nhiệm) ⇒ không gọi "cô" */
   const emo=nBad===0?(nGood?'vui':'chao'):(nWarn>=Math.max(5,list.length/3)?'lo-lang':nGood>=nBad?'co-vu':'huong-dan');
   const pham=S.filterTo==='all'?'Cả lớp '+esc(S.cfg.lop||'11D3'):'Tổ '+esc(S.filterTo);
   const feed=S.entries.filter(e=>e[E_THANG]===S.thang && list.some(s=>s.ma===e[E_MA])).slice().sort((a,b)=>String(b[E_LUC]).localeCompare(String(a[E_LUC]))).slice(0,6);
