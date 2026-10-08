@@ -49,6 +49,8 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   `ao-dai` tự bật 14–22/11, …) ghép theo chủ đề `BY_THEME`. **Xưng hô**: với phụ huynh cô xưng "cô", gọi "các bác", học sinh là "các con / con X";
   với cán bộ lớp gọi "em"; GVCN: "Chào cô Thảo!". Ảnh `mascot/<vai>/<biểu-cảm>.webp` (có thể là WebP động), thiếu ⇒ chibi SVG;
   hiệu ứng hành động CSS `.m-<biểu-cảm>`; phản ứng khi ghi điểm (`mReact`: vui / khen-lon / buon / nghiem lần 2 / gian lần 3+ hoặc ≥6 lỗi/tháng).
-  Prompt: `docs/prompt-chibi.md` (theo ảnh thật của cô — **không** đưa ảnh thật vào repo). Video Veo nền xanh ⇒
+  Prompt: `docs/prompt-chibi.md` — viết cho người không rành: 3 bước, khung copy-dán sẵn; người dùng gửi `goc.png` + `1.png`…`16.png`
+  theo thứ tự chao, huong-dan, chi-tay, vui, khen-lon, co-vu, buon, lo-lang, nghiem, gian, suy-nghi, ngac-nhien, nghi-ngoi, an-mung, chup-anh, cam-on
+  (bộ không ghi tên = `chu-nhiem`). Ảnh theo ảnh thật của cô — **không** đưa ảnh thật vào repo). Video Veo nền xanh ⇒
   `ffmpeg -i x.mp4 -vf "chromakey=0x00FF00:0.18:0.08,scale=360:-1" -loop 0 -c:v libwebp_anim -q:v 70 x.webp`.
 - **PDF hướng dẫn**: `tools/guide/cap.js` (ảnh, dữ liệu giả) → `tools/guide/build.js` → `docs/HDSD_GVCN.pdf`, `HDSD_Can_bo_lop.pdf`, `HDSD_Phu_huynh.pdf`.
