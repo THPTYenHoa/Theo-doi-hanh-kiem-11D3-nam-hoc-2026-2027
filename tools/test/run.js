@@ -1,0 +1,120 @@
+/* Kiểm thử v3.0 — chạy: python3 -m http.server 8768 (thư mục repo) rồi NODE_PATH=$(npm root -g) node tools/test/run.js */
+const { chromium } = require('playwright'); const { newPage } = require('./mock');
+const U = 'http://127.0.0.1:8768/index.html', PH = 'http://127.0.0.1:8768/phu-huynh.html';
+let fail = 0; const ok = (c, m) => { console.log((c ? '✅ ' : '❌ ') + m); if (!c) fail++; };
+const W = ms => new Promise(r => setTimeout(r, ms));
+(async () => {
+  const b = await chromium.launch(); const errs = [];
+  const P = async o => { const p = await newPage(b, o); p.on('pageerror', e => errs.push(e.message)); return p; };
+
+  // 1. đăng nhập email + mã
+  let p = await P({});
+  await p.goto(U); await W(600);
+  ok(await p.isVisible('#lgEm'), 'màn đăng nhập: ô email (không còn chọn tên / mật khẩu)');
+  ok(!(await p.isVisible('#lgPin')) && !p.M.CALLS.some(c => c.a === 'roster'), 'không gọi danh sách thành viên, không ô mật khẩu');
+  ok(await p.isVisible('a.lgph[href="phu-huynh.html"]'), 'có lối vào trang phụ huynh');
+  await p.fill('#lgEm', 'la@example.com'); await p.click('#lgGo'); await W(300);
+  ok(/chưa có trong danh sách/.test(await p.textContent('#lgErr3')), 'email lạ ⇒ báo chưa có trong danh sách');
+  await p.fill('#lgEm', 'TOTRUONG2@example.com'); await p.click('#lgGo'); await p.waitForSelector('#lgCode');
+  ok(/Trần Hải Bình/.test(await p.textContent('.lgcard h3')), 'chào đúng tên người nhận mã');
+  await p.fill('#lgCode', '111111'); await W(400);
+  ok(/chưa đúng/.test(await p.textContent('#lgErr3')), 'mã sai ⇒ báo lỗi');
+  await p.fill('#lgCode', '123456'); await W(1200);
+  ok(await p.isVisible('#app.on'), 'mã đúng ⇒ vào sổ');
+  ok(/Tổ trưởng/.test(await p.textContent('#rlRole')), 'vai trò tổ trưởng lấy từ tài khoản');
+  ok(await p.isVisible('#hkupd.on'), 'hiện thông báo cập nhật v3.0');
+  await p.click('#updOk');
+  await p.context().close();
+
+  // 2. ghi điểm không chờ (máy chủ chậm 2,5 s)
+  p = await P({ as: 'lt', lag: 2500 }); await p.goto(U); await p.waitForSelector('#app.on', { timeout: 15000 }); await W(3500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  const n0 = p.M.D.entries.length;
+  await p.locator('#listGhi .row').nth(3).click(); await W(300);
+  await p.click('#pBody [data-add="T02"]'); await W(200);
+  const t = await p.evaluate(() => { const a = performance.now(); document.querySelector('#gcSkip').click(); return performance.now() - a; });
+  await W(150);
+  const shown = await p.evaluate(() => S.entries.some(e => /^tmp-/.test(e[0])));
+  ok(shown && t < 200, 'ghi điểm: hiện ngay (' + Math.round(t) + ' ms), không chờ máy chủ');
+  ok(/Đang lưu/.test(await p.textContent('#hkq')), 'chip "Đang lưu…"');
+  await W(4500);
+  ok(p.M.D.entries.length === n0 + 1, 'máy chủ (giả lập) nhận đúng 1 dòng');
+  ok(await p.evaluate(() => !S.entries.some(e => /^tmp-/.test(e[0]))), 'số tạm đã đổi sang số thật');
+  const add = p.M.CALLS.find(c => c.a === 'addEntries'); ok(add && add.p.rid, 'lệnh ghi có mã chống trùng rid');
+  await p.context().close();
+
+  // 3. mất phản hồi ⇒ gửi lại cùng rid, không trùng
+  p = await P({ as: 'lt', drop: { addEntries: 1 } }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  const n1 = p.M.D.entries.length;
+  await p.locator('#listGhi .row').nth(2).click(); await W(200); await p.click('#pBody [data-add="T04"]'); await W(200); await p.click('#gcSkip'); await W(5000);
+  ok(p.M.D.entries.length === n1 + 1, 'mạng rớt giữa chừng ⇒ tự gửi lại, không ghi trùng');
+  ok(p.M.CALLS.filter(c => c.a === 'addEntries').length >= 2, 'đã tự thử lại');
+  await p.context().close();
+
+  // 4. lỗi thật ⇒ trả lại như cũ + chip đỏ
+  p = await P({ as: 'lt', failWrite: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.locator('#listGhi .row').nth(1).click(); await W(200); await p.click('#pBody [data-add="T01"]'); await W(200); await p.evaluate(() => { const b = document.querySelector('#pBody .btn.ghost, #pBody button'); }); if (await p.isVisible('#gcSkip')) await p.click('#gcSkip'); else { const o = await p.$('#pBody button'); o && await o.click(); await W(200); if (await p.isVisible('#gcSkip')) await p.click('#gcSkip'); } await W(1500);
+  ok(await p.isVisible('#hkq.err'), 'lỗi ghi ⇒ chip đỏ Thử lại / Bỏ');
+  ok(await p.evaluate(() => !S.entries.some(e => /^tmp-/.test(e[0]))), 'dòng chưa lưu được gỡ khỏi màn hình');
+  await p.context().close();
+
+  // 5. xoá không chờ + mở lại nhanh từ dữ liệu cả năm
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(4500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  ok(await p.evaluate(() => S.allLoaded), 'tự tải nền dữ liệu cả năm');
+  const id = await p.evaluate(() => S.entries.find(e => e[2] === 10)[0]);
+  const nD = p.M.D.entries.length;
+  await p.evaluate(id => delEntry(id), id); await W(100);
+  ok(await p.evaluate(id => !S.entries.some(e => e[0] === id), id), 'xoá: biến mất ngay');
+  await W(1500); ok(p.M.D.entries.length === nD - 1, 'máy chủ đã xoá');
+  await p.route(/script\.google\.com/, async r => { await W(5000); r.fallback(); });
+  const t0 = Date.now(); await p.reload(); await p.waitForSelector('#app.on'); const dt = Date.now() - t0;
+  ok(dt < 2500, 'mở lại sổ: hiện ngay từ dữ liệu lưu (' + dt + ' ms, máy chủ chậm 5 s)');
+  await p.evaluate(() => go('tk')); await W(300);
+  ok(!(await p.textContent('#vTK')).includes('Đang tải dữ liệu cả năm'), 'Thống kê mở ngay, không chờ tải cả năm');
+  await p.context().close();
+
+  // 6. tra cứu nhanh + hồ sơ
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(3500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.keyboard.press('/'); await W(200);
+  ok(await p.isVisible('#hkfind.on'), 'phím / mở Tra cứu');
+  await p.keyboard.type('khoa'); await W(200);
+  ok(await p.locator('#fls .it').count() >= 1, 'gõ không dấu vẫn tìm được');
+  await p.keyboard.press('Enter'); await W(600);
+  ok(await p.isVisible('#panel.on') && /hồ sơ hạnh kiểm/.test(await p.textContent('#pSub')), 'Enter ⇒ mở hồ sơ học sinh');
+  await p.click('#pBody [data-pk="hk1"]'); await W(300);
+  ok(/Học kỳ 1/.test(await p.textContent('#pBody .pf-res')), 'hồ sơ: đổi sang Học kỳ 1');
+  await p.context().close();
+
+  // 7. chủ đề
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.click('#hTheme'); await W(200);
+  ok(await p.locator('#pBody .thc').count() >= 15, 'bảng chọn có ' + await p.locator('#pBody .thc').count() + ' chủ đề');
+  await p.click('#pBody [data-th="man-chin"]'); await W(200);
+  ok(await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--teal').trim().toUpperCase() === '#A3264B'), 'đổi sang Mận chín ngay');
+  await p.click('#thClass'); await W(500);
+  ok(p.M.CALLS.some(c => c.a === 'saveTheme' && c.p.theme === 'man-chin'), 'GVCN đặt chủ đề mặc định cho lớp');
+  await p.reload(); await p.waitForSelector('#app.on'); await W(500);
+  ok(await p.evaluate(() => THEME.cur().id === 'man-chin'), 'tải lại vẫn giữ chủ đề');
+  await p.context().close();
+
+  // 8. điện thoại
+  p = await P({ as: 'tt', mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  ok(await p.evaluate(() => document.documentElement.scrollWidth) <= 390, 'điện thoại: không cuộn ngang');
+  const rows = await p.evaluate(() => { const r = [...document.querySelectorAll('#listGhi .row')].filter(x => x.getBoundingClientRect().top < innerHeight); return r.length; });
+  ok(rows >= 8, 'điện thoại: thấy ' + rows + ' học sinh trên một màn hình');
+  await p.context().close();
+
+  // 9. trang phụ huynh
+  p = await P({}); await p.goto(PH); await W(1200);
+  ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');
+  await p.context().close();
+
+  ok(errs.length === 0, 'không lỗi JavaScript' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));
+  await b.close(); console.log(fail ? '\n' + fail + ' lỗi' : '\nTất cả đạt'); process.exit(fail ? 1 : 0);
+})();

@@ -31,6 +31,7 @@ function build() {
   const remarks = [{ maHS: 'HS03', thang: 9, nhanXet: 'Có tiến bộ, cần đúng giờ hơn.', xepLoai: '' }];
   return { students, tru, cong, entries, remarks };
 }
+const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt' };
 const ME = { gvcn: { name: 'Cô Chủ Nhiệm', role: 'GVCN', email: 'gvcn@example.com', to: '' },
   lt: { name: 'Nguyễn Minh An', role: 'Lớp trưởng', email: 'loptruong@example.com', to: '1' },
   tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@example.com', to: '2' },
@@ -52,16 +53,25 @@ async function newPage(browser, o = {}) {
     const base = () => ({ ok: true, me: ME[who] || ME.ph, cfg, students: D.students, cong: D.cong, tru: D.tru,
       accounts: [{ email: 'gvcn@example.com', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', active: true }],
       thongBao: { mode: 'Ngay', emails: '', nguong: 0, baoCong: true }, sheetUrl: 'https://docs.google.com/spreadsheets/d/FAKE/edit',
-      quyDinh: { xepThuLop: 5, heSoTaiPham: 2, chiTieu: [{ tu: 1, den: 10, kha: 5 }] }, thang: 10,
+      quyDinh: { xepThuLop: 5, heSoTaiPham: 2, chiTieu: [{ tu: 1, den: 5, min: 0, max: 1 }, { tu: 6, den: 8, min: 1, max: 2 }] }, thang: 10, theme: M.theme || '',
       data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks } });
     let res;
     if (o.lag) await new Promise(r => setTimeout(r, o.lag));
-    if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
+    if (a === 'otpStart') { const em = String(p.email || '').toLowerCase(); const who2 = EMAILS[em];
+      res = !who2 ? { ok: false, error: 'Email này chưa có trong danh sách cán bộ lớp. Nhờ GVCN thêm vào mục Tài khoản.' }
+          : (M.otpAt && Date.now() - M.otpAt < 45000 && !o.noGap) ? { ok: false, code: 'WAIT', error: 'Mã vừa được gửi. Đợi 40 giây rồi gửi lại.' }
+          : (M.otpAt = Date.now(), M.otpEmail = em, { ok: true, gap: 45, name: ME[who2].name }); }
+    else if (a === 'otpVerify') { const who2 = EMAILS[String(p.email || '').toLowerCase()];
+      res = p.code === '123456' && who2 ? (() => { const b = base(); b.me = ME[who2]; return { ok: true, token: 'tok.' + who2, me: ME[who2], boot: b }; })() : { ok: false, error: 'Mã chưa đúng. Còn 4 lần thử.' }; }
+    else if (a === 'saveTheme') { M.theme = p.theme; res = { ok: true, theme: p.theme }; }
+    else if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Cô Chủ Nhiệm', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
     else if (a === 'login') res = (body.payload && body.payload.pin) ? Object.assign({ token: 'tok.' + ({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }, { boot: (who2 => { const b = base(); b.me = ME[who2]; return b; })({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }) : { ok: false, error: 'Sai mật khẩu' };
     else if (a === 'loginKhach') { res = { ok: true, token: 'tok.ph', boot: base() }; res.boot.me = ME.ph; }
     else if (a === 'bootstrap') res = who ? base() : { ok: false, error: 'Phiên đăng nhập hết hạn' };
     else if (a === 'entries') { const th = p.thangs; res = { ok: true, entries: D.entries.filter(e => !th || th.includes(e[2])), remarks: D.remarks }; }
-    else if (a === 'addEntries') { if (o.failWrite) res = { ok: false, error: 'Lỗi ghi (giả lập)' }; else { const out = (p.items || p.entries || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', x.thang, x.tuan, x.ma || x.maHS, x.to, x.loai, x.muc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); res = { ok: true, entries: out, ids: out.map(e => e[0]) }; } }
+    else if (a === 'addEntries') { if (p.rid && M.RID && M.RID[p.rid]) { res = M.RID[p.rid]; }
+      else if (o.drop && o.drop.addEntries > 0) { o.drop.addEntries--; const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, '1', x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); (M.RID = M.RID || {})[p.rid] = { ok: true, ids: out.map(e => e[0]) }; return route.abort(); }
+      else if (o.failWrite) res = { ok: false, error: 'Lỗi ghi (giả lập)' }; else { const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, (D.students.find(s => s.ma === x.maHS) || {}).to, x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); res = { ok: true, ids: out.map(e => e[0]) }; if (p.rid) (M.RID = M.RID || {})[p.rid] = res; } }
     else if (a === 'deleteEntry') { D.entries = D.entries.filter(e => e[0] !== p.id); res = { ok: true }; }
     else res = { ok: true };
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(res) });

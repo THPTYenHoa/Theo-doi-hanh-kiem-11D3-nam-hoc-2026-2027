@@ -217,7 +217,11 @@ async function api(action,payload){
   const j=await r.json(); if(!j.ok){ const e=new Error(j.error||'Không rõ lỗi'); e.srv=1; throw e; } return j;
 }
 function sync(st,t){ const b=$('#sync'); b.className='sync'+(st?' '+st:''); $('#syncT').textContent=t; }
-function apply(b){ S.cfg=b.cfg; S.students=b.students||[]; }
+/* chủ đề mặc định của lớp (GVCN chọn trong sổ) — cùng bảng màu với index.html THEMES */
+const PAL={"mac-dinh":["#0E7C86","#0A5C64","#1AA0AB","#6FBEC5","#A8DBDF","#E6F3F4","#F5FAFB","#F2F7F8"],"man-chin":["#A3264B","#7A1E3A","#C0476A","#D88AA0","#EFC6D2","#F8E9ED","#FCF5F7","#F8F4E6"],"cham-mau-nuoc":["#302663","#241C4F","#4B3F8C","#9C92CC","#D3CCEA","#E6E1F5","#F6F4FB","#F3F1FA"],"vo-o-ly":["#2B6CB0","#1F4F85","#3D86CF","#8DB5E2","#C9DDF3","#EAF2FB","#F7FAFE","#FFFFFF"],"bang-phan":["#2F5D50","#20433A","#3F7A69","#9CBDB2","#CFE2DB","#E8F2EE","#F5FAF8","#E9EFEC"],"hoa-phuong":["#C23B22","#922A17","#E0583B","#EBA08F","#F6D3CA","#FCEDE8","#FFF8F5","#FFF9F0"],"thu-vang":["#B26B12","#84500D","#D08A2A","#E3B676","#F2DDB8","#FBF1E1","#FFFAF1","#FBF6EC"],"dong-ha-noi":["#4A6378","#344858","#6E8AA1","#AFC0CE","#D8E1E8","#ECF1F5","#F8FAFC","#F1F4F7"],"hoa-dao":["#C2507A","#993C5E","#DB7297","#EBA9C0","#F6D7E2","#FBEDF2","#FFF8FA","#FFF6F8"],"ho-guom":["#3F7A6B","#2C5A4E","#5E9A88","#A8CABE","#D3E6DF","#EAF4F0","#F7FBF9","#F1F6F3"],"van-mieu":["#9A4A2E","#743621","#B9674A","#D9AA95","#EED6CB","#F8ECE6","#FDF8F5","#F7F1EA"],"nha-giao":["#B0436A","#86304F","#D06A8C","#E6A5BB","#F4D4E0","#FBEBF1","#FFF8FA","#FFF7F2"],"trung-thu":["#24427A","#172C52","#E07B2E","#9FB2D6","#D6DFEF","#EAF0F8","#F7F9FC","#F3F5FA"],"lo-fi":["#6B4C9A","#4E3673","#C27BA0","#C3A9DE","#E3D6F1","#F2EBF9","#FAF7FD","#F7F2FB"],"origami":["#3E8E8A","#2C6966","#E39A7B","#A7D3CF","#D3EBE8","#ECF6F5","#F8FCFB","#F6F7F3"],"la-xanh":["#4E7D5B","#375C42","#6C9A76","#A9C7AE","#D5E6D8","#EBF4EC","#F7FBF7","#F3F7F2"],"bien-may":["#2A7FA5","#1E5F7C","#47A3C7","#9BCBE0","#CFE6F0","#E9F4F9","#F6FBFD","#F1F8FB"],"giay-kraft":["#8A5A35","#6A4328","#A8744B","#CFAE8F","#E8D6C3","#F5ECE2","#FBF7F2","#F3EADF"]};
+function theme(id){ const c=PAL[id]; if(!c) return; const r=document.documentElement.style;
+  [['--teal',c[0]],['--teal-d',c[1]],['--pale',c[5]],['--paler',c[6]],['--bg',c[7]]].forEach(([k,v])=>r.setProperty(k,v)); lsS('hkph_theme',id); }
+function apply(b){ S.cfg=b.cfg; S.students=b.students||[]; if(b.theme!==undefined) theme(b.theme||'mac-dinh'); }
 function save(){ lsS(LS_C, JSON.stringify({v:1,at:S.at,cfg:S.cfg,students:S.students,entries:S.entries,remarks:S.remarks})); }
 async function login(){ const r=await api('loginKhach'); S.token=r.token; lsS(LS_TK,S.token); if(r.boot) apply(r.boot); return r; }
 async function load(manual){
@@ -389,7 +393,7 @@ function printLop(ky){
 /* ── khởi động: vẽ ngay từ dữ liệu lưu, đồng bộ phía sau ── */
 (function(){
   const u=(window.HK_UPDATES||[])[0]; if(u) $('#ver').textContent='Phiên bản '+u.version;
-  readHash();
+  readHash(); theme(lsG('hkph_theme')||'');
   try{ const c=JSON.parse(lsG(LS_C)||'null'); if(c&&c.v===1&&c.cfg){ S.cfg=c.cfg; S.students=c.students||[]; S.entries=c.entries||[]; S.remarks=c.remarks||[]; S.at=c.at||0;
     sync('busy','Dữ liệu lúc '+new Date(S.at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})+' · đang cập nhật…'); render(); } }catch(_){}
   load(false);
