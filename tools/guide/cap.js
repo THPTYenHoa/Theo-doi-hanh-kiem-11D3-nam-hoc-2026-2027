@@ -72,6 +72,27 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.click('#gTour'); await W(1200); await p.click('#tg-card [data-a=n]'); await W(600); await p.click('#tg-card [data-a=n]'); await W(700);
   await shot(p, 'tour', [['#tg-card', 1]]);
   await p.context().close();
+  // v3.2 — thẻ tổng quan + cập nhật trực tiếp (điện thoại)
+  p = await newPage(b, { as: 'gvcn', mobile: true }); await p.goto(U + 'index.html'); await p.waitForSelector('#app.on'); await W(2500); await closeUpd(p); await W(300);
+  await p.evaluate(() => { const m = document.querySelector('#msc'); m && m.remove(); });
+  await shot(p, 'hero', [['#v32h .top', 1], ['#v32h .tiles', 2], ['#v32h .feed', 3]]);
+  p.M.ext('HS05', 'Đi học muộn', -2); await W(5200);
+  await shot(p, 'live', [['#v32pop', 1], ['#v32live', 2, 'tr'], ['#listGhi .ev.fresh', 3]]);
+  await W(1500); await p.click('#v32h [data-f=warn]'); await W(400); await shot(p, 'hero_loc', [['#v32h .tl.on', 1], ['#v32clr', 2]]);
+  await p.click('#tabbar [data-v=bc]'); await W(1500); await shot(p, 'm_bc', [['#vBC .segbar', 1], ['#vBC .bcacts', 2], ['#vBC .kpis', 3]]);
+  await p.context().close();
+  // v3.3 — báo cáo (máy tính)
+  p = await newPage(b, { as: 'gvcn' }); await p.goto(U + 'index.html'); await p.waitForSelector('#app.on'); await W(1500); await closeUpd(p);
+  await p.click('#railNav [data-v=bc]'); await W(1500);
+  await shot(p, 'd_bc', [['#vBC .segbar', 1], ['#vBC .bcacts', 2], ['#vBC .kpis', 3], ['#vBC .bcgrid .panelbox', 4]]);
+  await p.evaluate(() => { const t = [...document.querySelectorAll('#vBC .sechead')].find(x => /Thi đua/.test(x.textContent)); document.querySelector('#scroll').scrollTo(0, t.offsetTop - 130); }); await W(300);
+  await shot(p, 'd_bc2', [['#vBC .bct', 1], ['#vBC .bcgrid > div:nth-child(2) .register', 2]]);
+  await p.evaluate(() => { document.querySelector('#bcNx').scrollIntoView({ block: 'center' }); }); await W(300);
+  await shot(p, 'd_bc3', [['#bcNx', 1], ['#bcPh', 2], ['#vBC [data-auto]', 3, 'tr']]);
+  await p.evaluate(() => { window.print = () => {}; bcPrint(bcPeriod()); }); await W(300); await p.emulateMedia({ media: 'print' });
+  await p.pdf({ path: path.join(OUT, '_bc.pdf'), format: 'A4', margin: { top: '15mm', bottom: '15mm', left: '18mm', right: '15mm' } });
+  require('child_process').execSync(`pdftoppm -r 90 -png -f 1 -l 1 "${path.join(OUT, '_bc.pdf')}" "${path.join(OUT, 'bc_print')}" && mv "${path.join(OUT, 'bc_print-1.png')}" "${path.join(OUT, 'bc_print.png')}"`); console.log('📸 bc_print');
+  await p.context().close();
   // cán bộ lớp (tổ trưởng) — điện thoại + lưu chậm
   p = await newPage(b, { as: 'tt', mobile: true, lag: 6000 }); await p.goto(U + 'index.html'); await p.waitForSelector('#app.on'); await W(7000); await closeUpd(p); await W(300);
   await shot(p, 'tt_home', [['#periodBar', 1], ['#toFilter', 2], ['#listGhi .row', 3]]);

@@ -7,7 +7,7 @@ const APP = 'thptyenhoa.github.io/Theo-doi-hanh-kiem-11D3-nam-hoc-2026-2027';
 global.window = {}; global.document = { createElement: () => ({ style: {} }), head: { appendChild() {} } }; global.localStorage = { getItem: () => null, setItem() {} };
 require(path.join(ROOT, 'mascot.js')); const M = global.window.MASCOT;
 const chibi = (emo, st) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(M.svg(emo, st || 'kawaii'));
-const VER = '3.1', TODAY = '10/2026';
+const VER = '3.3', TODAY = '10/2026';
 
 const CSS = `
 @page{size:1280px 720px;margin:0}
@@ -45,6 +45,12 @@ h2{font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.15;c
 .card b{display:block;color:#0A5C64;font-size:16px;margin-bottom:5px}
 .card span{font-size:14.5px;line-height:1.5;color:#41566F}
 .faq .card{margin-bottom:12px}
+.pp{position:absolute;right:110px;top:40px;height:640px;border:1px solid #D9E4E7;box-shadow:0 18px 40px rgba(20,40,50,.16);background:#fff}
+.div{background:linear-gradient(135deg,#0E7C86 0%,#0A5C64 100%);color:#fff}
+.div .txt{top:170px;width:760px} .div .k{color:#BFE6E9} .div h1{color:#fff} .div .lead{color:#E3F4F5}
+.div .chibi{position:absolute;right:120px;top:150px;width:340px;height:340px} .div .ft,.div .no{color:#BFE6E9}
+.toc{margin-top:18px} .toc .card{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.toc .card b{margin:0} .toc .card em{font-style:normal;font-weight:800;color:#E07B39;font-size:15px}
 `;
 const ft = (title, n) => `<div class="bar"></div><div class="no">${String(n).padStart(2, '0')}</div><div class="ft"><span>Sổ hạnh kiểm 11D3 · THPT Yên Hòa · ${title}</span><span>Phiên bản ${VER} · ${TODAY} · ${APP}</span></div>`;
 const steps = a => `<ul class="steps">${a.map((t, i) => `<li><i>${i + 1}</i><span>${t}</span></li>`).join('')}</ul>`;
@@ -53,9 +59,10 @@ const phone = (a, b) => b ? `<div class="ph ph2a"><img src="${img(a)}"></div><di
 function slide(T, n, o) {
   if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">Hướng dẫn sử dụng</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p><span class="who">${o.who}</span></div>
     <img class="chibi" src="${chibi(o.emo || 'chao', o.st)}"><div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
+  if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div><img class="chibi" src="${chibi(o.emo || 'chao', o.st)}"></section>`;
   const w = o.wide ? `<div class="dk"><img src="${img(o.wide)}"></div>` : (o.shots ? phone(...o.shots) : '');
   const tw = o.wide ? 520 : (o.shots && o.shots[1] ? 560 : 640);
-  return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}</section>`;
+  return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}${o.right || ''}</section>`;
 }
 const LOGIN = { k: 'Bắt đầu', h: 'Đăng nhập bằng email + mã 6 số', shots: ['login1', 'login2'], steps: ['Nhập <b>email đã đăng ký với GVCN</b> vào ô Email.', 'Bấm <b>Gửi mã đăng nhập</b> — mở hộp thư, lấy <b>mã 6 số</b> (xem cả mục Thư rác).', 'Nhập mã ▸ tự vào sổ. Máy được ghi nhớ <b>30 ngày</b>.'], tip: 'Không còn mật khẩu chung — mỗi người chỉ vào được bằng email của mình. Chưa vào được? Nhờ GVCN thêm / sửa email trong mục Tài khoản.', emo: 'chao' };
 const DOCS = {
@@ -66,9 +73,14 @@ const DOCS = {
     { k: 'Ghi điểm', h: 'Ghi điểm cho một học sinh', shots: ['home', 'student'], steps: ['Chọn đúng <b>tháng / tuần</b> ở thanh trên.', 'Lọc nhanh theo <b>tổ</b>.', 'Chạm vào <b>tên học sinh</b> ▸ mở bảng ghi điểm.', 'Hoặc <b>Chọn nhiều</b> để ghi cho cả nhóm.', 'Kính lúp: <b>tra cứu</b> một em.', 'Thanh dưới: chuyển giữa các mục (điện thoại).'] },
     { k: 'Ghi điểm', h: 'Diễn giải & ảnh bằng chứng', shots: ['note', 'saved'], steps: ['Ghi rõ <b>vì sao</b> (hiện ngay cạnh tên học sinh).', 'Bấm <b>micro</b> để nói thay vì gõ.', '<b>Chụp ảnh / chọn ảnh, tài liệu</b> làm bằng chứng (biên bản, giấy khen…).', 'Bấm <b>Lưu điểm</b> — điểm hiện ngay, máy tự lưu phía sau. Lỡ tay: bấm <b>Hoàn tác</b> trong 5 giây.'], tip: 'Cô giáo chibi phản ứng theo từng lần ghi: vui khi khen, buồn khi trừ, nghiêm khi tái phạm lần 2, "giận" khi vi phạm nhiều lần.', emo: 'vui' },
     { k: 'Ghi điểm', h: 'Ghi cho nhiều em & xem bằng chứng', shots: ['multi', 'evview'], steps: ['<b>Chọn nhiều</b> ▸ chạm các em cần ghi.', 'Các em đã chọn được tô màu.', 'Bấm <b>Ghi điểm</b> ▸ chọn lý do — áp cho cả nhóm.'], html: `<p class="lead" style="font-size:16px;margin-top:6px">Bấm biểu tượng <b>📎</b> cạnh một ghi nhận để xem lại bằng chứng, phóng to ảnh, thêm ảnh hoặc gỡ file. File lưu trong thư mục Drive riêng của lớp — <b>phụ huynh không xem được</b>.</p>` },
+    { k: 'Ghi điểm', h: 'Thẻ tổng quan tuần', shots: ['hero', 'hero_loc'], steps: ['<b>Cô Thảo chào</b> cùng tuần, tháng đang xem.', '<b>4 ô số</b>: lượt trừ, lượt khen, số bạn cần nhắc nhở, % đạt Tốt.', '<b>Vừa cập nhật</b>: ai vừa ghi gì — chạm để mở bạn đó.'], tip: 'Bấm một ô (ví dụ "Cần nhắc") để lọc ngay các bạn đó; bấm "Bỏ lọc ✕" để xem lại cả lớp.', emo: 'chi-tay' },
+    { k: 'Trực tiếp', h: 'Sổ tự cập nhật — không cần tải lại', shots: ['live'], steps: ['Lớp trưởng / tổ trưởng vừa ghi ⇒ máy cô hiện <b>thông báo nhỏ</b> sau vài giây (chạm để mở bạn đó).', 'Nhãn <b>● Trực tiếp</b> màu xanh: sổ đang đồng bộ. Xám "Mất kết nối": máy tự thử lại khi có mạng.', 'Mục mới <b>trượt vào</b>, mục bị xoá <b>thu gọn</b> lại, điểm thay đổi sẽ nảy lên.'], tip: 'Lưu, xoá đều hiện ngay trên máy mình; máy chủ ghi phía sau. Mạng yếu cũng không mất điểm.', emo: 'vui' },
     { k: 'Xếp loại', h: 'Cập nhật hạnh kiểm & hồ sơ học sinh', shots: ['bang', 'profile'], steps: ['Chọn kỳ: <b>Tuần · Tháng · Học kỳ</b>.', 'Xem dạng <b>thẻ chi tiết</b> hoặc <b>bảng tổng hợp</b>.', 'Chạm một em ▸ <b>hồ sơ cả năm</b>: điểm từng tuần, từng tháng, học kỳ.', '<b>Nhận xét</b> & chốt xếp loại; <b>In / PDF</b>, <b>Tải Excel</b>.'] },
     { k: 'Xếp loại', h: 'Nhận xét & chốt xếp loại tháng', shots: ['remark'], steps: ['Chọn <b>xếp loại chốt</b> (để trống = tính tự động theo điểm).', 'Viết <b>nhận xét</b> về ý thức, nề nếp, tiến bộ — phụ huynh đọc được.'], tip: 'Xếp loại có dấu ✓ là GVCN đã chốt tay. Màu: xanh lá Tốt · xanh dương Khá · vàng Trung bình · đỏ Yếu.', emo: 'huong-dan' },
     { k: 'Báo cáo', h: 'Thống kê & lịch sử', shots: ['tk', 'ls'], steps: ['<b>Thống kê</b>: chọn Tuần / Tháng / Cả năm — em vi phạm nhiều, em được khen, lỗi hay mắc, so sánh tổ, chỉ tiêu xếp loại Khá.', '<b>Lịch sử</b>: lọc theo tháng, tổ, học sinh ▸ <b>Xuất Excel</b> hoặc <b>In / PDF</b> để nộp bản giấy.'] },
+    { k: 'Báo cáo', h: 'Báo cáo tuần · tháng · học kỳ · cả năm', wide: 'd_bc', steps: ['Chọn kỳ: <b>Tuần · Tháng · Học kỳ · Cả năm</b> (theo tháng / tuần ở thanh trên).', '<b>In / Lưu PDF · Tải Excel · Tóm tắt gửi phụ huynh</b>.', '4 ô số kèm <b>▲▼ so với kỳ trước</b> (xanh tốt lên, đỏ kém đi).', 'Xếp loại + chỉ tiêu, biểu đồ, <b>thi đua tổ</b>, lỗi theo nhóm, tuyên dương.'] },
+    { k: 'Báo cáo', h: 'Nhận xét tự soạn từ số liệu', wide: 'd_bc3', steps: ['<b>Nhận xét chung</b> soạn sẵn: sĩ số, vi phạm, xếp loại, lỗi hay mắc, tổ dẫn đầu, tuyên dương.', '<b>Phương hướng</b> gợi ý theo nhóm lỗi nhiều nhất.', '<b>Viết lại tự động</b> nếu muốn soạn lại từ số liệu mới nhất.'], tip: 'Cô sửa thẳng vào khung — máy tự lưu, bản in dùng đúng nội dung đã sửa. Phía trên có danh sách học sinh cần quan tâm kèm lý do.', emo: 'huong-dan' },
+    { k: 'Báo cáo', h: 'In theo mẫu văn bản · gửi phụ huynh', steps: ['<b>In / Lưu PDF</b>: quốc hiệu, mục I–VII, chữ ký GVCN, phụ lục bảng từng học sinh.', '<b>Tải Excel</b>: toàn bộ số liệu báo cáo.', '<b>Tóm tắt gửi phụ huynh</b>: sao chép đoạn tin, dán vào nhóm Zalo.'], tip: 'Tóm tắt gửi phụ huynh chỉ nêu tên các em được tuyên dương — không nêu tên học sinh vi phạm.', emo: 'cam-on', right: `<img class="pp" src="${img('bc_print')}">` },
     { k: 'Quản lý lớp', h: 'Tài khoản cán bộ lớp', shots: ['accounts', 'accform'], steps: ['<b>Cài đặt ▸ Tài khoản & phân quyền ▸ Thêm</b>.', 'Nhập <b>email</b> của em (email em dùng hằng ngày).', 'Chọn <b>vai trò</b>: Lớp trưởng (ghi cả lớp) hoặc Tổ trưởng.', 'Chọn <b>tổ phụ trách</b> ▸ <b>Thêm tài khoản</b>. Em đăng nhập bằng email + mã, không cần mật khẩu.'], tip: 'Khoá tạm một em: mở tài khoản ▸ Trạng thái: Đã khoá. Tài khoản quản trị hệ thống luôn giữ quyền để không bị khoá nhầm.', emo: 'nghiem' },
     { k: 'Cá nhân hoá', h: 'Giao diện & nhân vật cô giáo', shots: ['theme', 'theme2'], steps: ['Chọn <b>nhân vật cô giáo</b> — cô Thảo chibi với 10 vai (chủ nhiệm, lên lớp, áo dài, Tết, STEM…) — hoặc tắt.', 'Chọn <b>chủ đề màu & hình nền</b>: Mận chín, Chàm màu nước, Vở ô ly, Hoa phượng…'], html: `<p class="lead" style="font-size:16px;margin-top:4px">GVCN bấm <b>"Đặt … làm mặc định cho cả lớp"</b> để mọi người (và trang phụ huynh) cùng dùng chủ đề đó.</p>` },
     { k: 'Phụ huynh', h: 'Gửi trang xem sổ cho phụ huynh', html: `<p class="lead">Phụ huynh <b>không cần đăng nhập</b>: mở đường link (hoặc quét mã QR) để tìm tên con, xem xếp loại theo tháng / học kỳ / cả năm, từng lỗi và lần được khen, tải PDF / Excel. Không sửa được dữ liệu, không xem được ảnh bằng chứng.</p>
@@ -86,6 +98,8 @@ const DOCS = {
     { k: 'Ghi điểm', h: 'Ghi điểm cho một bạn', shots: ['student', 'note'], steps: ['Chạm tên bạn ▸ chọn <b>Trừ điểm</b> hoặc <b>Cộng điểm</b> ▸ chạm <b>lý do</b>.', 'Ghi rõ <b>vì sao</b> — hoặc bấm <b>micro</b> để nói.', '<b>Chụp ảnh</b> bằng chứng nếu có (biên bản, sổ đầu bài, giấy khen…).', 'Bấm <b>Lưu điểm</b>.'], tip: 'Lỗi tái phạm: app tự hỏi tính điểm gốc hay nhân hệ số theo quy định trường.', emo: 'chup-anh' },
     { k: 'Ghi điểm', h: 'Ghi nhiều bạn · Hoàn tác', shots: ['multi'], steps: ['<b>Chọn nhiều</b> ▸ chạm các bạn cần ghi.', 'Các bạn đã chọn được tô màu.', 'Bấm <b>Ghi điểm</b> ▸ chọn lý do — áp cho cả nhóm.'], html: `<p class="lead" style="font-size:16px;margin-top:6px">Lỡ tay? Bấm <b>Hoàn tác</b> ở thông báo cuối màn hình trong 5 giây. Xoá nhanh một lỗi: bấm <b>✕</b> cạnh lỗi đó.</p>` },
     { k: 'Lưu', h: 'Đã lưu chưa?', shots: ['tt_saving'], steps: ['Chip <b>Đang lưu…</b> ▸ <b>Đã lưu vào sổ</b>: điểm đã vào Google Sheet.', '<b>Hoàn tác</b> trong 5 giây nếu ghi nhầm.'], tip: 'Mạng yếu cứ để máy tự gửi lại — đừng ghi lại lần nữa, máy không bao giờ ghi trùng. Chip đỏ = lỗi thật: bấm Thử lại.', emo: 'suy-nghi' },
+    { k: 'Trực tiếp', h: 'Sổ tự cập nhật', shots: ['live'], steps: ['Bạn khác vừa ghi ⇒ máy em hiện <b>thông báo nhỏ</b> sau vài giây.', '<b>● Trực tiếp</b> màu xanh: sổ đang đồng bộ, không cần tải lại trang.', 'Mục mới trượt vào, mục bị xoá thu gọn lại.'], tip: 'Hai bạn cùng ghi một lúc vẫn không bị mất hay trùng điểm.', emo: 'vui' },
+    { k: 'Báo cáo', h: 'Xem báo cáo của lớp', shots: ['m_bc'], steps: ['Chọn <b>Tuần · Tháng · Học kỳ · Cả năm</b>.', 'In / PDF · Excel · Tóm tắt gửi phụ huynh.', 'Số liệu so với kỳ trước, thi đua tổ, lỗi hay mắc.'], tip: 'Em xem được báo cáo để chuẩn bị giờ sinh hoạt lớp; lời nhận xét chỉ cô chủ nhiệm sửa.', emo: 'huong-dan' },
     { k: 'Tra cứu', h: 'Tra cứu & bằng chứng', shots: ['find', 'evview'], steps: ['Kính lúp ▸ gõ tên <b>không cần dấu</b>.', 'Chạm tên ▸ hồ sơ cả năm của bạn đó.'], html: `<p class="lead" style="font-size:16px;margin-top:6px">Bấm <b>📎</b> cạnh một ghi nhận để xem / thêm ảnh bằng chứng.</p>` },
     { k: 'Mẹo', h: 'Lưu ý của cán bộ lớp', html: `<div class="faq" style="margin-top:6px">
       <div class="card"><b>Ghi đúng, ghi đủ, ghi ngay</b><span>Ghi trong ngày, kèm diễn giải rõ ràng; có bằng chứng thì chụp luôn.</span></div>
@@ -95,7 +109,7 @@ const DOCS = {
   ]},
   'HDSD_Phu_huynh': { T: 'Hướng dẫn phụ huynh', slides: [
     { cover: 1, who: 'Cô Thảo gửi các bác phụ huynh 11D3', lead: 'Cô Thảo chào các bác ạ! Các bác theo dõi hạnh kiểm của các con mọi lúc trên điện thoại — không cần đăng nhập, chỉ xem và tải về.', meta: 'Trang phụ huynh: ' + APP + '/phu-huynh.html', qr: 'qr_ph', qrt: 'Quét để mở trang phụ huynh', emo: 'chao' },
-    { k: 'Bước 1', h: 'Tìm tên con', shots: ['ph_list'], steps: ['Các bác gõ <b>tên con</b> vào ô tìm kiếm — <b>không cần dấu</b> (ví dụ "an").', 'Hoặc bấm số <b>tổ</b> để lọc.', 'Bên phải mỗi tên là <b>xếp loại tháng này</b> ▸ chạm để xem chi tiết.'], tip: 'Lần đầu mở trang, cô Thảo sẽ chỉ các bác từng bước. Xem lại bằng nút ? trên đầu trang ạ.', emo: 'chi-tay' },
+    { k: 'Bước 1', h: 'Tìm tên con', shots: ['ph_list'], steps: ['Các bác gõ <b>tên con</b> vào ô tìm kiếm — <b>không cần dấu</b> (ví dụ "an").', 'Hoặc bấm số <b>tổ</b> để lọc.', 'Bên phải mỗi tên là <b>xếp loại tháng này</b> ▸ chạm để xem chi tiết.'], tip: 'Lần đầu mở trang, cô Thảo sẽ chỉ các bác từng bước (xem lại bằng nút ?). Trang tự cập nhật khi cô ghi điểm mới ạ.', emo: 'chi-tay' },
     { k: 'Bước 2', h: 'Xem hạnh kiểm của con', shots: ['ph_prof', 'ph_ev'], steps: ['Các bác chọn <b>tháng · học kỳ 1 · học kỳ 2 · cả năm</b>.', '<b>Điểm trung bình tuần</b> và <b>xếp loại</b> (dấu ✓ = GVCN đã chốt), điểm từng tuần.', '<b>Tải PDF / In</b> hoặc <b>Tải Excel</b> để lưu.'], html: `<p class="lead" style="font-size:16px;margin-top:6px">Các bác kéo xuống để xem <b>từng lần vi phạm</b>, <b>được cộng điểm</b> (ngày, tuần, nội dung, ghi chú) và <b>nhận xét của cô Thảo</b> về con.</p>` },
     { k: 'Bước 3', h: 'Xem cả lớp', shots: ['ph_lop'], steps: ['Chọn kỳ (tháng / học kỳ / cả năm).', '<b>Phân bố xếp loại</b> của lớp.', '<b>Tải Excel cả lớp</b>.', '<b>In / PDF</b> bảng tổng hợp.'] },
     { k: 'Lưu ý', h: 'Cách đọc xếp loại', html: `<div class="grid3" style="grid-template-columns:repeat(2,1fr)">
@@ -106,6 +120,17 @@ const DOCS = {
       ${tip('Trang chỉ để xem: các bác không sửa được dữ liệu và không xem ảnh bằng chứng. Cần trao đổi gì, các bác cứ nhắn trực tiếp cô Thảo ạ. Cảm ơn các bác đã đồng hành cùng cô và các con!', 'cam-on')}`, shots: ['ph_tour'] }
   ]}
 };
+/* bản đầy đủ: bìa + mục lục + 3 phần (mỗi phần có trang phân cách) */
+(() => {
+  const P = [['HDSD_GVCN', 'Phần 1', 'Giáo viên chủ nhiệm', 'Ghi điểm, thẻ tổng quan, cập nhật trực tiếp, xếp loại, thống kê, báo cáo, quản lý lớp.', 'huong-dan'],
+    ['HDSD_Can_bo_lop', 'Phần 2', 'Lớp trưởng & Tổ trưởng', 'Ghi điểm cho các bạn, ảnh bằng chứng, lưu không chờ, xem báo cáo.', 'co-vu'],
+    ['HDSD_Phu_huynh', 'Phần 3', 'Phụ huynh', 'Xem hạnh kiểm của con, tải PDF / Excel — không cần đăng nhập.', 'chao']];
+  const out = [{ cover: 1, who: 'Bản đầy đủ · GVCN · Cán bộ lớp · Phụ huynh', lead: 'Sổ theo dõi và xếp loại hạnh kiểm trên máy tính, điện thoại — ghi điểm không chờ, cập nhật trực tiếp, báo cáo tự soạn, trang riêng cho phụ huynh.', meta: 'Sổ: ' + APP, qr: 'qr_app', qrt: 'Mở sổ bằng điện thoại' }, null];
+  const toc = [];
+  P.forEach(([f, k, h, lead, emo]) => { toc.push([k + ' · ' + h, out.length + 1]); out.push({ div: 1, k, h, lead, emo }); DOCS[f].slides.filter(s => !s.cover).forEach(s => out.push(s)); });
+  out[1] = { k: 'Mục lục', h: 'Nội dung tài liệu', html: `<div class="toc">${toc.map(([t, n]) => `<div class="card"><b>${t}</b><em>trang ${n}</em></div>`).join('')}</div>`, tip: 'Mỗi vai trò cũng có file hướng dẫn riêng: HDSD_GVCN.pdf · HDSD_Can_bo_lop.pdf · HDSD_Phu_huynh.pdf.', emo: 'huong-dan' };
+  DOCS.HDSD_Day_du = { T: 'Hướng dẫn đầy đủ', slides: out };
+})();
 (async () => {
   const b = await chromium.launch();
   for (const [file, d] of Object.entries(DOCS)) {
