@@ -110,6 +110,48 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(rows >= 8, 'điện thoại: thấy ' + rows + ' học sinh trên một màn hình');
   await p.context().close();
 
+  // 10. bằng chứng: chọn ảnh khi ghi điểm ⇒ gửi sau lệnh ghi
+  p = await P({ as: 'lt' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await p.locator('#listGhi .row').nth(5).click(); await W(200); await p.click('#pBody [data-add="T06"]'); await W(250);
+  if (!(await p.isVisible('#gcSkip'))) { const o = await p.$('#pBody .item, #pBody button.btn'); if (o) await o.click(); await W(250); }
+  ok(await p.isVisible('#evFile'), 'bước diễn giải có nút Chọn ảnh / tài liệu');
+  const [fc] = await Promise.all([p.waitForEvent('filechooser'), p.click('#evFile')]);
+  await fc.setFiles({ name: 'bien-ban.png', mimeType: 'image/png', buffer: Buffer.from(require('./mock').TINY, 'base64') }); await W(400);
+  ok(await p.locator('#evThumbs .evt').count() === 1, 'hiện ảnh xem trước');
+  await p.click('#gcSave'); await W(2500);
+  const evc = p.M.CALLS.filter(c => c.a === 'addEvidence'), addc = p.M.CALLS.filter(c => c.a === 'addEntries');
+  ok(evc.length === 1 && /^E/.test(evc[0].p.entryIds[0]) && p.M.CALLS.indexOf(evc[0]) > p.M.CALLS.indexOf(addc[addc.length - 1]), 'bằng chứng gửi SAU lệnh ghi, gắn đúng số thật');
+  ok(evc[0] && evc[0].p.mime === 'image/jpeg', 'ảnh được thu nhỏ sang JPEG trước khi gửi');
+  const eid = evc[0] && evc[0].p.entryIds[0];
+  await p.evaluate(id => evOpen(id), eid); await W(500);
+  ok(await p.locator('#pBody .evcard').count() === 1, 'mở 📎: thấy bằng chứng đã lưu');
+  await p.evaluate(() => closePanel()); await W(200);
+  ok(await p.locator('#listGhi .evchip').count() >= 1, 'danh sách có biểu tượng 📎 cạnh ghi nhận');
+  await p.context().close();
+
+  // 11. hướng dẫn từng bước
+  p = await P({ as: 'gvcn', tour: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(3500);
+  ok(await p.isVisible('#tg-card'), 'GVCN đăng nhập lần đầu ⇒ tự mở hướng dẫn từng bước');
+  ok(/GVCN · Bước 1\/11/.test(await p.textContent('#tg-card')), 'hướng dẫn GVCN có 11 bước');
+  for (let i = 0; i < 10; i++) { await p.click('#tg-card [data-a=n]'); await W(350); }
+  ok(/Xem lại hướng dẫn/.test(await p.textContent('#tg-card')), 'đi hết đến bước cuối');
+  await p.click('#tg-card [data-a=n]'); await W(300);
+  ok(!(await p.isVisible('#tg-card')) && await p.evaluate(() => localStorage.getItem('hk_tour_gvcn') === '1'), 'xong ⇒ không tự hiện lại');
+  await p.click('#hHelp'); await W(300); await p.click('#gTour'); await W(800);
+  ok(await p.isVisible('#tg-card'), 'nút ? ▸ Hướng dẫn từng bước mở lại được');
+  await p.context().close();
+  p = await P({ as: 'tt', tour: true, mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(3500);
+  ok(/Cán bộ lớp/.test(await p.textContent('#tg-card')) && /tổ trưởng tổ 2/.test(await p.textContent('#tg-card')), 'tổ trưởng: hướng dẫn riêng cho cán bộ lớp (điện thoại)');
+  await p.context().close();
+  p = await P({ tour: true }); await p.goto(PH); await W(2500);
+  ok(await p.isVisible('#tg-card') && /Phụ huynh/.test(await p.textContent('#tg-card')), 'trang phụ huynh: hướng dẫn riêng tự mở lần đầu');
+  for (let i = 0; i < 5; i++) { await p.click('#tg-card [data-a=n]'); await W(450); }
+  ok(await p.isVisible('.res'), 'hướng dẫn phụ huynh tự mở hồ sơ một học sinh để chỉ');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');

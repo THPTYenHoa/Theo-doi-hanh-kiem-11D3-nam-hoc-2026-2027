@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.0"></script>
+<script src="updates/notes.js?v=3.1"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.0';
+const HK_VER='3.1';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3414,5 +3414,338 @@ window.UPD3=UPD3;
 document.addEventListener('click',e=>{ if(e.target.closest && e.target.closest('#logout')){ store.del(CK4); store.del('hk_outbox_v1'); } },true);
 </script>
 
+<!-- ════════════ v3.1 — giao diện sạch · bằng chứng ảnh / tài liệu · hướng dẫn từng bước theo vai trò ════════════ -->
+<style id="v31-css">
+/* thanh trên & khung trượt: nền trắng, chữ đậm màu chủ đề — sạch, dễ đọc */
+.topline{background:var(--card)!important;color:var(--ink)!important;border-bottom:1px solid var(--line);box-shadow:none!important}
+.topline h1{color:var(--teal-d)}
+.topline .iconbtn{background:var(--paler);color:var(--teal-d);border:1px solid var(--line)}
+.topline .iconbtn:hover{background:var(--pale)}
+.topline .ava,#hAva{background:var(--teal)!important;color:#fff!important}
+.topline .sync{color:var(--sub)}
+#panel .ptop{background:var(--card)!important;color:var(--ink)!important;border-bottom:1px solid var(--line)}
+#panel .ptop h2{color:var(--teal-d)}
+#panel .ptop p{color:var(--sub)!important}
+#panel .pclose{background:var(--paler)!important;color:var(--sub)!important;border:1px solid var(--line)}
+.periodbar{border-bottom:1px solid var(--line)}
+.register,.panelbox,.tablewrap,.kpis{box-shadow:none!important}
+@media (max-width:760px){
+  #hTheme{display:none}
+  .topline{height:52px}
+  #tabbar{box-shadow:0 -1px 0 var(--line)}
+}
+/* bằng chứng */
+.evchip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px;margin-top:5px;border-radius:999px;border:1px solid var(--line);
+  background:var(--paler);color:var(--teal-d);font-size:12px;font-weight:700;cursor:pointer;vertical-align:middle}
+.evchip svg{width:13px;height:13px}
+#pBody .btn svg,.evpick svg{width:17px;height:17px;flex:none}
+.evchip.wait{color:var(--sub)}
+.evpick{margin-top:10px}
+.evpick .row2{display:flex;gap:8px;flex-wrap:wrap}
+.evpick .btn{flex:1 1 auto;justify-content:center;height:40px}
+.evthumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.evt{position:relative;width:74px;height:74px;border-radius:10px;border:1px solid var(--line);background:var(--paler) center/cover no-repeat;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;font-size:10.5px;color:var(--sub);text-align:center;padding:3px}
+.evt .doc{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--teal-d)}
+.evt .rm{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:12px;line-height:20px}
+.evgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:14px 18px}
+.evcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.evcard .im{height:120px;background:var(--paler) center/cover no-repeat;cursor:zoom-in;display:grid;place-items:center;color:var(--mute);font-size:12px}
+.evcard .im.doc{cursor:pointer;font-weight:800;color:var(--teal-d);font-size:14px}
+.evcard .nm{display:flex;align-items:center;gap:6px;padding:6px 8px;font-size:11.5px;color:var(--sub)}
+.evcard .nm span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evcard .nm button{color:var(--dang);font-weight:700;font-size:12px}
+#evlb{position:fixed;inset:0;z-index:990;background:rgba(10,18,24,.92);display:none;align-items:center;justify-content:center;padding:16px}
+#evlb.on{display:flex}
+#evlb img{max-width:100%;max-height:100%;border-radius:8px}
+#evlb button{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:20px}
+/* trợ giúp */
+.tourlist{display:grid;gap:8px;padding:12px 18px 4px}
+.tourlist button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.tourlist button:hover{border-color:var(--teal-l)}
+.tourlist .i{width:38px;height:38px;border-radius:11px;background:var(--pale);color:var(--teal-d);display:grid;place-items:center;flex:none;font-weight:800}
+.tourlist b{display:block;font-size:14.5px}
+.tourlist span{font-size:12.5px;color:var(--sub)}
+</style>
+<script src="tour.js?v=3.1"></script>
+<script id="v31-js">
+'use strict';
+/* ══ ⭐ v3.1 ══
+   · BẰNG CHỨNG: khi ghi điểm (bước "Thêm diễn giải") hoặc mở 📎 ở một ghi nhận ⇒ chụp ảnh / chọn ảnh, PDF, Word.
+     Ảnh tự thu nhỏ (≤ 1600px, JPEG) trước khi gửi. Gửi qua hàng đợi HQ (op 'ev', chạy SAU lệnh ghi điểm của nó,
+     tự đổi số tạm → số thật), backend addEvidence / getEvidence / delEvidence; file nằm ở thư mục Drive riêng tư.
+     Cột 13 của bản ghi = "fileId|tên|loại;…" (phụ huynh chỉ nhận '1' = có bằng chứng, không xem được file).
+   · HƯỚNG DẪN TỪNG BƯỚC (tour.js): GVCN / Cán bộ lớp — tự chạy lần đầu, mở lại ở nút ? ▸ Hướng dẫn từng bước.
+   · GIAO DIỆN SẠCH: thanh trên + khung trượt nền trắng; điện thoại ẩn nút giao diện (vào Cài đặt). */
+const E_BC=13;
+const EVMEM={};      /* fileId | 'p:'+rid → dataURL (xem nhanh, không tải lại) */
+const EVBIG={};      /* rid → base64 file lớn (không lưu localStorage) */
+const evList=e=>String((e&&e[E_BC])||'').split(';').filter(x=>x && x!=='1').map(x=>{ const p=x.split('|'); return {id:p[0],n:p[1]||'',m:p[2]||''}; });
+const isImg=m=>/^image\//.test(m||'');
+const CLIP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m21 11-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.4 3.4 0 0 1 4.8 4.8L10 17.4a1.7 1.7 0 0 1-2.4-2.4l8-8"/></svg>';
+
+/* ── đọc file: ảnh thu nhỏ, tài liệu giữ nguyên ── */
+function readFile(f){
+  return new Promise((res,rej)=>{
+    if(f.size>12*1024*1024 && !/^image\//.test(f.type)){ rej(new Error(f.name+': file quá lớn (tối đa 12 MB).')); return; }
+    const fr=new FileReader();
+    fr.onerror=()=>rej(new Error('Không đọc được '+f.name));
+    fr.onload=()=>{
+      const url=String(fr.result);
+      if(!/^image\/(jpeg|png|webp|heic|heif|gif)/.test(f.type)){ res({name:f.name, mime:f.type||'application/octet-stream', data:url.split(',')[1], thumb:''}); return; }
+      const im=new Image();
+      im.onload=()=>{
+        const k=Math.min(1,1600/Math.max(im.width,im.height)), c=document.createElement('canvas');
+        c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+        c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+        const out=c.toDataURL('image/jpeg',.82);
+        res({name:f.name.replace(/\.\w+$/,'')+'.jpg', mime:'image/jpeg', data:out.split(',')[1], thumb:out});
+      };
+      im.onerror=()=>res({name:f.name, mime:f.type, data:url.split(',')[1], thumb:url});
+      im.src=url;
+    };
+    fr.readAsDataURL(f);
+  });
+}
+function pickFiles(cam){
+  return new Promise(res=>{
+    const i=document.createElement('input'); i.type='file'; i.multiple=!cam;
+    i.accept=cam?'image/*':'image/*,application/pdf,.doc,.docx,.xls,.xlsx';
+    if(cam) i.setAttribute('capture','environment');
+    i.onchange=()=>res(Array.from(i.files||[])); i.click();
+  });
+}
+async function filesToAtt(fs){
+  const out=[];
+  for(const f of fs){ try{ out.push(await readFile(f)); }catch(e){ err(e); } }
+  return out;
+}
+/* ── hàng đợi: gửi bằng chứng sau lệnh ghi của nó ── */
+function evQueue(eids, att){
+  const rid=hqRid(), big=att.data.length>1500000;
+  if(big) EVBIG[rid]=att.data;
+  const key='p:'+rid; if(att.thumb) EVMEM[key]=att.thumb;
+  eids.forEach(id=>{ const e=S.entries.find(x=>x[E_ID]===id); if(e) e[E_BC]=(e[E_BC]&&e[E_BC]!=='1'?e[E_BC]+';':'')+key+'|'+att.name+'|'+att.mime; });
+  hqAdd({a:'ev', rid, eids:eids.slice(), name:att.name, mime:att.mime, data:big?'':att.data});
+}
+const hqStep0=hqStep;
+hqStep=async function(){
+  const op=HQ.list.find(o=>!o.err);
+  if(!op || op.a!=='ev' && op.a!=='evdel') return hqStep0();
+  if(HQ.run) return;
+  HQ.run=op; hqChip();
+  try{
+    if(op.a==='ev'){
+      const ids=op.eids.map(realId);
+      if(ids.some(isTmp)) throw Object.assign(new Error('Ghi nhận chưa lưu được nên chưa gửi được bằng chứng.'),{srv:1});
+      const data=op.data||EVBIG[op.rid];
+      if(!data) throw Object.assign(new Error('File "'+op.name+'" chưa gửi được vì trang đã tải lại — mở 📎 và đính kèm lại.'),{srv:1});
+      const r=await rawApi('addEvidence',{entryIds:ids, name:op.name, mime:op.mime, data, rid:op.rid},120000);
+      const key='p:'+op.rid;
+      if(EVMEM[key]) EVMEM[r.file.id]=EVMEM[key];
+      S.entries.forEach(e=>{ if(ids.indexOf(e[E_ID])>=0) e[E_BC]=String(e[E_BC]||'').split(';').map(x=>x.indexOf(key+'|')===0?r.file.id+'|'+r.file.n+'|'+r.file.m:x).join(';'); });
+      delete EVBIG[op.rid];
+    }else{
+      await rawApi('delEvidence',{entryId:realId(op.eid), fileId:op.fid});
+    }
+    HQ.list.splice(HQ.list.indexOf(op),1); HQ.done++;
+  }catch(e){
+    if(e.srv){ op.err=String(e.message||e); if(op.a==='ev'){ const key='p:'+op.rid; S.entries.forEach(x=>{ if(x[E_BC]) x[E_BC]=String(x[E_BC]).split(';').filter(y=>y.indexOf(key+'|')!==0).join(';'); }); } }
+    else { op.tries++; if(op.tries>GAP.length) op.err='Mạng hoặc máy chủ không phản hồi sau nhiều lần thử.'; else { HQ.run=null; hqSave(); hqChip(); hqKick(GAP[op.tries-1]*1000); return; } }
+  }
+  HQ.run=null; hqSave(); hqChip(); saveCache();
+  if(S.panelKind==='evidence' && EVV.id) evOpen(EVV.id); else if(S.panelKind==='student' && S.ctxMa) drawStudentPanel();
+  renderAll(); hqKick(0);
+};
+/* dữ liệu máy chủ về ⇒ giữ đánh dấu bằng chứng đang gửi */
+const hqOverlay0=hqOverlay;
+hqOverlay=function(){
+  hqOverlay0();
+  HQ.list.forEach(op=>{ if(op.a!=='ev'||op.err) return; const key='p:'+op.rid;
+    op.eids.map(realId).forEach(id=>{ const e=S.entries.find(x=>x[E_ID]===id||x[E_ID]===op.eids[0]); if(e && String(e[E_BC]||'').indexOf(key)<0) e[E_BC]=(e[E_BC]&&e[E_BC]!=='1'?e[E_BC]+';':'')+key+'|'+op.name+'|'+op.mime; }); });
+};
+
+/* ── bước "Thêm diễn giải": thêm chỗ đính kèm ── */
+S.pendAtt=[];
+const hoiGhiChu0=hoiGhiChu;
+window.hoiGhiChu=hoiGhiChu=function(){
+  S.pendAtt=[];
+  hoiGhiChu0.apply(this,arguments);
+  const btns=$('#pBody .rowbtns'); if(!btns) return;
+  btns.insertAdjacentHTML('beforebegin',`<div class="evpick"><label class="lbl">Bằng chứng (không bắt buộc) — ảnh chụp, biên bản, giấy khen…</label>
+    <div class="row2"><button class="btn ghost" id="evCam">${CLIP} Chụp ảnh</button><button class="btn ghost" id="evFile">Chọn ảnh / tài liệu</button></div>
+    <div class="evthumbs" id="evThumbs"></div></div>`);
+  const draw=()=>{ $('#evThumbs').innerHTML=S.pendAtt.map((a,i)=>`<span class="evt" style="${a.thumb?`background-image:url('${a.thumb}')`:''}">${a.thumb?'':`<span class="doc">${esc((a.name.split('.').pop()||'FILE').toUpperCase())}</span>`}<button class="rm" data-i="${i}">✕</button></span>`).join('');
+    $$('#evThumbs .rm').forEach(b=>b.onclick=()=>{ S.pendAtt.splice(+b.dataset.i,1); draw(); }); };
+  const add=async cam=>{ const fs=await pickFiles(cam); if(!fs.length) return; S.pendAtt=S.pendAtt.concat(await filesToAtt(fs)); draw(); };
+  $('#evCam').onclick=()=>add(true); $('#evFile').onclick=()=>add(false);
+  if(!window.matchMedia('(pointer:coarse)').matches) $('#evCam').style.display='none';
+};
+const ghiThucTe0=ghiThucTe;
+window.ghiThucTe=ghiThucTe=async function(maList){
+  const att=S.pendAtt.slice(); S.pendAtt=[];
+  const before=new Set(S.entries.map(e=>e[E_ID]));
+  await ghiThucTe0.apply(this,arguments);
+  if(!att.length) return;
+  const ids=S.entries.filter(e=>!before.has(e[E_ID])).map(e=>e[E_ID]);
+  att.forEach(a=>evQueue(ids,a));
+  renderAll(); if(S.panelKind==='student') drawStudentPanel();
+};
+
+/* ── 📎 trên mỗi ghi nhận ── */
+function evChip(e){
+  const l=evList(e), n=l.length, wait=l.some(x=>/^p:/.test(x.id));
+  if(isKhach()) return '';
+  const can=canScore(e[E_TO]) || isGVCN();
+  if(!n && !can) return '';
+  return `<button class="evchip ${wait?'wait':''}" data-ev="${esc(e[E_ID])}" title="Bằng chứng">${CLIP}${n?(wait?'Đang gửi '+n:n+' bằng chứng'):'Thêm bằng chứng'}</button>`;
+}
+const entryHTML0=entryHTML;
+window.entryHTML=entryHTML=function(e){ const h=entryHTML0(e), c=evChip(e); return c? h.replace(/<\/span>\s*(<span class="act">|\s*<\/div>\s*$)/, m=>c+m) : h; };
+const rowExtra0=rowExtra;
+window.rowExtra=rowExtra=function(s){
+  let h=rowExtra0(s); if(!h) return h;
+  entriesOf(s.ma,S.thang,S.tuan).forEach(e=>{ const n=evList(e).length; if(!n) return;
+    const id=esc(e[E_ID]); h=h.replace(new RegExp('(data-qdel="'+id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'")'),'$1').replace(`<span class="x" data-qdel="${id}"`,`<span class="evchip" data-ev="${id}" style="margin:0 4px 0 0;height:22px">${CLIP}${n}</span><span class="x" data-qdel="${id}"`); });
+  return h;
+};
+document.addEventListener('click',ev=>{
+  const b=ev.target.closest && ev.target.closest('[data-ev]'); if(!b) return;
+  ev.stopPropagation(); ev.preventDefault(); evOpen(b.dataset.ev);
+},true);
+
+const EVV={id:null};
+async function evOpen(id){
+  const e=S.entries.find(x=>x[E_ID]===id); if(!e) return;
+  EVV.id=id; const s=stu(e[E_MA]), l=evList(e), can=!isKhach() && (canScore(e[E_TO])||isGVCN());
+  let h=`<div class="pcard" style="margin:12px 18px 0"><b>${esc(e[E_ND]||e[E_MUC])} <span class="${e[E_DIEM]<0?'r3':'r0'}">${nz(e[E_DIEM])}</span></b>
+    <div style="font-size:12.5px;color:var(--sub);margin-top:2px">${esc(s?s.ten:e[E_MA])} · tuần ${e[E_TUAN]} ${esc(thangLabel(e[E_THANG]))} · ghi bởi ${esc(e[E_TEN])}</div>${e[E_GC]?`<div style="font-size:13px;margin-top:4px">${esc(e[E_GC])}</div>`:''}</div>`;
+  h+=l.length?`<div class="evgrid">${l.map(f=>{ const wait=/^p:/.test(f.id), src=EVMEM[f.id];
+      return `<div class="evcard"><div class="im ${isImg(f.m)?'':'doc'}" data-f="${esc(f.id)}" style="${src&&isImg(f.m)?`background-image:url('${src}')`:''}">${isImg(f.m)?(src?'':(wait?'Đang gửi…':'Đang tải…')):esc((f.n.split('.').pop()||'FILE').toUpperCase())+' · mở'}</div>
+        <div class="nm"><span>${esc(f.n)}</span>${can&&!wait?`<button data-rm="${esc(f.id)}">Gỡ</button>`:''}</div></div>`; }).join('')}</div>`
+    :'<div class="note" style="padding:14px 18px">Chưa có bằng chứng cho ghi nhận này.</div>';
+  if(can) h+=`<div class="pform"><div class="rowbtns" style="margin-top:0"><button class="btn ghost" id="evCam2">${CLIP} Chụp ảnh</button><button class="btn" id="evAdd2">Thêm ảnh / tài liệu</button></div>
+    <div class="note" style="padding:8px 0 0">Ảnh tự thu nhỏ trước khi gửi. File lưu trong thư mục Drive riêng của lớp, chỉ GVCN và cán bộ lớp xem được — phụ huynh không xem được.</div></div>`;
+  openPanel('Bằng chứng', l.length+' file · '+(e[E_DIEM]<0?'vi phạm':'khen thưởng'), h, 'evidence');
+  if(can){ const add=async cam=>{ const fs=await pickFiles(cam); if(!fs.length) return; (await filesToAtt(fs)).forEach(a=>evQueue([id],a)); saveCache(); evOpen(id); renderAll(); };
+    $('#evAdd2').onclick=()=>add(false); $('#evCam2').onclick=()=>add(true); if(!window.matchMedia('(pointer:coarse)').matches) $('#evCam2').style.display='none'; }
+  $$('#pBody [data-rm]').forEach(b=>b.onclick=()=>{ if(!confirm('Gỡ file này khỏi ghi nhận?')) return; const fid=b.dataset.rm;
+    e[E_BC]=evList(e).filter(x=>x.id!==fid).map(x=>x.id+'|'+x.n+'|'+x.m).join(';'); hqAdd({a:'evdel', eid:id, fid}); saveCache(); evOpen(id); renderAll(); });
+  $$('#pBody [data-f]').forEach(async d=>{
+    const fid=d.dataset.f, f=l.find(x=>x.id===fid); if(/^p:/.test(fid)) return;
+    d.onclick=async()=>{ const u=await evData(fid,f); if(!u) return; if(isImg(f.m)) evZoom(u); else { const a=document.createElement('a'); a.href=u; a.download=f.n; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove(); } };
+    if(isImg(f.m) && !EVMEM[fid]){ const u=await evData(fid,f); if(u && S.panelKind==='evidence' && EVV.id===id) d.style.backgroundImage=`url('${u}')`, d.textContent=''; }
+  });
+}
+async function evData(fid,f){
+  if(EVMEM[fid]) return EVMEM[fid];
+  try{ const r=await rawApi('getEvidence',{id:fid},60000); return (EVMEM[fid]='data:'+(r.mime||f.m)+';base64,'+r.data); }
+  catch(e){ toast(esc('Chưa tải được file: '+e.message)); return null; }
+}
+function evZoom(u){ let o=$('#evlb'); if(!o){ o=document.createElement('div'); o.id='evlb'; o.innerHTML='<img alt=""><button aria-label="Đóng">✕</button>'; document.body.appendChild(o); o.onclick=()=>o.classList.remove('on'); }
+  o.querySelector('img').src=u; o.classList.add('on'); }
+
+/* ═════════ HƯỚNG DẪN TỪNG BƯỚC (theo vai trò) ═════════ */
+const nav=v=>[`#railNav [data-v="${v}"]`,`#tabbar [data-v="${v}"]`];
+function roleKey(){ return isGVCN()?'gvcn':(S.me&&S.me.role==='Lớp trưởng'?'lt':'tt'); }
+function firstRow(){ return '#listGhi .row'; }
+const TOURS={
+  gvcn:()=>[
+    {t:'Chào cô! Đây là Sổ hạnh kiểm 11D3', d:'Hướng dẫn nhanh khoảng 1 phút cho <b>GVCN</b>. Bấm <b>Tiếp</b> (hoặc phím →) để đi từng bước, <b>Bỏ qua</b> nếu đã quen.', pre:()=>{ closePanel(); go('ghi'); }},
+    {el:'#periodBar', t:'Chọn tháng và tuần', d:'Mọi điểm ghi vào <b>tháng + tuần</b> đang chọn ở thanh này. Bấm tên tháng để đổi tháng.'},
+    {el:firstRow(), t:'Ghi điểm cho một học sinh', d:'Chạm vào tên học sinh ▸ chọn <b>Trừ điểm</b> hoặc <b>Cộng điểm</b> ▸ chạm lý do ▸ thêm diễn giải, ảnh bằng chứng nếu cần ▸ <b>Lưu điểm</b>. Điểm hiện ngay, máy tự lưu phía sau.'},
+    {el:'#multiBtn', t:'Ghi cho nhiều em một lượt', d:'Bấm <b>Chọn nhiều</b>, tick các em ▸ <b>Ghi điểm</b> ▸ chọn lý do. Dùng cho lỗi tập thể hoặc khen thưởng chung.'},
+    {el:'#hkq, .topline .sync', t:'Trạng thái lưu', d:'Chip <b>Đang lưu… → Đã lưu vào sổ</b> báo dữ liệu đã vào Google Sheet. Mạng yếu thì máy tự gửi lại, không bao giờ ghi trùng.'},
+    {el:nav('bang'), t:'Cập nhật hạnh kiểm', d:'Xem xếp loại theo <b>tuần / tháng / học kỳ</b>. Chạm một em để mở <b>hồ sơ</b>, viết <b>nhận xét</b> và <b>chốt xếp loại</b> cuối tháng.', pre:()=>go('ghi')},
+    {el:nav('tk'), t:'Thống kê', d:'Em vi phạm nhiều nhất, em được tuyên dương, lỗi cả lớp hay mắc, so sánh tổ và xu hướng theo tháng.'},
+    {el:nav('ls'), t:'Lịch sử & xuất file', d:'Lọc theo tháng / tổ / học sinh ▸ <b>Xuất Excel</b> hoặc <b>In / PDF</b> để nộp bản giấy.'},
+    {el:'#hFind', t:'Tra cứu nhanh', d:'Bấm kính lúp (hoặc phím <b>/</b>) ▸ gõ tên không cần dấu ▸ mở hồ sơ cả năm của em đó.'},
+    {el:[...nav('cai')], t:'Cài đặt dành cho GVCN', d:'Danh mục điểm cộng / trừ, mốc xếp loại, <b>danh sách lớp</b>, <b>tài khoản cán bộ lớp</b> (thêm email để các em đăng nhập), email thông báo và <b>giao diện</b> của lớp.'},
+    {el:'#hHelp', t:'Xem lại hướng dẫn', d:'Bấm nút <b>?</b> bất cứ lúc nào để xem lại hướng dẫn từng bước hoặc tải file PDF hướng dẫn. Chúc cô một năm học nhẹ nhàng!'}
+  ],
+  cb:()=>[
+    {t:'Chào bạn! Đây là Sổ hạnh kiểm 11D3', d:'Hướng dẫn nhanh cho <b>'+(S.me.role==='Lớp trưởng'?'lớp trưởng':'tổ trưởng tổ '+esc(S.me.to))+'</b>. Bấm <b>Tiếp</b> để đi từng bước.', pre:()=>{ closePanel(); go('ghi'); }},
+    {el:'#periodBar', t:'Kiểm tra tuần trước khi ghi', d:'Điểm ghi vào <b>tháng + tuần</b> đang chọn. Ghi nhầm tuần thì điểm cả tháng sẽ lệch — hãy chọn đúng tuần trước.'},
+    {el:'#toFilter', t:'Lọc theo tổ', d:S.me.role==='Tổ trưởng'?'Bạn chỉ ghi được cho <b>tổ mình</b>; học sinh tổ khác hiện chữ "chỉ xem".':'Lớp trưởng ghi được cả lớp. Bấm Tổ 1–4 để xem nhanh từng tổ.'},
+    {el:firstRow(), t:'Ghi điểm', d:'Chạm tên bạn cần ghi ▸ <b>Trừ điểm</b> / <b>Cộng điểm</b> ▸ chạm lý do ▸ ghi rõ vì sao (bấm micro để nói) ▸ <b>Lưu điểm</b>.'},
+    {el:firstRow(), t:'Chụp ảnh bằng chứng', d:'Ở bước diễn giải, bấm <b>Chụp ảnh</b> hoặc <b>Chọn ảnh / tài liệu</b> để lưu bằng chứng (biên bản, giấy khen…). Sau này bấm biểu tượng 📎 để xem lại.'},
+    {el:'#multiBtn', t:'Ghi cho nhiều bạn', d:'<b>Chọn nhiều</b> ▸ tick các bạn ▸ <b>Ghi điểm</b>. Lỡ tay thì bấm <b>Hoàn tác</b> ở thông báo dưới màn hình trong 5 giây.'},
+    {el:'#hkq, .topline .sync', t:'Đã lưu chưa?', d:'Chip <b>Đang lưu… → Đã lưu vào sổ</b>. Mạng yếu cứ để máy tự gửi lại, đừng ghi lại lần nữa.'},
+    {el:'#hFind', t:'Tra cứu bạn trong lớp', d:'Kính lúp ▸ gõ tên ▸ xem toàn bộ điểm, vi phạm, khen thưởng cả năm.'},
+    {el:'#hHelp', t:'Cần xem lại?', d:'Nút <b>?</b> mở lại hướng dẫn này bất cứ lúc nào. Cảm ơn bạn đã giúp lớp!'}
+  ]
+};
+function startTour(kind){
+  const steps=(kind==='gvcn'?TOURS.gvcn:TOURS.cb)();
+  TOUR.run(steps,{key:'hk_tour_'+kind, title:kind==='gvcn'?'GVCN':'Cán bộ lớp', onEnd:()=>{ go('ghi'); }});
+}
+window.startTour=startTour;
+/* tự chạy lần đầu (sau thông báo cập nhật) */
+function autoTour(){
+  if(!S.me || isKhach() || !window.TOUR) return;
+  const k=isGVCN()?'gvcn':'cb';
+  if(TOUR.seen('hk_tour_'+k) || TOUR.active()) return;
+  if($('#hkupd.on')){ setTimeout(autoTour,1500); return; }
+  startTour(k);
+}
+const showApp1=showApp;
+window.showApp=showApp=function(){ showApp1.apply(this,arguments); if(!S._tourT){ S._tourT=1; setTimeout(autoTour,2600); } };
+/* nút ? : hướng dẫn từng bước + PDF theo vai trò, rồi mới đến hướng dẫn chữ */
+const openGuide1=openGuide;
+window.openGuide=openGuide=function(sec){
+  openGuide1.apply(this,arguments);
+  const gi=$('#pBody .guideimg'); if(gi) gi.remove();   /* ảnh hướng dẫn cũ còn ghi mật khẩu đã bỏ */
+  const k=isGVCN()?'gvcn':'cb';
+  const pdf=isGVCN()?'docs/HDSD_GVCN.pdf':'docs/HDSD_Can_bo_lop.pdf';
+  $('#pBody').insertAdjacentHTML('afterbegin',`<div class="tourlist">
+    <button id="gTour"><span class="i">▶</span><span><b>Hướng dẫn từng bước</b><span>Chỉ tận tay từng nút trên màn hình · khoảng 1 phút</span></span></button>
+    <button id="gPdf"><span class="i">PDF</span><span><b>Tải file hướng dẫn (${isGVCN()?'GVCN':'cán bộ lớp'})</b><span>In ra hoặc lưu trên điện thoại để xem lại</span></span></button>
+    <button id="gPh"><span class="i">PH</span><span><b>Hướng dẫn cho phụ huynh</b><span>Gửi link / file này cho phụ huynh</span></span></button></div>`);
+  $('#gTour').onclick=()=>{ closePanel(); setTimeout(()=>startTour(k),250); };
+  $('#gPdf').onclick=()=>window.open(pdf,'_blank','noopener');
+  $('#gPh').onclick=()=>window.open('docs/HDSD_Phu_huynh.pdf','_blank','noopener');
+};
+</script>
+
+<script src="mascot.js?v=3.1"></script>
+<script id="v31m-js">
+'use strict';
+/* ══ v3.1 — NHÂN VẬT CÔ GIÁO (mascot.js): phản ứng khi ghi điểm, khi lưu lỗi, khi chụp bằng chứng; chọn phong cách trong Giao diện ══ */
+const ten1=n=>String(n||'').trim().split(/\s+/).pop();
+function mReact(maList, c, diem){
+  if(!window.MASCOT) return;
+  const s=stu(maList[0]), nm=maList.length>1?maList.length+' bạn':esc(ten1(s&&s.ten));
+  if(diem>0){ MASCOT.say(diem>=3||maList.length>=3?'khen-lon':'vui', (diem>=3||maList.length>=3?'Tuyệt vời, ':'Giỏi lắm, ')+'<b>'+nm+'</b>! '+esc(c.noiDung)+' <b>'+nz(diem)+'</b>'); return; }
+  if(maList.length>1){ MASCOT.say('buon','<b>'+nm+'</b> cùng bị trừ điểm: '+esc(c.noiDung)+' <b>'+nz(diem)+'</b>'); return; }
+  const lan=soLanMac(s.ma,c.ma), tru=S.entries.filter(e=>e[E_MA]===s.ma && e[E_THANG]===S.thang && e[E_DIEM]<0).length;
+  if(lan>=3 || tru>=6) MASCOT.say('gian','<b>'+nm+'</b> '+(lan>=3?'mắc "'+esc(c.noiDung)+'" lần thứ '+lan+' trong tháng rồi!':'đã có '+tru+' lỗi trong tháng!')+' Cô cần nói chuyện riêng với em.',{ms:4600});
+  else if(lan===2) MASCOT.say('nghiem','<b>'+nm+'</b> tái phạm "'+esc(c.noiDung)+'" lần 2 — cô nhắc nhở nhé.',{ms:4000});
+  else MASCOT.say('buon','Ôi, <b>'+nm+'</b>: '+esc(c.noiDung)+' <b>'+nz(diem)+'</b>');
+}
+const ghiThucTe2=ghiThucTe;
+window.ghiThucTe=ghiThucTe=async function(maList, c, loai, diem){
+  const hadAtt=S.pendAtt && S.pendAtt.length;
+  await ghiThucTe2.apply(this,arguments);
+  setTimeout(()=>{ if(hadAtt) MASCOT.say('chup-anh','Đã nhận bằng chứng — đang gửi lên sổ.'); else mReact(maList,c,diem); },350);
+};
+const hqChip2=hqChip;
+hqChip=function(){ const was=$('#hkq')&&$('#hkq').classList.contains('err'); hqChip2(); const now=$('#hkq')&&$('#hkq').classList.contains('err');
+  if(now && !was && window.MASCOT) MASCOT.say('ngac-nhien','Có thay đổi <b>chưa lưu được</b>. Bấm <b>Thử lại</b> ở chip phía trên nhé.',{ms:5000}); };
+const showApp2=showApp;
+window.showApp=showApp=function(){ showApp2.apply(this,arguments);
+  if(!S._hi && S.me && window.MASCOT){ S._hi=1; setTimeout(()=>{ if(!TOUR.active() && !$('#hkupd.on')) MASCOT.say('chao','Chào <b>'+esc(ten1(S.me.name))+'</b>! Sổ đã sẵn sàng.'); },1200); } };
+/* Giao diện ▸ Nhân vật cô giáo */
+const themeOpen0=THEME.open;
+THEME.open=function(){
+  themeOpen0();
+  const cur=MASCOT.pick(), st=MASCOT.style();
+  const opts=[{id:'auto',ten:'Tự theo chủ đề'}].concat(MASCOT.STYLES).concat([{id:'off',ten:'Tắt nhân vật'}]);
+  $('#pBody').insertAdjacentHTML('afterbegin',`<div class="thgrp">Nhân vật cô giáo</div><div class="thgrid" id="mscGrid">${opts.map(o=>`<button class="thc ${o.id===cur?'on':''}" data-msc="${o.id}">
+    <span class="pv" style="display:grid;place-items:center;background:var(--paler)">${o.id==='off'?'<span style="font-size:12px;color:var(--mute)">Không hiện</span>':MASCOT.img('vui',62,o.id==='auto'?st:o.id)}</span>
+    <span class="ck">✓</span><b>${esc(o.ten)}</b><span>${o.id==='auto'?'Đang dùng: '+esc((MASCOT.STYLES.find(x=>x.id===st)||{ten:'—'}).ten):o.id==='off'?'Không phản ứng khi ghi điểm':'Phong cách chibi'}</span></button>`).join('')}</div>
+    <div class="thnote">Cô giáo chibi đọc hướng dẫn và phản ứng khi ghi điểm: vui khi khen, buồn khi trừ điểm, nghiêm khi tái phạm. Hình vẽ tạm sẽ được thay bằng bộ ảnh chibi khi có.</div>`);
+  $$('#mscGrid [data-msc]').forEach(b=>b.onclick=()=>{ MASCOT.set(b.dataset.msc); THEME.open(); if(b.dataset.msc!=='off') MASCOT.say('vui','Cô sẽ đồng hành cùng lớp nhé!'); });
+};
+</script>
 </body>
 </html>
