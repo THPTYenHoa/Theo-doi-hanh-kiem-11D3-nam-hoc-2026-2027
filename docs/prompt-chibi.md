@@ -26,6 +26,19 @@ Half-body, standing in the center, happy smile, plain white background, no text,
 
 > Ảnh thật chỉ dùng ở bước này. Từ bước 2 chỉ dùng `goc.png`.
 
+### Gemini không ra hình?
+Gemini **thường từ chối vẽ lại ảnh chụp người thật** (không ra hình, hoặc chỉ trả lời bằng chữ). Khi đó:
+1. Bấm **Cuộc trò chuyện mới**, **không đính kèm ảnh**, chỉ dán đoạn tiếng Việt này:
+```
+Hãy tạo một bức ảnh: nhân vật chibi dễ thương tên "cô Thảo", giáo viên chủ nhiệm cấp 3 người Việt.
+Đeo kính cận gọng đen to, mặt rất tròn, phúc hậu, má hồng, mắt cười hiền; tóc dài thẳng màu nâu ánh đỏ, mái thưa.
+Mặc áo gile đen cổ chữ V có viền vàng mảnh, bên trong áo sơ mi trắng ngà dài tay.
+Tỉ lệ chibi: đầu to tròn, người nhỏ. Phong cách tranh vẽ số mềm mại, ấm áp. Nửa người, đứng giữa, cười tươi, vẫy tay chào,
+nền trắng trơn, không có chữ, ảnh vuông.
+```
+2. Vẫn không được ⇒ đăng nhập Gemini bằng **Gmail cá nhân** (@gmail.com) — tài khoản của trường thường bị tắt tính năng tạo ảnh.
+3. Vẫn không được ⇒ chụp màn hình câu trả lời của Gemini gửi Claude.
+
 ---
 
 ## Bước 2 — Tạo 16 biểu cảm

@@ -166,7 +166,7 @@ footer a{color:var(--teal-d)}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=3.1"></script>
+<script src="updates/notes.js?v=3.2"></script>
 <script src="mascot.js?v=3.1"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
@@ -233,9 +233,11 @@ async function load(manual){
   try{
     if(!S.token) await login();
     let all;
-    try{ if(!S.cfg){ apply(await api('bootstrap')); } all=await api('entries',{}); }
-    catch(e){ if(!e.srv) throw e; await login(); all=await api('entries',{}); }  /* phiên khách hết hạn ⇒ vào lại */
-    S.entries=all.entries||[]; S.remarks=all.remarks||[]; S.at=Date.now(); save();
+    /* v3.2: `sync` trả kèm số phiên bản rev ⇒ vòng tự cập nhật chỉ tải lại khi sổ thật sự đổi; backend cũ ⇒ `entries` */
+    const get=async()=>{ try{ return await api('sync',{}); }catch(e){ if(e.srv && /Không nhận ra/.test(e.message)) return api('entries',{}); throw e; } };
+    try{ if(!S.cfg){ apply(await api('bootstrap')); } all=await get(); }
+    catch(e){ if(!e.srv) throw e; await login(); all=await get(); }  /* phiên khách hết hạn ⇒ vào lại */
+    S.entries=all.entries||[]; S.remarks=all.remarks||[]; S.rev=all.rev||null; S.at=Date.now(); save();
     sync('','Cập nhật '+new Date(S.at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}));
     render(); if(manual) flash('Đã cập nhật dữ liệu mới nhất');
   }catch(e){
@@ -426,6 +428,15 @@ function printLop(ky){
   $('#hp').onclick=tour;
   (function wait(n){ if(!S.cfg || !S.students.length){ if(n<40) setTimeout(()=>wait(n+1),500); return; } if(window.TOUR && !TOUR.seen('hkph_tour')) setTimeout(tour,700); })(0);
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && Date.now()-S.at>120000) load(false); });
+  /* v3.2: tự cập nhật — 15 giây hỏi máy chủ một lần (chỉ khi đang mở trang), sổ có thay đổi mới tải lại */
+  setInterval(async()=>{
+    if(document.visibilityState!=='visible' || S.busy || !S.rev || !S.token) return;
+    try{ const r=await api('sync',{rev:S.rev}); if(r.same){ S.at=Date.now(); sync('','Cập nhật '+new Date(S.at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})); return; }
+      S.entries=r.entries||[]; S.remarks=r.remarks||[]; S.rev=r.rev; S.at=Date.now(); save();
+      const y=window.scrollY; render(); window.scrollTo(0,y);
+      sync('','Cập nhật '+new Date(S.at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}));
+    }catch(_){}
+  },15000);
 })();
 </script>
 </body>
