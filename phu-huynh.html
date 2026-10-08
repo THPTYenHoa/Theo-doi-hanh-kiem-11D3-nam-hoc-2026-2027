@@ -166,8 +166,8 @@ footer a{color:var(--teal-d)}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=3.4"></script>
-<script src="mascot.js?v=3.1"></script>
+<script src="updates/notes.js?v=3.5"></script>
+<script src="mascot.js?v=3.5"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -427,6 +427,8 @@ function printLop(ky){
   if(window.MASCOT && TOUR.seen && TOUR.seen('hkph_tour')) setTimeout(()=>{ if(!TOUR.active()) MASCOT.say('chao','Cô Thảo chào các bác ạ! Các bác gõ tên con để xem nhé.'); },1500);
   $('#hp').onclick=tour;
   (function wait(n){ if(!S.cfg || !S.students.length){ if(n<40) setTimeout(()=>wait(n+1),500); return; } if(window.TOUR && !TOUR.seen('hkph_tour')) setTimeout(tour,700); })(0);
+  /* v3.5: màn chờ lần đầu — cô Thảo chạy trên thanh tiến trình */
+  if($('#ld') && window.MASCOT) MASCOT.loader($('#ld'),{msgs:['Đang mở sổ hạnh kiểm của các con…','Các bác chờ chút ạ…','Mạng hơi chậm, các bác đợi cô thêm chút nhé…']});
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && Date.now()-S.at>120000) load(false); });
   /* v3.2: tự cập nhật — 15 giây hỏi máy chủ một lần (chỉ khi đang mở trang), sổ có thay đổi mới tải lại */
   setInterval(async()=>{

@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.4"></script>
+<script src="updates/notes.js?v=3.5"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.4';
+const HK_VER='3.5';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3707,7 +3707,7 @@ window.openGuide=openGuide=function(sec){
 };
 </script>
 
-<script src="mascot.js?v=3.1"></script>
+<script src="mascot.js?v=3.5"></script>
 <script id="v31m-js">
 'use strict';
 /* ══ v3.1 — NHÂN VẬT CÔ GIÁO (mascot.js): phản ứng khi ghi điểm, khi lưu lỗi, khi chụp bằng chứng; chọn phong cách trong Giao diện ══ */
@@ -4394,5 +4394,41 @@ window.openStudentForm=openStudentForm=function(ma){
 </script>
 
 <style id="v34-css">.bct.qt{width:100%;min-width:0;table-layout:fixed} .bct.qt td,.bct.qt th{padding:7px 8px;white-space:normal} .bct.qt th:first-child,.bct.qt td:first-child{width:27%} @media (max-width:760px){ .bct.qt{font-size:12px!important} .bct.qt td,.bct.qt th{padding:6px 5px} }</style>
+<script id="v35-js">
+'use strict';
+/* ══ v3.5 — MÀN CHỜ: thanh tiến trình + cô Thảo chạy (MASCOT.loader), lời nhắn theo người dùng ══
+   Vai trò lấy từ dữ liệu lưu trên máy (hk_cache_v4.me) hoặc hk_last_role. Cán bộ lớp (học sinh): "các con"; GVCN: "cô Thảo". */
+const LD_MSG={
+  gv:['Đang mở sổ hạnh kiểm…','Cô Thảo chờ chút xíu nhé…','Mạng hơi chậm, sắp xong rồi ạ…'],
+  hs:['Đang mở sổ hạnh kiểm…','Mạng lag xíu, các con chờ chút nha…','Sắp xong rồi, các con đợi cô tí nhé…'],
+  ad:['Đang mở sổ hạnh kiểm…','Mạng hơi chậm, chờ chút nhé…'],
+  x:['Đang mở sổ hạnh kiểm…','Mạng lag xíu, chờ chút nha…','Sắp xong rồi…']
+};
+function ldRole(){
+  let r=''; try{ const c=JSON.parse(localStorage.getItem('hk_cache_v4')||'null'); r=(c&&c.me&&c.me.role)||localStorage.getItem('hk_last_role')||''; }catch(_){}
+  return r==='GVCN'?'gv':(r==='Lớp trưởng'||r==='Tổ trưởng')?'hs':r==='Quản trị'?'ad':'x';
+}
+let LDR=null;
+function ldStart(msgs){
+  const L=$('#loader'); if(!L || !window.MASCOT) return;
+  if(!$('#ldBox')){ L.innerHTML='<div id="ldBox"></div>'; }
+  if(LDR) LDR.stop(); LDR=MASCOT.loader($('#ldBox'),{msgs:msgs||LD_MSG[ldRole()]});
+}
+ldStart();
+new MutationObserver(()=>{ const L=$('#loader'); if(L && L.classList.contains('hide') && LDR){ LDR.done(); LDR=null; } })
+  .observe($('#loader'),{attributes:true,attributeFilter:['class']});
+const showApp35=showApp;
+window.showApp=showApp=function(){ const r=showApp35.apply(this,arguments); try{ if(S.me&&S.me.role) localStorage.setItem('hk_last_role',S.me.role); }catch(_){} return r; };
+/* nhập mã xong ⇒ màn chờ trong lúc máy chủ kiểm tra mã + gửi dữ liệu */
+const lgVerify35=lgVerify;
+window.lgVerify=lgVerify=async function(){
+  const c=$('#lgCode'), code=c?c.value.replace(/\D/g,''):'';
+  if(code.length!==6 || LG.busy) return lgVerify35.apply(this,arguments);
+  const L=$('#loader'); L.classList.remove('hide'); ldStart(['Đang kiểm tra mã…'].concat(LD_MSG[ldRole()].slice(1)));
+  try{ return await lgVerify35.apply(this,arguments); }
+  finally{ if(!$('#app').classList.contains('on')) L.classList.add('hide'); }
+};
+</script>
+
 </body>
 </html>

@@ -1,6 +1,16 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-11-v3.5", version: "3.5", date: "2026-10-11",
+    title: "Màn chờ: cô Thảo chạy cùng thanh tiến trình",
+    summary: "Lúc mở sổ hoặc nhập mã đăng nhập, cô Thảo chạy trên thanh tiến trình kèm lời nhắn — các con và các bác biết sổ đang mở, không phải chờ trong im lặng.",
+    items: [
+      { type: "new", title: "Cô Thảo chạy khi đang tải",
+        text: "Mở sổ hoặc nhập xong mã 6 số ⇒ hiện thanh tiến trình có cô Thảo chạy. Mạng chậm thì cô nhắn: <b>\"Mạng lag xíu, các con chờ chút nha…\"</b>; ở trang phụ huynh: <b>\"Các bác chờ chút ạ…\"</b>.",
+        img: "updates/v3.5/man-cho.jpg" }
+    ]
+  },
+  {
     id: "2026-10-10-v3.4", version: "3.4", date: "2026-10-10",
     title: "Quản lý lớp và phân quyền rõ ràng",
     summary: "Chỉ GVCN được cấp quyền cho email khác, đổi tổ, thêm hoặc xoá học sinh. Thêm / khoá tài khoản có hiệu lực ngay.",

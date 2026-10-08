@@ -228,6 +228,17 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(!(await p.isVisible('#accAdd')) && !(await p.isVisible('#hsTo')) && /Quyền của bạn/.test(await p.textContent('#vCai')), 'lớp trưởng: không có tài khoản / đổi tổ / xoá học sinh, thấy "Quyền của bạn"');
   await p.context().close();
 
+  // 15. v3.5 — màn chờ cô Thảo chạy
+  p = await P({ as: 'tt', mobile: true, lag: 5000 }); await p.addInitScript(() => { try { localStorage.setItem('hk_last_role', 'Tổ trưởng'); } catch (_) {} });
+  await p.goto(U); await W(2500);
+  ok(await p.isVisible('#loader .mld-run') && /các con chờ chút nha/.test(await p.textContent('#loader')), 'màn chờ: cô Thảo chạy + "Mạng lag xíu, các con chờ chút nha…"');
+  const pc = await p.evaluate(() => parseFloat(document.querySelector('#loader .mld-pct').textContent)); ok(pc > 20 && pc < 100, 'thanh tiến trình đang chạy (' + pc + '%)');
+  await p.waitForSelector('#app.on', { timeout: 15000 }); ok(!(await p.isVisible('#loader')), 'mở sổ xong ⇒ màn chờ tắt');
+  await p.context().close();
+  p = await P({ mobile: true, lag: 5000 }); await p.goto(PH); await W(2500);
+  ok(/Các bác chờ chút ạ/.test(await p.textContent('#main')) && await p.isVisible('.mld-run'), 'trang phụ huynh: "Các bác chờ chút ạ…"');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');

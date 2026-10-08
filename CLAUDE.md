@@ -81,3 +81,10 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - Backend `apiSaveAccounts` gọi `cacheClear(true)` (trước đó thiếu ⇒ đệm `hk_acc` 30 phút). Không tự xoá tài khoản của mình; xoá HS có lựa chọn
   "Đánh dấu nghỉ học / chuyển lớp" (giữ lịch sử). Mock `saveStudents` / `saveAccounts` chặn khi không phải GVCN.
 - HDSD: bìa và trang phân cách **không** có chibi; **không nhắc vai Quản trị / admin, tên hay email người quản trị** (người dùng yêu cầu). Trên app, dòng "Quản trị" (bảng quyền, chọn vai trò) chỉ hiện với chính tài khoản Quản trị.
+
+## v3.5 — Màn chờ + chibi 3D
+- `MASCOT.loader(host,{msgs,every})` (mascot.js): thanh tiến trình + cô Thảo chạy (`img('chay')`, CSS `.mld-*`; ảnh `mascot/<vai>/chay.webp` động nếu có).
+  App: khối `v35-js` vẽ vào `#loader` lúc mở sổ và lúc `lgVerify`; lời nhắn theo vai (`LD_MSG`, vai lấy từ `hk_cache_v4.me` / `hk_last_role`):
+  cán bộ lớp "Mạng lag xíu, các con chờ chút nha…", GVCN "Cô Thảo chờ chút xíu nhé…". Trang phụ huynh: `#ld` "Các bác chờ chút ạ…".
+- Prompt chibi **3D**: `docs/prompt-chibi-3d.md` — mỗi khung lặp đủ REFERENCE + CHARACTER + OUTFIT + STYLE (người dùng yêu cầu lặp lại);
+  file `goc.png`, `1.png`…`17.png` (17 = `chay`), video `chay.mp4` (màn chờ), `chao/vui/khen-lon/buon/gian/cam-on.mp4`, nền xanh ⇒ ffmpeg chromakey.
