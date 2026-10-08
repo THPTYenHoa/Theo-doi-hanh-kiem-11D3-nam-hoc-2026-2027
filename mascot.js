@@ -4,7 +4,7 @@
    · Phong cách: localStorage.hk_mascot = 'auto' (theo chủ đề giao diện) | tên phong cách | 'off' (tắt). */
 (function () {
   'use strict';
-  var EMO = ['chao', 'huong-dan', 'chi-tay', 'vui', 'khen-lon', 'co-vu', 'buon', 'lo-lang', 'nghiem', 'gian', 'suy-nghi', 'ngac-nhien', 'nghi-ngoi', 'an-mung', 'chup-anh', 'cam-on'];
+  var EMO = ['chao', 'huong-dan', 'chi-tay', 'vui', 'khen-lon', 'co-vu', 'buon', 'lo-lang', 'nghiem', 'gian', 'suy-nghi', 'ngac-nhien', 'nghi-ngoi', 'an-mung', 'chup-anh', 'cam-on', 'chay'];   /* chay = đang chạy (màn chờ) */
   /* "Vai" của cô Thảo — mỗi vai một bộ ảnh (thư mục mascot/<id>/). c = [áo chính, viền / điểm nhấn, tay áo] */
   var STYLES = [
     { id: 'chu-nhiem', ten: 'Cô Thảo chủ nhiệm', mo: 'Gile đen viền vàng — như ảnh thật', c: ['#24232B', '#E2C27A', '#F4EEE2'] },
@@ -46,7 +46,7 @@
       'vui': ['happy', 'M41 62q9 10 18 0', 0], 'khen-lon': ['happy', 'M40 61q10 13 20 0z', 0], 'co-vu': ['open', 'M42 63q8 7 16 0', 0],
       'buon': ['sad', 'M43 67q7-5 14 0', 1], 'lo-lang': ['open', 'M44 66q6-3 12 0', 1], 'nghiem': ['flat', 'M44 65h12', 2],
       'gian': ['angry', 'M44 67q6-4 12 0', 3], 'suy-nghi': ['up', 'M46 65q4 2 8 0', 0], 'ngac-nhien': ['wide', 'M47 64a3 4 0 1 0 6 0a3 4 0 1 0-6 0', 0],
-      'nghi-ngoi': ['closed', 'M44 63q6 5 12 0', 0], 'an-mung': ['happy', 'M40 61q10 13 20 0z', 0], 'chup-anh': ['open', 'M45 64q5 4 10 0', 0], 'cam-on': ['closed', 'M43 63q7 6 14 0', 0]
+      'nghi-ngoi': ['closed', 'M44 63q6 5 12 0', 0], 'an-mung': ['happy', 'M40 61q10 13 20 0z', 0], 'chup-anh': ['open', 'M45 64q5 4 10 0', 0], 'cam-on': ['closed', 'M43 63q7 6 14 0', 0], 'chay': ['happy', 'M41 62q9 10 18 0', 0]
     }[emo] || ['open', 'M44 64q6 5 12 0', 0];
     var e = E[0], eyes;
     if (e === 'happy' || e === 'closed') eyes = '<path d="' + eye[e] + '" fill="none" stroke="#2A1E1E" stroke-width="2.6" stroke-linecap="round"/>';
@@ -120,6 +120,23 @@
     '.m-chi-tay,.m-huong-dan{animation:m-nudge 1s ease-in-out 3}@keyframes m-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px) rotate(3deg)}}' +
     '.m-chup-anh{animation:m-flash .9s ease-out 2}@keyframes m-flash{0%{filter:brightness(1)}15%{filter:brightness(1.6)}100%{filter:brightness(1)}}' +
     '.m-cam-on{animation:m-bow 1.6s ease-in-out 2}@keyframes m-bow{0%,100%{transform:rotate(0)}40%{transform:rotate(10deg) translateY(4px)}}' +
+    /* màn chờ: cô Thảo chạy trên thanh tiến trình */
+    '.mld{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(320px,78vw);margin:0 auto;font-family:Aptos,"Segoe UI",system-ui,sans-serif}' +
+    '.mld-trk{position:relative;width:100%;height:12px;border-radius:99px;background:#E3ECEE;margin-top:78px;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}' +
+    '.mld-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal-l,#6FBEC5),var(--teal,#0E7C86));transition:width .25s linear}' +
+    '.mld-fill::after{content:"";position:absolute;inset:0;border-radius:99px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 8px,transparent 8px 16px);animation:mld-st 0.8s linear infinite}' +
+    '@keyframes mld-st{to{background-position:22px 0}}' +
+    '.mld-run{position:absolute;bottom:4px;left:0;width:70px;height:70px;transform:translateX(-50%);transition:left .25s linear}' +
+    '.mld-run .mascot{width:70px;height:70px;animation:mld-bob .36s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}' +
+    '@keyframes mld-bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-9px) rotate(-2deg)}}' +
+    '.mld-run i{position:absolute;bottom:2px;left:6px;width:10px;height:10px;border-radius:50%;background:#C9D9DD;opacity:0;animation:mld-dust .72s ease-out infinite}' +
+    '.mld-run i.d2{animation-delay:.36s;left:12px;width:7px;height:7px}' +
+    '@keyframes mld-dust{0%{opacity:.8;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(-26px,-8px) scale(1.4)}}' +
+    '.mld-run::before{content:"";position:absolute;left:-26px;top:26px;width:22px;height:3px;border-radius:3px;background:#C9D9DD;box-shadow:4px 9px 0 #DCE7EA,-2px 18px 0 #C9D9DD;animation:mld-ln .36s linear infinite}' +
+    '@keyframes mld-ln{0%{opacity:.9;transform:translateX(0)}100%{opacity:.2;transform:translateX(-10px)}}' +
+    '.mld-pct{font-weight:800;font-size:13px;color:var(--teal-d,#0A5C64);font-variant-numeric:tabular-nums}' +
+    '.mld-msg{font-size:14.5px;font-weight:600;color:#41566F;text-align:center;min-height:22px;transition:opacity .25s}' +
+    '@media (prefers-reduced-motion:reduce){.mld-run .mascot,.mld-run i,.mld-run::before,.mld-fill::after{animation:none!important}}' +
     '@media (prefers-reduced-motion:reduce){.mascot{animation:none!important}}';
   document.head.appendChild(css);
 
@@ -134,7 +151,26 @@
     clearTimeout(hideT); hideT = setTimeout(function () { b.classList.remove('on'); }, o.ms || 3400);
   }
 
+  /* MASCOT.loader(host, {msgs:[...], every:ms}) — thanh tiến trình + cô Thảo chạy; trả {done()}. Ảnh mascot/<vai>/chay.webp (WebP động) nếu có. */
+  function loader(host, o) {
+    o = o || {}; var msgs = o.msgs || ['Đang tải…'], every = o.every || 1800;
+    host.innerHTML = '<div class="mld"><div class="mld-trk"><div class="mld-fill"></div><div class="mld-run">' + img('chay', 70) +
+      '<i class="d1"></i><i class="d2"></i></div></div><div class="mld-pct">0%</div><div class="mld-msg">' + msgs[0] + '</div></div>';
+    var p = 0, t0 = Date.now(), mi = 0, fill = host.querySelector('.mld-fill'), run = host.querySelector('.mld-run'),
+        pct = host.querySelector('.mld-pct'), msg = host.querySelector('.mld-msg'), tm = null;
+    function draw() { fill.style.width = p + '%'; run.style.left = p + '%'; pct.textContent = Math.round(p) + '%'; }
+    function tick() {
+      if (!host.isConnected || !fill.isConnected) { clearInterval(tm); return; }
+      p += (96 - p) * (p < 60 ? 0.05 : 0.02); draw();
+      var k = Math.min(msgs.length - 1, Math.floor((Date.now() - t0) / every));
+      if (k !== mi) { mi = k; msg.style.opacity = 0; setTimeout(function () { msg.innerHTML = msgs[mi]; msg.style.opacity = 1; }, 220); }
+    }
+    tm = setInterval(tick, 120); draw();
+    return { done: function () { clearInterval(tm); p = 100; draw(); }, stop: function () { clearInterval(tm); } };
+  }
+
   window.MASCOT = {
+    loader: loader,
     EMO: EMO, STYLES: STYLES, BY_THEME: BY_THEME,
     say: say, img: img, svg: svg, style: styleId, pick: pick,
     set: function (v) { lsS('hk_mascot', v); }
