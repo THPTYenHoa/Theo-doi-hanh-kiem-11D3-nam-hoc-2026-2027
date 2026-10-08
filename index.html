@@ -2682,7 +2682,7 @@ function openAccountForm(email){
       <button class="btn ghost" id="aReset">Đặt lại mật khẩu</button>
       <button class="btn danger" id="aDel">Xoá tài khoản</button></div>`}
     <div class="note" style="padding:12px 0 0">Vai trò quyết định phạm vi ghi điểm: Tổ trưởng chỉ ghi cho tổ mình,
-      Lớp trưởng ghi cả lớp và sửa danh mục, GVCN/Quản trị toàn quyền.</div>
+      Lớp trưởng ghi cả lớp và sửa danh mục, GVCN toàn quyền.</div>
   </div>`;
   openPanel(isNew?'Thêm tài khoản':'Sửa tài khoản', isNew?'Cấp quyền vào sổ':esc(a.email), h);
   $('#aCancel').onclick=closePanel;
@@ -4354,8 +4354,9 @@ if(S.me) buildNav();
 /* bảng gọn cho điện thoại; chú thích cột ở dòng dưới */
 const QUYEN=[['GVCN','Cả lớp','✓','✓','✓'],['Quản trị','Cả lớp','✓','✓','✓'],['Lớp trưởng','Cả lớp','✓','—','—'],['Tổ trưởng','Tổ mình','—','—','—']];
 function quyenHTML(){
+  const ad=S.me&&S.me.role==='Quản trị';   /* dòng Quản trị chỉ hiện với chính tài khoản quản trị */
   return `<div class="tablewrap"><table class="bct qt" style="font-size:13px"><tr><th>Vai trò</th><th>Ghi điểm</th><th>Danh mục</th><th>Học sinh</th><th>Tài khoản</th></tr>
-    ${QUYEN.map(r=>`<tr${S.me&&S.me.role===r[0]?' style="background:var(--pale)"':''}><td><b>${r[0]}</b></td>${r.slice(1).map(x=>`<td style="${x==='✓'?'color:var(--ok);font-weight:800':x==='—'?'color:var(--mute)':''}">${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
+    ${QUYEN.filter(r=>ad||r[0]!=='Quản trị').map(r=>`<tr${S.me&&S.me.role===r[0]?' style="background:var(--pale)"':''}><td><b>${r[0]}</b></td>${r.slice(1).map(x=>`<td style="${x==='✓'?'color:var(--ok);font-weight:800':x==='—'?'color:var(--mute)':''}">${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
 }
 const renderCai34=renderCai;
 window.renderCai=renderCai=function(){
@@ -4366,18 +4367,18 @@ window.renderCai=renderCai=function(){
     hs.textContent='Học sinh: thêm · đổi tổ · xoá';
     hs.closest('.sechead').insertAdjacentHTML('beforebegin',`<div class="sechead"><h2>Phân quyền trong sổ</h2></div><div class="panelbox" id="qTbl">${quyenHTML()}
       <div class="note" style="padding:8px 0 0">Danh mục = danh mục điểm, cấu hình kỳ · Học sinh = thêm, đổi tổ, xoá · Tài khoản = cấp / khoá quyền cho email khác.</div>
-      <div class="note" style="padding:6px 0 0">Chỉ <b>GVCN</b> và <b>Quản trị</b> được cấp quyền cho email khác (mục Tài khoản bên dưới), đổi tổ, thêm hoặc xoá học sinh.
-      Tài khoản quản trị hệ thống luôn giữ quyền, không bị khoá nhầm.</div></div>`);
+      <div class="note" style="padding:6px 0 0">Chỉ <b>GVCN</b> được cấp quyền cho email khác (mục Tài khoản bên dưới), đổi tổ, thêm hoặc xoá học sinh.</div></div>`);
   }else if(!isGVCN() && !isKhach()){
     box.insertAdjacentHTML('beforeend',`<div class="sechead"><h2>Quyền của bạn</h2></div><div class="panelbox">${quyenHTML()}
-      <div class="note" style="padding:10px 0 0">Cần thêm tài khoản, đổi tổ hoặc xoá học sinh? Nhờ <b>GVCN</b> hoặc <b>Quản trị</b>.</div></div>`);
+      <div class="note" style="padding:10px 0 0">Cần thêm tài khoản, đổi tổ hoặc xoá học sinh? Nhờ cô <b>GVCN</b>.</div></div>`);
   }
 };
 const accForm34=openAccountForm;
 window.openAccountForm=openAccountForm=function(email){
   accForm34.apply(this,arguments);
+  const ro=$('#aRole'); if(ro && S.me.role!=='Quản trị' && ro.value!=='Quản trị') [...ro.options].forEach(o=>{ if(o.value==='Quản trị') o.remove(); });
   const n=[...$$('#pBody .note')].pop();
-  if(n) n.innerHTML='<b>Vai trò:</b> Tổ trưởng ghi điểm tổ mình · Lớp trưởng ghi cả lớp, sửa danh mục · <b>GVCN / Quản trị toàn quyền</b> (cấp quyền, đổi tổ, xoá học sinh).<br>Người được thêm đăng nhập bằng đúng email này và nhận mã 6 số — không cần mật khẩu. Khoá / xoá có hiệu lực ngay.';
+  if(n) n.innerHTML='<b>Vai trò:</b> Tổ trưởng ghi điểm tổ mình · Lớp trưởng ghi cả lớp, sửa danh mục · <b>GVCN toàn quyền</b> (cấp quyền, đổi tổ, xoá học sinh).<br>Người được thêm đăng nhập bằng đúng email này và nhận mã 6 số — không cần mật khẩu. Khoá / xoá có hiệu lực ngay.';
   const d=$('#aDel'); if(d){ const o=d.onclick; d.onclick=async()=>{ const me=String(S.me.email||'').toLowerCase(); if(String(email||'').toLowerCase()===me){ toast('Không tự xoá tài khoản của chính mình.'); return; } return o&&o(); }; }
 };
 const stuForm34=openStudentForm;

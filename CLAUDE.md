@@ -80,4 +80,4 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   Lớp trưởng: ghi cả lớp + danh mục + cấu hình; Tổ trưởng: ghi tổ mình. Bảng `QUYEN` (`v34-js`) hiện trong Cài đặt (`#qTbl`; cán bộ lớp thấy "Quyền của bạn").
 - Backend `apiSaveAccounts` gọi `cacheClear(true)` (trước đó thiếu ⇒ đệm `hk_acc` 30 phút). Không tự xoá tài khoản của mình; xoá HS có lựa chọn
   "Đánh dấu nghỉ học / chuyển lớp" (giữ lịch sử). Mock `saveStudents` / `saveAccounts` chặn khi không phải GVCN.
-- HDSD: bìa và trang phân cách **không** có chibi (người dùng yêu cầu).
+- HDSD: bìa và trang phân cách **không** có chibi; **không nhắc vai Quản trị / admin, tên hay email người quản trị** (người dùng yêu cầu). Trên app, dòng "Quản trị" (bảng quyền, chọn vai trò) chỉ hiện với chính tài khoản Quản trị.

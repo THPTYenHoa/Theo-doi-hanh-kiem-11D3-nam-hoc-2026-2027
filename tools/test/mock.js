@@ -2,7 +2,7 @@
    newPage(browser, {as:'gvcn'|'lt'|'tt'|'ph'|null, lag, mobile, failWrite, flaky}) ; page.M.CALLS ghi mọi lệnh gọi. */
 const HO = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Ngô'];
 const DEM = ['Minh', 'Thu', 'Gia', 'Bảo', 'Ngọc', 'Hải', 'Khánh', 'Phương', 'Đức', 'Thanh'];
-const TEN = ['An', 'Bình', 'Chi', 'Dũng', 'Giang', 'Hà', 'Hưng', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Tú', 'Vy'];
+const TEN = ['An', 'Bình', 'Chi', 'Dũng', 'Hằng', 'Hà', 'Hưng', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Tú', 'Vy'];
 const TINY = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkaPhfDwAEZAJXIp2LhQAAAABJRU5ErkJggg==';
 function rnd(seed) { let s = seed; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
 function build() {
