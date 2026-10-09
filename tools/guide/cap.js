@@ -83,12 +83,14 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await shot(p, 'remark', [['#rkXl, #pBody select', 1], ['#rkNx', 2]]);
   await p.evaluate(() => { closePanel(); go('tk'); }); await W(600); await shot(p, 'tk', [['#vTK .segbar', 1], ['#vTK .kpis', 2]]);
   await p.evaluate(() => go('ls')); await W(600); await shot(p, 'ls', [['#vLS select, #vLS .filters', 1], ['#vLS button.btn', 2]]);
-  await p.evaluate(() => go('cai')); await W(500); await shot(p, 'cai', [['#caiTheme', 1, 'tr']]);
+  await p.evaluate(() => go('cai')); await W(500); await p.click('[data-ct="gd"]'); await W(300); await shot(p, 'cai', [['.cai39 .ctabs', 1], ['#caiTheme', 2, 'tr']]);
+  await p.click('[data-ct="quyen"]'); await W(300);
   await p.evaluate(() => { const h = [...document.querySelectorAll('#vCai .sechead')].find(x => /Tài khoản/.test(x.textContent)); h && h.scrollIntoView(); }); await W(300);
   await shot(p, 'accounts', [['#accAdd', 1, 'tr'], ['#vCai [data-acc]', 2]]);
   await p.click('#accAdd'); await W(400); await shot(p, 'accform', [['#aEm', 1], ['#aRole', 2], ['#aTo', 3, 'tr'], ['#aSave', 4, 'tr']]);
   await p.evaluate(() => { closePanel(); document.querySelector('#qTbl').scrollIntoView({ block: 'start' }); document.querySelector('#scroll').scrollBy(0, -60); }); await W(300);
-  await shot(p, 'quyen', [['#qTbl table', 1], ['#hsList', 2], ['#hsTo', 3, 'tr']]);
+  await shot(p, 'quyen', [['#qTbl table', 1]]);
+  await p.click('[data-ct="lop"]'); await W(300); await p.evaluate(() => { const b = document.querySelector('#hsTo'); b && b.scrollIntoView({ block: 'center' }); }); await W(200);
   await p.click('#hsTo'); await W(300); for (const i of [0, 2]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
   await shot(p, 'hs_to', [['#pBody .item .check.on', 1], ['#btTo', 2], ['#btSave', 3]]);
   await p.evaluate(() => { closePanel(); openStudentForm(S.students[3].ma); }); await W(400);
@@ -105,7 +107,7 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   // v3.2 — thẻ tổng quan + cập nhật trực tiếp (điện thoại)
   p = await newPage(b, { as: 'gvcn', mobile: true }); await p.goto(U + 'index.html'); await p.waitForSelector('#app.on'); await W(2500); await closeUpd(p); await W(300);
   await p.evaluate(() => { const m = document.querySelector('#msc'); m && m.remove(); });
-  await shot(p, 'hero', [['#v32h .top', 1], ['#v32h .tiles', 2], ['#v32h .feed', 3]]);
+  await shot(p, 'hero', [['#v32h .top', 1], ['#v32h .tiles', 2], ['#tk39', 3]]);
   p.M.ext('HS05', 'Đi học muộn', -2); await W(5200);
   await shot(p, 'live', [['#v32pop', 1], ['#v32live', 2, 'tr'], ['#listGhi .ev.fresh', 3]]);
   await W(1500); await p.click('#v32h [data-f=warn]'); await W(400); await shot(p, 'hero_loc', [['#v32h .tl.on', 1], ['#v32clr', 2]]);
