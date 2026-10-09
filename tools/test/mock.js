@@ -43,6 +43,7 @@ async function newPage(browser, o = {}) {
   const D = build(), M = page.M = { CALLS: [], D, rev: 1, khoa: o.khoa || {}, phMail: { on: true, cong: true }, phReg: o.phReg || [], REG: {} };
   /* v3.2: người khác ghi / xoá (giả lập) ⇒ đổi rev */
   M.ext = (ma, muc, diem, who = 'Lớp trưởng') => { const s = D.students.find(x => x.ma === ma); const e = ['X' + Date.now() + Math.random().toString(36).slice(2, 5), '2026-10-08 10:05', 10, 1, ma, s.to, diem < 0 ? 'Trừ' : 'Cộng', 'T01', muc, diem, 'loptruong@example.com', who, '']; D.entries.push(e); M.rev++; return e[0]; };
+  M.phNew = (ma, email) => { const s = D.students.find(x => x.ma === ma); M.phReg.push({ id: 'R' + (M.phReg.length + 100), ma, ten: s.ten, email, at: '2026-10-09 10:00' }); M.rev++; };
   M.extDel = id => { D.entries = D.entries.filter(e => e[0] !== id); M.rev++; };
   if (o.as) await ctx.addInitScript(t => { try { localStorage.setItem('hk_token', t); } catch (_) {} }, 'tok.' + o.as);
   if (!o.tour) await ctx.addInitScript(() => { try { ['hk_tour_gvcn', 'hk_tour_cb', 'hkph_tour'].forEach(k => localStorage.setItem(k, '1')); } catch (_) {} });
@@ -82,7 +83,8 @@ async function newPage(browser, o = {}) {
     else if (a === 'savePhMail') { M.phMail = { on: p.on !== false, cong: p.cong !== false }; res = { ok: true, phMail: M.phMail }; }
     else if (a === 'phDangKy') { if (!/@/.test(p.email || '')) res = { ok: false, error: 'Email chưa đúng.' }; else { M.REG[String(p.email).toLowerCase()] = p.ma; res = { ok: true, ten: (D.students.find(s => s.ma === p.ma) || {}).ten }; } }
     else if (a === 'phXacNhan') { const em = String(p.email || '').toLowerCase(), ma = M.REG[em]; if (!ma) res = { ok: false, error: 'Mã đã hết hạn. Các bác bấm gửi lại mã nhé.' }; else if (p.code !== '123456') res = { ok: false, error: 'Mã chưa đúng ạ.' }; else { delete M.REG[em]; M.phReg.push({ id: 'R' + (M.phReg.length + 1), ma, ten: (D.students.find(s => s.ma === ma) || {}).ten, email: em, at: '2026-10-08 10:00' }); res = { ok: true, cho: true }; } }
-    else if (a === 'phDuyet') { const r = M.phReg.find(x => x.id === p.id); M.phReg = M.phReg.filter(x => x.id !== p.id); if (r && p.ok !== false) { const s = D.students.find(x => x.ma === r.ma); if (s) s.email = (s.email ? s.email + ', ' : '') + r.email; } res = { ok: true, dangKy: M.phReg }; }
+    else if (a === 'phDuyet' && p.ok !== false && p.pdfVer && !p.pdf && M.pdfVer !== p.pdfVer) res = { ok: false, code: 'NEED_PDF', error: 'Cần gửi kèm file hướng dẫn.' };
+    else if (a === 'phDuyet') { if (p.pdf) { M.pdfVer = p.pdfVer; M.pdfLen = p.pdf.length; } const r = M.phReg.find(x => x.id === p.id); M.phReg = M.phReg.filter(x => x.id !== p.id); if (r && p.ok !== false) { const s = D.students.find(x => x.ma === r.ma); if (s) s.email = (s.email ? s.email + ', ' : '') + r.email; } res = { ok: true, dangKy: M.phReg }; }
     else if (a === 'saveTheme') { M.theme = p.theme; res = { ok: true, theme: p.theme }; }
     else if (a === 'roster') res = { ok: true, members: [{ id: 'gv', ten: 'Nguyễn Thu Thảo', role: 'GVCN', to: '', nhom: 'gvcn' }, { id: 'lt', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', nhom: 'canbo' }, { id: 'tt2', ten: 'Trần Hải Bình', role: 'Tổ trưởng', to: '2', nhom: 'canbo' }] };
     else if (a === 'login') res = (body.payload && body.payload.pin) ? Object.assign({ token: 'tok.' + ({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }, { boot: (who2 => { const b = base(); b.me = ME[who2]; return b; })({ gv: 'gvcn', lt: 'lt', tt2: 'tt' }[p.id] || 'lt') }) : { ok: false, error: 'Sai mật khẩu' };
@@ -90,7 +92,7 @@ async function newPage(browser, o = {}) {
     else if (a === 'bootstrap') res = who ? base() : { ok: false, error: 'Phiên đăng nhập hết hạn' };
     else if (a === 'sync') { res = o.oldBackend ? { ok: false, error: 'Không nhận ra yêu cầu: sync' }
       : (p.rev === String(M.rev) ? { ok: true, rev: String(M.rev), same: true }
-      : { ok: true, rev: String(M.rev), khoa: M.khoa, entries: D.entries.filter(e => !p.thangs || p.thangs.includes(e[2])).map(e => e.slice()), remarks: D.remarks }); }
+      : { ok: true, rev: String(M.rev), khoa: M.khoa, phReg: who === 'gvcn' ? M.phReg : undefined, entries: D.entries.filter(e => !p.thangs || p.thangs.includes(e[2])).map(e => e.slice()), remarks: D.remarks }); }
     else if (a === 'entries') { const th = p.thangs; res = { ok: true, entries: D.entries.filter(e => !th || th.includes(e[2])), remarks: D.remarks }; }
     else if (a === 'addEntries') { if (p.rid && M.RID && M.RID[p.rid]) { res = M.RID[p.rid]; }
       else if (o.drop && o.drop.addEntries > 0) { o.drop.addEntries--; const out = (p.items || []).map((x, i) => { const e = ['E' + (D.entries.length + 1 + i), '2026-10-08 10:00', p.thang, p.tuan, x.maHS, '1', x.loai, x.maMuc, x.noiDung, x.diem, 'x', 'x', x.ghiChu || '']; D.entries.push(e); return e; }); (M.RID = M.RID || {})[p.rid] = { ok: true, ids: out.map(e => e[0]) }; return route.abort(); }

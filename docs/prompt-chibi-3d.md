@@ -270,3 +270,704 @@ MOTION — she bows slightly with hands together, then holds up the small bouque
 Gửi `goc.png`, các ảnh `1.png` … `17.png` và các video (`chay.mp4`, …) vào khung chat. Claude sẽ tách nền, thu nhỏ (ảnh 30–60 KB, ảnh động 150–300 KB) và thay toàn bộ chibi 2D hiện tại. **Chưa đủ cũng gửi được** — ảnh nào thiếu, app tạm dùng hình vẽ cũ.
 
 > Ưu tiên làm trước: `goc.png` → `17.png` + `chay.mp4` (màn chờ) → `1.png` (chào) → `4.png`, `7.png`, `10.png` (vui / buồn / giận).
+
+---
+
+## Bước 5 — Các bộ trang phục khác (áo dài, Tết, STEM, mùa đông…)
+Mỗi bộ trang phục = **1 ảnh gốc mới + 8 biểu cảm**. App tự chọn bộ theo **chủ đề màu** (cột "Dùng với chủ đề"), và cô chọn được trong ⚙ ▸ Nhân vật. Bộ nào chưa đủ ảnh thì biểu cảm còn thiếu tạm dùng ảnh cô Thảo chủ nhiệm — nên **làm bộ nào gửi bộ đó**, không cần chờ đủ.
+
+Cách làm cho mỗi bộ (một cuộc trò chuyện mới cho mỗi bộ):
+1. **Ảnh gốc trang phục**: đính kèm `goc.png` (ảnh gốc ở Bước 1) + dán khung **G** ⇒ tải về, đặt tên `goc.png` trong thư mục của bộ đó (ví dụ thư mục `ao-dai`).
+2. **8 biểu cảm**: đính kèm **ảnh gốc trang phục vừa tạo** + dán lần lượt khung **1 → 8** ⇒ đặt tên `1.png` … `8.png`.
+3. Gửi cả thư mục cho Claude (tên thư mục = mã bộ, ví dụ `ao-dai`).
+
+| Mã bộ (tên thư mục) | Tên | Dùng với chủ đề |
+|---|---|---|
+| `giang-day` | Cô Thảo lên lớp | Bảng phấn, Vở ô ly, Origami, Lá xanh |
+| `ao-dai` | Cô Thảo áo dài trắng | Văn Miếu, Hồ Gươm, Nhà giáo 20/11, khai giảng |
+| `ao-dai-do` | Cô Thảo áo dài Tết | Hoa đào, Tết |
+| `stem` | Cô Thảo STEM | Biển mây |
+| `man-chin` | Cô Thảo mận chín | Mận chín, Thu vàng, Giấy kraft |
+| `mau-nuoc` | Cô Thảo áo dài chàm | Chàm màu nước |
+| `mua-dong` | Cô Thảo mùa đông | Đông Hà Nội |
+| `trung-thu` | Cô Thảo Trung thu | Trung thu |
+| `doi-thuong` | Cô Thảo cuối tuần | Lo-fi |
+
+> Ưu tiên làm trước: `ao-dai` (20/11 sắp tới) → `ao-dai-do` (Tết) → `giang-day` → `mua-dong`.
+
+### Bộ `giang-day` — Cô Thảo lên lớp
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `giang-day/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `giang-day/goc.png` · lưu `giang-day/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `giang-day/goc.png` · lưu `giang-day/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `giang-day/goc.png` · lưu `giang-day/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `giang-day/goc.png` · lưu `giang-day/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `giang-day/goc.png` · lưu `giang-day/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `giang-day/goc.png` · lưu `giang-day/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `giang-day/goc.png` · lưu `giang-day/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `giang-day/goc.png` · lưu `giang-day/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — soft teal cardigan over a white blouse, navy knee-length skirt, a small name badge, holding a wooden teacher pointer; black flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `ao-dai` — Cô Thảo áo dài trắng
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `ao-dai/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `ao-dai/goc.png` · lưu `ao-dai/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in ivory white silk with delicate pale-gold lotus embroidery, long flowing side panels over white silk trousers; small nude flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `ao-dai-do` — Cô Thảo áo dài Tết
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `ao-dai-do/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `ao-dai-do/goc.png` · lưu `ao-dai-do/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in bright red silk with golden apricot-blossom (hoa mai) embroidery, white silk trousers, a small gold khan dong headband; holding a tiny red lucky envelope; red flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `stem` — Cô Thảo STEM
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `stem/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `stem/goc.png` · lưu `stem/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `stem/goc.png` · lưu `stem/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `stem/goc.png` · lưu `stem/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `stem/goc.png` · lưu `stem/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `stem/goc.png` · lưu `stem/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `stem/goc.png` · lưu `stem/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `stem/goc.png` · lưu `stem/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `stem/goc.png` · lưu `stem/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — white lab coat over a sky-blue blouse, navy trousers, safety goggles pushed up on her head above her glasses, holding a tiny friendly robot; white sneakers.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `man-chin` — Cô Thảo mận chín
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `man-chin/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `man-chin/goc.png` · lưu `man-chin/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `man-chin/goc.png` · lưu `man-chin/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `man-chin/goc.png` · lưu `man-chin/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `man-chin/goc.png` · lưu `man-chin/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `man-chin/goc.png` · lưu `man-chin/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `man-chin/goc.png` · lưu `man-chin/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `man-chin/goc.png` · lưu `man-chin/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `man-chin/goc.png` · lưu `man-chin/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — plum-colored (deep burgundy) knit cardigan over a cream blouse, mustard-yellow pleated midi skirt, a small gold brooch; brown flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `mau-nuoc` — Cô Thảo áo dài chàm
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `mau-nuoc/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `mau-nuoc/goc.png` · lưu `mau-nuoc/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — traditional Vietnamese ao dai in deep indigo with soft watercolor-style coral-red flower prints, white silk trousers; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `mua-dong` — Cô Thảo mùa đông
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `mua-dong/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `mua-dong/goc.png` · lưu `mua-dong/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — slate-blue wool winter coat, a chunky red knitted scarf and matching red beanie, grey knit gloves, dark tights; brown ankle boots.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `trung-thu` — Cô Thảo Trung thu
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `trung-thu/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `trung-thu/goc.png` · lưu `trung-thu/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — orange-and-gold festive blouse with a navy skirt, holding a glowing red-yellow five-pointed star lantern (đèn ông sao) on a bamboo stick; navy flat shoes.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+### Bộ `doi-thuong` — Cô Thảo cuối tuần
+
+**G — ảnh gốc trang phục** · đính kèm `goc.png` (Bước 1) · lưu `doi-thuong/goc.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, body proportions, colors and 3D style. Change ONLY the outfit (described below), the pose and the expression.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — standing straight facing the viewer, hands clasped in front, big friendly smile. This image will be the master reference for this outfit.
+```
+**1 — Vẫy tay chào** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/1.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — waving hello with her right hand raised high, big warm open smile, head tilted slightly, one foot lifted playfully.
+```
+**2 — Vui** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/2.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — happily clapping both hands, small hop with both feet off the ground, tiny golden sparkles around her.
+```
+**3 — Khen lớn** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/3.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — jumping up with both arms raised holding a big shiny gold star, colorful confetti around, huge open-mouth smile.
+```
+**4 — Cổ vũ** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/4.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — cheering pose, one fist pumped in the air, the other hand on her hip, determined happy eyes.
+```
+**5 — Buồn** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/5.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — slightly sad, shoulders dropped, hugging her notebook to her chest, eyebrows tilted down, one small tear-shaped sweat drop.
+```
+**6 — Nghiêm** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/6.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — arms crossed, serious but gentle face, one eyebrow raised, tapping one foot, pointer tucked under her arm.
+```
+**7 — Chỉ tay** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/7.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — pointing to her right side with the wooden pointer, leaning forward a little, winking one eye, encouraging smile.
+```
+**8 — Cảm ơn** · đính kèm `doi-thuong/goc.png` · lưu `doi-thuong/8.png`
+```
+REFERENCE — use the attached image as the exact character reference: keep EXACTLY the same face, glasses, hairstyle, outfit, body proportions, colors and 3D style. Only change the pose and expression described below.
+CHARACTER — "Ms. Thao", a young Vietnamese high-school homeroom teacher: a very round, chubby, kind face with full rosy cheeks; gentle crescent-shaped smiling eyes behind THICK BLACK ROUND NEARSIGHTED GLASSES (always clearly visible); a small cute nose and a warm sweet smile; long straight dark-brown hair with a warm auburn tint, falling past the shoulders, with soft wispy see-through bangs and face-framing strands.
+OUTFIT — cozy oversized lavender knit sweater, light-blue jeans, white sneakers, holding a warm mug of tea.
+STYLE — super cute 3D chibi figurine, Pixar / Disney-like stylized 3D render, soft matte clay-and-vinyl toy material, big round head (about half of the body height), small body, short arms and legs, big sparkly eyes, smooth soft skin with subtle subsurface glow, soft studio lighting with a gentle rim light, warm pastel color grading, high detail, 4K quality. Full body, centered, plain pure white background, soft round contact shadow under the feet, no text, no letters, no logo, no watermark, square 1:1 image.
+POSE — bowing slightly with both hands together, grateful smile, holding a small bouquet of pink flowers.
+```
+
+Thứ tự file ⇒ biểu cảm (Claude đặt tên lại): `1.png` = vẫy tay chào · `2.png` = vui · `3.png` = khen lớn · `4.png` = cổ vũ · `5.png` = buồn · `6.png` = nghiêm · `7.png` = chỉ tay · `8.png` = cảm ơn.
