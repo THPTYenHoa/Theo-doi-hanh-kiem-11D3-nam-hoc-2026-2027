@@ -56,12 +56,12 @@ h2{font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.15;c
 .toc{margin-top:18px} .toc .card{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .toc .card b{margin:0} .toc .card em{font-style:normal;font-weight:800;color:#E07B39;font-size:15px}
 `;
-const ft = (title, n) => `<div class="bar"></div><div class="no">${String(n).padStart(2, '0')}</div><div class="ft"><span>Sổ hạnh kiểm 11D3 · THPT Yên Hòa · ${title}</span><span>Phiên bản ${VER} · ${TODAY} · ${APP}</span></div>`;
+const ft = (title, n) => `<div class="bar"></div><div class="no">${String(n).padStart(2, '0')}</div><div class="ft"><span>Sổ theo dõi học sinh 11D3 · THPT Yên Hòa · ${title}</span><span>Phiên bản ${VER} · ${TODAY} · ${APP}</span></div>`;
 const steps = a => `<ul class="steps">${a.map((t, i) => `<li><i>${i + 1}</i><span>${t}</span></li>`).join('')}</ul>`;
 const tip = (t, emo) => `<div class="tip"><img src="${chibi(emo || 'chi-tay')}"><span>${t}</span></div>`;
 const phone = (a, b) => b ? `<div class="ph ph2a"><img src="${img(a)}"></div><div class="ph ph2b"><img src="${img(b)}"></div>` : `<div class="ph ph1"><img src="${img(a)}"></div>`;
 function slide(T, n, o) {
-  if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">${o.kk || 'Hướng dẫn sử dụng'}</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p>${o.who ? `<span class="who">${o.who}</span>` : ""}</div>
+  if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">${o.kk || 'Hướng dẫn sử dụng'}</div><h1>Sổ theo dõi<br>học sinh 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p>${o.who ? `<span class="who">${o.who}</span>` : ""}</div>
     <div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
   if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div></section>`;
   /* v3.6: cô Thảo 3D ở trang nội dung — biểu cảm theo chủ đề trang (tự bỏ nếu chạm chữ, xem bước kiểm tra trước khi in) */
@@ -163,7 +163,7 @@ const DOCS = {
 const DM = `${APP}/?demo=1`;
 const rimg = n => `<div class="dk"><img src="${img(n)}"></div>`;
 DOCS.HD_Trai_nghiem = { T: 'Hướng dẫn trải nghiệm', slides: [
-  { cover: 1, kk: 'Hướng dẫn trải nghiệm · Kiểm tra tính năng ứng dụng', lead: 'Trải nghiệm <b>toàn bộ</b> sổ hạnh kiểm trong 10 phút: không cần tài khoản, không cần mật khẩu, dữ liệu mẫu — đóng vai cô chủ nhiệm, cán bộ lớp và phụ huynh.', meta: 'Quét mã hoặc mở: ' + DM, qr: 'qr_demo', qrt: 'Quét để vào thẳng<br>chế độ trải nghiệm' },
+  { cover: 1, kk: 'Hướng dẫn trải nghiệm · Kiểm tra tính năng ứng dụng', lead: 'Trải nghiệm <b>toàn bộ</b> ứng dụng trong 10 phút: không cần tài khoản, không cần mật khẩu, dữ liệu mẫu — đóng vai cô chủ nhiệm, cán bộ lớp và phụ huynh.', meta: 'Quét mã hoặc mở: ' + DM, qr: 'qr_demo', qrt: 'Quét để vào thẳng<br>chế độ trải nghiệm' },
   { k: 'Bắt đầu', h: 'Vào chế độ trải nghiệm', wide: 'dm_login', steps: ['Quét mã QR ở trang bìa, hoặc mở <b>' + APP + '</b>.', 'Bấm thẻ <b>Kiểm tra tính năng ứng dụng</b> (màu cam).', '<b>Không cần email, không cần mật khẩu</b> — hệ thống mở sổ ngay với vai <b>cô Thảo (GVCN)</b>.'], tip: 'Dữ liệu là mẫu (tên học sinh giả). Mọi thao tác chỉ diễn ra trên máy của thầy cô, không ảnh hưởng sổ thật của lớp.', emo: 'chao' },
   { k: 'Bắt đầu', h: 'Thanh trải nghiệm: đổi vai trong 1 chạm', wide: 'dm_bar', steps: ['<b>Đổi vai</b>: Cô Thảo (GVCN) · Lớp trưởng · Tổ trưởng tổ 2 · Phụ huynh.', '<b>Hướng dẫn</b>: 9 việc nên thử, tự đánh dấu khi làm xong.', '<b>Hộp thư</b>: thư hệ thống gửi phụ huynh / cô chủ nhiệm (mô phỏng).', '<b>Làm lại</b> về dữ liệu ban đầu · <b>Thoát</b> về màn đăng nhập.'] },
   { k: 'Bắt đầu', h: '9 việc nên thử — bấm "Làm ngay"', wide: 'dm_guide', steps: ['Mỗi việc ghi rõ <b>vai</b> và <b>cần bấm vào đâu</b>.', 'Bấm <b>Làm ngay</b>: hệ thống tự đổi vai, mở đúng màn hình, cô Thảo nhắc bước tiếp.', 'Làm xong, việc tự chuyển sang <b>✓</b> — thanh tiến độ cho biết còn bao nhiêu việc.'], pose: 'chi-tay' },

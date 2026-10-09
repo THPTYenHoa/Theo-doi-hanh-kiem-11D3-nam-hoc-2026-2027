@@ -2,10 +2,10 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<script src="demo.js?v=4.3"></script>
+<script src="demo.js?v=4.4"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
-<title>Hạnh kiểm 11D3 · Phụ huynh</title>
+<title>Sổ theo dõi học sinh 11D3 · Phụ huynh</title>
 <link rel="preconnect" href="https://script.google.com" crossorigin>
 <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <style>
@@ -176,7 +176,7 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
 <header id="top">
   <div class="in">
     <div class="mk">11D3</div>
-    <div class="ttl"><b>Sổ hạnh kiểm 11D3</b><span id="sub">Dành cho phụ huynh</span></div>
+    <div class="ttl"><b>Sổ theo dõi học sinh 11D3</b><span id="sub">Dành cho phụ huynh</span></div>
     <div class="sync" id="sync"><i class="d"></i><span id="syncT">Đang tải…</span></div>
     <button class="ib" id="hp" title="Hướng dẫn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.4-2.8 4"/><path d="M12 17.4h.01"/></svg></button>
     <button class="ib" id="rf" title="Tải lại"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg></button>
@@ -186,13 +186,13 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
     <button data-t="lop">Cả lớp</button>
   </nav>
 </header>
-<main id="main"><div id="ld"><div class="spin"></div>Đang tải sổ hạnh kiểm…</div></main>
+<main id="main"><div id="ld"><div class="spin"></div>Đang tải sổ theo dõi…</div></main>
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=4.3"></script>
+<script src="updates/notes.js?v=4.4"></script>
 <script src="mascot.js?v=4.1"></script>
-<script src="baocao.js?v=4.3"></script>
+<script src="baocao.js?v=4.4"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -267,7 +267,7 @@ async function load(manual){
     render(); if(manual) flash('Đã cập nhật dữ liệu mới nhất');
   }catch(e){
     sync('off', S.at?'Ngoại tuyến · dữ liệu lúc '+new Date(S.at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}):'Mất kết nối');
-    if(!S.cfg){ $('#main').innerHTML='<div class="err">Chưa tải được sổ hạnh kiểm: '+esc(e.message)+'. Kiểm tra mạng rồi bấm ↻.</div>'; }
+    if(!S.cfg){ $('#main').innerHTML='<div class="err">Chưa tải được sổ theo dõi: '+esc(e.message)+'. Kiểm tra mạng rồi bấm ↻.</div>'; }
     else if(manual) flash('Chưa kết nối được — đang xem dữ liệu đã lưu.');
   }finally{ S.busy=false; $('#rf').disabled=false; }
 }
@@ -405,7 +405,7 @@ function csvLop(ky){
   const head=['Học sinh','Tổ'], L=active();
   if(ky.k==='thang'){ for(let w=1;w<=S.cfg.soTuan;w++) head.push('Tuần '+w); head.push('TB tuần'); } else { kyMonths(ky).forEach(m=>head.push(tl(m))); head.push('TB kỳ'); }
   head.push('Số vi phạm','Xếp loại');
-  const rows=[['Sổ hạnh kiểm 11D3 · '+kyLabel(ky)],head];
+  const rows=[['Sổ theo dõi học sinh 11D3 · '+kyLabel(ky)],head];
   L.forEach(s=>{ const r=[s.ten,s.to];
     if(ky.k==='thang'){ for(let w=1;w<=S.cfg.soTuan;w++) r.push(weekScore(s.ma,w,ky.m)); r.push(fx(monthAvg(s.ma,ky.m))); }
     else { kyMonths(ky).forEach(m=>r.push(hasData(m)?fx(monthAvg(s.ma,m)):'')); r.push(fx(kyScore(s.ma,ky))); }
@@ -449,7 +449,7 @@ function regBind(s){
 }
 function printLop(ky){
   const L=active();
-  $('#pr').innerHTML=`<h1>Sổ hạnh kiểm lớp 11D3 · ${esc(kyLabel(ky))}</h1><p>THPT Yên Hòa · Năm học ${esc(S.cfg.namHoc||'')} · In ngày ${new Date().toLocaleDateString('vi-VN')}</p>
+  $('#pr').innerHTML=`<h1>Sổ theo dõi học sinh lớp 11D3 · ${esc(kyLabel(ky))}</h1><p>THPT Yên Hòa · Năm học ${esc(S.cfg.namHoc||'')} · In ngày ${new Date().toLocaleDateString('vi-VN')}</p>
    <table><tr><th>#</th><th>Học sinh</th><th>Tổ</th><th>Điểm TB tuần</th><th>Số vi phạm</th><th>Xếp loại</th></tr>
    ${L.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.ten)}</td><td>${esc(s.to)}</td><td>${fx(kyScore(s.ma,ky))}</td><td>${evOf(s.ma,ky).filter(e=>e[E_DIEM]<0).length}</td><td>${esc(xl(s.ma,ky).ten)}</td></tr>`).join('')}</table>`;
   window.print();
@@ -480,7 +480,7 @@ function printLop(ky){
   $('#hp').onclick=tour;
   (function wait(n){ if(!S.cfg || !S.students.length){ if(n<40) setTimeout(()=>wait(n+1),500); return; } if(window.TOUR && !TOUR.seen('hkph_tour')) setTimeout(tour,700); })(0);
   /* v3.5: màn chờ lần đầu — cô Thảo chạy trên thanh tiến trình */
-  if($('#ld') && window.MASCOT) MASCOT.loader($('#ld'),{msgs:['Đang mở sổ hạnh kiểm của các con…','Các bác chờ chút ạ…','Mạng hơi chậm, các bác đợi cô thêm chút nhé…']});
+  if($('#ld') && window.MASCOT) MASCOT.loader($('#ld'),{msgs:['Đang mở sổ theo dõi của các con…','Các bác chờ chút ạ…','Mạng hơi chậm, các bác đợi cô thêm chút nhé…']});
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && Date.now()-S.at>120000) load(false); });
   /* v3.2: tự cập nhật — 15 giây hỏi máy chủ một lần (chỉ khi đang mở trang), sổ có thay đổi mới tải lại */
   setInterval(async()=>{
@@ -493,6 +493,6 @@ function printLop(ky){
   },15000);
 })();
 </script>
-<script src="demo-ui.js?v=4.3"></script>
+<script src="demo-ui.js?v=4.4"></script>
 </body>
 </html>

@@ -185,7 +185,7 @@
     if (PAGE === 'ph') window.addEventListener('hashchange', function () { if (/tb=/.test(location.hash)) DEMO.mark('phtb'); });
     var nx = ss('dm_next'); ss('dm_next', null);
     var waitApp = function (fn, n) { n = n || 0; if (PAGE === 'ph' || (document.querySelector('#app.on') && (function () { try { return S && S.me; } catch (e) { return false; } })())) { setTimeout(fn, 500); return; } if (n < 80) setTimeout(function () { waitApp(fn, n + 1); }, 200); };
-    if (nx === 'intro') waitApp(function () { guide(); say('chao', 'Chào mừng thầy cô đến với <b>Sổ hạnh kiểm 11D3</b>! Mở <b>Hướng dẫn</b> để thử từng việc nhé.', 7000); });
+    if (nx === 'intro') waitApp(function () { guide(); say('chao', 'Chào mừng thầy cô đến với <b>Sổ theo dõi học sinh 11D3</b>! Mở <b>Hướng dẫn</b> để thử từng việc nhé.', 7000); });
     else if (nx) waitApp(function () { hookApp(); act(nx); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

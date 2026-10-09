@@ -103,7 +103,7 @@
   function page(head, body, foot) { return '<section class="pg">' + head + body + '<div class="ft"><span>' + foot + '</span><span class="pn"></span></div></section>'; }
   function head(k, h, r) { return '<div class="hd"><div><div class="k">' + k + '</div><h1>' + h + '</h1></div><div class="r">' + r + '</div></div>'; }
   function today() { var d = new Date(); return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear(); }
-  function footTxt(D) { return 'Sổ hạnh kiểm lớp ' + esc(D.cfg.lop || '11D3') + (D.cfg.truong ? ' · ' + esc(D.cfg.truong) : '') + ' · Năm học ' + esc(D.cfg.namHoc || '') + ' · In ngày ' + today(); }
+  function footTxt(D) { return 'Sổ theo dõi học sinh lớp ' + esc(D.cfg.lop || '11D3') + (D.cfg.truong ? ' · ' + esc(D.cfg.truong) : '') + ' · Năm học ' + esc(D.cfg.namHoc || '') + ' · In ngày ' + today(); }
   /* ── số liệu 1 học sinh ── */
   function kyMonths(ky) { return ky.k === 'thang' ? [ky.m] : ky.k === 'hk' ? HK[ky.n] : MONTHS; }
   function kyName(ky) { return ky.k === 'thang' ? 'Tháng ' + ky.m : ky.k === 'hk' ? 'Học kỳ ' + (ky.n === 1 ? 'I' : 'II') : 'Cả năm học'; }

@@ -1,6 +1,16 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-20-v4.4", version: "4.4", date: "2026-10-20",
+    title: "Tên mới: Sổ theo dõi học sinh",
+    summary: "Ứng dụng đổi tên thành \"Sổ theo dõi học sinh\" để sau này mở rộng thêm học bạ, thông báo của trường… Trước mắt vẫn là theo dõi, đánh giá hạnh kiểm và nề nếp.",
+    items: [
+      { type: "imp", title: "Tên mới trên mọi màn hình",
+        text: "Thanh bên trái, màn đăng nhập, trang phụ huynh, báo cáo PDF và email gửi phụ huynh đều hiện tên <b>Sổ theo dõi học sinh</b>. Đường link và cách dùng giữ nguyên.",
+        img: "updates/v4.4/ten-moi.jpg" }
+    ]
+  },
+  {
     id: "2026-10-19-v4.3", version: "4.3", date: "2026-10-19",
     title: "\"Chốt tháng\" đổi tên thành \"Khoá sổ tháng\"",
     summary: "Cách gọi mới, dễ hiểu hơn: khoá sổ tháng (không ai sửa được nữa) và xác nhận xếp loại (giáo viên chọn xếp loại cho từng em).",
