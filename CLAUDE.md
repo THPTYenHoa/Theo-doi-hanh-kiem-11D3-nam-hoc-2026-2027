@@ -133,3 +133,18 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   **Thêm lệnh backend mới ⇒ thêm `case` trong `DEMO.api`** để chế độ trải nghiệm vẫn chạy.
 - `demo-ui.js` (cuối `<body>`): nút `#dm-enter` ở màn đăng nhập; thanh `#dm-bar` (đổi vai, Hướng dẫn 9 việc `STEPS` tự đánh dấu qua `DEMO.mark`,
   Hộp thư, Làm lại, Thoát — khôi phục token thật `hk_demo_bak`). Đổi vai = xoá cache + tải lại; việc kế tiếp truyền qua `sessionStorage.dm_next`.
+
+## v4.5 — Tải file thật · hướng dẫn theo vai · Tính năng sắp ra mắt
+- **`taive.js` (`window.DL`, nạp sau `baocao.js` ở cả 2 trang)**: KHÔNG dùng lệnh In của trình duyệt nữa (điện thoại / trình duyệt trong Zalo, Gmail
+  bấm "không thấy gì"). PDF = dựng trang trong iframe ẩn ▸ `html2canvas` từng `.pg` (khổ ngang, `baocao.js`) hoặc cắt A4 dọc (trang in đơn giản
+  `#printArea` / `#pr` — `window.print` bị thay) ▸ `jsPDF` ▸ tự tải + bảng `#dl-sh` (Mở file / Chia sẻ / Tải lại); màn chờ `#dl-ov` có tiến độ.
+  `RPT.open(h,t)` ⇒ PDF (giữ `{dry:true}` cho test). Excel: mọi `<a download>` trỏ blob `.csv` ⇒ đổi sang `.xlsx` (SheetJS, ngày giữ định dạng),
+  tên file bỏ dấu. Thư viện ở `vendor/` (tải khi cần lần đầu). Nút mới: dùng `DL.pdf(doc,tên)` / `DL.pdfHtml(body,tên)` / tạo CSV như cũ.
+- **`demo-guide.js` (`window.DMG`, sau `demo-ui.js`)**: Hướng dẫn trải nghiệm = chọn vai (Giáo viên chủ nhiệm · Cán bộ lớp · Phụ huynh) ▸ các việc
+  của vai ▸ hướng dẫn TỪNG BƯỚC: 4 tấm che tối + vòng sáng `#dmg-ring` quanh đúng chỗ cần bấm, bong bóng `#dmg-tip`; bấm đúng chỗ (bắt cả
+  pointerdown) ⇒ tự sang bước. Bước `{el, t, d, act:'click'|'next', until, pre, nav, opt, hold, wait}` trong `T`. Đổi vai/trang ⇒ `sessionStorage.dm_next='tut:<id>:<bước>'`.
+  Đầu mỗi bài `clean()` đóng bảng/hộp còn mở; bài ghi điểm tự `unlock()` tháng mẫu. Email = giả định (Hộp thư). `DMUI` (demo-ui) = switchRole / bar / inbox.
+  Không viết kiểu "đóng vai…/như một…" — tên việc ngắn, tự nhiên. Kiểm thử cả 14 bài (máy tính + điện thoại) bằng kịch bản tự bấm theo vòng sáng.
+- **`roadmap.js` (`window.ROADMAP`)**: hộp "Tính năng sắp ra mắt" (Hạnh kiểm & nề nếp = ĐANG DÙNG; Ban giám hiệu, học bạ, học phí, nội quy, hoạt động,
+  thông báo = ĐANG PHÁT TRIỂN) — lối vào: màn đăng nhập (`.lgdocs`), menu avatar, trang phụ huynh (cạnh "Tải hướng dẫn").
+- Vai trong demo: `ROLE_T` = Giáo viên chủ nhiệm · Lớp trưởng · Tổ trưởng (tổ 2) · Phụ huynh.

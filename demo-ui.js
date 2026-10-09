@@ -87,10 +87,10 @@
   try { var hid = {}; (window.HK_UPDATES || []).forEach(function (u) { hid[u.id] = 1; }); localStorage.setItem('hk_upd_hide', JSON.stringify(hid)); } catch (e) {}
   /* ── 2. Thanh trải nghiệm ── */
   var STEPS = [
-    { k: 'ghi', r: 'lt', t: 'Ghi điểm như một cán bộ lớp', d: 'Đóng vai <b>Lớp trưởng</b>: chạm tên một bạn ▸ chọn lỗi (vd. "Đi học muộn") hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Điểm hiện ngay, tự lưu phía sau.' },
+    { k: 'ghi', r: 'lt', t: 'Ghi điểm cho một bạn', d: 'Đóng vai <b>Lớp trưởng</b>: chạm tên một bạn ▸ chọn lỗi (vd. "Đi học muộn") hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Điểm hiện ngay, tự lưu phía sau.' },
     { k: 'mail', r: '', t: 'Xem email phụ huynh vừa nhận', d: 'Bấm <b>Hộp thư</b> trên thanh này: phụ huynh của bạn vừa được ghi điểm sẽ nhận thư, kèm lời nhắn của cô Thảo hợp với từng trường hợp.' },
-    { k: 'phtb', r: 'ph', t: 'Đóng vai phụ huynh: mở thông báo + tải PDF', d: 'Trong email, bấm <b>Xem chi tiết &amp; tải PDF thông báo</b> ⇒ trang phụ huynh mở đúng thông báo; bấm <b>Tải PDF thông báo</b> (PDF khổ ngang có ảnh cô Thảo).' },
-    { k: 'nx', r: 'gvcn', t: 'Cô chủ nhiệm nhận xét học sinh', d: 'Vai <b>Cô Thảo</b>: <b>Cập nhật hạnh kiểm</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết nhận xét ▸ Lưu. Rê chuột vào ô điểm để xem điểm từ đâu.' },
+    { k: 'phtb', r: 'ph', t: 'Mở thông báo và tải PDF', d: 'Trong email, bấm <b>Xem chi tiết &amp; tải PDF thông báo</b> ⇒ trang phụ huynh mở đúng thông báo; bấm <b>Tải PDF thông báo</b> (PDF khổ ngang có ảnh cô Thảo).' },
+    { k: 'nx', r: 'gvcn', t: 'Nhận xét học sinh', d: 'Vai <b>Cô Thảo</b>: <b>Cập nhật hạnh kiểm</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết nhận xét ▸ Lưu. Rê chuột vào ô điểm để xem điểm từ đâu.' },
     { k: 'bc', r: 'gvcn', t: 'Xem báo cáo tháng & tải PDF', d: 'Menu <b>Báo cáo</b>: số liệu so với tháng trước, xếp hạng tổ, tuyên dương, nhắc nhở; thử ô <b>Tìm nhanh</b> ("tổ 2 vi phạm"). Bấm <b>In / Lưu PDF</b> ⇒ báo cáo khổ ngang có biểu đồ.' },
     { k: 'hs', r: 'gvcn', t: 'PDF riêng một học sinh', d: 'Bấm <b>kính lúp</b> (hoặc phím /) ▸ gõ tên ▸ mở hồ sơ ▸ <b>Tải PDF báo cáo</b>: điểm từng tuần, lỗi thường mắc, khen thưởng, nhận xét của cô.' },
     { k: 'dk', r: 'ph', t: 'Phụ huynh đăng ký nhận email', d: 'Vai <b>Phụ huynh</b>: mở hồ sơ một học sinh ▸ ô <b>Nhận thông báo qua email</b> ▸ nhập email bất kỳ ▸ <b>Gửi mã</b> ▸ nhập <b>123456</b> ▸ Xác nhận.' },
@@ -105,13 +105,13 @@
     var R = ['gvcn', 'lt', 'tt', 'ph'];
     b.innerHTML = '<span class="tag">TRẢI NGHIỆM · DỮ LIỆU MẪU</span><span class="roles">' + R.map(function (r) { return '<button data-r="' + r + '" class="' + (r === role ? 'on' : '') + '">' + DEMO.ROLE_T[r] + '</button>'; }).join('') + '</span>'
       + '<select aria-label="Đổi vai">' + R.map(function (r) { return '<option value="' + r + '"' + (r === role ? ' selected' : '') + '>' + DEMO.ROLE_T[r] + '</option>'; }).join('') + '</select><span class="sp"></span>'
-      + '<button class="bt hl" data-a="guide">' + SV + '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="t">Hướng dẫn</span> ' + nDone() + '/' + STEPS.length + '</button>'
+      + '<button class="bt hl" data-a="guide">' + SV + '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="t">Hướng dẫn</span> ' + (window.DMG ? DMG.count().join('/') : nDone() + '/' + STEPS.length) + '</button>'
       + '<button class="bt" data-a="mail">' + SV + '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="t">Hộp thư</span>' + (unread() ? '<i>' + unread() + '</i>' : '') + '</button>'
       + '<button class="bt" data-a="reset" title="Làm lại từ đầu">' + SV + '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="t">Làm lại</span></button>'
       + '<button class="bt" data-a="out" title="Thoát chế độ trải nghiệm">' + SV + '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg><span class="t">Thoát</span></button>';
     b.querySelectorAll('[data-r]').forEach(function (x) { x.onclick = function () { if (x.dataset.r !== role) switchRole(x.dataset.r); }; });
     b.querySelector('select').onchange = function (e) { switchRole(e.target.value); };
-    b.querySelector('[data-a=guide]').onclick = guide;
+    b.querySelector('[data-a=guide]').onclick = function () { if (window.DMG) DMG.open(); else guide(); };
     b.querySelector('[data-a=mail]').onclick = function () { inbox(); };
     b.querySelector('[data-a=reset]').onclick = function () { if (confirm('Làm lại từ đầu với dữ liệu mẫu ban đầu?')) { DEMO.reset(); clearCaches(); s('hk_token', 'tok.gvcn'); ss('dm_next', 'intro'); location.href = 'index.html?demo=1'; } };
     b.querySelector('[data-a=out]').onclick = function () { if (confirm('Thoát chế độ trải nghiệm?')) leave(); };
@@ -161,7 +161,7 @@
       o.querySelectorAll('[data-m]').forEach(function (b) { b.classList.toggle('on', b.dataset.m === id); if (b.dataset.m === id) b.classList.remove('un'); });
       var v = o.querySelector('.vw'); v.innerHTML = '<div class="mh"><h4>' + esc(m.subject) + '</h4><div>Từ: ' + esc(m.from) + ' · Tới: ' + esc(m.to) + ' · ' + esc(m.at) + '</div>'
         + (m.attach ? '<a class="att" href="' + esc(m.attachUrl) + '" target="_blank">' + SV + '<path d="M21.4 11.1l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>' + esc(m.attach) + '</a>' : '') + '</div>' + m.html;
-      v.querySelectorAll('a[data-demo-link]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); clearCaches(); location.href = a.getAttribute('href'); }; });
+      v.querySelectorAll('a[data-demo-link]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); o.remove(); clearCaches(); location.href = a.getAttribute('href'); }; });
       v.querySelectorAll('a[data-demo-role]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); o.remove(); switchRole(a.dataset.demoRole, a.dataset.demoGo === 'ph' ? 'duyet' : null); }; });
       bar(); }
     o.querySelectorAll('[data-m]').forEach(function (b) { b.onclick = function () { show(b.dataset.m); }; });
@@ -180,12 +180,14 @@
     if (window.go && !window.go._dm) { var o = window.go; window.go = function (v) { if (v === 'bc') DEMO.mark('bc'); return o.apply(this, arguments); }; window.go._dm = 1; try { go = window.go; } catch (e) {} }
     if (window.RPT && !RPT._dm) { var st = RPT.student; RPT.student = function () { if (PAGE === 'app') DEMO.mark('hs'); return st.apply(this, arguments); }; RPT._dm = 1; }
   }
+  window.DMUI = { switchRole: switchRole, bar: function () { bar(); }, inbox: function (id) { inbox(id); } };
   function start() {
     bar(); hookApp();
     if (PAGE === 'ph') window.addEventListener('hashchange', function () { if (/tb=/.test(location.hash)) DEMO.mark('phtb'); });
     var nx = ss('dm_next'); ss('dm_next', null);
     var waitApp = function (fn, n) { n = n || 0; if (PAGE === 'ph' || (document.querySelector('#app.on') && (function () { try { return S && S.me; } catch (e) { return false; } })())) { setTimeout(fn, 500); return; } if (n < 80) setTimeout(function () { waitApp(fn, n + 1); }, 200); };
-    if (nx === 'intro') waitApp(function () { guide(); say('chao', 'Chào mừng thầy cô đến với <b>Sổ theo dõi học sinh 11D3</b>! Mở <b>Hướng dẫn</b> để thử từng việc nhé.', 7000); });
+    if (nx === 'intro') waitApp(function () { if (window.DMG) DMG.open(); else guide(); });
+    else if (nx && /^tut:/.test(nx)) waitApp(function () { hookApp(); bar(); if (window.DMG) DMG.resume(nx); });
     else if (nx) waitApp(function () { hookApp(); act(nx); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

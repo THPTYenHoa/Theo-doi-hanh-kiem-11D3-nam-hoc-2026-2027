@@ -1,6 +1,25 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-21-v4.5", version: "4.5", date: "2026-10-21",
+    title: "Tải PDF, Excel trên điện thoại · Hướng dẫn trải nghiệm theo vai",
+    summary: "Bấm Tải PDF / Tải Excel là có file thật, kể cả trên điện thoại. Chế độ trải nghiệm có hướng dẫn từng bước cho giáo viên, cán bộ lớp và phụ huynh.",
+    items: [
+      { type: "fix", title: "Tải PDF, Excel chạy được trên điện thoại",
+        text: "Bấm <b>Tải PDF</b> hoặc <b>Tải Excel</b> ⇒ màn chờ hiện tiến độ ⇒ file tự tải về và hiện bảng <b>Mở file / Chia sẻ</b>. Chạy được cả khi mở link từ Zalo, Gmail. File Excel là .xlsx, mở được bằng Excel hoặc Google Trang tính.",
+        img: "updates/v4.5/tai-file.jpg" },
+      { type: "new", title: "Hướng dẫn trải nghiệm theo 3 vai",
+        text: "Màn đăng nhập ▸ <b>Kiểm tra tính năng ứng dụng</b> ⇒ chọn vai <b>Giáo viên chủ nhiệm</b>, <b>Cán bộ lớp</b> hoặc <b>Phụ huynh</b> ⇒ xem các việc vai đó làm được, bấm một việc để được hướng dẫn.",
+        img: "updates/v4.5/huong-dan-vai.jpg" },
+      { type: "new", title: "Chỉ từng bước, chỉ cần bấm theo",
+        text: "Màn hình tối lại, chỉ sáng đúng chỗ cần bấm, kèm lời chỉ dẫn. Bấm đúng chỗ là tự sang bước sau. Email trong chế độ này là giả định, xem ở nút <b>Hộp thư</b>.",
+        img: "updates/v4.5/tung-buoc.jpg" },
+      { type: "new", title: "Tính năng sắp ra mắt",
+        text: "Màn đăng nhập, menu tài khoản hoặc trang phụ huynh ▸ <b>Tính năng sắp ra mắt</b>: lộ trình mở rộng thành sổ liên lạc điện tử (Ban giám hiệu, học bạ, học phí, nội quy, hoạt động, thông báo).",
+        img: "updates/v4.5/sap-ra-mat.jpg" }
+    ]
+  },
+  {
     id: "2026-10-20-v4.4", version: "4.4", date: "2026-10-20",
     title: "Tên mới: Sổ theo dõi học sinh",
     summary: "Ứng dụng đổi tên thành \"Sổ theo dõi học sinh\" để sau này mở rộng thêm học bạ, thông báo của trường… Trước mắt vẫn là theo dõi, đánh giá hạnh kiểm và nề nếp.",

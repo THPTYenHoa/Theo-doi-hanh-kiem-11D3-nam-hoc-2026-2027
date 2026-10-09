@@ -28,7 +28,7 @@
     tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@demo.vn', to: '2' },
     ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' }
   };
-  var ROLE_T = { gvcn: 'Cô Thảo (GVCN)', lt: 'Lớp trưởng', tt: 'Tổ trưởng tổ 2', ph: 'Phụ huynh' };
+  var ROLE_T = { gvcn: 'Giáo viên chủ nhiệm', lt: 'Lớp trưởng', tt: 'Tổ trưởng (tổ 2)', ph: 'Phụ huynh' };
   function rnd(seed) { var x = seed; return function () { x = (x * 9301 + 49297) % 233280; return x / 233280; }; }
   function pad(n) { return String(n).padStart(2, '0'); }
   function build() {
