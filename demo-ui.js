@@ -88,7 +88,7 @@
   /* ── 2. Thanh trải nghiệm ── */
   var STEPS = [
     { k: 'ghi', r: 'lt', t: 'Ghi điểm như một cán bộ lớp', d: 'Đóng vai <b>Lớp trưởng</b>: chạm tên một bạn ▸ chọn lỗi (vd. "Đi học muộn") hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Điểm hiện ngay, tự lưu phía sau.' },
-    { k: 'mail', r: '', t: 'Xem email phụ huynh vừa nhận', d: 'Bấm <b>Hộp thư</b> trên thanh này: phụ huynh của bạn vừa được ghi điểm nhận thư có lời cô Thảo theo đúng tình huống.' },
+    { k: 'mail', r: '', t: 'Xem email phụ huynh vừa nhận', d: 'Bấm <b>Hộp thư</b> trên thanh này: phụ huynh của bạn vừa được ghi điểm sẽ nhận thư, kèm lời nhắn của cô Thảo hợp với từng trường hợp.' },
     { k: 'phtb', r: 'ph', t: 'Đóng vai phụ huynh: mở thông báo + tải PDF', d: 'Trong email, bấm <b>Xem chi tiết &amp; tải PDF thông báo</b> ⇒ trang phụ huynh mở đúng thông báo; bấm <b>Tải PDF thông báo</b> (PDF khổ ngang có ảnh cô Thảo).' },
     { k: 'nx', r: 'gvcn', t: 'Cô chủ nhiệm nhận xét học sinh', d: 'Vai <b>Cô Thảo</b>: <b>Cập nhật hạnh kiểm</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết nhận xét ▸ Lưu. Rê chuột vào ô điểm để xem điểm từ đâu.' },
     { k: 'bc', r: 'gvcn', t: 'Xem báo cáo tháng & tải PDF', d: 'Menu <b>Báo cáo</b>: số liệu so với tháng trước, xếp hạng tổ, tuyên dương, nhắc nhở; thử ô <b>Tìm nhanh</b> ("tổ 2 vi phạm"). Bấm <b>In / Lưu PDF</b> ⇒ báo cáo khổ ngang có biểu đồ.' },
@@ -132,7 +132,7 @@
     var st = STEPS.filter(function (x) { return x.k === k; })[0]; if (!st) return;
     if (k === 'mail') { inbox(); return; }
     if (k === 'phtb') { var m = db().mails.filter(function (x) { return x.kind === 'tb'; })[0];
-      if (!m) { alert('Chưa có email thông báo nào. Hãy làm việc 1 (ghi điểm) trước nhé — phụ huynh của bạn có email sẽ nhận thư.'); return; }
+      if (!m) { alert('Chưa có email thông báo nào. Hãy làm việc 1 (ghi điểm) trước nhé: nếu phụ huynh của bạn đó đã đăng ký email, họ sẽ nhận thư.'); return; }
       inbox(m.id); return; }
     if (st.r && st.r !== role) { switchRole(st.r, k); return; }
     act(k);
@@ -144,7 +144,7 @@
       return;
     }
     if (!go) return;
-    if (k === 'ghi') { go('ghi'); say('chi-tay', 'Em chạm tên một bạn ▸ chọn lỗi hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Phụ huynh có email sẽ nhận thư ngay!'); }
+    if (k === 'ghi') { go('ghi'); say('chi-tay', 'Em chạm tên một bạn ▸ chọn lỗi hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Nếu phụ huynh của bạn đó đã đăng ký email, họ sẽ nhận thư ngay!'); }
     if (k === 'nx') { go('bang'); say('chi-tay', 'Cô chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết vài dòng ▸ <b>Lưu nhận xét</b>.'); }
     if (k === 'bc') { go('bc'); say('chi-tay', 'Đây là báo cáo tháng. Thử gõ "tổ 2 vi phạm" ở ô Tìm nhanh, rồi bấm <b>In / Lưu PDF</b>.'); }
     if (k === 'hs') { go('bang'); setTimeout(function () { var f = $('#hFind'); if (f) f.click(); }, 500); say('chi-tay', 'Gõ tên một bạn ▸ mở hồ sơ ▸ <b>Tải PDF báo cáo</b>.'); }

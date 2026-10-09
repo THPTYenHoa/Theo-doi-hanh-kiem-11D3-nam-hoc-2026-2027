@@ -187,7 +187,7 @@
         var em = String(p.email || '').trim().toLowerCase(), sx = stu(p.ma);
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { r = { ok: false, error: 'Email chưa đúng.' }; break; }
         DB.reg['ph:' + em] = p.ma; save();
-        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ hạnh kiểm 11D3', subject: 'Mã xác nhận nhận thông báo hạnh kiểm: 123456',
+        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ hạnh kiểm 11D3', subject: 'Mã xác nhận đăng ký nhận thông báo hạnh kiểm: 123456',
           html: '<div style="font-family:Arial,sans-serif;max-width:480px"><p>Kính gửi bác,</p><p>Mã xác nhận để nhận thông báo hạnh kiểm của con <b>' + (sx ? sx.ten : '') + '</b> là:</p><p style="font-size:30px;font-weight:800;letter-spacing:6px;color:#0A5C64">123456</p><p style="color:#6C8A93;font-size:13px">(Chế độ trải nghiệm: mã luôn là 123456.)</p></div>' });
         r = { ok: true, ten: sx && sx.ten }; break;
       case 'phXacNhan':

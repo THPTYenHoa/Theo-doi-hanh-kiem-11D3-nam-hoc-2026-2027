@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<script src="demo.js?v=4.0"></script>
+<script src="demo.js?v=4.1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
 <title>Hạnh kiểm 11D3 · Phụ huynh</title>
@@ -190,9 +190,9 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=4.0"></script>
-<script src="mascot.js?v=3.9"></script>
-<script src="baocao.js?v=3.9"></script>
+<script src="updates/notes.js?v=4.1"></script>
+<script src="mascot.js?v=4.1"></script>
+<script src="baocao.js?v=4.1"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -338,7 +338,7 @@ function renderHS(){
      :'<div class="card empty">Không có.</div>';
   const emo=['vui','co-vu','lo-lang','nghiem'][x.i]||'chao', g=ten1(s.ten);
   const mem=window.MASCOT?MASCOT.img(emo,120):'';
-  const loi=['Con <b>'+esc(g)+'</b> ngoan lắm, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> khá tốt, cô và bác cùng động viên con thêm ạ.','Con <b>'+esc(g)+'</b> còn mắc lỗi, bác trò chuyện thêm với con giúp cô nhé.','Bác liên hệ cô Thảo để cùng trao đổi về con <b>'+esc(g)+'</b> nhé ạ.'][Math.min(3,x.i)];
+  const loi=['Con <b>'+esc(g)+'</b> thực hiện nề nếp rất tốt, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> ngoan, chỉ còn vài lỗi nhỏ. Cô và bác cùng nhắc con cố gắng thêm nhé ạ.','Con <b>'+esc(g)+'</b> còn mắc một số lỗi, bác trò chuyện thêm với con giúp cô nhé.','Con <b>'+esc(g)+'</b> đang mắc nhiều lỗi, bác liên hệ cô Thảo để cô và bác cùng giúp con nhé ạ.'][Math.min(3,x.i)];
   const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(cô chốt xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
   const prof=`<div class="card prof"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div></div>
     <div class="seg" id="ks">${kySeg(ky)}</div>
@@ -443,7 +443,7 @@ function regBind(s){
   $('#rgV').onclick=async()=>{ const em=$('#rgE').value.trim(), code=$('#rgK').value.replace(/\D/g,''); if(code.length!==6) return m('Mã gồm 6 chữ số ạ.');
     m('Đang xác nhận…');
     try{ const r=await api('phXacNhan',{email:em,code}); $('#rgC').hidden=true;
-      if(r.daCo) m('Email này đã được nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó bác nhận email mỗi khi có cập nhật về con ạ.'); }
+      if(r.daCo) m('Email này đã đăng ký nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó bác nhận email mỗi khi có cập nhật về con ạ.'); }
       if(window.MASCOT) MASCOT.say('cam-on','Cô cảm ơn bác đã đăng ký theo dõi cùng cô ạ!',{ms:4200}); }
     catch(e){ m(esc(e.message)); } };
 }
@@ -476,7 +476,7 @@ function printLop(ky){
     {el:'#hp', t:'Xem lại hướng dẫn', d:'Các bác bấm nút <b>?</b> bất cứ lúc nào để xem lại. Cô Thảo cảm ơn các bác đã luôn đồng hành cùng các con ạ!', pre:()=>go({})}
   ];
   const tour=()=>{ if(window.TOUR) TOUR.run(steps(),{key:'hkph_tour',title:'Phụ huynh'}); };
-  if(window.MASCOT && TOUR.seen && TOUR.seen('hkph_tour')) setTimeout(()=>{ if(!TOUR.active()) MASCOT.say('chao','Cô Thảo chào các bác ạ! Các bác gõ tên con để xem nhé.'); },1500);
+  if(window.MASCOT && TOUR.seen && TOUR.seen('hkph_tour')) setTimeout(()=>{ if(!TOUR.active()) MASCOT.say('chao',/[#&]hs=/.test(location.hash)?'Cô Thảo chào bác ạ!':'Cô Thảo chào các bác ạ! Các bác gõ tên con để xem nhé.'); },1500);
   $('#hp').onclick=tour;
   (function wait(n){ if(!S.cfg || !S.students.length){ if(n<40) setTimeout(()=>wait(n+1),500); return; } if(window.TOUR && !TOUR.seen('hkph_tour')) setTimeout(tour,700); })(0);
   /* v3.5: màn chờ lần đầu — cô Thảo chạy trên thanh tiến trình */
@@ -493,6 +493,6 @@ function printLop(ky){
   },15000);
 })();
 </script>
-<script src="demo-ui.js?v=4.0.1"></script>
+<script src="demo-ui.js?v=4.1"></script>
 </body>
 </html>

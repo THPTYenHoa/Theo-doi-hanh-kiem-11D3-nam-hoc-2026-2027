@@ -1,6 +1,19 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-17-v4.1", version: "4.1", date: "2026-10-17",
+    title: "Lời nhắn của cô Thảo tự nhiên, dễ hiểu hơn",
+    summary: "Soát lại câu chữ trong toàn bộ sổ: lời nhắn cho phụ huynh, báo cáo PDF, hướng dẫn, thông báo khi lưu và email.",
+    items: [
+      { type: "imp", title: "Lời nhắn cho phụ huynh rõ nghĩa hơn",
+        text: "Trang phụ huynh ▸ hồ sơ của con: lời của cô Thảo nói rõ con đang thế nào, ví dụ <i>\"Con An ngoan, chỉ còn vài lỗi nhỏ. Cô và bác cùng nhắc con cố gắng thêm nhé ạ.\"</i> Báo cáo PDF của từng học sinh cũng dùng cách nói này.",
+        img: "updates/v4.1/loi-nhan.jpg" },
+      { type: "imp", title: "Hướng dẫn và thông báo dễ hiểu hơn",
+        text: "Viết lại các câu khó hiểu trong hướng dẫn từng bước, thông báo khi lưu điểm, tên trang phục cô Thảo, chủ đề màu và email gửi phụ huynh.",
+        img: "" }
+    ]
+  },
+  {
     id: "2026-10-16-v4.0", version: "4.0", date: "2026-10-16",
     title: "Chế độ \"Kiểm tra tính năng ứng dụng\"",
     summary: "Ai cũng thử được toàn bộ sổ hạnh kiểm mà không cần tài khoản: dữ liệu mẫu, đổi vai cô chủ nhiệm · cán bộ lớp · phụ huynh, hộp thư mô phỏng, danh sách việc nên thử.",
