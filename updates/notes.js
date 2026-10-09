@@ -1,6 +1,16 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-18-v4.2", version: "4.2", date: "2026-10-18",
+    title: "Mở hướng dẫn ngay ở màn đăng nhập",
+    summary: "Từ một đường link của sổ, ai cũng mở được: bản dùng thử, trang phụ huynh và các file hướng dẫn.",
+    items: [
+      { type: "new", title: "Link hướng dẫn ở màn đăng nhập",
+        text: "Màn đăng nhập ▸ dưới nút <b>Phụ huynh xem sổ</b> có thêm <b>Hướng dẫn sử dụng (PDF)</b> và <b>Hướng dẫn trải nghiệm (PDF)</b>. Bấm là mở file, không cần đăng nhập.",
+        img: "updates/v4.2/link-huong-dan.jpg" }
+    ]
+  },
+  {
     id: "2026-10-17-v4.1", version: "4.1", date: "2026-10-17",
     title: "Lời nhắn của cô Thảo tự nhiên, dễ hiểu hơn",
     summary: "Soát lại câu chữ trong toàn bộ sổ: lời nhắn cho phụ huynh, báo cáo PDF, hướng dẫn, thông báo khi lưu và email.",

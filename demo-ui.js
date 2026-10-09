@@ -74,7 +74,7 @@
       var addBtn = function () {
         var w = $('#login .lgwrap'); if (!w || w.querySelector('#dm-enter')) return;
         var b = document.createElement('button'); b.id = 'dm-enter'; b.type = 'button';
-        b.innerHTML = '<span class="i">' + SV + '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span><b>Kiểm tra tính năng ứng dụng</b><span>Không cần mật khẩu · dữ liệu mẫu — trải nghiệm đủ vai: cô chủ nhiệm, cán bộ lớp, phụ huynh.</span></span>';
+        b.innerHTML = '<span class="i">' + SV + '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span><b>Kiểm tra tính năng ứng dụng</b><span>Không cần mật khẩu · dữ liệu mẫu — trải nghiệm đủ vai: giáo viên chủ nhiệm, cán bộ lớp, phụ huynh.</span></span>';
         b.onclick = enter;
         var card = w.querySelector('.lgcard'); if (card) card.after(b); else w.appendChild(b);
       };
