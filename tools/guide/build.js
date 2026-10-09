@@ -69,7 +69,7 @@ function slide(T, n, o) {
   slide.c = slide.c || {}; const lst = POSE[o.k] || ['vui'], ci = slide.c[T + o.k] = (slide.c[T + o.k] || 0) + 1;
   const mc = o.noMc ? '' : `<img class="mc" src="${chibi(o.pose || lst[(ci - 1) % lst.length])}">`;
   const w = o.wide ? `<div class="dk"><img src="${img(o.wide)}"></div>` : (o.shots ? phone(...o.shots) : '');
-  const tw = o.wide ? 520 : (o.shots && o.shots[1] ? 560 : 640);
+  const tw = o.tw || (o.wide || /class="dk"/.test(o.right || '')) ? (o.tw || 500) : (o.shots && o.shots[1] ? 560 : 640);
   return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}${o.right || ''}${mc}</section>`;
 }
 const LOGIN = { k: 'Bắt đầu', h: 'Đăng nhập bằng email + mã 6 số', shots: ['login1', 'login2'], steps: ['Nhập <b>email đã đăng ký với GVCN</b> vào ô Email.', 'Bấm <b>Gửi mã đăng nhập</b> — mở hộp thư, lấy <b>mã 6 số</b> (xem cả mục Thư rác).', 'Nhập mã ▸ tự vào sổ. Máy được ghi nhớ <b>30 ngày</b>.'], tip: 'Không còn mật khẩu chung — mỗi người chỉ vào được bằng email của mình. Chưa vào được? Nhờ GVCN thêm / sửa email trong mục Tài khoản.', emo: 'chao' };
