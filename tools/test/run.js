@@ -209,12 +209,13 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   // 14. v3.4 — quản lý lớp & phân quyền
   p = await P({ as: 'gvcn' }); p.on('dialog', d => d.accept()); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('cai'); }); await W(500);
-  ok(await p.isVisible('#qTbl') && await p.isVisible('#accAdd') && await p.isVisible('#hsTo'), 'GVCN: thấy bảng phân quyền, tài khoản, đổi tổ, danh sách lớp');
-  await p.click('#accAdd'); await W(300); await p.fill('#aEm', 'totruong3@example.com'); await p.fill('#aTen', 'Tổ trưởng 3'); await p.selectOption('#aRole', 'Tổ trưởng'); await p.selectOption('#aTo', '3');
+  await p.click('[data-ct="quyen"]'); await W(200); const q1 = await p.isVisible('#qTbl') && await p.isVisible('#accAdd'); await p.click('[data-ct="lop"]'); await W(200);
+  ok(q1 && await p.isVisible('#hsTo') && await p.isVisible('.cai39 .ctabs'), 'GVCN: thấy bảng phân quyền, tài khoản, đổi tổ, danh sách lớp');
+  await p.click('[data-ct="quyen"]'); await W(200); await p.click('#accAdd'); await W(300); await p.fill('#aEm', 'totruong3@example.com'); await p.fill('#aTen', 'Tổ trưởng 3'); await p.selectOption('#aRole', 'Tổ trưởng'); await p.selectOption('#aTo', '3');
   await p.click('#aSave'); await W(500);
   const sa = p.M.CALLS.filter(c => c.a === 'saveAccounts').pop();
   ok(sa && sa.p.accounts.some(a => a.email === 'totruong3@example.com' && a.role === 'Tổ trưởng' && a.to === '3'), 'GVCN cấp quyền cho email mới (tổ trưởng tổ 3)');
-  await p.click('#hsTo'); await W(300); for (const i of [0, 1]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
+  await p.click('[data-ct="lop"]'); await W(200); await p.click('#hsTo'); await W(300); for (const i of [0, 1]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
   await p.selectOption('#btTo', '4'); await p.click('#btSave'); await W(500);
   ok(p.M.D.students.filter(s => s.to === '4').length === 12, 'đổi tổ hàng loạt: 2 bạn sang tổ 4');
   const ma0 = await p.evaluate(() => S.students[5].ma);
@@ -269,7 +270,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.locator('#vBC .bccmp img').count() >= 1, 'Báo cáo: có cô Thảo theo kết quả lớp');
   await dry(p); await p.click('#bcPrint'); await W(300);
   let doc = await p.evaluate(() => RPT.last || '');
-  ok(doc && !/CỘNG HÒA|Độc lập/i.test(doc) && /landscape/.test(doc) && (doc.match(/<svg|class="cmp"|class="hb"/g) || []).length >= 4 && /mascot\/chu-nhiem/.test(doc), 'PDF báo cáo lớp: khổ ngang, có biểu đồ + cô Thảo, không quốc hiệu');
+  ok(doc && !/CỘNG HÒA|Độc lập/i.test(doc) && /landscape/.test(doc) && (doc.match(/<svg|class="cmp"|class="hb"/g) || []).length >= 4 && /mascot\/[a-z-]+\//.test(doc), 'PDF báo cáo lớp: khổ ngang, có biểu đồ + cô Thảo, không quốc hiệu');
   ok(/Tuyên dương/i.test(doc) && /Nhắc nhở/i.test(doc) && /Xếp hạng tổ|thi đua/i.test(doc), 'PDF báo cáo lớp: xếp hạng tổ, tuyên dương, nhắc nhở');
   let r = await pdf(doc, 'bao-cao-lop'); ok(r.n >= 4 && r.over === 0, 'PDF lớp ' + r.n + ' trang, không trang nào tràn');
   // hồ sơ học sinh
@@ -281,10 +282,10 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   r = await pdf(doc, 'hoc-sinh-hk1'); ok(r.over === 0 && /Học kỳ I/.test(doc), 'PDF học sinh theo học kỳ');
   // cài đặt email phụ huynh + duyệt
   p.M.phReg.push({ id: 'R9', ma: 'HS05', ten: 'Hoàng Bảo Hằng', email: 'bo.hs05@example.com', at: '2026-10-08 09:00' });
-  await p.evaluate(() => closePanel()); await W(300); await p.evaluate(() => boot(true)); await W(500); await p.evaluate(() => go('cai')); await W(600);
-  ok(await p.isVisible('#phOn') && await p.isVisible('#vCai [data-ok="R9"]'), 'Cài đặt: email phụ huynh + danh sách chờ duyệt');
-  await p.click('#vCai [data-ok="R9"]'); await W(900);
-  ok(/bo\.hs05@example\.com/.test(p.M.D.students.find(s => s.ma === 'HS05').email) && !(await p.isVisible('#vCai [data-ok="R9"]')), 'GVCN duyệt ⇒ email vào ô Email phụ huynh của học sinh');
+  await p.evaluate(() => closePanel()); await W(300); await p.evaluate(() => boot(true)); await W(500); await p.evaluate(() => go('ph')); await W(600);
+  ok(await p.isVisible('#phOn') && await p.isVisible('#vPH [data-ok="R9"]'), 'trang Phụ huynh: email phụ huynh + danh sách chờ duyệt');
+  await p.click('#vPH [data-ok="R9"]'); await W(2500);
+  ok(/bo\.hs05@example\.com/.test(p.M.D.students.find(s => s.ma === 'HS05').email) && !(await p.isVisible('#vPH [data-ok="R9"]')), 'GVCN duyệt ⇒ email vào ô Email phụ huynh của học sinh');
   await p.context().close();
   // tổ trưởng không thấy nút chốt; máy chủ cũng chặn
   p = await P({ as: 'tt', khoa: { 10: { by: 'Nguyễn Thu Thảo', at: '2026-10-31 16:00' } } }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
@@ -298,10 +299,10 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(t => { location.hash = 'hs=HS03&tb=' + t; }, p.M.tb); await W(700);
   ok(await p.isVisible('.tbc') && await p.isVisible('#tbPdf'), 'phụ huynh mở link email ⇒ thẻ "Thông báo mới từ cô Thảo" + Tải PDF');
   await dry(p); await p.click('#tbPdf'); await W(300); doc = await p.evaluate(() => RPT.last || '');
-  ok(/Cô Thảo xin cập nhật cho các bác/.test(doc) && /mascot\/chu-nhiem/.test(doc) && /landscape/.test(doc), 'PDF thông báo phụ huynh: ngang, lời cô Thảo, ảnh cô');
+  ok(/Cô Thảo xin cập nhật cho bác/.test(doc) && /mascot\/[a-z-]+\//.test(doc) && /landscape/.test(doc), 'PDF thông báo phụ huynh: ngang, lời cô Thảo, ảnh cô');
   r = await pdf(doc, 'thong-bao'); ok(r.n === 1 && r.over === 0, 'PDF thông báo: 1 trang, không tràn');
   await p.click('#pdf'); await W(300); doc = await p.evaluate(() => RPT.last || '');
-  ok(/Báo cáo hạnh kiểm học sinh/.test(doc) && /Cô cảm ơn các bác|Cô mong các bác/.test(doc), 'phụ huynh: PDF báo cáo của con (lời gửi các bác)');
+  ok(/Báo cáo hạnh kiểm học sinh/.test(doc) && /Cô cảm ơn bác|Cô mong bác/.test(doc), 'phụ huynh: PDF báo cáo của con (lời gửi các bác)');
   await p.fill('#rgE', 'me.hs03@example.com'); await p.click('#rgS'); await W(500);
   ok(await p.isVisible('#rgK'), 'đăng ký email: gửi mã ⇒ hiện ô nhập mã');
   await p.fill('#rgK', '111111'); await p.click('#rgV'); await W(400); ok(/chưa đúng/.test(await p.textContent('#rgM')), 'mã sai ⇒ báo lỗi');
@@ -315,20 +316,43 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(300);
   p.M.phNew('HS07', 'me.hs07@example.com'); await p.waitForSelector('#phNew', { timeout: 20000 }).catch(() => {});
   ok(await p.isVisible('#phNew') && /HS07|đăng ký/.test(await p.textContent('#phNew')), 'phụ huynh đăng ký ⇒ màn hình cô hiện thẻ "Phụ huynh vừa đăng ký" (không cần tải lại)');
-  ok(/1/.test(await p.textContent('#railNav [data-v="cai"] .navbdg').catch(() => '')), 'chấm đỏ số đăng ký chờ duyệt ở menu Cài đặt');
+  ok(/1/.test(await p.textContent('#railNav [data-v="ph"] .navbdg').catch(() => '')), 'chấm đỏ số đăng ký chờ duyệt ở menu Phụ huynh');
   await p.screenshot({ path: path.join(OUT, 'ph-new.png') });
   await p.click('#phGo'); await W(900);
-  ok(await p.evaluate(() => S.view === 'cai') && await p.isVisible('#vCai .phreg [data-ok]'), '"Duyệt ngay" ⇒ mở Cài đặt ▸ Phụ huynh chờ duyệt');
+  ok(await p.evaluate(() => S.view === 'ph') && await p.isVisible('#vPH [data-ok]'), '"Duyệt ngay" ⇒ mở trang Phụ huynh ▸ đăng ký chờ duyệt');
   const rid = await p.evaluate(() => S.phReg[0].id);
-  await p.click(`#vCai [data-ok="${rid}"]`); await W(2500);
+  await p.click(`#vPH [data-ok="${rid}"]`); await W(2500);
   const dc = p.M.CALLS.filter(c => c.a === 'phDuyet');
   ok(dc.length === 2 && !dc[0].p.pdf && dc[1].p.pdf && p.M.pdfLen > 100000, 'duyệt: máy chủ chưa có hướng dẫn ⇒ app tự gửi kèm PDF hướng dẫn phụ huynh');
-  ok(!(await p.isVisible('#railNav [data-v="cai"] .navbdg')) && /hướng dẫn/.test(await p.textContent('#toast').catch(() => '')), 'duyệt xong: hết chấm đỏ, báo đã gửi email kèm hướng dẫn');
-  p.M.phNew('HS08', 'me.hs08@example.com'); await W(7000); await p.evaluate(() => { const r = S.phReg[0]; if (r) document.querySelector(`#vCai [data-ok="${r.id}"]`).click(); }); await W(2000);
+  ok(!(await p.isVisible('#railNav [data-v="ph"] .navbdg')) && /hướng dẫn/.test(await p.textContent('#toast').catch(() => '')), 'duyệt xong: hết chấm đỏ, báo đã gửi email kèm hướng dẫn');
+  p.M.phNew('HS08', 'me.hs08@example.com'); await W(7000); await p.evaluate(() => { const r = S.phReg[0]; if (r) document.querySelector(`#vPH [data-ok="${r.id}"]`).click(); }); await W(2000);
   ok(p.M.CALLS.filter(c => c.a === 'phDuyet').length === 3, 'lần duyệt sau: máy chủ đã có PDF ⇒ không gửi lại file');
   await p.context().close();
   p = await P({ as: 'gvcn', phReg: [{ id: 'R1', ma: 'HS02', ten: 'Trần Gia Chi', email: 'x@example.com', at: '2026-10-09 09:00' }] }); await p.goto(U + '#duyet'); await p.waitForSelector('#app.on'); await W(2500);
-  ok(await p.evaluate(() => S.view === 'cai') && await p.isVisible('#vCai .phreg [data-ok="R1"]'), 'link "Mở sổ để duyệt" trong email ⇒ vào thẳng mục duyệt');
+  ok(await p.evaluate(() => S.view === 'ph') && await p.isVisible('#vPH [data-ok="R1"]'), 'link "Mở sổ để duyệt" trong email ⇒ vào thẳng mục duyệt');
+  await p.context().close();
+
+  // 18. v3.9 — menu tài khoản, tìm kiếm thông minh, chú thích, dải điểm tuần, Cài đặt chia tab
+  p = await P({ as: 'gvcn' }); p.on('dialog', d => d.accept()); await p.goto(U); await p.waitForSelector('#app.on'); await W(1800);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(300);
+  ok(await p.locator('#tk39 .it').count() >= 1 && /lượt/.test(await p.textContent('#tk39 .ct')), 'màn chính: dải "Điểm tuần" hiện các lượt cộng / trừ của tuần');
+  const k0 = await p.evaluate(() => document.querySelector('#tk39 .it').dataset.id); await p.mouse.move(2, 2); await W(6800);
+  ok(await p.evaluate(() => document.querySelector('#tk39 .it').dataset.id) !== k0, 'dải điểm tuần tự lật sang lượt khác (6 giây / lần)');
+  await p.locator('#tk39 .it').first().click(); await W(300);
+  ok(/Sửa \/ xoá/.test(await p.textContent('#tkm39')) && /Nhận xét/.test(await p.textContent('#tkm39')), 'bấm 1 lượt ⇒ menu Xem hồ sơ / Sửa / Nhận xét (theo quyền GVCN)');
+  await p.click('#tkm39 [data-k="pf"]'); await W(700); await p.evaluate(() => closePanel()); await W(200);
+  await p.click('#hAva'); await W(250);
+  ok(await p.isVisible('#ava39 [data-a="out"]') && await p.isVisible('#ava39 [data-a="ph"]'), 'avatar góc phải: menu tài khoản có Phụ huynh + Đăng xuất');
+  await p.click('#ava39 [data-a="cai"]'); await W(600);
+  ok(await p.isVisible('.cai39 .ctabs') && !/Tài khoản của tôi/.test(await p.textContent('#vCai')), 'Cài đặt chia tab; phần tài khoản chuyển lên menu avatar');
+  await p.evaluate(() => go('bang')); await W(700); await p.fill('.sq39 input', 'tổ 2 vi phạm'); await W(300);
+  const vis = await p.evaluate(() => [...document.querySelectorAll('#vBang .hkcard[data-ma]')].filter(x => !x.classList.contains('hid39')).map(x => { const s = stu(x.dataset.ma); return String(s.to) === '2' && hkEntriesOf(s.ma).some(e => e[E_DIEM] < 0); }));
+  ok(vis.length > 0 && vis.every(Boolean), 'tìm kiếm thông minh: "tổ 2 vi phạm" chỉ còn học sinh tổ 2 có lỗi (' + vis.length + ')');
+  await p.fill('.sq39 input', ''); await W(200);
+  await p.locator('#vBang .hkcard .mini > div').nth(2).hover(); await W(500);
+  ok(await p.evaluate(() => document.getElementById('tip39').classList.contains('on')) && /Bị trừ|Được cộng|Không có ghi nhận/.test(await p.textContent('#tip39')), 'rê chuột vào ô điểm ⇒ hiện cộng / trừ từ đâu');
+  await p.evaluate(() => go('bc')); await W(900); await p.fill('#vBC .sq39 input', 'khá'); await W(300);
+  ok(/\d+\/\d+ học sinh/.test(await p.textContent('#vBC .sq39 .ct')), 'Báo cáo cũng có tìm kiếm thông minh');
   await p.context().close();
 
   // 9. trang phụ huynh

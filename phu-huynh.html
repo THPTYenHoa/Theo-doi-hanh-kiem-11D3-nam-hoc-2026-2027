@@ -148,6 +148,27 @@ footer a{color:var(--teal-d)}
 }
 .tbc{border:1.5px solid var(--teal);padding:12px 14px;margin-bottom:12px}.tbh{display:flex;gap:10px;align-items:center;margin-bottom:6px}.tbh b{display:block;color:var(--teal-d);font-size:15.5px}.tbh span{font-size:13px;color:var(--mute)}.tbc .btn{margin-top:10px}
 .reg{padding:12px 14px}.reg p{margin:0 0 8px;font-size:13.5px;line-height:1.5}.reg .ok{color:#1E8449;font-weight:600}.reg .msg{margin:6px 0 0;color:var(--teal-d)}.rg{display:flex;gap:8px;margin-top:6px}.rg input{flex:1;min-width:0;padding:10px 12px;border:1px solid #CFDDE0;border-radius:10px;font:inherit;font-size:15px}.rg .btn{flex:0 0 auto}
+/* v3.9: trang phụ huynh mới */
+main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
+.prof .hero2{display:flex;align-items:center;gap:12px;padding:6px 16px 4px}
+.prof .hero2 img,.prof .hero2 svg{width:120px;height:120px;flex:none}
+.prof .bub2{position:relative;background:var(--paler);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:10px 13px;font-size:14.5px;line-height:1.5;color:#1B333A}
+.sum2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px}
+.sum2 div{background:var(--paler);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.sum2 b{display:block;font-size:24px;font-weight:800;line-height:1.1}.sum2 span{font-size:12.5px;color:var(--sub)}
+.prof .acts{padding:0 16px 16px;margin:0}
+.reg{margin:0 0 14px;padding:14px 16px;border:1.5px solid var(--teal);background:linear-gradient(135deg,#fff,var(--paler))}
+.reg .rh{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}.reg .ri{width:40px;height:40px;border-radius:12px;background:var(--teal);color:#fff;display:grid;place-items:center;flex:none}.reg .ri svg{width:22px;height:22px}
+.reg .rh > div > b{display:block;font-size:16px;color:var(--teal-d)}.reg .rh > div > span{display:block;font-size:13.5px;color:#41566F;line-height:1.45}.reg .rh .ri{color:#fff}
+.rg[hidden]{display:none!important}.reg .msg{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+.nxc .gv b{display:block;color:var(--teal-d);margin-bottom:3px}.nxc .none{color:var(--sub);font-style:italic}
+.hs2{display:block}
+@media(min-width:900px){
+  .hs2{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start}
+  .hs2 .colA{position:sticky;top:110px}.hs2 .colB > .sec:first-child{margin-top:0}
+  .list{display:block}.list .card{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.list .card .st{border-right:1px solid var(--line)}
+  #toc{margin-bottom:6px}
+}
+@media(max-width:560px){ .prof .hero2 img,.prof .hero2 svg{width:92px;height:92px} .prof .bub2{font-size:13.5px} .reg .rh > div > b{font-size:15px} }
 </style>
 </head>
 <body>
@@ -168,9 +189,9 @@ footer a{color:var(--teal-d)}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=3.7"></script>
-<script src="mascot.js?v=3.6"></script>
-<script src="baocao.js?v=3.7"></script>
+<script src="updates/notes.js?v=3.9"></script>
+<script src="mascot.js?v=3.9"></script>
+<script src="baocao.js?v=3.9"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -304,37 +325,36 @@ function kySeg(cur,fn){
   return opts.map(o=>`<button class="chip ${kyKey(o)===kyKey(cur)?'on':''}" data-ky="${kyKey(o)}">${esc(o.k==='thang'?tl(o.m):kyLabel(o))}</button>`).join('');
 }
 function renderHS(){
+  /* v3.9: bố cục 2 cột (máy tính) — trái: hồ sơ + đăng ký email; phải: nhận xét cô Thảo, vi phạm, được cộng. Điện thoại: 1 cột, đăng ký email ngay sau hồ sơ. */
   const s=stu(S.ma), ky=S.ky||defKy(), x=xl(s.ma,ky), sc=kyScore(s.ma,ky), ev=evOf(s.ma,ky);
   const tru=ev.filter(e=>e[E_DIEM]<0), cong=ev.filter(e=>e[E_DIEM]>0);
-  const ms=kyMonths(ky), rms=S.remarks.filter(r=>r.maHS===s.ma&&ms.indexOf(r.thang)>=0&&(r.nhanXet||r.xepLoai)).sort((a,b)=>MONTHS.indexOf(a.thang)-MONTHS.indexOf(b.thang));
+  const ms=kyMonths(ky), rms=S.remarks.filter(r=>r.maHS===s.ma&&ms.indexOf(r.thang)>=0&&(r.nhanXet||r.xepLoai)).sort((a,b)=>MONTHS.indexOf(b.thang)-MONTHS.indexOf(a.thang));
   let mini='';
   if(ky.k==='thang'){ for(let w=1;w<=S.cfg.soTuan;w++){ const v=weekScore(s.ma,w,ky.m); mini+=`<div><div class="k">TUẦN ${w}</div><div class="v num ${v===0?'':'r'+rankIdx(v)}">${v===0?'0':nz(v)}</div></div>`; } }
   else ms.forEach(m=>{ const v=hasData(m)?monthAvg(s.ma,m):null; mini+=`<div><div class="k">${esc(tl(m))}</div><div class="v num ${v===null?'':'r'+rankIdx(v)}">${v===null?'–':fx(v)}</div></div>`; });
   const evH=a=>a.length?'<div class="card">'+a.map(e=>`<div class="ev"><span class="pill ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span>
      <span class="tx"><b>${esc(e[E_ND]||e[E_MUC])}</b><span>${esc(ddmm(e[E_LUC]))} · tuần ${e[E_TUAN]} ${esc(tl(e[E_THANG]))} · ghi bởi ${esc(e[E_TEN]||'—')}</span>${e[E_GC]?`<i>${esc(e[E_GC])}</i>`:''}</span></div>`).join('')+'</div>'
      :'<div class="card empty">Không có.</div>';
-  const mem=window.MASCOT?MASCOT.img(['vui','co-vu','lo-lang','lo-lang'][x.i]||'chao',64):'';
-  let h=`<button class="back" id="bk">‹ Danh sách học sinh</button>${tbCard(s)}
-  <div class="card"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div>${mem}</div>
+  const emo=['vui','co-vu','lo-lang','nghiem'][x.i]||'chao', g=ten1(s.ten);
+  const mem=window.MASCOT?MASCOT.img(emo,120):'';
+  const loi=['Con <b>'+esc(g)+'</b> ngoan lắm, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> khá tốt, cô và bác cùng động viên con thêm ạ.','Con <b>'+esc(g)+'</b> còn mắc lỗi, bác trò chuyện thêm với con giúp cô nhé.','Bác liên hệ cô Thảo để cùng trao đổi về con <b>'+esc(g)+'</b> nhé ạ.'][Math.min(3,x.i)];
+  const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(cô chốt xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
+  const prof=`<div class="card prof"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div></div>
     <div class="seg" id="ks">${kySeg(ky)}</div>
+    <div class="hero2">${mem}<div class="bub2">${loi}</div></div>
     <div class="res"><div><div class="lb">Điểm TB tuần</div><div class="big num r${x.i}">${fx(sc)}</div></div>
-      <div><div class="lb">Xếp loại hạnh kiểm · ${esc(kyLabel(ky))}</div><span class="xl g${x.i}">${esc(x.ten)}</span>
-      <div class="ex">${x.chot?'GVCN đã chốt xếp loại.':'Tính tự động theo điểm; GVCN có thể chốt lại cuối kỳ.'}</div></div></div>
-    <div class="mini">${mini}</div></div>
-  <div class="sum"><div class="card"><div class="n num r3">${tru.length}</div><div class="t">Vi phạm · ${tru.reduce((a,e)=>a+e[E_DIEM],0)} điểm</div></div>
-    <div class="card"><div class="n num r0">${cong.length}</div><div class="t">Được cộng · ${nz(cong.reduce((a,e)=>a+e[E_DIEM],0))} điểm</div></div></div>
-  <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF báo cáo</button>
-    <button class="btn gh" id="csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Tải Excel</button></div>
-  ${rms.length?'<div class="sec"><h2>Nhận xét của GVCN</h2></div><div class="card">'+rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'')}</div>`).join('')+'</div>':''}
-  <div class="sec"><h2>Vi phạm</h2><span>${tru.length} lượt</span></div>${evH(tru)}
-  <div class="sec"><h2>Được cộng điểm</h2><span>${cong.length} lượt</span></div>${evH(cong)}${regCard(s)}`;
+      <div><div class="lb">Xếp loại · ${esc(kyLabel(ky))}</div><span class="xl g${x.i}">${esc(x.ten)}</span>
+      <div class="ex">${x.chot?'Cô đã chốt xếp loại.':'Tính tự động theo điểm; cô chốt lại cuối kỳ.'}</div></div></div>
+    <div class="mini">${mini}</div>
+    <div class="sum2"><div><b class="num r3">${tru.length}</b><span>vi phạm · ${tru.reduce((a,e)=>a+e[E_DIEM],0)} điểm</span></div><div><b class="num r0">${cong.length}</b><span>được cộng · ${nz(cong.reduce((a,e)=>a+e[E_DIEM],0))} điểm</span></div></div>
+    <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF báo cáo</button>
+      <button class="btn gh" id="csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Tải Excel</button></div></div>`;
+  let h=`<button class="back" id="bk">‹ Danh sách học sinh</button>${tbCard(s)}
+  <div class="hs2"><div class="colA">${lsG('hkph_reg_'+s.ma)?prof+regCard(s):regCard(s)+prof}</div>
+  <div class="colB">${nx}
+    <div class="sec"><h2>Vi phạm</h2><span>${tru.length} lượt</span></div>${evH(tru)}
+    <div class="sec"><h2>Được cộng điểm</h2><span>${cong.length} lượt</span></div>${evH(cong)}</div></div>`;
   $('#main').innerHTML=h;
-  if(window.MASCOT && S._said!==s.ma+kyKey(ky)){ S._said=s.ma+kyKey(ky); const g=ten1(s.ten), L=kyLabel(ky).toLowerCase();
-    const msg=[['vui','Con <b>'+esc(g)+'</b> '+esc(L)+' ngoan lắm, xếp loại <b>'+esc(x.ten)+'</b>. Các bác yên tâm nhé!'],
-      ['co-vu','Con <b>'+esc(g)+'</b> '+esc(L)+' xếp loại <b>'+esc(x.ten)+'</b>. Cô và các bác cùng động viên con cố gắng thêm ạ!'],
-      ['lo-lang','Con <b>'+esc(g)+'</b> '+esc(L)+' còn nhiều lỗi. Các bác trò chuyện thêm với con giúp cô nhé ạ.'],
-      ['lo-lang','Các bác liên hệ cô Thảo để cùng trao đổi về con <b>'+esc(g)+'</b> nhé ạ.']][Math.min(3,x.i)];
-    setTimeout(()=>MASCOT.say(msg[0],msg[1],{ms:5200}),500); }
   $('#bk').onclick=()=>go({});
   $$('#ks [data-ky]').forEach(b=>b.onclick=()=>{ const k=b.dataset.ky; go({hs:s.ma,ky:k==='nam'?{k:'nam'}:/^hk/.test(k)?{k:'hk',n:+k[2]}:{k:'thang',m:+k.slice(1)}}); });
   const on=$('#ks .chip.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'});
@@ -405,25 +425,25 @@ function tbCard(s){
 /* v3.7: phụ huynh đăng ký email nhận thông báo — mã 6 số + cô Thảo duyệt */
 function regCard(s){
   const st=lsG('hkph_reg_'+s.ma);
-  return `<div class="sec"><h2>Nhận thông báo qua email</h2></div><div class="card reg" id="reg">
-   ${st==='cho'?'<p class="ok">Các bác đã đăng ký. Cô Thảo sẽ duyệt sớm, sau đó mỗi khi con được cộng / bị trừ điểm các bác sẽ nhận email ạ.</p>':''}
-   <p>Các bác nhập email để nhận thư mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm. Hệ thống gửi mã 6 số để xác nhận, sau đó cô Thảo duyệt.</p>
-   <div class="rg"><input id="rgE" type="email" placeholder="email của bác" autocomplete="email"><button class="btn" id="rgS">Gửi mã</button></div>
-   <div class="rg" id="rgC" hidden><input id="rgK" inputmode="numeric" maxlength="6" placeholder="mã 6 số"><button class="btn" id="rgV">Xác nhận</button></div>
-   <p class="msg" id="rgM"></p></div>`;
+  return `<div class="card reg" id="reg"><div class="rh"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+   <div><b>Nhận thông báo của cô Thảo qua email</b><span>Mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm, bác nhận thư ngay.</span></div></div>
+   ${st==='cho'?'<p class="ok">Bác đã đăng ký — cô Thảo sẽ duyệt sớm, sau đó bác bắt đầu nhận thư ạ.</p>':''}
+   <div class="rg"><input id="rgE" type="email" placeholder="Nhập email của bác" autocomplete="email"><button class="btn" id="rgS">Gửi mã</button></div>
+   <div class="rg" id="rgC" hidden><input id="rgK" inputmode="numeric" maxlength="6" placeholder="Mã 6 số trong email"><button class="btn" id="rgV">Xác nhận</button></div>
+   <p class="msg" id="rgM">Hệ thống gửi mã 6 số để xác nhận email, sau đó cô Thảo duyệt.</p></div>`;
 }
 function regBind(s){
   const m=t=>{ const e=$('#rgM'); if(e) e.innerHTML=t; };
   const send=$('#rgS'); if(!send) return;
-  send.onclick=async()=>{ const em=$('#rgE').value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return m('Email chưa đúng ạ.');
+  send.onclick=async()=>{ const em=$('#rgE').value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return m('Email chưa đúng ạ, bác kiểm tra lại giúp cô nhé.');
     send.disabled=true; m('Đang gửi mã…');
-    try{ await api('phDangKy',{ma:s.ma,email:em}); $('#rgC').hidden=false; $('#rgK').focus(); m('Cô đã gửi mã 6 số tới <b>'+esc(em)+'</b>. Các bác mở hộp thư (cả mục Spam) và nhập mã nhé.'); }
+    try{ await api('phDangKy',{ma:s.ma,email:em}); $('#rgC').hidden=false; $('#rgK').focus(); m('Cô đã gửi mã 6 số tới <b>'+esc(em)+'</b>. Bác mở hộp thư (cả mục Spam) và nhập mã nhé.'); }
     catch(e){ m(esc(e.message)); } finally{ setTimeout(()=>send.disabled=false,3000); } };
   $('#rgV').onclick=async()=>{ const em=$('#rgE').value.trim(), code=$('#rgK').value.replace(/\D/g,''); if(code.length!==6) return m('Mã gồm 6 chữ số ạ.');
     m('Đang xác nhận…');
     try{ const r=await api('phXacNhan',{email:em,code}); $('#rgC').hidden=true;
-      if(r.daCo) m('Email này đã được nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó các bác nhận email mỗi khi có cập nhật về con ạ.'); }
-      if(window.MASCOT) MASCOT.say('cam-on','Cô cảm ơn các bác đã đăng ký theo dõi cùng cô ạ!',{ms:4200}); }
+      if(r.daCo) m('Email này đã được nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó bác nhận email mỗi khi có cập nhật về con ạ.'); }
+      if(window.MASCOT) MASCOT.say('cam-on','Cô cảm ơn bác đã đăng ký theo dõi cùng cô ạ!',{ms:4200}); }
     catch(e){ m(esc(e.message)); } };
 }
 function printLop(ky){

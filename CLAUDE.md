@@ -114,3 +114,15 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   Mock: `M.phNew(ma,email)` giả lập phụ huynh đăng ký.
 - **Bộ trang phục khác của cô Thảo**: prompt `docs/prompt-chibi-3d.md` ▸ Bước 5 (9 bộ × ảnh gốc + 8 biểu cảm: `1..8.png` = chao, vui, khen-lon, co-vu, buon, nghiem,
   chi-tay, cam-on). Nhận ảnh ⇒ tách nền như v3.6 vào `mascot/<vai>/` + khai báo `READY['<vai>']=[…]` (mascot.js; thiếu biểu cảm ⇒ dùng `chu-nhiem`).
+
+## v3.9 — Giao diện gọn, Phụ huynh, tìm kiếm, cô Thảo nhiều trang phục
+- **Cô Thảo nhiều bộ** (`mascot.js` ▸ `READY`): `chu-nhiem` (đủ) + `doi-thuong` (áo len tím), `ao-dai` (trắng), `mau-nuoc` (áo dài chàm), `giang-day` (cardigan),
+  `stem`, `mua-dong` — mỗi bộ ~8 biểu cảm (chao, vui, khen-lon, co-vu, buon, nghiem, chi-tay, cam-on, goc). Chế độ auto: `rnd(emo)` chọn ngẫu nhiên **chỉ trong ảnh đã tải**
+  (tải ngầm lúc rảnh, giữ 60 s / biểu cảm; `say()` luôn chọn mới); 14–22/11 ưu tiên áo dài. PDF (`baocao.js mc`) và HDSD (`build.js chibi`) cũng ngẫu nhiên.
+  **Thêm đợt ảnh**: `python3 tools/mascot/cut.py <vai> <emo>=<ảnh.png> …` (tách nền trắng + bóng mềm ⇒ webp 360 + png email) rồi khai báo `READY`.
+- **Khối `v39-js`**: trang **Phụ huynh** `#vPH` (nav `ph`, chỉ GVCN; điện thoại ẩn khỏi thanh dưới — vào từ menu avatar / Cài đặt ▸ Phụ huynh); **Cài đặt chia tab**
+  (`CAI_TABS` gom theo tiêu đề mục, nhớ `hk_cai_tab`); **menu avatar** `#ava39` (Đăng xuất ở đây); **tìm kiếm thông minh** `.sq39` (`parseQ`: tổ N, xếp loại,
+  vi phạm/khen/không lỗi, chữ còn lại khớp tên hoặc nội dung lỗi) ở Cập nhật hạnh kiểm + Báo cáo; **chú thích rê chuột** `#tip39` (`tipCtx` theo ô).
+- **Khối `v39b-js`**: dải **Điểm tuần** `#tk39` trong thẻ tổng quan — lật 6 s/lượt, dừng khi rê chuột, bấm ⇒ menu `#tkm39` theo quyền (`canScore`, `isGVCN`).
+- **Phụ huynh**: với phụ huynh của 1 học sinh cô gọi **"bác"** (không "các bác") — trang hồ sơ con, PDF, email. Trang chung / hướng dẫn vẫn "các bác".
+  Mọi báo cáo PDF có mục **Nhận xét của cô Thảo** (lớp: trang 1 + trang nhận xét; học sinh: trang 1; thông báo: nhận xét tháng).
