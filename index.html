@@ -4555,7 +4555,7 @@ window.bcPrint=bcPrint=function(P){
   const st=bcStats(P), pv=bcPrevStats(P), T=bcTxt(P,st,pv), cfg=S.cfg, th=cfg.thresholds, n=st.list.length||1, R=RPT;
   const D={cfg, students:S.students, entries:S.entries, remarks:S.remarks}, foot=R.footTxt(D), [emo,t1]=clsMood(st,pv);
   const k=S.khoa&&S.khoa[S.thang]&&P.ky==='thang'?' · <b style="color:#1E8449">đã chốt '+esc(S.khoa[S.thang].at)+'</b>':'';
-  const hd=(kk,h)=>R.head(kk,h,'Lớp <b>'+esc(cfg.lop||'11D3')+'</b> · '+esc(P.nhan)+k+'<br>GVCN: <b>'+esc(cfg.gvcn||'')+'</b> · Năm học '+esc(cfg.namHoc||''));
+  const hd=(kk,h)=>R.head(kk,h,'Lớp <b>'+esc(cfg.lop||'11D3')+'</b> · '+esc(P.nhan)+k+'<br>'+(cfg.gvcn?'GVCN: <b>'+esc(cfg.gvcn)+'</b> · ':'')+'Năm học '+esc(cfg.namHoc||''));
   const kp=`<div class="kp"><div class="kpi" style="--c:${R.RC[rankIdx(st.tb)]}"><div class="n">${f1(st.tb)}</div><div class="l">Điểm TB tuần của lớp · ${esc(rankName(st.tb))}</div>${R.dl(st.tb,pv&&pv.tb,true,f1)}</div>
     <div class="kpi" style="--c:#1E8449"><div class="n">${Math.round(st.cnt[0]*100/n)}%</div><div class="l">Đạt loại ${esc(th[0].ten)} · ${st.cnt[0]}/${st.list.length} em</div>${R.dl(st.cnt[0],pv&&pv.cnt[0],true)}</div>
     <div class="kpi" style="--c:#1E8449"><div class="n">${st.cong.length}</div><div class="l">Lượt được khen · +${st.dCong} điểm</div>${R.dl(st.cong.length,pv&&pv.cong.length,true)}</div>
@@ -4563,7 +4563,7 @@ window.bcPrint=bcPrint=function(P){
   const head1=(T.nx||'').split('\n')[0];
   const p1=`<div class="say">${R.mc(emo,108)}<div class="b"><b>${esc(t1)}</b> ${esc(head1)}</div></div>${kp}
     <div class="g2"><div class="card"><h3>Kết quả xếp loại</h3>${R.donut(st.cnt,th.map(t=>t.ten),{size:150,center:Math.round(st.cnt[0]*100/n)+'%',sub:'đạt '+th[0].ten,prev:pv&&pv.cnt})}</div>
-    <div class="card"><h3>So với ${pv?esc(P.prev.nhan):'kỳ trước'}</h3>${pv?R.bars2([{k:'Vi phạm',a:0,b:st.tru.length},{k:'(kỳ trước)',a:0,b:pv.tru.length},{k:'Khen',a:st.cong.length,b:0},{k:'(kỳ trước)',a:pv.cong.length,b:0}],{w:470,h:150}).replace(/<div class="lg">.*<\/div>/,''):'<div class="none">Chưa có kỳ trước để so sánh.</div>'}</div></div>`;
+    <div class="card"><h3>So với ${pv?esc(P.prev.nhan):'kỳ trước'}</h3>${pv?R.cmp([{k:'Lượt vi phạm',a:st.tru.length,b:pv.tru.length,c:'#C0392B'},{k:'Lượt được khen',a:st.cong.length,b:pv.cong.length,up:true,c:'#1E8449'},{k:'Đạt loại '+th[0].ten,a:st.cnt[0],b:pv.cnt[0],up:true,c:'#1E8449'},{k:'Cần quan tâm',a:st.cnt.slice(2).reduce((x,y)=>x+y,0),b:pv.cnt.slice(2).reduce((x,y)=>x+y,0),c:'#B26B12'}],{cur:P.nhan,prev:P.prev.nhan}):'<div class="none">Chưa có kỳ trước để so sánh.</div>'}</div></div>`;
   let trend;
   if(P.months.length===1 && !P.tuan){ const wk=[],br=[]; for(let w=1;w<=cfg.soTuan;w++){ wk.push({k:'Tuần '+w,v:st.list.reduce((a,s)=>a+weekScore(s.ma,w,P.months[0]),0)/n});
       const we=st.E.filter(e=>e[E_TUAN]===w); br.push({k:'Tuần '+w,a:we.filter(e=>e[E_DIEM]>0).length,b:we.filter(e=>e[E_DIEM]<0).length}); }

@@ -191,9 +191,9 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/Trong tháng 10\/2026, lớp/.test(await p.inputValue('#bcNx')), 'nhận xét chung tự soạn từ số liệu');
   await p.fill('#bcPh', 'Phương hướng cô tự viết'); await p.evaluate(() => { document.activeElement.blur(); renderAll(); });
   ok(await p.inputValue('#bcPh') === 'Phương hướng cô tự viết', 'nội dung cô sửa được giữ lại');
-  await p.evaluate(() => { window.print = () => { window.__pr = 1; }; }); await p.click('#bcPrint'); await W(200);
-  const pr = await p.evaluate(() => document.querySelector('#printArea').textContent);
-  ok(/CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM/.test(pr) && /Phương hướng cô tự viết/.test(pr) && /GIÁO VIÊN CHỦ NHIỆM/.test(pr), 'bản in: quốc hiệu, nội dung đã sửa, chữ ký GVCN');
+  await p.evaluate(() => { const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); }); await p.click('#bcPrint'); await W(200);
+  const pr = await p.evaluate(() => RPT.last || '');
+  ok(!/CỘNG HÒA XÃ HỘI CHỦ NGHĨA/.test(pr) && /Phương hướng cô tự viết/.test(pr) && /chủ nhiệm/i.test(pr), 'bản in (v3.7 khổ ngang): không quốc hiệu, có nội dung cô sửa, chữ ký GVCN');
   for (const k of ['tuan', 'hk', 'nam']) { await p.click(`#vBC [data-bk=${k}]`); await W(250); }
   ok(/Cả năm học/.test(await p.textContent('#vBC .bchead')), 'đổi kỳ: tuần / học kỳ / cả năm');
   const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#bcXls')]);

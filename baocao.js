@@ -73,7 +73,7 @@
     var mx = Math.max.apply(null, rows.map(function (r) { return Math.abs(r.v); })) || 1;
     return rows.map(function (r) { return '<div class="hb"><span class="t">' + r.k + '</span><span class="tr"><i style="width:' + (Math.abs(r.v) / mx * 100).toFixed(0) + '%;background:' + (r.c || '#C0392B') + '"></i></span><b style="color:' + (r.c || '#C0392B') + '">' + (r.lbl != null ? r.lbl : r.v) + '</b></div>'; }).join('');
   }
-  var CSS = '@page{size:A4 landscape;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Be Vietnam Pro",Aptos,"Segoe UI",Arial,sans-serif;color:#1B333A;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}'
+  var CSS = '.cmp .cr{display:grid;grid-template-columns:30mm 1fr 18mm;grid-template-rows:auto auto;column-gap:3mm;align-items:center;margin:0 0 3.2mm}.cmp .ck{grid-row:1/3;font-weight:700;font-size:9.5pt;color:#1B333A}.cmp .cb{position:relative;height:4.6mm;display:flex;align-items:center;gap:2mm}.cmp .cb i{display:block;flex:none;height:100%;border-radius:2mm;min-width:1mm}.cmp .cb b{font-size:9pt;font-weight:800;color:#1B333A}.cmp .cb.pv{height:3.2mm;margin-top:.8mm}.cmp .cb.pv i{background:#C9D6DA}.cmp .cb.pv b{color:#8AA6AD;font-weight:600;font-size:8pt}.cmp .cd{grid-row:1/3;grid-column:3;font-weight:800;font-size:10pt;text-align:right}.cmp .cd.up{color:#1E8449}.cmp .cd.dn{color:#C0392B}.cmp .cd.eq{color:#8AA6AD}.cmp .clg{display:flex;gap:4mm;flex-wrap:wrap;font-size:8pt;color:#5C7A83;margin-top:1mm}.cmp .clg i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1mm;vertical-align:-.4mm}@page{size:A4 landscape;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Be Vietnam Pro",Aptos,"Segoe UI",Arial,sans-serif;color:#1B333A;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}'
     + '.pg{width:297mm;height:209mm;padding:11mm 14mm 12mm;position:relative;page-break-after:always;overflow:hidden}.pg:last-child{page-break-after:auto}'
     + '.pg::before{content:"";position:absolute;left:0;top:0;right:0;height:3mm;background:linear-gradient(90deg,#0E7C86,#6FBEC5)}'
     + '.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5px solid #DCE9EB;padding-bottom:3mm;margin-bottom:4.5mm}'
@@ -181,7 +181,7 @@
     if (tru.length) {
       if (nTru >= 5 || lanMax >= 3) { emo = 'lo-lang'; msg = 'Tháng này con <b>' + t + '</b> đã có <b>' + nTru + '</b> lần bị trừ điểm. Cô mong các bác dành thời gian trò chuyện và phối hợp cùng cô để giúp con tiến bộ hơn ạ.'; }
       else if (lanMax === 2) { emo = 'nghiem'; msg = 'Đây là lần thứ 2 trong tháng con <b>' + t + '</b> mắc lỗi này. Các bác nhắc nhở con giúp cô để con không tái phạm nữa nhé.'; }
-      else { emo = 'buon'; msg = 'Đây là lần đầu trong tháng, các bác nhắc nhẹ con <b>' + t + '</b> giúp cô nhé. Cô tin con sẽ cố gắng hơn ạ.'; }
+      else { emo = 'buon'; msg = 'Đây là lần đầu trong tháng con mắc lỗi này, các bác nhắc nhẹ con <b>' + t + '</b> giúp cô nhé. Cô tin con sẽ cố gắng hơn ạ.'; }
     } else { var sum = cong.reduce(function (a, e) { return a + e[9]; }, 0); emo = sum >= 3 ? 'khen-lon' : 'vui'; msg = 'Cô báo tin vui: con <b>' + t + '</b> vừa được cộng điểm. Các bác khen và động viên con giúp cô nhé!'; }
     var wk = []; for (var w = 1; w <= (cfg.soTuan || 4); w++) wk.push({ k: 'Tuần ' + w, v: me.filter(function (e) { return e[3] === w; }).reduce(function (a, e) { return a + e[9]; }, 0) });
     var body = '<div style="display:grid;grid-template-columns:86mm 1fr;gap:7mm"><div><div class="bub">' + msg + '</div><div style="text-align:center;margin-top:5mm">' + mc(emo, 230) + '</div></div><div>'
@@ -213,6 +213,16 @@
       .then(function () { setTimeout(function () { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { var w2 = window.open('', '_blank'); if (w2) { w2.document.write(doc); w2.document.close(); setTimeout(function () { w2.print(); }, 800); } } }, 250); });
     return doc;
   }
-  window.RPT = { student: student, notice: notice, open: open, page: page, head: head, line: line, bars2: bars2, donut: donut, hb: hb, mc: mc, dl: dl,
+  /* so sánh kỳ này / kỳ trước: rows [{k, a: kỳ này, b: kỳ trước, up: true nếu tăng là tốt, c: màu}] */
+  function cmp(rows, o) {
+    o = o || {}; var mx = Math.max(1, Math.max.apply(null, rows.map(function (r) { return Math.max(r.a, r.b); })));
+    return '<div class="cmp">' + rows.map(function (r) {
+      var d = r.a - r.b, good = d === 0 ? 0 : (d > 0) === !!r.up ? 1 : -1;
+      return '<div class="cr"><div class="ck">' + esc(r.k) + '</div><div class="cb"><i style="width:calc((100% - 9mm) * ' + (r.a / mx).toFixed(3) + ');background:' + (r.c || '#0E7C86') + '"></i><b>' + r.a + '</b></div>'
+        + '<div class="cb pv"><i style="width:calc((100% - 9mm) * ' + (r.b / mx).toFixed(3) + ')"></i><b>' + r.b + '</b></div>'
+        + '<span class="cd ' + (good > 0 ? 'up' : good < 0 ? 'dn' : 'eq') + '">' + (d === 0 ? '=' : (d > 0 ? '▲ ' : '▼ ') + Math.abs(d)) + '</span></div>';
+    }).join('') + '<div class="clg"><span><i style="background:#0E7C86"></i>' + esc(o.cur || 'Kỳ này') + '</span><span><i style="background:#C9D6DA"></i>' + esc(o.prev || 'Kỳ trước') + '</span><span style="color:#1E8449">▲▼ xanh = tốt lên</span><span style="color:#C0392B">đỏ = kém đi</span></div></div>';
+  }
+  window.RPT = { student: student, notice: notice, open: open, page: page, head: head, line: line, bars2: bars2, donut: donut, hb: hb, cmp: cmp, mc: mc, dl: dl,
     footTxt: footTxt, kyName: kyName, rankIdx: rankIdx, RC: RC, RB: RB, CSS: CSS, last: '' };
 })();
