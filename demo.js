@@ -112,7 +112,7 @@
     var tong = me.reduce(function (a, e) { return a + e[9]; }, 0), con = 'con <b>' + ten1(st.ten) + '</b>', L = loiNhan(con, items, me);
     var rows = items.map(function (e) { return '<tr><td style="padding:6px 10px;border-bottom:1px solid #EEF2F3;text-align:left">' + e[8] + (e[12] ? '<div style="color:#6C8A93;font-size:12px">' + e[12] + '</div>' : '') + '</td><td style="padding:6px 10px;border-bottom:1px solid #EEF2F3;text-align:right;font-weight:800;color:' + (e[9] < 0 ? '#C0392B' : '#1E8449') + '">' + nz(e[9]) + '</td></tr>'; }).join('');
     var link = BASE + 'phu-huynh.html?demo=1#hs=' + st.ma + '&tb=' + items.map(function (e) { return e[0]; }).join(',');
-    mail({ kind: 'tb', to: st.email, from: 'Cô Thảo · Sổ hạnh kiểm 11D3', ma: st.ma, link: link,
+    mail({ kind: 'tb', to: st.email, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', ma: st.ma, link: link,
       subject: (tru ? '[11D3] Cô Thảo cập nhật hạnh kiểm của con ' : 'Tin vui: con ') + st.ten + (tru ? '' : ' được cộng điểm'),
       html: '<div style="font-family:Arial,sans-serif;max-width:560px;color:#1B333A"><img src="' + BASE + 'mascot/chu-nhiem/png/' + L.emo + '.png" width="110" style="float:right;margin:0 0 6px 10px" alt="">'
         + '<div style="color:#6C8A93;font-size:12px">LỚP 11D3 · THPT YÊN HÒA</div><div style="font-size:19px;font-weight:800;color:#0A5C64;margin:4px 0">Cô Thảo xin cập nhật cho bác về con ' + st.ten + '</div>'
@@ -187,7 +187,7 @@
         var em = String(p.email || '').trim().toLowerCase(), sx = stu(p.ma);
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { r = { ok: false, error: 'Email chưa đúng.' }; break; }
         DB.reg['ph:' + em] = p.ma; save();
-        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ hạnh kiểm 11D3', subject: 'Mã xác nhận đăng ký nhận thông báo hạnh kiểm: 123456',
+        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', subject: 'Mã xác nhận đăng ký nhận thông báo hạnh kiểm: 123456',
           html: '<div style="font-family:Arial,sans-serif;max-width:480px"><p>Kính gửi bác,</p><p>Mã xác nhận để nhận thông báo hạnh kiểm của con <b>' + (sx ? sx.ten : '') + '</b> là:</p><p style="font-size:30px;font-weight:800;letter-spacing:6px;color:#0A5C64">123456</p><p style="color:#6C8A93;font-size:13px">(Chế độ trải nghiệm: mã luôn là 123456.)</p></div>' });
         r = { ok: true, ten: sx && sx.ten }; break;
       case 'phXacNhan':
@@ -197,14 +197,14 @@
         delete DB.reg['ph:' + em2]; var s2 = stu(ma2);
         var rec = { id: 'R' + (Date.now() % 100000), ma: ma2, ten: s2 ? s2.ten : ma2, email: em2, at: now() };
         DB.phReg.push(rec); write = true; mark('dk');
-        mail({ kind: 'gv', to: ME.gvcn.email, from: 'Sổ hạnh kiểm 11D3', subject: '[11D3] Phụ huynh của ' + rec.ten + ' đăng ký nhận thông báo — cô duyệt giúp nhé',
+        mail({ kind: 'gv', to: ME.gvcn.email, from: 'Sổ theo dõi học sinh 11D3', subject: '[11D3] Phụ huynh của ' + rec.ten + ' đăng ký nhận thông báo — cô duyệt giúp nhé',
           html: '<div style="font-family:Arial,sans-serif;max-width:520px"><p>Chào cô Thảo,</p><p>Phụ huynh của <b>' + rec.ten + '</b> (' + em2 + ') vừa đăng ký nhận email thông báo hạnh kiểm. Hiện có <b>' + DB.phReg.length + '</b> đăng ký chờ cô duyệt.</p><p><a data-demo-role="gvcn" data-demo-go="ph" href="#" style="display:inline-block;background:#0E7C86;color:#fff;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:bold">Mở sổ để duyệt</a></p></div>' });
         r = { ok: true, cho: true }; break;
       case 'phDuyet':
         if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN duyệt đăng ký của phụ huynh.' }; break; }
         var rr = DB.phReg.filter(function (x) { return x.id === p.id; })[0]; DB.phReg = DB.phReg.filter(function (x) { return x.id !== p.id; });
         if (rr && p.ok !== false) { var s3 = stu(rr.ma); if (s3) s3.email = (s3.email ? s3.email + ', ' : '') + rr.email; mark('duyet');
-          mail({ kind: 'duyet', to: rr.email, from: 'Cô Thảo · Sổ hạnh kiểm 11D3', attach: 'HDSD_Phu_huynh.pdf', attachUrl: BASE + 'docs/HDSD_Phu_huynh.pdf',
+          mail({ kind: 'duyet', to: rr.email, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', attach: 'HDSD_Phu_huynh.pdf', attachUrl: BASE + 'docs/HDSD_Phu_huynh.pdf',
             subject: 'Cô Thảo đã duyệt — bác sẽ nhận thông báo hạnh kiểm của con ' + rr.ten,
             html: '<div style="font-family:Arial,sans-serif;max-width:560px"><img src="' + BASE + 'mascot/chu-nhiem/png/cam-on.png" width="110" style="float:right" alt=""><p>Kính gửi bác,</p><p>Cô Thảo đã duyệt đăng ký của bác. Từ nay, mỗi khi con <b>' + rr.ten + '</b> được cộng hoặc bị trừ điểm, bác sẽ nhận email kèm lời nhắn của cô ạ.</p><p style="clear:both">Hướng dẫn chi tiết dành cho phụ huynh: file PDF đính kèm thư này.</p><p>Cô cảm ơn bác đã luôn đồng hành cùng con ạ!</p></div>' }); }
         r = { ok: true, dangKy: DB.phReg }; write = true; break;
@@ -215,7 +215,7 @@
       case 'saveNotify': DB.thongBao = p; r = { ok: true }; break;
       case 'saveCatalog': if (p.loai === 'Cộng' || p.loai === 'cong') DB.cong = p.items; else DB.tru = p.items; r = { ok: true }; break;
       case 'saveTheme': DB.theme = p.theme; r = { ok: true, theme: p.theme }; break;
-      case 'testMail': r = { ok: true, quota: 99 }; mail({ kind: 'test', to: ME.gvcn.email, from: 'Sổ hạnh kiểm 11D3', subject: 'Thư thử', html: '<p>Thư thử từ sổ hạnh kiểm (chế độ trải nghiệm).</p>' }); break;
+      case 'testMail': r = { ok: true, quota: 99 }; mail({ kind: 'test', to: ME.gvcn.email, from: 'Sổ theo dõi học sinh 11D3', subject: 'Thư thử', html: '<p>Thư thử từ sổ theo dõi học sinh (chế độ trải nghiệm).</p>' }); break;
       default: r = { ok: true };
     }
     if (write) DB.rev++;
