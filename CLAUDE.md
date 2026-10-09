@@ -148,3 +148,17 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **`roadmap.js` (`window.ROADMAP`)**: hộp "Tính năng sắp ra mắt" (Hạnh kiểm & nề nếp = ĐANG DÙNG; Ban giám hiệu, học bạ, học phí, nội quy, hoạt động,
   thông báo = ĐANG PHÁT TRIỂN) — lối vào: màn đăng nhập (`.lgdocs`), menu avatar, trang phụ huynh (cạnh "Tải hướng dẫn").
 - Vai trong demo: `ROLE_T` = Giáo viên chủ nhiệm · Lớp trưởng · Tổ trưởng (tổ 2) · Phụ huynh.
+
+## v4.6 — Số liệu bấm được · mở app vào Ghi điểm · ngày xảy ra
+- **Khối `v46-css` + `v46-js`** (trước `demo-ui.js`). `DRILL.open(o)` = màn chi tiết `#dr46` (nền mờ, ngăn xếp quay lại `‹`, Esc / bấm nền / × đóng):
+  `o.mode` = (mặc định) danh sách ghi nhận `E` ⇒ tổng · biểu đồ lượt trừ/cộng theo tuần · tab Theo học sinh / nội dung / tổ / Từng lượt (bấm ⇒ xem sâu);
+  `'S'` danh sách học sinh `L` + điểm `sc` (bấm ⇒ `openProfile`); `'avg'` điểm TB lớp từng tuần + theo tổ.
+- Bắt **click capture ở document** cho `#vTK`, `#vLS`, `#vBC`, `#v32h` theo cấu trúc (`.kpi` theo nhãn, `.distbar>div` / `.legend>span` lớp `b<i>`,
+  `.toprow[data-dk]` — `topList` gắn `data-dk` = mã HS hoặc nội dung lỗi, tiêu đề mục trước `.register` quyết định loại, `table.bct tr` "Tổ N",
+  `.panelbox` có svg) ⇒ không sửa hàm vẽ. Ngữ cảnh số liệu `ctx(view)`: TK `tkEntries`, LS `lsData`, BC `inP`+`bcXL`, thẻ tổng quan = tuần đang xem.
+  Ô thẻ tổng quan mở chi tiết, nút "Lọc danh sách Ghi điểm" gọi lại bộ lọc cũ (`pass`). Thêm số liệu mới ⇒ thêm nhánh trong listener.
+- **Mở app** (`showApp`, lần đầu, không phải phụ huynh) ⇒ `go('ghi')` + `wkOfDate(hôm nay)` (tuần tính từ thứ Hai, ≤ `soTuan`). Chế độ trải nghiệm:
+  chỉ đổi khi tháng hôm nay = tháng dữ liệu mẫu.
+- **Ngày xảy ra** (`#gc46` trong `hoiGhiChu`, `S.ngay46`): `ghiThucTe` đổi tạm `S.thang/S.tuan` quanh lời gọi đồng bộ (các lớp bên trong đọc đồng bộ trước `await`),
+  ghi chú thêm "ngày dd/mm"; tháng khoá sổ / tương lai / ngoài năm học ⇒ chặn. Đang xem tuần khác tuần hôm nay ⇒ ô ngày để trống (ghi vào tuần đang xem).
+  Số lần tái phạm vẫn tính theo tuần đang xem. `run.js` mục 20.
