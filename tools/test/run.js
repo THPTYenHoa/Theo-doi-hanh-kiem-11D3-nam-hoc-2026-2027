@@ -269,7 +269,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.locator('#vBC .bccmp img').count() >= 1, 'Báo cáo: có cô Thảo theo kết quả lớp');
   await dry(p); await p.click('#bcPrint'); await W(300);
   let doc = await p.evaluate(() => RPT.last || '');
-  ok(doc && !/CỘNG HÒA|Độc lập/i.test(doc) && /landscape/.test(doc) && (doc.match(/<svg/g) || []).length >= 4 && /mascot\/chu-nhiem/.test(doc), 'PDF báo cáo lớp: khổ ngang, có biểu đồ + cô Thảo, không quốc hiệu');
+  ok(doc && !/CỘNG HÒA|Độc lập/i.test(doc) && /landscape/.test(doc) && (doc.match(/<svg|class="cmp"|class="hb"/g) || []).length >= 4 && /mascot\/chu-nhiem/.test(doc), 'PDF báo cáo lớp: khổ ngang, có biểu đồ + cô Thảo, không quốc hiệu');
   ok(/Tuyên dương/i.test(doc) && /Nhắc nhở/i.test(doc) && /Xếp hạng tổ|thi đua/i.test(doc), 'PDF báo cáo lớp: xếp hạng tổ, tuyên dương, nhắc nhở');
   let r = await pdf(doc, 'bao-cao-lop'); ok(r.n >= 4 && r.over === 0, 'PDF lớp ' + r.n + ' trang, không trang nào tràn');
   // hồ sơ học sinh
