@@ -80,7 +80,11 @@
       eyes + brow + '<ellipse cx="33" cy="63" rx="4.6" ry="3" fill="#F4A6A6" opacity=".75"/><ellipse cx="67" cy="63" rx="4.6" ry="3" fill="#F4A6A6" opacity=".75"/>' +
       '<path d="' + E[1] + '" fill="' + (/z$/.test(E[1]) ? '#B8434F' : 'none') + '" stroke="#8A3A3A" stroke-width="2.2" stroke-linecap="round"/>' + extra + '</svg>';
   }
-  function url(emo, st) { return 'mascot/' + st + '/' + emo + '.webp'; }
+  /* v3.6: bộ ảnh 3D thật (mascot/<vai>/<biểu-cảm>.webp). Vai chưa có bộ 3D ⇒ dùng bộ 3D "chu-nhiem" (không trộn 2D với 3D). */
+  var READY = { 'chu-nhiem': 1 };
+  function url(emo, st) { return 'mascot/' + (READY[st] ? st : 'chu-nhiem') + '/' + emo + '.webp'; }
+  /* tải sẵn bộ 3D để lần đầu hiện ra không bị nháy hình */
+  if (typeof Image !== 'undefined') setTimeout(function () { EMO.forEach(function (e) { var u = url(e, 'chu-nhiem'); if (OK[u] !== undefined) return; var t = new Image(); t.onload = function () { OK[u] = true; }; t.onerror = function () { OK[u] = false; }; t.src = u; }); }, 300);
   function img(emo, size, st) {
     var cur = styleId(); if (cur === 'off') return '';
     if (st === 'tour') st = pick() === 'auto' ? 'giang-day' : cur;
@@ -88,11 +92,9 @@
     size = size || 72;
     var u = url(emo, st), id = 'm' + Math.random().toString(36).slice(2, 8);
     var fb = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg(emo, st));
-    if (OK[u] === true) return '<img class="mascot m-' + emo + '" src="' + u + '" width="' + size + '" height="' + size + '" alt="">';
-    if (OK[u] === undefined) {
-      var t = new Image(); t.onload = function () { OK[u] = true; var e = document.getElementById(id); if (e) e.src = u; }; t.onerror = function () { OK[u] = false; }; t.src = u;
-    }
-    return '<img class="mascot m-' + emo + '" id="' + id + '" src="' + fb + '" width="' + size + '" height="' + size + '" alt="">';
+    if (OK[u] === false) return '<img class="mascot m-' + emo + '" src="' + fb + '" width="' + size + '" height="' + size + '" alt="">';
+    /* ảnh 3D trực tiếp; không tải được (mất mạng) ⇒ hình vẽ dự phòng */
+    return '<img class="mascot m3d m-' + emo + '" id="' + id + '" src="' + u + '" width="' + size + '" height="' + size + '" alt="" onerror="this.onerror=null;this.classList.remove(\'m3d\');this.src=\'' + fb + '\'">';
   }
 
   var css = document.createElement('style');
@@ -100,9 +102,9 @@
     '#msc{position:fixed;left:14px;bottom:calc(var(--nav,0px) + env(safe-area-inset-bottom,0px) + 78px);z-index:9000;display:flex;align-items:flex-end;gap:2px;pointer-events:none;' +
     'opacity:0;transform:translateY(18px) scale(.92);transition:opacity .25s,transform .35s cubic-bezier(.2,1.4,.4,1)}' +
     '#msc.on{opacity:1;transform:none;pointer-events:auto}' +
-    '#msc .mascot{width:84px;height:84px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}' +
+    '#msc .mascot{width:108px;height:108px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}' +
     '@keyframes mscb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}' +
-    '#msc .bb{max-width:min(260px,calc(100vw - 120px));margin-bottom:46px;background:#fff;color:#1B333A;border:1px solid #E3ECEE;border-radius:16px 16px 16px 4px;' +
+    '#msc .bb{max-width:min(260px,calc(100vw - 140px));margin-bottom:64px;background:#fff;color:#1B333A;border:1px solid #E3ECEE;border-radius:16px 16px 16px 4px;' +
     'padding:9px 12px;font:600 13.5px/1.45 Aptos,"Segoe UI",system-ui,sans-serif;box-shadow:0 8px 24px rgba(20,40,50,.14);cursor:pointer}' +
     '#msc .bb b{color:var(--teal-d,#0A5C64)}' +
     '@media (min-width:1024px){#msc{left:calc(var(--rail,0px) + 22px);bottom:22px}}' +
@@ -122,12 +124,12 @@
     '.m-cam-on{animation:m-bow 1.6s ease-in-out 2}@keyframes m-bow{0%,100%{transform:rotate(0)}40%{transform:rotate(10deg) translateY(4px)}}' +
     /* màn chờ: cô Thảo chạy trên thanh tiến trình */
     '.mld{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(320px,78vw);margin:0 auto;font-family:Aptos,"Segoe UI",system-ui,sans-serif}' +
-    '.mld-trk{position:relative;width:100%;height:12px;border-radius:99px;background:#E3ECEE;margin-top:78px;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}' +
+    '.mld-trk{position:relative;width:100%;height:12px;border-radius:99px;background:#E3ECEE;margin-top:104px;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}' +
     '.mld-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal-l,#6FBEC5),var(--teal,#0E7C86));transition:width .25s linear}' +
     '.mld-fill::after{content:"";position:absolute;inset:0;border-radius:99px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 8px,transparent 8px 16px);animation:mld-st 0.8s linear infinite}' +
     '@keyframes mld-st{to{background-position:22px 0}}' +
-    '.mld-run{position:absolute;bottom:4px;left:0;width:70px;height:70px;transform:translateX(-50%);transition:left .25s linear}' +
-    '.mld-run .mascot{width:70px;height:70px;animation:mld-bob .36s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}' +
+    '.mld-run{position:absolute;bottom:2px;left:0;width:96px;height:96px;transform:translateX(-50%);transition:left .25s linear}' +
+    '.mld-run .mascot{width:96px;height:96px;animation:mld-bob .36s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}' +
     '@keyframes mld-bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-9px) rotate(-2deg)}}' +
     '.mld-run i{position:absolute;bottom:2px;left:6px;width:10px;height:10px;border-radius:50%;background:#C9D9DD;opacity:0;animation:mld-dust .72s ease-out infinite}' +
     '.mld-run i.d2{animation-delay:.36s;left:12px;width:7px;height:7px}' +
@@ -146,7 +148,7 @@
     if (styleId() === 'off') return;
     var b = document.getElementById('msc');
     if (!b) { b = document.createElement('div'); b.id = 'msc'; document.body.appendChild(b); b.onclick = function () { b.classList.remove('on'); }; }
-    b.innerHTML = img(emo, 84) + (html ? '<div class="bb">' + html + '</div>' : '');
+    b.innerHTML = img(emo, 108) + (html ? '<div class="bb">' + html + '</div>' : '');
     requestAnimationFrame(function () { b.classList.add('on'); });
     clearTimeout(hideT); hideT = setTimeout(function () { b.classList.remove('on'); }, o.ms || 3400);
   }
@@ -154,7 +156,7 @@
   /* MASCOT.loader(host, {msgs:[...], every:ms}) — thanh tiến trình + cô Thảo chạy; trả {done()}. Ảnh mascot/<vai>/chay.webp (WebP động) nếu có. */
   function loader(host, o) {
     o = o || {}; var msgs = o.msgs || ['Đang tải…'], every = o.every || 1800;
-    host.innerHTML = '<div class="mld"><div class="mld-trk"><div class="mld-fill"></div><div class="mld-run">' + img('chay', 70) +
+    host.innerHTML = '<div class="mld"><div class="mld-trk"><div class="mld-fill"></div><div class="mld-run">' + img('chay', 96) +
       '<i class="d1"></i><i class="d2"></i></div></div><div class="mld-pct">0%</div><div class="mld-msg">' + msgs[0] + '</div></div>';
     var p = 0, t0 = Date.now(), mi = 0, fill = host.querySelector('.mld-fill'), run = host.querySelector('.mld-run'),
         pct = host.querySelector('.mld-pct'), msg = host.querySelector('.mld-msg'), tm = null;
@@ -171,7 +173,7 @@
 
   window.MASCOT = {
     loader: loader,
-    EMO: EMO, STYLES: STYLES, BY_THEME: BY_THEME,
+    EMO: EMO, STYLES: STYLES.filter(function (s) { return READY[s.id]; }), ALL_STYLES: STYLES, BY_THEME: BY_THEME,
     say: say, img: img, svg: svg, style: styleId, pick: pick,
     set: function (v) { lsS('hk_mascot', v); }
   };

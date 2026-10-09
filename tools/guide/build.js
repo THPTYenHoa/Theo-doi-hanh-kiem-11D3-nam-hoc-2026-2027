@@ -6,8 +6,8 @@ const img = n => 'data:image/png;base64,' + fs.readFileSync(path.join(SH, n + '.
 const APP = 'thptyenhoa.github.io/Theo-doi-hanh-kiem-11D3-nam-hoc-2026-2027';
 global.window = {}; global.document = { createElement: () => ({ style: {} }), head: { appendChild() {} } }; global.localStorage = { getItem: () => null, setItem() {} };
 require(path.join(ROOT, 'mascot.js')); const M = global.window.MASCOT;
-const chibi = (emo, st) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(M.svg(emo, st || 'kawaii'));
-const VER = '3.4', TODAY = '10/2026';
+const chibi = (emo, st) => { const f = path.join(ROOT, 'mascot/chu-nhiem', emo + '.webp'); return fs.existsSync(f) ? 'data:image/webp;base64,' + fs.readFileSync(f).toString('base64') : 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(M.svg(emo, st || 'kawaii')); };   /* v3.6: ảnh 3D */
+const VER = '3.6', TODAY = '10/2026';
 
 const CSS = `
 @page{size:1280px 720px;margin:0}
