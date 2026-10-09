@@ -105,3 +105,12 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **Email phụ huynh**: gửi tới cột Email (F) của học sinh sau mỗi `addEntries` (`guiPhuHuynh_`, ảnh `mascot/chu-nhiem/png/*.png`, link `phu-huynh.html#hs=MA&tb=ids` ⇒
   thẻ "Thông báo mới" + PDF thông báo). Phụ huynh **tự đăng ký** (`phDangKy` mã 6 số ▸ `phXacNhan` ▸ GVCN `phDuyet` trong Cài đặt), hủy nhận bằng link ký HMAC.
   Cài đặt `savePhMail` {on, cong}. Mock: `{khoa:{10:{…}}, phReg:[…]}`, mã đúng `123456`.
+
+## v3.8 — Báo cô khi phụ huynh đăng ký
+- Backend `phXacNhan` ⇒ email báo các tài khoản vai trò **GVCN** (không báo quản trị), link `APP_URL#duyet`; `sync` trả `phReg` cho GVCN.
+- App (`v38-js`): `phCheck` ⇒ thẻ `#phNew` (Duyệt ngay / Để sau) + chấm đỏ `.navbdg` ở Cài đặt; đã thấy lưu `hk_phreg_seen`; `#duyet` ⇒ `phOpen()`.
+- Duyệt: `phDuyet` gửi `pdfVer` (`PH_PDF_VER`, **tăng khi dựng lại `docs/HDSD_Phu_huynh.pdf`**); máy chủ chưa có bản đúng ⇒ lỗi "Cần gửi kèm file hướng dẫn"
+  ⇒ app gửi `pdf` (base64), máy chủ lưu vào thư mục Drive bằng chứng (`hk_ph_pdf`) và đính kèm thư duyệt. Không dùng UrlFetchApp (tránh xin quyền mới).
+  Mock: `M.phNew(ma,email)` giả lập phụ huynh đăng ký.
+- **Bộ trang phục khác của cô Thảo**: prompt `docs/prompt-chibi-3d.md` ▸ Bước 5 (9 bộ × ảnh gốc + 8 biểu cảm: `1..8.png` = chao, vui, khen-lon, co-vu, buon, nghiem,
+  chi-tay, cam-on). Nhận ảnh ⇒ tách nền như v3.6 vào `mascot/<vai>/` + khai báo `READY['<vai>']=[…]` (mascot.js; thiếu biểu cảm ⇒ dùng `chu-nhiem`).

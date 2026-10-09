@@ -310,6 +310,27 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.screenshot({ path: path.join(OUT, 'ph-dangky.png'), fullPage: true });
   await p.context().close();
 
+  // 17. v3.8 — phụ huynh đăng ký ⇒ báo cô Thảo; duyệt ⇒ gửi kèm PDF hướng dẫn
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(300);
+  p.M.phNew('HS07', 'me.hs07@example.com'); await p.waitForSelector('#phNew', { timeout: 20000 }).catch(() => {});
+  ok(await p.isVisible('#phNew') && /HS07|đăng ký/.test(await p.textContent('#phNew')), 'phụ huynh đăng ký ⇒ màn hình cô hiện thẻ "Phụ huynh vừa đăng ký" (không cần tải lại)');
+  ok(/1/.test(await p.textContent('#railNav [data-v="cai"] .navbdg').catch(() => '')), 'chấm đỏ số đăng ký chờ duyệt ở menu Cài đặt');
+  await p.screenshot({ path: path.join(OUT, 'ph-new.png') });
+  await p.click('#phGo'); await W(900);
+  ok(await p.evaluate(() => S.view === 'cai') && await p.isVisible('#vCai .phreg [data-ok]'), '"Duyệt ngay" ⇒ mở Cài đặt ▸ Phụ huynh chờ duyệt');
+  const rid = await p.evaluate(() => S.phReg[0].id);
+  await p.click(`#vCai [data-ok="${rid}"]`); await W(2500);
+  const dc = p.M.CALLS.filter(c => c.a === 'phDuyet');
+  ok(dc.length === 2 && !dc[0].p.pdf && dc[1].p.pdf && p.M.pdfLen > 100000, 'duyệt: máy chủ chưa có hướng dẫn ⇒ app tự gửi kèm PDF hướng dẫn phụ huynh');
+  ok(!(await p.isVisible('#railNav [data-v="cai"] .navbdg')) && /hướng dẫn/.test(await p.textContent('#toast').catch(() => '')), 'duyệt xong: hết chấm đỏ, báo đã gửi email kèm hướng dẫn');
+  p.M.phNew('HS08', 'me.hs08@example.com'); await W(7000); await p.evaluate(() => { const r = S.phReg[0]; if (r) document.querySelector(`#vCai [data-ok="${r.id}"]`).click(); }); await W(2000);
+  ok(p.M.CALLS.filter(c => c.a === 'phDuyet').length === 3, 'lần duyệt sau: máy chủ đã có PDF ⇒ không gửi lại file');
+  await p.context().close();
+  p = await P({ as: 'gvcn', phReg: [{ id: 'R1', ma: 'HS02', ten: 'Trần Gia Chi', email: 'x@example.com', at: '2026-10-09 09:00' }] }); await p.goto(U + '#duyet'); await p.waitForSelector('#app.on'); await W(2500);
+  ok(await p.evaluate(() => S.view === 'cai') && await p.isVisible('#vCai .phreg [data-ok="R1"]'), 'link "Mở sổ để duyệt" trong email ⇒ vào thẳng mục duyệt');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');

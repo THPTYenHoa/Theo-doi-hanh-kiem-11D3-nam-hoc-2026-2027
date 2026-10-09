@@ -81,8 +81,11 @@
       '<path d="' + E[1] + '" fill="' + (/z$/.test(E[1]) ? '#B8434F' : 'none') + '" stroke="#8A3A3A" stroke-width="2.2" stroke-linecap="round"/>' + extra + '</svg>';
   }
   /* v3.6: bộ ảnh 3D thật (mascot/<vai>/<biểu-cảm>.webp). Vai chưa có bộ 3D ⇒ dùng bộ 3D "chu-nhiem" (không trộn 2D với 3D). */
+  /* v3.8: bộ trang phục khác có thể chưa đủ biểu cảm — READY[vai] = 1 (đủ) hoặc danh sách biểu cảm đã có; thiếu ⇒ dùng ảnh "chu-nhiem".
+     Thêm bộ mới: thư mục mascot/<vai>/<biểu-cảm>.webp + khai báo ở đây (prompt: docs/prompt-chibi-3d.md ▸ Bước 5). */
   var READY = { 'chu-nhiem': 1 };
-  function url(emo, st) { return 'mascot/' + (READY[st] ? st : 'chu-nhiem') + '/' + emo + '.webp'; }
+  function has(st, emo) { var r = READY[st]; return r === 1 || (r && r.indexOf(emo) >= 0); }
+  function url(emo, st) { return 'mascot/' + (has(st, emo) ? st : 'chu-nhiem') + '/' + emo + '.webp'; }
   /* tải sẵn bộ 3D để lần đầu hiện ra không bị nháy hình */
   if (typeof Image !== 'undefined') setTimeout(function () { EMO.forEach(function (e) { var u = url(e, 'chu-nhiem'); if (OK[u] !== undefined) return; var t = new Image(); t.onload = function () { OK[u] = true; }; t.onerror = function () { OK[u] = false; }; t.src = u; }); }, 300);
   function img(emo, size, st) {

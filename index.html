@@ -2934,7 +2934,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.7"></script>
+<script src="updates/notes.js?v=3.8"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2947,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.7';
+const HK_VER='3.8';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -4603,5 +4603,80 @@ window.openProfile=openProfile=async function(ma,ky){
 };
 </script>
 
+<style id="v38-css">
+#phNew{position:fixed;right:18px;top:74px;z-index:400;width:min(380px,calc(100vw - 32px));background:#fff;border:1.5px solid var(--teal);border-radius:16px;
+  box-shadow:0 18px 40px rgba(20,40,50,.18);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;animation:phIn .35s ease}
+#phNew img,#phNew svg{flex:none}
+#phNew > div > b{display:block;color:var(--teal-d);font-size:15px;margin-bottom:3px}
+#phNew p{margin:0 0 10px;font-size:13.5px;line-height:1.5;color:#33494F}
+#phNew .bt{display:flex;gap:8px}
+#phNew .bt button{height:36px;padding:0 14px;border-radius:10px;font-weight:700;font-size:13.5px;border:1px solid #CFDDE0;background:#fff;color:var(--teal-d)}
+#phNew .bt .go{background:var(--teal);border-color:var(--teal);color:#fff}
+@keyframes phIn{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+.navbdg{position:absolute;top:4px;right:10px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#C0392B;color:#fff;font-size:11px;font-weight:800;line-height:18px;text-align:center}
+#railNav [data-v="cai"]{position:relative}
+.phreg.flash{animation:phFl 1.6s ease 2}
+@keyframes phFl{50%{box-shadow:0 0 0 4px rgba(14,124,134,.35)}}
+@media (max-width:760px){ #phNew{top:auto;bottom:calc(76px + env(safe-area-inset-bottom,0px));right:16px} }
+</style>
+<script id="v38-js">
+/* ══ v3.8 — PHỤ HUYNH ĐĂNG KÝ ⇒ BÁO CÔ THẢO ══
+   · Backend gửi danh sách chờ duyệt (phReg) trong bootstrap + sync (chỉ GVCN) ⇒ có đăng ký mới: thẻ #phNew + chấm đỏ ở Cài đặt; email báo cô (backend).
+   · Link trong email: APP_URL#duyet ⇒ mở sổ xong tự vào Cài đặt ▸ Phụ huynh chờ duyệt.
+   · Duyệt: gửi pdfVer; máy chủ chưa có PDF hướng dẫn đúng phiên bản ⇒ "Cần gửi kèm file hướng dẫn" ⇒ app tải docs/HDSD_Phu_huynh.pdf, gửi kèm (base64) rồi gọi lại. */
+const PH_PDF_VER='3.8';
+let phSeen=[]; try{ phSeen=JSON.parse(localStorage.getItem('hk_phreg_seen')||'[]'); }catch(_){}
+function phBadge(){
+  const n=(isGVCN()&&S.phReg)?S.phReg.length:0;
+  $$('#railNav [data-v="cai"],#tabbar [data-v="cai"]').forEach(b=>{ let d=b.querySelector('.navbdg'); if(!n){ if(d) d.remove(); return; } if(!d){ d=document.createElement('span'); d.className='navbdg'; b.appendChild(d); } d.textContent=n; });
+}
+function phCheck(){
+  if(!S.me||!isGVCN()) return; phBadge();
+  const neu=(S.phReg||[]).filter(r=>phSeen.indexOf(r.id)<0); if(!neu.length) return;
+  phSeen=phSeen.concat(neu.map(r=>r.id)).slice(-200); try{ localStorage.setItem('hk_phreg_seen',JSON.stringify(phSeen)); }catch(_){}
+  if(S.view==='cai'){ renderCai(); return; }
+  const r=neu[neu.length-1], k=neu.length;
+  let c=$('#phNew'); if(c) c.remove(); c=document.createElement('div'); c.id='phNew'; c.setAttribute('role','alert');
+  c.innerHTML=(window.MASCOT?MASCOT.img('chi-tay',58):'')+`<div><b>${k>1?k+' phụ huynh vừa đăng ký':'Phụ huynh vừa đăng ký'}</b>
+    <p>${k>1?'Trong đó có phụ huynh của <b>'+esc(r.ten)+'</b>. ':'Phụ huynh của <b>'+esc(r.ten)+'</b> ('+esc(r.email)+') '}muốn nhận email thông báo hạnh kiểm. Cô duyệt giúp nhé!</p>
+    <div class="bt"><button class="go" id="phGo">Duyệt ngay</button><button id="phLater">Để sau</button></div></div>`;
+  document.body.appendChild(c);
+  $('#phGo').onclick=()=>{ c.remove(); phOpen(); };
+  $('#phLater').onclick=()=>c.remove();
+}
+async function phOpen(){
+  await go('cai'); setTimeout(()=>{ const x=$('#vCai .phreg'); if(!x) return; const h=x.previousElementSibling||x; h.scrollIntoView({block:'start',behavior:'smooth'}); x.classList.add('flash'); setTimeout(()=>x.classList.remove('flash'),3400); },250);
+}
+const b64=buf=>{ let s='', a=new Uint8Array(buf); for(let i=0;i<a.length;i+=0x8000) s+=String.fromCharCode.apply(null,a.subarray(i,i+0x8000)); return btoa(s); };
+async function phDuyet(id,ok,btn){
+  if(btn){ btn.disabled=true; btn.textContent=ok?'Đang gửi…':'Đang xử lý…'; }
+  try{
+    let r;
+    try{ r=await api('phDuyet',{id,ok,pdfVer:PH_PDF_VER}); }
+    catch(e){ if(!/kèm file hướng dẫn/.test(e.message)) throw e;
+      const f=await fetch('docs/HDSD_Phu_huynh.pdf?v='+PH_PDF_VER); if(!f.ok) throw new Error('Chưa tải được file hướng dẫn phụ huynh.');
+      r=await api('phDuyet',{id,ok,pdfVer:PH_PDF_VER,pdf:b64(await f.arrayBuffer())}); }
+    S.phReg=r.dangKy||[]; if(ok){ try{ await boot(true); }catch(_){} }
+    renderCai(); phBadge(); toast(ok?'Đã duyệt — phụ huynh nhận email xác nhận kèm hướng dẫn (PDF).':'Đã từ chối.');
+  }catch(e){ err(e); if(btn){ btn.disabled=false; btn.textContent=ok?'Duyệt':'Từ chối'; } }
+}
+const renderCai38=renderCai;
+window.renderCai=renderCai=function(){
+  renderCai38.apply(this,arguments);
+  $$('#vCai [data-ok]').forEach(b=>b.onclick=()=>phDuyet(b.dataset.ok,true,b));
+  $$('#vCai [data-rj]').forEach(b=>b.onclick=()=>phDuyet(b.dataset.rj,false,b));
+  const n=$('#phNew'); if(n) n.remove(); phBadge();
+};
+const applyBase38=applyBase;
+window.applyBase=applyBase=function(b){ applyBase38.apply(this,arguments); setTimeout(phCheck,600); };
+const rawApi38=rawApi;
+window.rawApi=rawApi=async function(){ const r=await rawApi38.apply(this,arguments);
+  if(r && Array.isArray(r.phReg) && S.me && isGVCN()){ const was=JSON.stringify((S.phReg||[]).map(x=>x.id)); S.phReg=r.phReg; if(was!==JSON.stringify(r.phReg.map(x=>x.id))){ if(S.view==='cai') renderCai(); phCheck(); } }
+  return r; };
+const renderAll38=renderAll;
+window.renderAll=renderAll=function(){ renderAll38.apply(this,arguments); phBadge(); };
+/* link "Mở sổ để duyệt" trong email */
+if(location.hash==='#duyet'){ (function w(n){ if($('#app.on') && S.me){ history.replaceState(null,'',location.pathname+location.search); if(isGVCN()) phOpen(); return; } if(n<120) setTimeout(()=>w(n+1),250); })(0); }
+</script>
 </body>
 </html>

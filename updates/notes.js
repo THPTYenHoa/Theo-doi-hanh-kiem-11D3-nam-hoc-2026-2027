@@ -1,6 +1,19 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v3.8", version: "3.8", date: "2026-10-14",
+    title: "Phụ huynh đăng ký — cô Thảo được báo ngay",
+    summary: "Có phụ huynh đăng ký nhận email, màn hình cô hiện thông báo và cô nhận email báo. Cô duyệt xong, phụ huynh nhận thư xác nhận kèm file hướng dẫn (PDF).",
+    items: [
+      { type: "new", title: "Báo cô khi có phụ huynh đăng ký",
+        text: "Phụ huynh xác nhận mã xong ⇒ màn hình cô hiện thẻ <b>Phụ huynh vừa đăng ký</b> (không cần tải lại), menu <b>Cài đặt</b> có chấm đỏ, và cô nhận email báo. Bấm <b>Duyệt ngay</b> (hoặc nút <b>Mở sổ để duyệt</b> trong email) ⇒ vào thẳng mục Phụ huynh chờ duyệt.",
+        img: "updates/v3.8/bao-co.jpg" },
+      { type: "new", title: "Duyệt xong, phụ huynh nhận hướng dẫn PDF",
+        text: "Cô bấm <b>Duyệt</b> ⇒ phụ huynh nhận email \"Cô Thảo đã duyệt\" kèm <b>file hướng dẫn dành cho phụ huynh (PDF)</b> và nút xem sổ của con. Từ đó các bác nhận thông báo mỗi khi con được cộng / bị trừ điểm.",
+        img: "updates/v3.8/duyet.jpg" }
+    ]
+  },
+  {
     id: "2026-10-13-v3.7", version: "3.7", date: "2026-10-13",
     title: "Chốt tháng, báo cáo có biểu đồ, email cho phụ huynh",
     summary: "Cô chủ nhiệm chốt hạnh kiểm tháng (chốt xong không ai sửa / xoá được nữa). Báo cáo lớp và hồ sơ từng học sinh xuất PDF khổ ngang có biểu đồ, số liệu so với kỳ trước và hình cô Thảo. Phụ huynh đăng ký email để nhận thông báo mỗi khi con được cộng / bị trừ điểm.",
