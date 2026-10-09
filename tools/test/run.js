@@ -191,9 +191,9 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/Trong tháng 10\/2026, lớp/.test(await p.inputValue('#bcNx')), 'nhận xét chung tự soạn từ số liệu');
   await p.fill('#bcPh', 'Phương hướng cô tự viết'); await p.evaluate(() => { document.activeElement.blur(); renderAll(); });
   ok(await p.inputValue('#bcPh') === 'Phương hướng cô tự viết', 'nội dung cô sửa được giữ lại');
-  await p.evaluate(() => { window.print = () => { window.__pr = 1; }; }); await p.click('#bcPrint'); await W(200);
-  const pr = await p.evaluate(() => document.querySelector('#printArea').textContent);
-  ok(/CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM/.test(pr) && /Phương hướng cô tự viết/.test(pr) && /GIÁO VIÊN CHỦ NHIỆM/.test(pr), 'bản in: quốc hiệu, nội dung đã sửa, chữ ký GVCN');
+  await p.evaluate(() => { const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); }); await p.click('#bcPrint'); await W(200);
+  const pr = await p.evaluate(() => RPT.last || '');
+  ok(!/CỘNG HÒA XÃ HỘI CHỦ NGHĨA/.test(pr) && /Phương hướng cô tự viết/.test(pr) && /chủ nhiệm/i.test(pr), 'bản in (v3.7 khổ ngang): không quốc hiệu, có nội dung cô sửa, chữ ký GVCN');
   for (const k of ['tuan', 'hk', 'nam']) { await p.click(`#vBC [data-bk=${k}]`); await W(250); }
   ok(/Cả năm học/.test(await p.textContent('#vBC .bchead')), 'đổi kỳ: tuần / học kỳ / cả năm');
   const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#bcXls')]);
@@ -237,6 +237,77 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.context().close();
   p = await P({ mobile: true, lag: 5000 }); await p.goto(PH); await W(2500);
   ok(/Các bác chờ chút ạ/.test(await p.textContent('#main')) && await p.isVisible('.mld-run'), 'trang phụ huynh: "Các bác chờ chút ạ…"');
+  await p.context().close();
+
+  // 16. v3.7 — chốt tháng, báo cáo ngang, email phụ huynh
+  const fs = require('fs'), path = require('path'), OUT = path.join(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
+  const dry = pg => pg.evaluate(() => { const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); });
+  const pdf = async (doc, name) => { const f = path.join(OUT, name + '.html'); fs.writeFileSync(f, doc.replace(/<base href="[^"]*">/, '<base href="http://127.0.0.1:8768/">'));
+    const q = await b.newPage(); await q.goto('file://' + f); await q.waitForLoadState('networkidle'); await W(400);
+    await q.pdf({ path: path.join(OUT, name + '.pdf'), width: '297mm', height: '210mm', printBackground: true });
+    const n = await q.evaluate(() => document.querySelectorAll('.pg').length);
+    const over = await q.evaluate(() => [...document.querySelectorAll('.pg')].filter(g => g.scrollHeight > g.clientHeight + 2).length);
+    await q.setViewportSize({ width: 1123, height: 794 }); await q.screenshot({ path: path.join(OUT, name + '.png'), fullPage: true }); await q.close(); return { n, over }; };
+  p = await P({ as: 'gvcn' }); p.on('dialog', d => d.accept()); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('bang'); }); await W(600);
+  ok(await p.isVisible('#vBang .lkb.go [data-lk="1"]'), 'GVCN: thanh "Chốt tháng 10" ở Bảng tổng hợp');
+  await p.click('#vBang [data-lk="1"]'); await W(700);
+  ok(p.M.khoa[10] && await p.isVisible('#vBang .lkb:not(.go)') && /đã chốt/.test(await p.textContent('#vBang .lkb')), 'chốt tháng ⇒ máy chủ lưu + dải "đã chốt hạnh kiểm"');
+  const id10 = await p.evaluate(() => S.entries.find(e => e[E_THANG] === 10)[E_ID]);
+  const nE = p.M.D.entries.length;
+  await p.evaluate(id => delEntry(id), id10); await W(500);
+  ok(p.M.D.entries.length === nE && !p.M.CALLS.some(c => c.a === 'deleteEntry'), 'tháng đã chốt: không xoá được ghi nhận (chặn ngay trên máy)');
+  await p.evaluate(() => { go('ghi'); }); await W(400);
+  ok(await p.isVisible('#vGhi .lkb'), 'màn Ghi điểm báo tháng đã chốt');
+  await p.evaluate(() => addEntry && addEntry()); await W(300);
+  ok(!p.M.CALLS.some(c => c.a === 'addEntries'), 'tháng đã chốt: không thêm được điểm');
+  await p.evaluate(() => go('bang')); await W(400); await p.click('#vBang [data-lk="0"]'); await W(700);
+  ok(!p.M.khoa[10], 'GVCN mở khoá được tháng');
+  // báo cáo
+  await p.evaluate(() => go('bc')); await W(700);
+  ok(await p.isVisible('#vBC .bccmp') && await p.isVisible('#vBC .totop'), 'Báo cáo: thẻ so sánh kỳ trước + tổ dẫn đầu / cố lên');
+  ok(await p.locator('#vBC .bccmp img').count() >= 1, 'Báo cáo: có cô Thảo theo kết quả lớp');
+  await dry(p); await p.click('#bcPrint'); await W(300);
+  let doc = await p.evaluate(() => RPT.last || '');
+  ok(doc && !/CỘNG HÒA|Độc lập/i.test(doc) && /landscape/.test(doc) && (doc.match(/<svg|class="cmp"|class="hb"/g) || []).length >= 4 && /mascot\/chu-nhiem/.test(doc), 'PDF báo cáo lớp: khổ ngang, có biểu đồ + cô Thảo, không quốc hiệu');
+  ok(/Tuyên dương/i.test(doc) && /Nhắc nhở/i.test(doc) && /Xếp hạng tổ|thi đua/i.test(doc), 'PDF báo cáo lớp: xếp hạng tổ, tuyên dương, nhắc nhở');
+  let r = await pdf(doc, 'bao-cao-lop'); ok(r.n >= 4 && r.over === 0, 'PDF lớp ' + r.n + ' trang, không trang nào tràn');
+  // hồ sơ học sinh
+  await p.evaluate(() => openProfile('HS03')); await W(600);
+  await p.click('#pfPr'); await W(300); doc = await p.evaluate(() => RPT.last || '');
+  ok(/Báo cáo hạnh kiểm học sinh/.test(doc) && /Lỗi thường mắc/.test(doc) && (doc.match(/<svg/g) || []).length >= 2, 'PDF hồ sơ học sinh: biểu đồ, lỗi thường mắc, khen thưởng');
+  r = await pdf(doc, 'hoc-sinh'); ok(r.over === 0, 'PDF học sinh ' + r.n + ' trang, không tràn');
+  doc = await p.evaluate(() => RPT.open(RPT.student({ cfg: S.cfg, students: S.students, entries: S.entries, remarks: S.remarks }, 'HS03', { k: 'hk', n: 1 }, {}), 'x', { dry: true }));
+  r = await pdf(doc, 'hoc-sinh-hk1'); ok(r.over === 0 && /Học kỳ I/.test(doc), 'PDF học sinh theo học kỳ');
+  // cài đặt email phụ huynh + duyệt
+  p.M.phReg.push({ id: 'R9', ma: 'HS05', ten: 'Hoàng Bảo Hằng', email: 'bo.hs05@example.com', at: '2026-10-08 09:00' });
+  await p.evaluate(() => closePanel()); await W(300); await p.evaluate(() => boot(true)); await W(500); await p.evaluate(() => go('cai')); await W(600);
+  ok(await p.isVisible('#phOn') && await p.isVisible('#vCai [data-ok="R9"]'), 'Cài đặt: email phụ huynh + danh sách chờ duyệt');
+  await p.click('#vCai [data-ok="R9"]'); await W(900);
+  ok(/bo\.hs05@example\.com/.test(p.M.D.students.find(s => s.ma === 'HS05').email) && !(await p.isVisible('#vCai [data-ok="R9"]')), 'GVCN duyệt ⇒ email vào ô Email phụ huynh của học sinh');
+  await p.context().close();
+  // tổ trưởng không thấy nút chốt; máy chủ cũng chặn
+  p = await P({ as: 'tt', khoa: { 10: { by: 'Nguyễn Thu Thảo', at: '2026-10-31 16:00' } } }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('ghi'); }); await W(500);
+  ok(await p.isVisible('#vGhi .lkb') && !(await p.isVisible('#vGhi [data-lk]')), 'tổ trưởng: thấy tháng đã chốt, không có nút mở khoá');
+  await p.context().close();
+  // trang phụ huynh: đăng ký email, link thông báo, PDF
+  p = await P({ mobile: true }); await p.goto(PH + '#hs=HS03&tb=E1'); await W(1500);
+  const e1 = p.M.D.entries.find(e => e[0] === 'E1');
+  p.M.D.entries.forEach(e => { if (e[4] === 'HS03' && !p.M.tb) { p.M.tb = e[0]; } });
+  await p.evaluate(t => { location.hash = 'hs=HS03&tb=' + t; }, p.M.tb); await W(700);
+  ok(await p.isVisible('.tbc') && await p.isVisible('#tbPdf'), 'phụ huynh mở link email ⇒ thẻ "Thông báo mới từ cô Thảo" + Tải PDF');
+  await dry(p); await p.click('#tbPdf'); await W(300); doc = await p.evaluate(() => RPT.last || '');
+  ok(/Cô Thảo xin cập nhật cho các bác/.test(doc) && /mascot\/chu-nhiem/.test(doc) && /landscape/.test(doc), 'PDF thông báo phụ huynh: ngang, lời cô Thảo, ảnh cô');
+  r = await pdf(doc, 'thong-bao'); ok(r.n === 1 && r.over === 0, 'PDF thông báo: 1 trang, không tràn');
+  await p.click('#pdf'); await W(300); doc = await p.evaluate(() => RPT.last || '');
+  ok(/Báo cáo hạnh kiểm học sinh/.test(doc) && /Cô cảm ơn các bác|Cô mong các bác/.test(doc), 'phụ huynh: PDF báo cáo của con (lời gửi các bác)');
+  await p.fill('#rgE', 'me.hs03@example.com'); await p.click('#rgS'); await W(500);
+  ok(await p.isVisible('#rgK'), 'đăng ký email: gửi mã ⇒ hiện ô nhập mã');
+  await p.fill('#rgK', '111111'); await p.click('#rgV'); await W(400); ok(/chưa đúng/.test(await p.textContent('#rgM')), 'mã sai ⇒ báo lỗi');
+  await p.fill('#rgK', '123456'); await p.click('#rgV'); await W(500);
+  ok(/duyệt/.test(await p.textContent('#rgM')) && p.M.phReg.some(x => x.email === 'me.hs03@example.com' && x.ma === 'HS03'), 'mã đúng ⇒ vào danh sách chờ cô Thảo duyệt');
+  await p.screenshot({ path: path.join(OUT, 'ph-dangky.png'), fullPage: true });
   await p.context().close();
 
   // 9. trang phụ huynh

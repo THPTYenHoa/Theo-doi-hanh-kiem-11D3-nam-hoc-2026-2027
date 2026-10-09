@@ -1,6 +1,25 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-13-v3.7", version: "3.7", date: "2026-10-13",
+    title: "Chốt tháng, báo cáo có biểu đồ, email cho phụ huynh",
+    summary: "Cô chủ nhiệm chốt hạnh kiểm tháng (chốt xong không ai sửa / xoá được nữa). Báo cáo lớp và hồ sơ từng học sinh xuất PDF khổ ngang có biểu đồ, số liệu so với kỳ trước và hình cô Thảo. Phụ huynh đăng ký email để nhận thông báo mỗi khi con được cộng / bị trừ điểm.",
+    items: [
+      { type: "new", title: "Chốt hạnh kiểm tháng",
+        text: "GVCN vào <b>Bảng tổng hợp</b> (hoặc Báo cáo tháng) ▸ bấm <b>Chốt tháng</b>. Từ lúc đó mọi ghi nhận, nhận xét, bằng chứng của tháng đó chỉ còn xem — không thêm, sửa, xoá được. Cô bấm <b>Mở khoá</b> nếu cần chỉnh lại.",
+        img: "updates/v3.7/chot-thang.jpg" },
+      { type: "new", title: "Báo cáo lớp: biểu đồ + so với kỳ trước",
+        text: "Menu <b>Báo cáo</b> có thẻ so sánh kỳ này / kỳ trước (▲ tốt lên, ▼ kém đi), tổ dẫn đầu và tổ cần cố gắng, cô Thảo đổi nét mặt theo kết quả lớp. Bấm <b>In / Lưu PDF</b> ⇒ file khổ ngang: số liệu, biểu đồ, xếp hạng tổ, tuyên dương, nhắc nhở, nhận xét (không còn quốc hiệu).",
+        img: "updates/v3.7/bao-cao.jpg" },
+      { type: "new", title: "PDF riêng từng học sinh",
+        text: "Chạm tên học sinh ▸ chọn tháng / học kỳ / cả năm ▸ <b>Tải PDF báo cáo</b>: điểm từng tuần, cộng / trừ, lỗi thường mắc, khen thưởng, nhận xét của cô, so với kỳ trước. Phụ huynh tải được ở trang phụ huynh.",
+        img: "updates/v3.7/hoc-sinh.jpg" },
+      { type: "new", title: "Phụ huynh nhận email khi con được cộng / bị trừ điểm",
+        text: "Ở trang phụ huynh, các bác mở hồ sơ của con ▸ <b>Nhận thông báo qua email</b> ▸ nhập email ▸ nhập mã 6 số ⇒ cô duyệt trong <b>Cài đặt ▸ Phụ huynh chờ duyệt</b>. Thư có lời cô Thảo theo tình huống và nút mở <b>PDF thông báo</b> khổ ngang.",
+        img: "updates/v3.7/phu-huynh.jpg" }
+    ]
+  },
+  {
     id: "2026-10-12-v3.6", version: "3.6", date: "2026-10-12",
     title: "Cô Thảo 3D siêu cute",
     summary: "Toàn bộ hình cô Thảo đổi sang bộ ảnh 3D mới — vẫy tay chào, vỗ tay khi các con được khen, buồn, nghiêm, giận dễ thương, chạy ở màn chờ…",

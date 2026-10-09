@@ -19,11 +19,14 @@ async function mark(p, list) {
     });
   }, list);
 }
+const rptPng = async (b, doc, name) => { const f = path.join(OUT, '_' + name + '.html'); fs.writeFileSync(f, doc.replace(/<base href="[^"]*">/, '<base href="' + U + '">'));
+  const q = await b.newPage(); await q.goto('file://' + f); await q.waitForLoadState('networkidle'); await W(400); await q.pdf({ path: path.join(OUT, '_' + name + '.pdf'), width: '297mm', height: '210mm', printBackground: true }); await q.close();
+  require('child_process').execSync(`pdftoppm -r 90 -png -f 1 -l 1 "${path.join(OUT, '_' + name + '.pdf')}" "${path.join(OUT, name)}" && mv "${path.join(OUT, name + '-1.png')}" "${path.join(OUT, name + '.png')}"`); console.log('📸', name); };
 const shot = async (p, name, marks) => { if (marks) await mark(p, marks); await W(150); await p.screenshot({ path: path.join(OUT, name + '.png') }); await p.evaluate(() => document.querySelectorAll('.gmk').forEach(x => x.remove())); console.log('📸', name); };
 const closeUpd = p => p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
 const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip'))) { const o = await p.$('#pBody .item, #pBody button.btn'); if (o) await o.click(); await W(250); } };
 (async () => {
-  const b = await chromium.launch(); const IMG = fs.readFileSync('/tmp/claude-0/prod.jpg');
+  const b = await chromium.launch(); const IMG = fs.readFileSync(path.join(__dirname, 'mau', 'so-giam-thi.jpg'));
   // đăng nhập
   let p = await newPage(b, { mobile: true }); await p.goto(U + 'index.html'); await W(600);
   await p.fill('#lgEm', 'loptruong@example.com'); await shot(p, 'login1', [['#lgEm', 1], ['#lgGo', 2], ['a.lgph', 3]]);
@@ -39,7 +42,7 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.locator('#listGhi .row').nth(5).click(); await W(400);
   await shot(p, 'student', [['#pBody .seg', 1], ['#pBody [data-add="T06"]', 2]]);
   await p.click('#pBody [data-add="T06"]'); await skipNote(p);
-  const [fc] = await Promise.all([p.waitForEvent('filechooser'), p.click('#evFile')]); await fc.setFiles({ name: 'bien-ban.jpg', mimeType: 'image/jpeg', buffer: IMG }); await W(500);
+  const [fc] = await Promise.all([p.waitForEvent('filechooser'), p.click('#evFile')]); await fc.setFiles({ name: 'so-giam-thi.jpg', mimeType: 'image/jpeg', buffer: IMG }); await W(500);
   await shot(p, 'note', [['#gcTxt', 1], ['#gcMic', 2, 'tr'], ['#pBody .evpick .row2', 3], ['#gcSave', 4, 'tr']]);
   await p.click('#gcSave'); await W(900);
   await shot(p, 'saved', [['#toast', 1], ['#msc', 2]]); await W(2600);
@@ -53,6 +56,10 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.evaluate(() => exitMulti()); await W(200);
   await p.evaluate(() => go('bang')); await W(500);
   await shot(p, 'bang', [['#vBang .segbar', 1], ['#vBang .viewtoggle', 2], ['#vBang .hkcard', 3]]);
+  /* v3.7: chốt tháng */
+  p.once('dialog', d => d.accept()); await p.click('#vBang [data-lk="1"]'); await W(900); await p.evaluate(() => { const m = document.getElementById('msc'); if (m) m.style.display = 'none'; });
+  await shot(p, 'lock', [['#vBang .lkb', 1], ['#vBang .lkb button', 2, 'tr']]);
+  p.once('dialog', d => d.accept()); await p.click('#vBang [data-lk="0"]'); await W(900);
   await p.evaluate(() => openProfile('HS03')); await W(800);
   await shot(p, 'profile', [['#pBody .pf-seg', 1], ['#pBody .pf-res', 2], ['#pfNx', 3], ['#pfPr', 4]]);
   await p.click('#pfNx'); await W(500); const rm = await p.$('#mRemark'); if (rm) { await rm.click(); await W(500); }
@@ -95,9 +102,10 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await shot(p, 'd_bc2', [['#vBC .bct', 1], ['#vBC .bcgrid > div:nth-child(2) .register', 2]]);
   await p.evaluate(() => { document.querySelector('#bcNx').scrollIntoView({ block: 'center' }); }); await W(300);
   await shot(p, 'd_bc3', [['#bcNx', 1], ['#bcPh', 2], ['#vBC [data-auto]', 3, 'tr']]);
-  await p.evaluate(() => { window.print = () => {}; bcPrint(bcPeriod()); }); await W(300); await p.emulateMedia({ media: 'print' });
-  await p.pdf({ path: path.join(OUT, '_bc.pdf'), format: 'A4', margin: { top: '15mm', bottom: '15mm', left: '18mm', right: '15mm' } });
-  require('child_process').execSync(`pdftoppm -r 90 -png -f 1 -l 1 "${path.join(OUT, '_bc.pdf')}" "${path.join(OUT, 'bc_print')}" && mv "${path.join(OUT, 'bc_print-1.png')}" "${path.join(OUT, 'bc_print.png')}"`); console.log('📸 bc_print');
+  await p.evaluate(() => { const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); bcPrint(bcPeriod()); }); await W(300);
+  await rptPng(b, await p.evaluate(() => RPT.last), 'bc_print');
+  await p.evaluate(() => RPT.open(RPT.student({ cfg: S.cfg, students: S.students, entries: S.entries, remarks: S.remarks }, 'HS03', { k: 'thang', m: S.thang }, {}), 'x', { dry: true }));
+  await rptPng(b, await p.evaluate(() => RPT.last), 'hs_pdf');
   await p.context().close();
   // cán bộ lớp (tổ trưởng) — điện thoại + lưu chậm
   p = await newPage(b, { as: 'tt', mobile: true, lag: 6000 }); await p.goto(U + 'index.html'); await p.waitForSelector('#app.on'); await W(7000); await closeUpd(p); await W(300);
@@ -112,6 +120,13 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.fill('#q', 'khoa'); await W(200); await p.locator('#lst .st').first().click(); await W(600);
   await shot(p, 'ph_prof', [['#ks', 1], ['.res', 2], ['.acts', 3]]);
   await p.evaluate(() => window.scrollTo(0, 600)); await W(300); await shot(p, 'ph_ev', [['.ev', 1]]);
+  /* v3.7: đăng ký email + thông báo từ link email */
+  await p.evaluate(() => { const m = document.getElementById('msc'); if (m) m.style.display = 'none'; document.querySelector('#reg').scrollIntoView({ block: 'center' }); }); await W(300);
+  await shot(p, 'ph_reg', [['#rgE', 1], ['#rgS', 2, 'tr']]);
+  { const ma = await p.evaluate(() => S.ma), e = p.M.D.entries.filter(x => x[4] === ma && x[9] < 0).slice(-1)[0] || p.M.D.entries.filter(x => x[4] === ma).slice(-1)[0];
+    await p.evaluate(([m, t]) => { location.hash = 'hs=' + m + '&tb=' + t; }, [ma, e[0]]); await W(900); await p.evaluate(() => { const m = document.getElementById('msc'); if (m) m.style.display = 'none'; window.scrollTo(0, 0); });
+    await shot(p, 'ph_tb', [['.tbc', 1], ['#tbPdf', 2]]);
+    await p.evaluate(() => { const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); }); await p.click('#tbPdf'); await rptPng(b, await p.evaluate(() => RPT.last), 'tb_pdf'); }
   await p.click('#tabs [data-t=lop]'); await W(500); await shot(p, 'ph_lop', [['#lk', 1], ['.dist', 2], ['#csvL', 3], ['#pdfL', 4, 'tr']]);
   await p.click('#hp'); await W(900); await shot(p, 'ph_tour', [['#tg-card', 1]]);
   await p.context().close();
