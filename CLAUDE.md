@@ -94,4 +94,4 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   flood-fill vùng trắng/xám trung tính nối với mép ảnh (PIL, nhớ `.copy()` ảnh từ numpy), bóng chân giữ mờ, cắt theo nhân vật + 6% lề.
 - mascot.js: `READY` = các vai đã có bộ 3D (hiện chỉ `chu-nhiem`); vai khác dùng bộ 3D này (không trộn 2D/3D); ảnh lỗi ⇒ SVG dự phòng; tải sẵn sau 300 ms.
   `MASCOT.STYLES` chỉ trả vai `READY` (bảng chọn nhân vật). Muốn thêm vai (áo dài…): thêm thư mục + khoá vào `READY`.
-- HDSD: `build.js` lấy ảnh 3D cho phần mẹo (`chibi()`). Ảnh động (video Veo) người dùng gửi sau ⇒ thay `<emo>.webp` bằng WebP động cùng tên.
+- HDSD: `build.js` lấy ảnh 3D (`chibi()`) cho phần mẹo **và góc dưới trái mọi trang nội dung** (`.mc`, biểu cảm theo chủ đề trang `POSE`, `pose:` để chọn riêng, `noMc` để tắt; tự bỏ nếu chạm chữ). Bìa và trang phân cách không có. Ảnh động (video Veo) người dùng gửi sau ⇒ thay `<emo>.webp` bằng WebP động cùng tên.

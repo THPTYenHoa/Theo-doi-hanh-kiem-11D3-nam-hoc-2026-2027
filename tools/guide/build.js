@@ -45,6 +45,7 @@ h2{font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.15;c
 .card b{display:block;color:#0A5C64;font-size:16px;margin-bottom:5px}
 .card span{font-size:14.5px;line-height:1.5;color:#41566F}
 .faq .card{margin-bottom:12px}
+.mc{position:absolute;left:44px;bottom:44px;height:200px;width:200px;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(20,40,50,.14))}
 .pp{position:absolute;right:110px;top:40px;height:640px;border:1px solid #D9E4E7;box-shadow:0 18px 40px rgba(20,40,50,.16);background:#fff}
 .div{background:linear-gradient(135deg,#0E7C86 0%,#0A5C64 100%);color:#fff}
 .div .txt{top:170px;width:760px} .div .k{color:#BFE6E9} .div h1{color:#fff} .div .lead{color:#E3F4F5}
@@ -60,9 +61,16 @@ function slide(T, n, o) {
   if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">Hướng dẫn sử dụng</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p><span class="who">${o.who}</span></div>
     <div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
   if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div></section>`;
+  /* v3.6: cô Thảo 3D ở trang nội dung — biểu cảm theo chủ đề trang (tự bỏ nếu chạm chữ, xem bước kiểm tra trước khi in) */
+  const POSE = { 'Bắt đầu': ['chao'], 'Tổng quan': ['huong-dan'], 'Ghi điểm': ['chi-tay', 'vui', 'chup-anh', 'co-vu'], 'Trực tiếp': ['ngac-nhien', 'vui'],
+    'Xếp loại': ['suy-nghi', 'nghiem'], 'Báo cáo': ['khen-lon', 'huong-dan', 'cam-on'], 'Quản lý lớp': ['nghiem', 'chi-tay', 'huong-dan'], 'Cá nhân hoá': ['vui'],
+    'Phụ huynh': ['chao'], 'Mẹo': ['suy-nghi', 'nghi-ngoi'], 'Trước khi ghi': ['chi-tay'], 'Lưu': ['chup-anh'], 'Tra cứu': ['suy-nghi'],
+    'Bước 1': ['chi-tay'], 'Bước 2': ['huong-dan'], 'Bước 3': ['an-mung'], 'Lưu ý': ['cam-on'], 'Mục lục': ['chao'] };
+  slide.c = slide.c || {}; const lst = POSE[o.k] || ['vui'], ci = slide.c[T + o.k] = (slide.c[T + o.k] || 0) + 1;
+  const mc = o.noMc ? '' : `<img class="mc" src="${chibi(o.pose || lst[(ci - 1) % lst.length])}">`;
   const w = o.wide ? `<div class="dk"><img src="${img(o.wide)}"></div>` : (o.shots ? phone(...o.shots) : '');
   const tw = o.wide ? 520 : (o.shots && o.shots[1] ? 560 : 640);
-  return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}${o.right || ''}</section>`;
+  return `<section class="s">${ft(T, n)}<div class="txt" style="width:${tw}px"><div class="k">${o.k}</div><h2>${o.h}</h2>${o.lead ? `<p class="lead">${o.lead}</p>` : ''}${o.steps ? steps(o.steps) : ''}${o.html || ''}${o.tip ? tip(o.tip, o.emo) : ''}</div>${w}${o.right || ''}${mc}</section>`;
 }
 const LOGIN = { k: 'Bắt đầu', h: 'Đăng nhập bằng email + mã 6 số', shots: ['login1', 'login2'], steps: ['Nhập <b>email đã đăng ký với GVCN</b> vào ô Email.', 'Bấm <b>Gửi mã đăng nhập</b> — mở hộp thư, lấy <b>mã 6 số</b> (xem cả mục Thư rác).', 'Nhập mã ▸ tự vào sổ. Máy được ghi nhớ <b>30 ngày</b>.'], tip: 'Không còn mật khẩu chung — mỗi người chỉ vào được bằng email của mình. Chưa vào được? Nhờ GVCN thêm / sửa email trong mục Tài khoản.', emo: 'chao' };
 const DOCS = {
@@ -143,9 +151,12 @@ const DOCS = {
     fs.writeFileSync(path.join(__dirname, '_' + file + '.html'), html);
     const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
     await p.setContent(html, { waitUntil: 'load' });
+    const bo = await p.evaluate(() => { let n = 0; document.querySelectorAll('section').forEach(sc => { const m = sc.querySelector('.mc'); if (!m) return;
+      const r = m.getBoundingClientRect(), bad = [...sc.querySelectorAll('.txt > *, .ph, .dk, .pp')].some(e => { const q = e.getBoundingClientRect(); return q.width && q.left < r.right - 20 && q.right > r.left + 20 && q.bottom > r.top + 12 && q.top < r.bottom; });
+      if (bad) { m.remove(); n++; } }); return n; });
     await p.pdf({ path: path.join(ROOT, 'docs', file + '.pdf'), width: '1280px', height: '720px', printBackground: true });
     for (const n of [1, 2, 4]) { await p.screenshot({ path: `/tmp/claude-0/pdf_${file}_${n}.png`, clip: { x: 0, y: (n - 1) * 720, width: 1280, height: 720 } }).catch(() => {}); }
-    console.log('📄', file, d.slides.length, 'trang'); await p.close();
+    console.log('📄', file, d.slides.length, 'trang · bỏ hình ở', bo, 'trang'); await p.close();
   }
   await b.close();
 })();
