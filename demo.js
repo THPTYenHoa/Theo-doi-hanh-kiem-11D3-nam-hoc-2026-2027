@@ -14,6 +14,9 @@
   if (qs.get('demo') === '0') s('hk_demo', null);
   var ON = g('hk_demo') === '1';
   var PAGE = /phu-huynh/.test(location.pathname) ? 'ph' : 'app';
+  /* link / QR ?demo=1 ⇒ vào thẳng vai cô Thảo (cất token thật để khi Thoát khôi phục) */
+  if (ON && PAGE === 'app' && qs.get('demo') === '1') { var t0 = g('hk_token') || '';
+    if (!/^tok\./.test(t0)) { if (t0) s('hk_demo_bak', t0); ['hk_cache_v3', 'hk_cache_v4', 'hk_outbox_v1', 'hk_khoa'].forEach(function (k) { s(k, null); }); s('hk_token', 'tok.gvcn'); try { sessionStorage.setItem('dm_next', 'intro'); } catch (e) {} } }
 
   /* ── dữ liệu mẫu (tên giả, không phải học sinh thật) ── */
   var HO = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Ngô'];
@@ -34,7 +37,7 @@
       var to = 1 + (i % 4);
       students.push({ ma: 'HS' + pad(i + 1), ten: HO[(i * 7) % 10] + ' ' + DEM[(i * 3) % 10] + ' ' + TEN[(i * 11) % 20], to: String(to),
         chucVu: i === 0 ? 'Lớp trưởng' : (i < 4 ? 'Tổ trưởng' : 'Học sinh'), trangThai: 'Đang học',
-        email: i % 3 === 0 ? 'phuhuynh.hs' + pad(i + 1) + '@demo.vn' : '' });
+        email: i % 5 !== 4 ? 'phuhuynh.hs' + pad(i + 1) + '@demo.vn' : '' });   /* 4/5 học sinh có email phụ huynh ⇒ ghi điểm là thấy thư */
     }
     var tru = [
       { ma: 'T01', nhom: 'Nề nếp', noiDung: 'Đi học muộn', diem: -2, active: true, dienGiai: 'Có mặt sau tiếng trống vào lớp.' },
