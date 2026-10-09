@@ -355,6 +355,24 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/\d+\/\d+ học sinh/.test(await p.textContent('#vBC .sq39 .ct')), 'Báo cáo cũng có tìm kiếm thông minh');
   await p.context().close();
 
+  // 19. v4.0 — chế độ "Kiểm tra tính năng ứng dụng" (dữ liệu mẫu, không gọi máy chủ)
+  p = await P({}); p.on('dialog', d => d.accept()); await p.goto(U); await W(1200);
+  ok(await p.isVisible('#dm-enter'), 'màn đăng nhập có nút "Kiểm tra tính năng ứng dụng"');
+  await p.click('#dm-enter'); await p.waitForSelector('#app.on', { timeout: 15000 }); await W(1500);
+  ok(/Thảo/.test(await p.textContent('#rlName')) && await p.isVisible('#dm-bar') && await p.isVisible('.dm-ov'), 'vào ngay vai cô Thảo (không mật khẩu) + thanh trải nghiệm + hướng dẫn');
+  const nDm = p.M.CALLS.length;
+  await p.click('.dm-ov [data-k="ghi"]'); await p.waitForSelector('#app.on', { timeout: 15000 }); await W(1800);
+  ok(/Lớp trưởng/.test(await p.textContent('#rlRole')), '"Làm ngay" tự đổi sang vai Lớp trưởng');
+  await p.evaluate(() => { const m = document.getElementById('msc'); if (m) m.remove(); });
+  await p.locator('#listGhi .row[data-ma="HS01"]').click(); await W(300); await p.click('#pBody [data-add="T01"]'); await W(200); await p.click('#gcSkip'); await W(3000);
+  ok(await p.isVisible('#dm-toast') && await p.evaluate(() => DEMO.db().mails.some(m => m.kind === 'tb')), 'ghi điểm ⇒ phụ huynh nhận email mô phỏng (có thông báo + hộp thư)');
+  ok(p.M.CALLS.length === nDm, 'chế độ trải nghiệm không gọi máy chủ thật');
+  await p.click('#dm-toast button'); await W(400); await p.click('.dm-ib a[data-demo-link]'); await W(2500);
+  ok(/phu-huynh/.test(p.url()) && await p.isVisible('.tbc'), 'bấm nút trong email ⇒ trang phụ huynh mở đúng thông báo');
+  await p.click('#dm-bar [data-a="out"]'); await W(1500);
+  ok(await p.isVisible('#dm-enter') && !(await p.isVisible('#dm-bar')), 'Thoát ⇒ về màn đăng nhập thường');
+  await p.context().close();
+
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');

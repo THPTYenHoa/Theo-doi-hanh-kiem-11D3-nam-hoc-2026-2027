@@ -61,7 +61,7 @@ const steps = a => `<ul class="steps">${a.map((t, i) => `<li><i>${i + 1}</i><spa
 const tip = (t, emo) => `<div class="tip"><img src="${chibi(emo || 'chi-tay')}"><span>${t}</span></div>`;
 const phone = (a, b) => b ? `<div class="ph ph2a"><img src="${img(a)}"></div><div class="ph ph2b"><img src="${img(b)}"></div>` : `<div class="ph ph1"><img src="${img(a)}"></div>`;
 function slide(T, n, o) {
-  if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">Hướng dẫn sử dụng</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p><span class="who">${o.who}</span></div>
+  if (o.cover) return `<section class="s cover">${ft(T, n)}<div class="txt"><div class="k">${o.kk || 'Hướng dẫn sử dụng'}</div><h1>Sổ hạnh kiểm<br>lớp 11D3</h1><p class="lead" style="margin-top:14px">${o.lead}</p><span class="who">${o.who}</span></div>
     <div class="meta">THPT Yên Hòa · Năm học 2026 – 2027<br>${o.meta || ''}</div>${o.qr ? `<div class="qr"><img src="${img(o.qr)}">${o.qrt}</div>` : ''}</section>`;
   if (o.div) return `<section class="s div">${ft(T, n)}<div class="txt"><div class="k">${o.k}</div><h1>${o.h}</h1><p class="lead" style="margin-top:16px">${o.lead}</p></div></section>`;
   /* v3.6: cô Thảo 3D ở trang nội dung — biểu cảm theo chủ đề trang (tự bỏ nếu chạm chữ, xem bước kiểm tra trước khi in) */
@@ -159,9 +159,29 @@ const DOCS = {
   out[1] = { k: 'Mục lục', h: 'Nội dung tài liệu', html: `<div class="toc">${toc.map(([t, n]) => `<div class="card"><b>${t}</b><em>trang ${n}</em></div>`).join('')}</div>`, tip: 'Mỗi vai trò cũng có file hướng dẫn riêng: HDSD_GVCN.pdf · HDSD_Can_bo_lop.pdf · HDSD_Phu_huynh.pdf.', emo: 'huong-dan' };
   DOCS.HDSD_Day_du = { T: 'Hướng dẫn đầy đủ', slides: out };
 })();
+/* v4.0: Hướng dẫn trải nghiệm cho ban giám khảo (chế độ Kiểm tra tính năng ứng dụng) — ảnh: tools/guide/cap_demo.js */
+const DM = `${APP}/?demo=1`;
+const rimg = n => `<div class="dk"><img src="${img(n)}"></div>`;
+DOCS.HD_Trai_nghiem = { T: 'Hướng dẫn trải nghiệm', slides: [
+  { cover: 1, kk: 'Hướng dẫn trải nghiệm · Kiểm tra tính năng ứng dụng', who: 'Dành cho ban giám khảo · người muốn dùng thử', lead: 'Trải nghiệm <b>toàn bộ</b> sổ hạnh kiểm trong 10 phút: không cần tài khoản, không cần mật khẩu, dữ liệu mẫu — đóng vai cô chủ nhiệm, cán bộ lớp và phụ huynh.', meta: 'Quét mã hoặc mở: ' + DM, qr: 'qr_demo', qrt: 'Quét để vào thẳng<br>chế độ trải nghiệm' },
+  { k: 'Bắt đầu', h: 'Vào chế độ trải nghiệm', wide: 'dm_login', steps: ['Quét mã QR ở trang bìa, hoặc mở <b>' + APP + '</b>.', 'Bấm thẻ <b>Kiểm tra tính năng ứng dụng</b> (màu cam).', '<b>Không cần email, không cần mật khẩu</b> — hệ thống mở sổ ngay với vai <b>cô Thảo (GVCN)</b>.'], tip: 'Dữ liệu là mẫu (tên học sinh giả). Mọi thao tác chỉ diễn ra trên máy của thầy cô, không ảnh hưởng sổ thật của lớp.', emo: 'chao' },
+  { k: 'Bắt đầu', h: 'Thanh trải nghiệm: đổi vai trong 1 chạm', wide: 'dm_bar', steps: ['<b>Đổi vai</b>: Cô Thảo (GVCN) · Lớp trưởng · Tổ trưởng tổ 2 · Phụ huynh.', '<b>Hướng dẫn</b>: 9 việc nên thử, tự đánh dấu khi làm xong.', '<b>Hộp thư</b>: thư hệ thống gửi phụ huynh / cô chủ nhiệm (mô phỏng).', '<b>Làm lại</b> về dữ liệu ban đầu · <b>Thoát</b> về màn đăng nhập.'] },
+  { k: 'Bắt đầu', h: '9 việc nên thử — bấm "Làm ngay"', wide: 'dm_guide', steps: ['Mỗi việc ghi rõ <b>vai</b> và <b>cần bấm vào đâu</b>.', 'Bấm <b>Làm ngay</b>: hệ thống tự đổi vai, mở đúng màn hình, cô Thảo nhắc bước tiếp.', 'Làm xong, việc tự chuyển sang <b>✓</b> — thanh tiến độ cho biết còn bao nhiêu việc.'], pose: 'chi-tay' },
+  { k: 'Việc 1', h: 'Lớp trưởng ghi điểm trên điện thoại', shots: ['dm_ghi1', 'dm_ghi3'], steps: ['Chọn vai <b>Lớp trưởng</b>.', 'Chạm <b>tên một bạn</b> ▸ chọn lỗi (vd. "Đi học muộn") hoặc tab <b>Cộng điểm</b>.', 'Bấm <b>Bỏ qua, lưu luôn</b> (hoặc ghi diễn giải, chụp ảnh bằng chứng).', 'Điểm hiện <b>ngay</b> trên màn hình — máy tự lưu phía sau.'], pose: 'vui' },
+  { k: 'Việc 2', h: 'Phụ huynh nhận email ngay', wide: 'dm_inbox', steps: ['Ngay sau khi ghi, góc trên báo <b>"Email đã gửi tới phụ huynh"</b>.', 'Bấm <b>Hộp thư</b>: thư có lời cô Thảo <b>theo đúng tình huống</b> (lần đầu, tái phạm, tin vui…), bảng điểm, tổng điểm tháng.', 'Nút <b>Xem chi tiết & tải PDF thông báo</b> dẫn tới trang phụ huynh.'] },
+  { k: 'Việc 3', h: 'Đóng vai phụ huynh: xem thông báo, tải PDF', wide: 'dm_phtb', steps: ['Bấm nút trong email ⇒ trang phụ huynh mở đúng <b>Thông báo mới từ cô Thảo</b>.', 'Bấm <b>Tải PDF thông báo</b>: PDF khổ ngang, lời cô Thảo, biểu đồ tuần, nhận xét tháng.', 'Xem hồ sơ của con: điểm từng tuần, xếp loại, vi phạm, được cộng, nhận xét của cô.'], pose: 'chao' },
+  { k: 'Việc 3', h: 'PDF thông báo gửi phụ huynh', right: rimg('dm_tbpdf'), steps: ['Khổ ngang, 1 trang, dễ in / gửi Zalo.', 'Lời cô Thảo đổi theo tình huống; hình cô Thảo đổi theo cảm xúc.', 'Tổng điểm tháng, xếp loại tạm tính, số lần khen / trừ, <b>nhận xét của cô Thảo</b>.'], noMc: 1 },
+  { k: 'Việc 4', h: 'Cô chủ nhiệm nhận xét · rê chuột xem điểm từ đâu', wide: 'dm_nx', steps: ['Vai <b>Cô Thảo</b> ▸ <b>Cập nhật hạnh kiểm</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b>.', 'Chọn <b>xếp loại chốt</b>, viết nhận xét ▸ <b>Lưu nhận xét</b> — phụ huynh thấy ngay ở trang của con.', 'Rê chuột vào một <b>ô điểm</b> bất kỳ: hiện được cộng / bị trừ từ những nội dung nào.'], pose: 'huong-dan' },
+  { k: 'Việc 5', h: 'Báo cáo tháng + tìm kiếm thông minh', wide: 'dm_bc', steps: ['Menu <b>Báo cáo</b>: so với tháng trước (▲ tốt lên, ▼ kém đi), xếp hạng tổ, tuyên dương, nhắc nhở.', 'Ô <b>Tìm nhanh</b>: gõ "tổ 2 vi phạm", "khá", "đi muộn"… lọc ngay.', 'Bấm <b>In / Lưu PDF</b> ⇒ báo cáo khổ ngang có biểu đồ (trang sau).'], pose: 'khen-lon' },
+  { k: 'Việc 5–6', h: 'PDF báo cáo lớp & PDF từng học sinh', right: rimg('dm_bcpdf'), steps: ['<b>Báo cáo lớp</b>: số liệu so kỳ trước, biểu đồ, xếp hạng tổ, tuyên dương, nhắc nhở, <b>nhận xét của cô Thảo</b>.', '<b>Từng học sinh</b>: kính lúp ▸ tên ▸ hồ sơ ▸ <b>Tải PDF báo cáo</b> (tháng / học kỳ / cả năm).', 'Cùng một nút cho GVCN, cán bộ lớp và phụ huynh.'], noMc: 1 },
+  { k: 'Việc 7–8', h: 'Phụ huynh đăng ký email · cô duyệt', shots: ['dm_dk1', 'dm_dk2'], steps: ['Vai <b>Phụ huynh</b>: mở hồ sơ con ▸ <b>Nhận thông báo qua email</b> ▸ nhập email bất kỳ ▸ <b>Gửi mã</b>.', 'Nhập mã <b>123456</b> (chế độ trải nghiệm) ▸ <b>Xác nhận</b>.', 'Đổi sang vai <b>Cô Thảo</b>: thẻ "Phụ huynh vừa đăng ký" hiện ngay ▸ <b>Duyệt</b>.', 'Phụ huynh nhận thư xác nhận <b>kèm file hướng dẫn PDF</b> — xem trong Hộp thư.'], pose: 'cam-on' },
+  { k: 'Việc 8', h: 'Trang Phụ huynh của cô', wide: 'dm_duyet', steps: ['Số học sinh đã có email phụ huynh, số đăng ký chờ duyệt.', '<b>Duyệt / Từ chối</b>, bật / tắt email tự động.', 'Danh sách email phụ huynh từng em, lọc "Chưa có email".'] },
+  { k: 'Việc 9', h: 'Chốt hạnh kiểm tháng', wide: 'dm_chot', steps: ['<b>Cập nhật hạnh kiểm</b> ▸ <b>Chốt tháng 10</b>.', 'Thử xoá / sửa một ghi nhận của tháng: hệ thống <b>chặn lại</b> (máy chủ thật cũng chặn).', 'Cần chỉnh: cô bấm <b>Mở khoá</b>.'], tip: 'Còn nhiều tính năng khác dùng được ngay: Thống kê, Lịch sử, ghi nhiều bạn cùng lúc, ảnh bằng chứng, đổi giao diện, hướng dẫn từng bước (nút ?). Bấm <b>Làm lại</b> để thử lại từ đầu.', emo: 'an-mung' }
+]};
 (async () => {
   const b = await chromium.launch();
   for (const [file, d] of Object.entries(DOCS)) {
+    if (process.env.ONLY && process.env.ONLY !== file) continue;
     const html = `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>${d.slides.map((s, i) => slide(d.T, i + 1, s)).join('')}</body></html>`;
     fs.writeFileSync(path.join(__dirname, '_' + file + '.html'), html);
     const p = await b.newPage({ viewport: { width: 1280, height: 720 } });

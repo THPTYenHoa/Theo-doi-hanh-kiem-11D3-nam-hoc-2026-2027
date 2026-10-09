@@ -126,3 +126,10 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **Khối `v39b-js`**: dải **Điểm tuần** `#tk39` trong thẻ tổng quan — lật 6 s/lượt, dừng khi rê chuột, bấm ⇒ menu `#tkm39` theo quyền (`canScore`, `isGVCN`).
 - **Phụ huynh**: với phụ huynh của 1 học sinh cô gọi **"bác"** (không "các bác") — trang hồ sơ con, PDF, email. Trang chung / hướng dẫn vẫn "các bác".
   Mọi báo cáo PDF có mục **Nhận xét của cô Thảo** (lớp: trang 1 + trang nhận xét; học sinh: trang 1; thông báo: nhận xét tháng).
+
+## v4.0 — Chế độ "Kiểm tra tính năng ứng dụng" (cho ban giám khảo)
+- `demo.js` (nạp đầu `<head>` cả 2 trang): bật khi `localStorage.hk_demo=1` / `?demo=1`; **chặn `fetch` tới script.google.com** và trả lời bằng máy chủ
+  mô phỏng `DEMO.api` (dữ liệu mẫu `hk_demo_db_v1`, tên giả; token `tok.gvcn|lt|tt|ph`). Email gửi phụ huynh / GVCN ⇒ `DB.mails` (Hộp thư mô phỏng).
+  **Thêm lệnh backend mới ⇒ thêm `case` trong `DEMO.api`** để chế độ trải nghiệm vẫn chạy.
+- `demo-ui.js` (cuối `<body>`): nút `#dm-enter` ở màn đăng nhập; thanh `#dm-bar` (đổi vai, Hướng dẫn 9 việc `STEPS` tự đánh dấu qua `DEMO.mark`,
+  Hộp thư, Làm lại, Thoát — khôi phục token thật `hk_demo_bak`). Đổi vai = xoá cache + tải lại; việc kế tiếp truyền qua `sessionStorage.dm_next`.

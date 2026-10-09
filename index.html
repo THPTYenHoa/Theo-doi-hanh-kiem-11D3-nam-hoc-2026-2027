@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
+<script src="demo.js?v=4.0"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C86">
 <title>Sổ hạnh kiểm 11D3</title>
@@ -2934,7 +2935,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=3.9"></script>
+<script src="updates/notes.js?v=4.0"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2947,7 +2948,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='3.9';
+const HK_VER='4.0';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3733,7 +3734,7 @@ hqChip=function(){ const was=$('#hkq')&&$('#hkq').classList.contains('err'); hqC
   if(now && !was && window.MASCOT) MASCOT.say('ngac-nhien','Có thay đổi <b>chưa lưu được</b>. Bấm <b>Thử lại</b> ở chip phía trên nhé.',{ms:5000}); };
 const showApp2=showApp;
 window.showApp=showApp=function(){ showApp2.apply(this,arguments);
-  if(!S._hi && S.me && window.MASCOT){ S._hi=1; setTimeout(()=>{ if(!TOUR.active() && !$('#hkupd.on')) MASCOT.say('chao','Chào <b>'+esc(ten1(S.me.name))+'</b>! Sổ đã sẵn sàng.'); },1200); } };
+  if(!S._hi && S.me && window.MASCOT){ S._hi=1; setTimeout(()=>{ if(!TOUR.active() && !$('#hkupd.on')) MASCOT.say('chao','Chào '+(S.me.role==='GVCN'?'cô ':'')+'<b>'+esc(ten1(S.me.name))+'</b>! Sổ đã sẵn sàng.'); },1200); } };
 /* Giao diện ▸ Nhân vật cô giáo */
 const themeOpen0=THEME.open;
 THEME.open=function(){
@@ -5142,5 +5143,6 @@ addEventListener('resize',()=>{ if($('#tk39')) draw(false); });
 try{ if($('#v32h')) mount(); }catch(_){}
 })();
 </script>
+<script src="demo-ui.js?v=4.0"></script>
 </body>
 </html>
