@@ -159,6 +159,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.locator('#listGhi .row .av32').count() >= 30, 'avatar theo tổ cạnh tên học sinh');
   await W(1500); ok(/Trực tiếp/.test(await p.textContent('#v32live')), 'nhãn "Trực tiếp" khi đồng bộ chạy');
   const nSame = p.M.CALLS.filter(c => c.a === 'sync').length; ok(nSame >= 1, 'app hỏi sync định kỳ');
+  await p.evaluate(() => { S.thang = 10; S.tuan = 1; renderAll(); }); await W(300);
   const xid = p.M.ext('HS05', 'Đi học muộn', -2);
   const tX = Date.now(); await p.waitForFunction(id => S.entries.some(e => e[0] === id), xid, { timeout: 9000 }).catch(() => {});
   const dtX = Date.now() - tX;
@@ -170,6 +171,8 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   const syncN = p.M.CALLS.filter(c => c.a === 'sync').length, entN = p.M.CALLS.filter(c => c.a === 'entries' || c.a === 'bootstrap').length;
   await W(4500); ok(p.M.CALLS.filter(c => c.a === 'sync').length > syncN && p.M.CALLS.filter(c => c.a === 'entries' || c.a === 'bootstrap').length === entN, 'không có gì mới ⇒ chỉ hỏi sync nhẹ, không tải lại dữ liệu');
   await p.click('#v32h [data-f=bad]'); await W(200);
+  ok(await p.isVisible('#dr46') && /Lượt trừ/.test(await p.textContent('#dr46 h3')), 'v4.6: bấm ô "Lượt trừ điểm" ⇒ mở màn chi tiết');
+  await p.click('#dr46 [data-flt]'); await W(200);
   const nb = await p.locator('#listGhi .row').count(); ok(nb > 0 && nb < 40 && await p.isVisible('#v32clr'), 'bấm ô "Lượt trừ điểm" ⇒ lọc ' + nb + ' bạn');
   await p.click('#v32clr'); await W(200); ok(await p.locator('#listGhi .row').count() === 40, 'bỏ lọc ⇒ đủ cả lớp');
   const did = await p.evaluate(() => { const e = document.querySelector('#listGhi .ev[data-eid]'); return e && e.dataset.eid; });
@@ -380,6 +383,58 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   // 9. trang phụ huynh
   p = await P({}); await p.goto(PH); await W(1200);
   ok(await p.locator('#lst .st').count() >= 30, 'trang phụ huynh: danh sách học sinh');
+  await p.context().close();
+
+  // 20. v4.6 — mở app vào Ghi điểm đúng tuần · chọn ngày xảy ra · số liệu bấm được
+  p = await P({ as: 'lt', khoa: { 9: { by: 'gv', at: '2026-10-01' } } }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  const wk = await p.evaluate(() => { const w = wkOfDate(new Date()); return { ok: !w || (S.thang === w.thang && S.tuan === w.tuan), v: S.view }; });
+  ok(wk.ok && wk.v === 'ghi', 'v4.6: mở app ⇒ Ghi điểm, đúng tuần của hôm nay');
+  // ghi lùi ngày: chọn 1 ngày ở tuần 1 tháng 10
+  await p.evaluate(() => { S.thang = 10; S.tuan = 2; renderAll(); });
+  await p.locator('#listGhi .row[data-ma="HS03"]').click(); await W(300); await p.click('#pBody [data-add="T02"]'); await W(200);
+  ok(await p.isVisible('#gcNgay'), 'bước diễn giải có ô "Ngày xảy ra"');
+  await p.fill('#gcNgay', '2026-10-02'); await p.dispatchEvent('#gcNgay', 'change'); await W(100);
+  ok(/tuần 1/.test(await p.textContent('#gcW')), 'chọn ngày ⇒ báo đúng tuần sẽ ghi (' + (await p.textContent('#gcW')).trim() + ')');
+  await p.click('#gcSkip'); await W(400);
+  const bd = await p.evaluate(() => { const e = S.entries.filter(e => e[4] === 'HS03').slice(-1)[0]; return { th: e[2], tu: e[3], gc: e[12], cur: [S.thang, S.tuan] }; });
+  ok(bd.th === 10 && bd.tu === 1 && /ngày 02\/10/.test(bd.gc) && bd.cur[0] === 10 && bd.cur[1] === 2, 'ghi vào tuần 1, ghi chú có "ngày 02/10", màn hình giữ tuần đang xem');
+  await p.evaluate(() => closePanel()); await W(300);
+  await p.locator('#listGhi .row[data-ma="HS07"]').click(); await W(300); await p.click('#pBody [data-add="T04"]'); await W(200);
+  await p.fill('#gcNgay', '2026-09-15'); await p.dispatchEvent('#gcNgay', 'change'); await W(100);
+  ok(/khoá sổ/.test(await p.textContent('#gcW')), 'ngày thuộc tháng đã khoá sổ ⇒ báo không ghi được');
+  const nE46 = await p.evaluate(() => S.entries.length); await p.click('#gcSkip'); await W(300);
+  ok(await p.evaluate(n => S.entries.length === n, nE46), 'tháng đã khoá sổ ⇒ không ghi');
+  await p.evaluate(() => closePanel && closePanel());
+  // số liệu bấm được
+  await p.evaluate(() => go('tk')); await W(800);
+  await p.click('#vTK .kpi >> nth=0'); await W(300);
+  ok(await p.isVisible('#dr46') && await p.locator('#dr46 .rw').count() > 0, 'Thống kê: bấm ô số ⇒ màn chi tiết (nền mờ)');
+  await p.keyboard.press('Escape'); await W(200);
+  const tk2 = p.locator('#vTK .kpi').filter({ hasText: /trừ|vi phạm/i }).first();
+  if (await tk2.count()) { await tk2.click(); await W(300);
+    ok(await p.locator('#dr46 .ch svg').count() === 1 && await p.locator('#dr46 [data-tb]').count() >= 3, 'ô lượt trừ ⇒ biểu đồ theo tuần + tab Học sinh / Nội dung / Tổ / Từng lượt');
+    await p.click('#dr46 .rw[data-hs] >> nth=0'); await W(300);
+    ok(await p.isVisible('#dr46 .bk') && await p.isVisible('#dr46 [data-pf]'), 'bấm 1 học sinh ⇒ xem sâu (có nút quay lại, mở hồ sơ)');
+    await p.click('#dr46 .bk'); await W(200); await p.click('#dr46 [data-tb="nd"]'); await W(200);
+    ok(await p.locator('#dr46 .rw[data-nd]').count() > 0, 'tab Theo nội dung');
+    await p.click('#dr46 .x'); await W(200); }
+  ok(!(await p.isVisible('#dr46')), 'nút × đóng màn chi tiết');
+  const tr = p.locator('#vTK .toprow[data-dk]').first();
+  if (await tr.count()) { await tr.click(); await W(300); ok(await p.isVisible('#dr46'), 'bấm dòng xếp hạng ⇒ chi tiết'); await p.keyboard.press('Escape'); }
+  await p.context().close();
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('bc'); }); await W(900);
+  await p.locator('#vBC table.bct tr').filter({ hasText: /Tổ\s*\d/ }).first().click(); await W(300);
+  ok(await p.isVisible('#dr46') && /Tổ \d/.test(await p.textContent('#dr46 h3')), 'Báo cáo: bấm dòng tổ ⇒ chi tiết của tổ');
+  await p.keyboard.press('Escape'); await W(200);
+  await p.locator('#vBC .distbar>div').first().click(); await W(300);
+  ok(await p.isVisible('#dr46') && /Xếp loại/.test(await p.textContent('#dr46 h3')), 'Báo cáo: bấm thanh xếp loại ⇒ danh sách học sinh');
+  await p.click('#dr46 .rw[data-hs] >> nth=0'); await W(500);
+  ok(!(await p.isVisible('#dr46')) && await p.evaluate(() => S.panelKind === 'profile' || !!document.querySelector('#pBody .pf, #pf')), 'bấm học sinh ⇒ mở hồ sơ');
+  await p.context().close();
+  p = await P({ as: 'ph' }); await p.goto(U); await p.waitForSelector('#app.on').catch(() => {}); await W(1200);
+  ok(await p.evaluate(() => !isKhach() || S.view !== 'ghi'), 'phụ huynh không bị chuyển vào Ghi điểm');
   await p.context().close();
 
   ok(errs.length === 0, 'không lỗi JavaScript' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));

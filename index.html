@@ -1956,7 +1956,7 @@ function topList(rows, opt){
   if(!rows.length) return '<div class="empty"><b>Chưa có dữ liệu</b>'+esc(o.empty)+'</div>';
   const max=Math.max(...rows.map(r=>Math.abs(r.v)),1);
   return '<div class="toplist">'+rows.map((r,i)=>`
-    <div class="toprow ${i<3?'p'+(i+1):''}">
+    <div class="toprow ${i<3?'p'+(i+1):''}" data-dk="${esc(r.ma||r.k)}">
       <span class="rk">${i+1}</span>
       <span class="bd"><b>${esc(r.k)}</b>
         ${r.sub?`<span class="mt">${esc(r.sub)}</span>`:''}
@@ -2041,7 +2041,7 @@ function renderTK(){
   });
   const topVP=Object.keys(viPham).map(ma=>{
     const st=stu(ma);
-    return {k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+viPham[ma].d+' điểm', v:viPham[ma].n};
+    return {ma, k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+viPham[ma].d+' điểm', v:viPham[ma].n};
   }).sort((a,b)=>b.v-a.v).slice(0,8);
   h+=`<div class="sechead"><h2>Học sinh vi phạm nhiều nhất</h2></div>
     <div class="register">${topList(topVP,{unit:'lượt',color:'b3',empty:'Không có vi phạm nào trong '+tkNhan()+'.'})}</div>`;
@@ -2054,7 +2054,7 @@ function renderTK(){
   });
   const topTD=Object.keys(tuyenDuong).map(ma=>{
     const st=stu(ma);
-    return {k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+tuyenDuong[ma].n+' lượt cộng', v:tuyenDuong[ma].d};
+    return {ma, k: st?st.ten:ma, sub:'Tổ '+(st?st.to:'?')+' · '+tuyenDuong[ma].n+' lượt cộng', v:tuyenDuong[ma].d};
   }).sort((a,b)=>b.v-a.v).slice(0,8);
   h+=`<div class="sechead"><h2>Học sinh được tuyên dương</h2></div>
     <div class="register">${topList(topTD,{unit:'điểm',color:'b0',fmt:v=>'+'+v,
@@ -2939,7 +2939,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=4.5"></script>
+<script src="updates/notes.js?v=4.6"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2952,7 +2952,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='4.5';
+const HK_VER='4.6';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -4277,7 +4277,7 @@ function renderBC(){
   h+=`<div class="sechead"><h2>Vi phạm theo nhóm</h2></div><div class="panelbox">${nk.length?hbars(nk.map(k=>({k:k+' · '+st.nhom[k].n+' lượt',v:st.nhom[k].d}))):'<div class="note" style="padding:0">Không có vi phạm nào.</div>'}</div>`;
   h+=`<div class="sechead"><h2>Lỗi thường gặp</h2></div><div class="register">${topList(st.topLoi.slice(0,6).map(x=>({k:x.k,sub:x.nhom+' · '+x.hs+' học sinh',v:x.n})),{unit:'lượt',color:'b3',empty:'Không có lỗi nào.'})}</div>`;
   /* 6. tuyên dương / tiến bộ */
-  h+=`<div class="sechead"><h2>Tuyên dương</h2></div><div class="register">${topList(st.khen.slice(0,6).map(k=>({k:stu(k.ma).ten,sub:'Tổ '+stu(k.ma).to+' · '+k.n+' lượt khen',v:k.p})),{unit:'điểm',color:'b0',fmt:v=>'+'+v,empty:'Chưa có điểm cộng nào.'})}
+  h+=`<div class="sechead"><h2>Tuyên dương</h2></div><div class="register">${topList(st.khen.slice(0,6).map(k=>({ma:k.ma,k:stu(k.ma).ten,sub:'Tổ '+stu(k.ma).to+' · '+k.n+' lượt khen',v:k.p})),{unit:'điểm',color:'b0',fmt:v=>'+'+v,empty:'Chưa có điểm cộng nào.'})}
     ${st.tienBo.length?`<div class="note" style="padding:10px 14px 0;font-weight:700;color:var(--teal-d)">Tiến bộ so với ${esc(P.prev.nhan)}</div><div class="bcmini">${st.tienBo.map(x=>`<span>${esc(x.s.ten)} ▲${f1(x.d)}</span>`).join('')}</div>`:''}</div>`;
   h+='</div></div>';
   /* 7. cần quan tâm */
@@ -5148,6 +5148,270 @@ const hero39=v32Hero;
 window.v32Hero=v32Hero=function(){ const r=hero39.apply(this,arguments); try{ mount(); }catch(e){ console.warn(e); } return r; };
 addEventListener('resize',()=>{ if($('#tk39')) draw(false); });
 try{ if($('#v32h')) mount(); }catch(_){}
+})();
+</script>
+<style id="v46-css">
+/* v4.6 — số liệu bấm được (màn chi tiết) · chọn ngày xảy ra khi ghi điểm */
+#vTK .kpi,#vLS .kpi,#vBC .kpi,#vTK .toprow,#vBC .toprow,#vTK .distbar>div,#vBC .distbar>div,#vTK .legend>span,#vBC .legend>span,#vBC table.bct tr:not(:first-child),#vTK .panelbox:has(svg),#vBC .panelbox:has(svg){cursor:pointer}
+#vTK .kpi,#vLS .kpi,#vBC .kpi{position:relative;transition:box-shadow .15s,transform .15s}
+#vTK .kpi:hover,#vLS .kpi:hover,#vBC .kpi:hover{box-shadow:0 6px 18px rgba(14,124,134,.16);transform:translateY(-1px)}
+#vTK .kpi::after,#vLS .kpi::after,#vBC .kpi::after{content:"›";position:absolute;right:12px;top:8px;font-size:18px;color:var(--mute);font-weight:700}
+#vTK .toprow:hover,#vBC .toprow:hover,#vBC table.bct tr:not(:first-child):hover{background:var(--paler,#F5FAFB)}
+.v46hint{font-size:12px;color:var(--mute);margin:6px 16px 0;display:flex;gap:6px;align-items:center}
+#dr46{position:fixed;inset:0;z-index:9600;background:rgba(15,32,38,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;animation:dr46f .18s ease}
+@keyframes dr46f{from{opacity:0}}
+#dr46 .bx{background:var(--card,#fff);border-radius:20px;width:min(820px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;animation:dr46u .22s ease}
+@keyframes dr46u{from{transform:translateY(14px);opacity:.4}}
+#dr46 .hd{display:flex;align-items:flex-start;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+#dr46 .hd .bk{border:0;background:var(--pale);color:var(--teal-d);width:34px;height:34px;border-radius:10px;font-size:18px;cursor:pointer;flex:none}
+#dr46 .hd h3{margin:0;font-size:18px;color:var(--teal-d)}#dr46 .hd p{margin:2px 0 0;font-size:13px;color:var(--sub)}
+#dr46 .hd .x{margin-left:auto;border:0;background:var(--pale);border-radius:10px;width:34px;height:34px;font-size:18px;cursor:pointer;flex:none;color:var(--sub)}
+#dr46 .bd{overflow:auto;padding:14px 18px 18px}
+#dr46 .sm{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+#dr46 .sm div{background:var(--paler,#F5FAFB);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+#dr46 .sm b{display:block;font-size:20px;color:#1B333A}#dr46 .sm span{font-size:12px;color:var(--sub)}
+#dr46 .ch{border:1px solid var(--line);border-radius:14px;padding:10px 12px 6px;margin-bottom:12px}
+#dr46 .ch h5{margin:0 0 6px;font-size:13px;color:var(--teal-d)}#dr46 .ch svg{width:100%;height:auto;display:block}
+#dr46 .lg{display:flex;gap:12px;font-size:12px;color:var(--sub);margin-top:2px}#dr46 .lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+#dr46 .tb{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+#dr46 .tb button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer}
+#dr46 .tb button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+#dr46 .rw{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid var(--line2,#EEF2F3);cursor:pointer;border-radius:8px}
+#dr46 .rw:hover{background:var(--paler,#F5FAFB)}#dr46 .rw .t{flex:1;min-width:0}
+#dr46 .rw .t b{display:block;font-size:14px;color:#1B333A}#dr46 .rw .t span{display:block;font-size:12px;color:var(--sub)}
+#dr46 .rw .v{text-align:right;font-weight:800;font-size:15px;white-space:nowrap}#dr46 .rw .v span{display:block;font-size:11px;color:var(--sub);font-weight:600}
+#dr46 .rw .go{color:var(--mute);font-size:18px}
+#dr46 .rw.e{cursor:default}#dr46 .rw.e .pt{width:42px;text-align:center;font-weight:800;flex:none}
+#dr46 .r3{color:#C0392B}#dr46 .r0{color:#1E8449}
+#dr46 .em{color:var(--sub);text-align:center;padding:24px 0}
+@media (max-width:640px){#dr46{padding:0;align-items:flex-end}#dr46 .bx{border-radius:20px 20px 0 0;max-height:92vh}#dr46 .sm{grid-template-columns:repeat(2,1fr)}}
+#gc46{margin:2px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paler,#F5FAFB)}
+#gc46 .r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#gc46 input{height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font:inherit;font-size:15px;background:#fff}
+#gc46 .q{display:flex;gap:6px}#gc46 .q button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:600;color:var(--teal-d);cursor:pointer}
+#gc46 .w{font-size:13px;color:var(--sub);margin-top:6px}#gc46 .w b{color:var(--teal-d)}#gc46 .w.bad b{color:#C0392B}
+</style>
+<script id="v46-js">
+/* ══ v4.6 ════════════════════════════════════════════════════════════════════════════════
+   1. SỐ LIỆU BẤM ĐƯỢC: bấm ô số (kpi), thanh / chú thích xếp loại, dòng học sinh / lỗi (toprow), dòng tổ (bảng thi đua), biểu đồ
+      ở Thống kê · Lịch sử · Báo cáo · thẻ tổng quan Ghi điểm ⇒ màn chi tiết #dr46 (nền mờ): tổng số, biểu đồ diễn biến từng tuần,
+      tab Học sinh / Nội dung / Tổ / Từng lượt; bấm tiếp ⇒ xem sâu hơn (nút ‹ quay lại) hoặc mở hồ sơ học sinh.
+      Bắt sự kiện ở document (capture) theo cấu trúc ⇒ không phải sửa từng hàm vẽ. topList có data-dk (mã HS hoặc nội dung lỗi).
+   2. MỞ APP ⇒ luôn vào "Ghi điểm" đúng tháng / tuần của hôm nay (tuần tính từ thứ Hai, không quá số tuần của tháng). Không áp cho phụ huynh.
+   3. GHI ĐIỂM CHO VIỆC ĐÃ XẢY RA: bước diễn giải có ô "Ngày xảy ra" (mặc định hôm nay) ⇒ tự đổi sang đúng tháng / tuần của ngày đó
+      khi lưu (tháng đã khoá sổ thì chặn); ghi chú thêm "ngày dd/mm" nếu không phải hôm nay. Màn hình giữ nguyên tuần đang xem. */
+(function(){
+  const DOW=d=>(d.getDay()+6)%7;   /* thứ Hai = 0 */
+  window.wkOfDate=function(d){
+    d=new Date(d); const m=d.getMonth()+1; if(MONTHS_YEAR.indexOf(m)<0) return null;
+    const first=new Date(d.getFullYear(),d.getMonth(),1);
+    const w=Math.floor((d.getDate()-1+DOW(first))/7)+1;
+    return {thang:m, tuan:Math.max(1,Math.min(S.cfg.soTuan||4,w))};
+  };
+  const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const ddmm=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+
+  /* ── 2. mở app ⇒ Ghi điểm, đúng tuần hôm nay ── */
+  let homed=false;
+  const sa=window.showApp;
+  window.showApp=showApp=function(){
+    const r=sa.apply(this,arguments);
+    if(!homed){ homed=true;
+      try{ if(!(typeof isKhach==='function'&&isKhach())){
+        const w=wkOfDate(new Date());
+        let dm=false; try{ dm=localStorage.getItem('hk_demo')==='1'; }catch(_){}
+        if(w && (!dm || w.thang===S.thang)){ S.thang=w.thang; S.tuan=w.tuan; }   /* trải nghiệm: dữ liệu mẫu chỉ có 1 tháng */
+        if(typeof go==='function') go('ghi'); else { S.view='ghi'; renderAll(); }
+      } }catch(e){}
+    }
+    return r;
+  };
+
+  /* ── 3. ngày xảy ra ── */
+  const hg=window.hoiGhiChu;
+  window.hoiGhiChu=hoiGhiChu=function(){
+    S.ngay46=null;
+    hg.apply(this,arguments);
+    const pf=$('#pBody .pform'); if(!pf || $('#gc46')) return;
+    const today=new Date(), cur={thang:S.thang,tuan:S.tuan};
+    pf.insertAdjacentHTML('afterbegin',`<div id="gc46"><label class="lbl" for="gcNgay">Ngày xảy ra</label>
+      <div class="r"><input type="date" id="gcNgay" max="${ymd(today)}" value="${ymd(today)}">
+      <div class="q"><button type="button" data-d="0">Hôm nay</button><button type="button" data-d="1">Hôm qua</button></div></div>
+      <div class="w" id="gcW"></div></div>`);
+    const inp=$('#gcNgay'), wEl=$('#gcW');
+    const upd=()=>{
+      const v=inp.value; if(!v){ S.ngay46=null; wEl.innerHTML=''; return; }
+      const d=new Date(v+'T12:00:00'), w=wkOfDate(d), isToday=v===ymd(today);
+      if(!w){ S.ngay46={bad:'Ngày này không thuộc năm học.'}; wEl.className='w bad'; wEl.innerHTML='<b>Ngày này không thuộc năm học.</b>'; return; }
+      if(v>ymd(today)){ S.ngay46={bad:'Không ghi cho ngày trong tương lai.'}; wEl.className='w bad'; wEl.innerHTML='<b>Không ghi cho ngày trong tương lai.</b>'; return; }
+      const lk=typeof isLk==='function'&&isLk(w.thang);
+      S.ngay46={thang:w.thang,tuan:w.tuan,d,isToday,bad:lk?'Tháng '+w.thang+' đã khoá sổ, không ghi thêm được.':null};
+      wEl.className='w'+(lk?' bad':'');
+      wEl.innerHTML=lk?'<b>Tháng '+w.thang+' đã khoá sổ</b>, không ghi thêm được.'
+        :'Sẽ ghi vào <b>tuần '+w.tuan+' · '+esc(thangLabel(w.thang,true))+'</b>'+(w.thang!==cur.thang||w.tuan!==cur.tuan?' (khác tuần đang xem)':'');
+    };
+    inp.onchange=inp.oninput=upd;
+    pf.querySelectorAll('#gc46 [data-d]').forEach(b=>b.onclick=()=>{ const d=new Date(); d.setDate(d.getDate()-Number(b.dataset.d)); inp.value=ymd(d); upd(); });
+    /* mặc định: nếu đang xem tuần khác tuần của hôm nay ⇒ để trống ngày (ghi vào tuần đang xem như trước) */
+    const wt=wkOfDate(today);
+    if(!wt || wt.thang!==S.thang || wt.tuan!==S.tuan){ inp.value=''; wEl.innerHTML='Để trống ⇒ ghi vào <b>tuần '+S.tuan+' · '+esc(thangLabel(S.thang,true))+'</b> đang xem.'; }
+    else upd();
+  };
+  const gt=window.ghiThucTe;
+  window.ghiThucTe=ghiThucTe=function(maList,c,loai,diem,ghiChu){
+    const n=$('#gc46')?S.ngay46:null; S.ngay46=null;
+    if(!n) return gt.apply(this,arguments);
+    if(n.bad){ toast(esc(n.bad)); return Promise.resolve(); }
+    const keep={thang:S.thang,tuan:S.tuan}, args=[].slice.call(arguments);
+    if(!n.isToday) args[4]=(ghiChu?ghiChu+' · ':'')+'ngày '+ddmm(n.d);
+    S.thang=n.thang; S.tuan=n.tuan;
+    let p; try{ p=gt.apply(this,args); } finally { S.thang=keep.thang; S.tuan=keep.tuan; }
+    if(n.thang!==keep.thang||n.tuan!==keep.tuan){ renderAll(); setTimeout(()=>toast('Đã ghi vào tuần '+n.tuan+' · '+esc(thangLabel(n.thang,true))+'.'),900); }
+    return p;
+  };
+
+  /* ── 1. màn chi tiết ── */
+  const EN=e=>e[E_ND]||e[E_MUC]||'';
+  const ORD=(a,b)=>MONTHS_YEAR.indexOf(a[0])-MONTHS_YEAR.indexOf(b[0])||a[1]-b[1];
+  let stack=[], pass=false, CW=600;
+  function chart(E){
+    const keys={}; E.forEach(e=>{ const k=e[E_THANG]+'-'+e[E_TUAN]; (keys[k]=keys[k]||{m:e[E_THANG],w:e[E_TUAN],p:0,n:0}); e[E_DIEM]>0?keys[k].p++:keys[k].n++; });
+    const ms=[...new Set(E.map(e=>e[E_THANG]))].sort((a,b)=>MONTHS_YEAR.indexOf(a)-MONTHS_YEAR.indexOf(b));
+    const L=[]; ms.forEach(m=>{ for(let w=1;w<=S.cfg.soTuan;w++){ const k=keys[m+'-'+w]||{m,w,p:0,n:0}; L.push(k); } });
+    if(!L.length) return '';
+    const W=Math.max(CW,L.length*34), H=160, mx=Math.max(1,...L.map(k=>Math.max(k.p,k.n))), bw=Math.min(22,(W/L.length-10)/2);
+    let s=`<div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="width:${W}px;max-width:none">`;
+    L.forEach((k,i)=>{ const x=i*(W/L.length)+(W/L.length)/2, hn=k.n/mx*(H-40), hp=k.p/mx*(H-40);
+      if(k.n) s+=`<rect x="${x-bw-1}" y="${H-22-hn}" width="${bw}" height="${hn}" rx="2" fill="#D9534F"><title>Tuần ${k.w}/T${k.m}: ${k.n} lượt trừ</title></rect><text x="${x-bw/2-1}" y="${H-26-hn}" font-size="10" text-anchor="middle" fill="#C0392B">${k.n}</text>`;
+      if(k.p) s+=`<rect x="${x+1}" y="${H-22-hp}" width="${bw}" height="${hp}" rx="2" fill="#2E9E5B"><title>Tuần ${k.w}/T${k.m}: ${k.p} lượt cộng</title></rect><text x="${x+bw/2+1}" y="${H-26-hp}" font-size="10" text-anchor="middle" fill="#1E8449">${k.p}</text>`;
+      s+=`<text x="${x}" y="${H-8}" font-size="10" text-anchor="middle" fill="#6C8A93">${k.w===1?'T'+k.m+'·':''}${k.w}</text>`; });
+    s+=`<line x1="0" x2="${W}" y1="${H-21}" y2="${H-21}" stroke="#E1EAEC"/></svg></div>`;
+    return `<div class="ch"><h5>Diễn biến theo tuần <span style="font-weight:500;color:var(--sub)">(T10·1 = tháng 10, tuần 1)</span></h5>${s}<div class="lg"><span><i style="background:#D9534F"></i>Lượt trừ</span><span><i style="background:#2E9E5B"></i>Lượt cộng</span></div></div>`;
+  }
+  function group(E,keyf,namef){
+    const g={}; E.forEach(e=>{ const k=keyf(e); (g[k]=g[k]||{k,n:0,d:0,hs:new Set()}); g[k].n++; g[k].d+=e[E_DIEM]; g[k].hs.add(e[E_MA]); });
+    return Object.values(g).sort((a,b)=>b.n-a.n||a.d-b.d).map(x=>Object.assign(x,{t:namef(x.k)}));
+  }
+  function rowsE(E){
+    const L=E.slice().sort((a,b)=>ORD([b[E_THANG],b[E_TUAN]],[a[E_THANG],a[E_TUAN]])||String(b[E_LUC]).localeCompare(String(a[E_LUC]))).slice(0,300);
+    return L.map(e=>{ const s=stu(e[E_MA]);
+      return `<div class="rw e"><span class="pt ${e[E_DIEM]<0?'r3':'r0'}">${nz(e[E_DIEM])}</span><div class="t"><b>${esc(s?s.ten:e[E_MA])} · ${esc(EN(e))}</b>
+        <span>Tuần ${e[E_TUAN]} · ${esc(thangLabel(e[E_THANG]))} · ${esc(String(e[E_LUC]).slice(0,16).replace('T',' '))} · ghi bởi ${esc(e[E_TEN]||'')}${e[E_GC]?' · '+esc(e[E_GC]):''}</span></div></div>`; }).join('')
+      +(E.length>300?`<div class="em">… và ${E.length-300} lượt khác. Xem đủ ở mục Lịch sử.</div>`:'');
+  }
+  function sumE(E){
+    const p=E.filter(e=>e[E_DIEM]>0), n=E.filter(e=>e[E_DIEM]<0);
+    return `<div class="sm"><div><b>${E.length}</b><span>lượt ghi nhận</span></div><div><b class="r3">${n.length}</b><span>lượt trừ · ${n.reduce((a,e)=>a+e[E_DIEM],0)} điểm</span></div>
+      <div><b class="r0">${p.length}</b><span>lượt cộng · +${p.reduce((a,e)=>a+e[E_DIEM],0)} điểm</span></div><div><b>${new Set(E.map(e=>e[E_MA])).size}</b><span>học sinh</span></div></div>`;
+  }
+  function viewE(o){
+    const E=o.E, tabs=[];
+    if(!o.ma) tabs.push(['hs','Theo học sinh']);
+    if(!o.nd) tabs.push(['nd','Theo nội dung']);
+    if(!o.to && !o.ma) tabs.push(['to','Theo tổ']);
+    tabs.push(['ds','Từng lượt']);
+    const tab=o.tab&&tabs.some(t=>t[0]===o.tab)?o.tab:tabs[0][0]; o.tab=tab;
+    let list='';
+    if(!E.length) list='<div class="em">Không có ghi nhận nào.</div>';
+    else if(tab==='hs') list=group(E,e=>e[E_MA],k=>{ const s=stu(k); return s?s.ten:k; }).map(x=>{ const s=stu(x.k);
+      return `<div class="rw" data-hs="${esc(x.k)}"><div class="t"><b>${esc(x.t)}</b><span>Tổ ${esc(s?s.to:'?')}</span></div><div class="v ${x.d<0?'r3':'r0'}">${nz(x.d)}<span>${x.n} lượt</span></div><span class="go">›</span></div>`; }).join('');
+    else if(tab==='nd') list=group(E,EN,k=>k).map(x=>`<div class="rw" data-nd="${esc(x.k)}"><div class="t"><b>${esc(x.t)}</b><span>${x.hs.size} học sinh</span></div><div class="v ${x.d<0?'r3':'r0'}">${x.n}<span>lượt · ${nz(x.d)} điểm</span></div><span class="go">›</span></div>`).join('');
+    else if(tab==='to') list=group(E,e=>String(e[E_TO]),k=>'Tổ '+k).sort((a,b)=>a.k.localeCompare(b.k)).map(x=>`<div class="rw" data-to="${esc(x.k)}"><div class="t"><b>${esc(x.t)}</b><span>${x.hs.size} học sinh</span></div><div class="v ${x.d<0?'r3':'r0'}">${nz(x.d)}<span>${x.n} lượt</span></div><span class="go">›</span></div>`).join('');
+    else list=rowsE(E);
+    return sumE(E)+chart(E)+(o.ma?`<div style="margin:-2px 0 10px"><button class="btn ghost" data-pf="${esc(o.ma)}">Mở hồ sơ đầy đủ của ${esc(ten1(stu(o.ma)?stu(o.ma).ten:''))}</button></div>`:'')
+      +`<div class="tb">${tabs.map(t=>`<button data-tb="${t[0]}" class="${t[0]===tab?'on':''}">${t[1]}</button>`).join('')}</div><div>${list}</div>`;
+  }
+  function viewS(o){
+    const L=o.L.slice().sort((a,b)=>o.sc(a.ma)-o.sc(b.ma));
+    return `<div class="sm" style="grid-template-columns:repeat(2,1fr)"><div><b>${L.length}</b><span>học sinh</span></div><div><b>${L.length?f1(L.reduce((a,s)=>a+o.sc(s.ma),0)/L.length):'0.0'}</b><span>điểm TB tuần</span></div></div>`
+      +(L.length?L.map(s=>{ const v=o.sc(s.ma); return `<div class="rw" data-hs="${esc(s.ma)}"><div class="t"><b>${esc(s.ten)}</b><span>Tổ ${esc(s.to)} · ${esc(rankName(v))}</span></div><div class="v r${rankIdx(v)===0?0:3}">${f1(v)}<span>TB tuần</span></div><span class="go">›</span></div>`; }).join(''):'<div class="em">Không có học sinh nào.</div>');
+  }
+  function viewAvg(o){
+    const L=activeStudents(), ms=MONTHS_YEAR.filter(m=>S.entries.some(e=>e[E_THANG]===m));
+    const pts=[]; ms.forEach(m=>{ for(let w=1;w<=S.cfg.soTuan;w++){ const has=S.entries.some(e=>e[E_THANG]===m&&e[E_TUAN]===w); if(has) pts.push({k:'T'+w+'/'+m,v:L.length?L.reduce((a,s)=>a+weekScore(s.ma,w,m),0)/L.length:0}); } });
+    const to=['1','2','3','4'].map(t=>{ const g=L.filter(s=>String(s.to)===t); return {t,n:g.length,v:g.length?g.reduce((a,s)=>a+o.sc(s.ma),0)/g.length:0}; });
+    return `<div class="ch"><h5>Điểm TB lớp từng tuần (cả năm)</h5>${pts.length&&typeof svgLine==='function'?svgLine(pts):'<div class="em">Chưa có dữ liệu.</div>'}</div>`
+      +`<div class="tb"><button class="on">Theo tổ · ${esc(o.nhan||'')}</button></div>`
+      +to.map(x=>`<div class="rw" data-tos="${x.t}"><div class="t"><b>Tổ ${x.t}</b><span>${x.n} học sinh · ${esc(rankName(x.v))}</span></div><div class="v">${f1(x.v)}<span>TB tuần</span></div><span class="go">›</span></div>`).join('');
+  }
+  function draw(){
+    const o=stack[stack.length-1]; let d=$('#dr46');
+    if(!o){ if(d) d.remove(); document.body.style.overflow=''; return; }
+    if(!d){ d=document.createElement('div'); d.id='dr46'; d.innerHTML='<div class="bx" role="dialog" aria-modal="true"><div class="hd"></div><div class="bd"></div></div>'; document.body.appendChild(d);
+      d.addEventListener('click',e=>{ if(e.target===d){ stack=[]; draw(); } }); document.body.style.overflow='hidden'; }
+    d.querySelector('.hd').innerHTML=(stack.length>1?'<button class="bk" aria-label="Quay lại">‹</button>':'')+`<div><h3>${esc(o.title)}</h3><p>${esc(o.sub||'')}</p></div><button class="x" aria-label="Đóng">×</button>`;
+    const bd=d.querySelector('.bd'); CW=Math.max(280,bd.clientWidth-62); bd.innerHTML=(o.flt?`<div style="margin:0 0 10px"><button class="btn ghost" data-flt="${esc(o.flt)}">Lọc danh sách Ghi điểm theo mục này</button></div>`:'')+(o.mode==='S'?viewS(o):o.mode==='avg'?viewAvg(o):viewE(o)); bd.scrollTop=0;
+    bd.querySelectorAll('[data-flt]').forEach(b=>b.onclick=()=>{ const k=b.dataset.flt; stack=[]; draw(); const t=document.querySelector('#v32h .tl[data-f="'+k+'"]'); if(t){ pass=true; try{ t.click(); } finally { pass=false; } } });
+    d.querySelector('.x').onclick=()=>{ stack=[]; draw(); };
+    const bk=d.querySelector('.bk'); if(bk) bk.onclick=()=>{ stack.pop(); draw(); };
+    bd.querySelectorAll('[data-tb]').forEach(b=>b.onclick=()=>{ o.tab=b.dataset.tb; draw(); });
+    bd.querySelectorAll('[data-pf]').forEach(b=>b.onclick=()=>{ const ma=b.dataset.pf; stack=[]; draw(); openProfile(ma); });
+    bd.querySelectorAll('.rw[data-hs]').forEach(r=>r.onclick=()=>{ const ma=r.dataset.hs, s=stu(ma);
+      if(o.mode==='S'){ stack=[]; draw(); openProfile(ma); return; }
+      push({title:s?s.ten:ma, sub:o.title+' · '+(o.sub||''), E:o.E.filter(e=>e[E_MA]===ma), ma}); });
+    bd.querySelectorAll('.rw[data-nd]').forEach(r=>r.onclick=()=>{ const k=r.dataset.nd; push({title:k, sub:o.title+' · '+(o.sub||''), E:o.E.filter(e=>EN(e)===k), nd:k, ma:o.ma}); });
+    bd.querySelectorAll('.rw[data-to]').forEach(r=>r.onclick=()=>{ const t=r.dataset.to; push({title:'Tổ '+t, sub:o.title+' · '+(o.sub||''), E:o.E.filter(e=>String(e[E_TO])===t), to:t}); });
+    bd.querySelectorAll('.rw[data-tos]').forEach(r=>r.onclick=()=>{ const t=r.dataset.tos; push({mode:'S', title:'Tổ '+t, sub:o.nhan||'', L:activeStudents().filter(s=>String(s.to)===t), sc:o.sc}); });
+  }
+  function push(o){ stack.push(o); draw(); }
+  window.DRILL={open:o=>{ stack=[o]; draw(); }, close:()=>{ stack=[]; draw(); }};
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&stack.length){ stack.pop(); draw(); } });
+
+  /* ngữ cảnh theo màn hình */
+  function ctx(view){
+    if(view==='vTK') return {E:tkEntries(), L:activeStudents(), sc:tkScore, nhan:tkNhan()};
+    if(view==='vLS') return {E:lsData(), L:activeStudents(), sc:ma=>monthAvg(ma,S.thang), nhan:typeof lsTitle==='function'?lsTitle():''};
+    if(view==='vBC'){ const P=bcPeriod(), L=activeStudents(); return {E:S.entries.filter(e=>inP(e,P)&&L.some(s=>s.ma===e[E_MA])), L, sc:ma=>bcXL(ma,P).sc, ri:ma=>bcXL(ma,P).i, nhan:P.nhan}; }
+    if(view==='v32h'){ const L=visibleStudents?(()=>{ const f0=S.v32f; S.v32f=null; const r=visibleStudents(); S.v32f=f0; return r; })():activeStudents();
+      return {E:S.entries.filter(e=>e[E_THANG]===S.thang&&e[E_TUAN]===S.tuan&&L.some(s=>s.ma===e[E_MA])), L, sc:ma=>weekScore(ma,S.tuan), nhan:'tuần '+S.tuan+' · '+thangLabel(S.thang,true)}; }
+    return null;
+  }
+  const RI=(c,ma)=>c.ri?c.ri(ma):rankIdx(c.sc(ma));
+  document.addEventListener('click',ev=>{
+    const t=ev.target; if(pass || !(t instanceof Element)) return;
+    const host=t.closest('#vTK,#vLS,#vBC,#v32h'); if(!host) return;
+    if(t.closest('button:not(.tl),a,input,select,textarea,.segbar,.bcacts,.sq39,[data-ky],[data-bk]')) return;
+    const view=host.id; let c; try{ c=ctx(view); }catch(e){ return; } if(!c) return;
+    const nhan=c.nhan, pos=c.E.filter(e=>e[E_DIEM]>0), neg=c.E.filter(e=>e[E_DIEM]<0);
+    let o=null, el;
+    if(view==='v32h' && (el=t.closest('.tl[data-f]'))){
+      const k=el.dataset.f;
+      if(k==='bad') o={title:'Lượt trừ điểm',E:neg};
+      else if(k==='good') o={title:'Lượt khen',E:pos};
+      else if(k==='warn') o={mode:'S',title:'Cần nhắc nhở',L:c.L.filter(s=>rankIdx(c.sc(s.ma))>0),sc:c.sc};
+      else if(k==='tot') o={mode:'S',title:'Đạt loại '+S.cfg.thresholds[0].ten,L:c.L.filter(s=>rankIdx(c.sc(s.ma))===0),sc:c.sc};
+    }
+    else if((el=t.closest('.kpi'))){
+      const l=(el.querySelector('.l')||el).textContent;
+      if(/đang học/i.test(l)) o={mode:'S',title:'Học sinh đang học',L:c.L,sc:c.sc};
+      else if(/Điểm TB tuần/i.test(l)) o={mode:'avg',title:'Điểm TB tuần của lớp',sc:c.sc,nhan};
+      else if(/Đạt loại/i.test(l)) o={mode:'S',title:l.split('·')[0].trim(),L:c.L.filter(s=>RI(c,s.ma)===0),sc:c.sc};
+      else if(/cộng|khen/i.test(l)) o={title:'Lượt được cộng điểm',E:pos};
+      else if(/trừ|vi phạm/i.test(l)) o={title:'Lượt bị trừ điểm',E:neg};
+      else o={title:'Tất cả ghi nhận',E:c.E};
+    }
+    else if((el=t.closest('.distbar>div, .legend>span'))){
+      const m=(el.className||'').match(/b(\d)/)||((el.querySelector('i')||{}).className||'').match(/b(\d)/); const i=m?+m[1]:-1;
+      if(i>=0) o={mode:'S',title:'Xếp loại '+(S.cfg.thresholds[i]||{}).ten,L:c.L.filter(s=>Math.min(3,RI(c,s.ma))===i),sc:c.sc};
+    }
+    else if((el=t.closest('.toprow[data-dk]'))){
+      const k=el.dataset.dk, h=(el.closest('.register')||{}).previousElementSibling, ht=h?h.textContent:'';
+      if(/tuyên dương|khen/i.test(ht)) o={title:(stu(k)||{}).ten||k,E:pos.filter(e=>e[E_MA]===k),ma:k};
+      else if(/vi phạm nhiều|cần quan tâm/i.test(ht)) o={title:(stu(k)||{}).ten||k,E:neg.filter(e=>e[E_MA]===k),ma:k};
+      else o={title:k,E:c.E.filter(e=>EN(e)===k),nd:k};
+    }
+    else if((el=t.closest('table.bct tr'))){
+      const m=el.textContent.match(/Tổ\s*(\d)/); if(m) o={title:'Tổ '+m[1],E:c.E.filter(e=>String(e[E_TO])===m[1]),to:m[1]};
+    }
+    else if((el=t.closest('.panelbox')) && el.querySelector('svg')) o={mode:'avg',title:'Điểm TB tuần của lớp',sc:c.sc,nhan};
+    if(!o) return;
+    if(view==='v32h') o.flt=el.dataset.f;
+    ev.preventDefault(); ev.stopPropagation();
+    o.sub=o.sub||nhan; DRILL.open(o);
+  },true);
+  /* gợi ý nhỏ dưới hàng ô số */
+  const hint=v=>{ const k=document.querySelector('#'+v+' .kpis'); if(k && !k.nextElementSibling?.classList?.contains('v46hint')) k.insertAdjacentHTML('afterend','<div class="v46hint">Bấm vào số liệu, tên học sinh, lỗi hay tổ để xem chi tiết.</div>'); };
+  new MutationObserver(()=>{ ['vTK','vLS','vBC'].forEach(hint); }).observe(document.getElementById('main')||document.body,{childList:true,subtree:true});
 })();
 </script>
 <script src="demo-ui.js?v=4.5"></script>

@@ -1,6 +1,25 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-22-v4.6", version: "4.6", date: "2026-10-22",
+    title: "Bấm vào số liệu để xem chi tiết · Ghi điểm cho ngày đã qua",
+    summary: "Mọi con số ở Thống kê, Báo cáo, Lịch sử và thẻ tổng quan đều bấm được để xem chi tiết. Mở app là vào ngay Ghi điểm của tuần hiện tại; có thể chọn ngày xảy ra để ghi cho việc đã qua.",
+    items: [
+      { type: "new", title: "Bấm vào số liệu ⇒ xem chi tiết",
+        text: "Ở <b>Thống kê</b>, <b>Báo cáo</b>, <b>Lịch sử</b>, bấm vào ô số, thanh xếp loại, tên học sinh, lỗi hay dòng tổ ⇒ màn chi tiết mở ra (phía sau mờ đi): tổng số, biểu đồ từng tuần, danh sách theo học sinh, nội dung, tổ, từng lượt.",
+        img: "updates/v4.6/so-lieu-chi-tiet.jpg" },
+      { type: "new", title: "Xem sâu từng lớp",
+        text: "Trong màn chi tiết, bấm tiếp vào một học sinh, một lỗi hay một tổ để xem riêng phần đó. Nút <b>‹</b> để quay lại, nút <b>Mở hồ sơ</b> để xem đầy đủ của học sinh. Bấm ra ngoài hoặc nút × để đóng.",
+        img: "updates/v4.6/xem-sau.jpg" },
+      { type: "imp", title: "Mở app là vào Ghi điểm của tuần này",
+        text: "Giáo viên chủ nhiệm và cán bộ lớp đăng nhập ⇒ app mở sẵn <b>Ghi điểm</b>, đúng tháng và tuần của hôm nay. Bấm 4 ô ở thẻ tổng quan (Lượt trừ điểm, Lượt khen…) để xem chi tiết hoặc lọc danh sách.",
+        img: "updates/v4.6/mo-app-ghi-diem.jpg" },
+      { type: "new", title: "Ghi điểm cho việc đã xảy ra trước đó",
+        text: "Khi ghi điểm, ở bước diễn giải chọn <b>Ngày xảy ra</b> (hoặc bấm Hôm qua) ⇒ app tự ghi vào đúng tuần của ngày đó và thêm \"ngày dd/mm\" vào ghi chú. Tháng đã khoá sổ thì không ghi thêm được.",
+        img: "updates/v4.6/ngay-xay-ra.jpg" }
+    ]
+  },
+  {
     id: "2026-10-21-v4.5", version: "4.5", date: "2026-10-21",
     title: "Tải PDF, Excel trên điện thoại · Hướng dẫn trải nghiệm theo vai",
     summary: "Bấm Tải PDF / Tải Excel là có file thật, kể cả trên điện thoại. Chế độ trải nghiệm có hướng dẫn từng bước cho giáo viên, cán bộ lớp và phụ huynh.",
