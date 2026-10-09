@@ -127,8 +127,8 @@
     var dCong = X.cong.reduce(function (a, e) { return a + e[9]; }, 0), dTru = X.tru.reduce(function (a, e) { return a + e[9]; }, 0);
     var emo = X.ri === 0 ? (X.cong.length ? 'khen-lon' : 'vui') : EMO_RI[X.ri];
     var trend = PV ? X.sc - PV.sc : 0;
-    var msg = [con + ' <b>' + ten + '</b> ' + (X.ri === 0 ? 'đang thực hiện nề nếp rất tốt' : X.ri === 1 ? 'thực hiện khá tốt, còn vài lỗi nhỏ' : X.ri === 2 ? 'còn mắc khá nhiều lỗi' : 'đang vi phạm nhiều') + ' trong ' + kyName(ky).toLowerCase() + ' — xếp loại <b>' + esc(X.xl) + '</b>' + (X.chot ? ' (cô đã chốt)' : '') + '.',
-      PV ? (trend > 0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', ' + con.toLowerCase() + ' đã <b style="color:#1E8449">tiến bộ</b> rõ rệt.' : trend < -0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', kết quả của ' + con.toLowerCase() + ' <b style="color:#C0392B">giảm</b> — cần cố gắng hơn.' : 'Kết quả giữ ổn định so với ' + kyName(pk).toLowerCase() + '.') : '',
+    var msg = [con + ' <b>' + ten + '</b> ' + (X.ri === 0 ? 'đang thực hiện nề nếp rất tốt' : X.ri === 1 ? 'thực hiện tốt nề nếp, chỉ còn vài lỗi nhỏ' : X.ri === 2 ? 'còn mắc một số lỗi' : 'còn mắc nhiều lỗi') + ' trong ' + kyName(ky).toLowerCase() + ' — xếp loại <b>' + esc(X.xl) + '</b>' + (X.chot ? ' (cô đã chốt)' : '') + '.',
+      PV ? (trend > 0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', ' + con.toLowerCase() + ' đã <b style="color:#1E8449">tiến bộ</b> rõ rệt.' : trend < -0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', kết quả của ' + con.toLowerCase() + ' <b style="color:#C0392B">đi xuống</b>, ' + con.toLowerCase() + ' cần cố gắng hơn.' : 'Kết quả giữ ổn định so với ' + kyName(pk).toLowerCase() + '.') : '',
       ph ? (X.ri <= 1 ? 'Cô cảm ơn bác đã luôn đồng hành cùng con ạ!' : 'Cô mong bác phối hợp cùng cô nhắc nhở con thêm ạ.') : ''].filter(Boolean).join(' ');
     var foot = footTxt(D);
     var kpis = '<div class="kp"><div class="kpi" style="--c:' + RC[rankIdx(cfg, X.sc)] + '"><div class="n">' + f1(X.sc) + '</div><div class="l">Điểm TB tuần</div>' + dl(X.sc, PV && PV.sc, true, f1) + '</div>'

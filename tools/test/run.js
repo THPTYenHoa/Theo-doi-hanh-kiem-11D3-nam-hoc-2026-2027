@@ -14,7 +14,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(!(await p.isVisible('#lgPin')) && !p.M.CALLS.some(c => c.a === 'roster'), 'không gọi danh sách thành viên, không ô mật khẩu');
   ok(await p.isVisible('a.lgph[href="phu-huynh.html"]'), 'có lối vào trang phụ huynh');
   await p.fill('#lgEm', 'la@example.com'); await p.click('#lgGo'); await W(300);
-  ok(/chưa có trong danh sách/.test(await p.textContent('#lgErr3')), 'email lạ ⇒ báo chưa có trong danh sách');
+  ok(/chưa được cấp quyền/.test(await p.textContent('#lgErr3')), 'email lạ ⇒ báo chưa được cấp quyền');
   await p.fill('#lgEm', 'TOTRUONG2@example.com'); await p.click('#lgGo'); await p.waitForSelector('#lgCode');
   ok(/Trần Hải Bình/.test(await p.textContent('.lgcard h3')), 'chào đúng tên người nhận mã');
   await p.fill('#lgCode', '111111'); await W(400);

@@ -69,7 +69,7 @@ async function newPage(browser, o = {}) {
     if (lk && M.khoa[lk]) { M.CALLS[M.CALLS.length - 1].blocked = true; return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ ok: false, error: 'Tháng ' + lk + ' đã được GVCN chốt hạnh kiểm — không thêm, sửa, xoá được nữa.' }) }); }
     if (o.lag) await new Promise(r => setTimeout(r, o.lag));
     if (a === 'otpStart') { const em = String(p.email || '').toLowerCase(); const who2 = EMAILS[em];
-      res = !who2 ? { ok: false, error: 'Email này chưa có trong danh sách cán bộ lớp. Nhờ GVCN thêm vào mục Tài khoản.' }
+      res = !who2 ? { ok: false, error: 'Email này chưa được cấp quyền vào sổ. Bạn nhờ cô chủ nhiệm thêm email vào mục Tài khoản nhé.' }
           : (M.otpAt && Date.now() - M.otpAt < 45000 && !o.noGap) ? { ok: false, code: 'WAIT', error: 'Mã vừa được gửi. Đợi 40 giây rồi gửi lại.' }
           : (M.otpAt = Date.now(), M.otpEmail = em, { ok: true, gap: 45, name: ME[who2].name }); }
     else if (a === 'otpVerify') { const who2 = EMAILS[String(p.email || '').toLowerCase()];

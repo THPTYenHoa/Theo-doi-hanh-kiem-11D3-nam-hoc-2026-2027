@@ -7,16 +7,16 @@
   var EMO = ['chao', 'huong-dan', 'chi-tay', 'vui', 'khen-lon', 'co-vu', 'buon', 'lo-lang', 'nghiem', 'gian', 'suy-nghi', 'ngac-nhien', 'nghi-ngoi', 'an-mung', 'chup-anh', 'cam-on', 'chay'];   /* chay = đang chạy (màn chờ) */
   /* "Vai" của cô Thảo — mỗi vai một bộ ảnh (thư mục mascot/<id>/). c = [áo chính, viền / điểm nhấn, tay áo] */
   var STYLES = [
-    { id: 'chu-nhiem', ten: 'Cô Thảo chủ nhiệm', mo: 'Gile đen viền vàng — như ảnh thật', c: ['#24232B', '#E2C27A', '#F4EEE2'] },
-    { id: 'giang-day', ten: 'Cô Thảo lên lớp', mo: 'Cầm thước, đọc hướng dẫn', c: ['#0E7C86', '#FFFFFF', '#0E7C86'] },
-    { id: 'ao-dai', ten: 'Cô Thảo áo dài', mo: 'Khai giảng, 20/11, lễ', c: ['#F8F5EF', '#C9A36A', '#F8F5EF'] },
+    { id: 'chu-nhiem', ten: 'Cô Thảo chủ nhiệm', mo: 'Áo gile đen, trang phục hằng ngày', c: ['#24232B', '#E2C27A', '#F4EEE2'] },
+    { id: 'giang-day', ten: 'Cô Thảo lên lớp', mo: 'Trên bục giảng, hướng dẫn bài', c: ['#0E7C86', '#FFFFFF', '#0E7C86'] },
+    { id: 'ao-dai', ten: 'Cô Thảo áo dài', mo: 'Khai giảng, 20/11, ngày lễ', c: ['#F8F5EF', '#C9A36A', '#F8F5EF'] },
     { id: 'ao-dai-do', ten: 'Cô Thảo áo dài Tết', mo: 'Tết, xuân', c: ['#C0392B', '#F2C230', '#C0392B'] },
     { id: 'stem', ten: 'Cô Thảo STEM', mo: 'Áo blouse, robot, khoa học', c: ['#FFFFFF', '#3D86CF', '#FFFFFF'] },
-    { id: 'man-chin', ten: 'Cô Thảo mận chín', mo: 'Theo đề cương lớp 12', c: ['#7A1E3A', '#F2C230', '#F8E9ED'] },
-    { id: 'mau-nuoc', ten: 'Cô Thảo màu nước', mo: 'Áo dài chàm — đề cương lớp 11', c: ['#302663', '#D9482B', '#302663'] },
+    { id: 'man-chin', ten: 'Cô Thảo mận chín', mo: 'Áo dài màu mận chín', c: ['#7A1E3A', '#F2C230', '#F8E9ED'] },
+    { id: 'mau-nuoc', ten: 'Cô Thảo màu nước', mo: 'Áo dài chàm, nét vẽ màu nước', c: ['#302663', '#D9482B', '#302663'] },
     { id: 'mua-dong', ten: 'Cô Thảo mùa đông', mo: 'Khăn len, áo khoác', c: ['#4A6378', '#C0392B', '#4A6378'] },
     { id: 'trung-thu', ten: 'Cô Thảo Trung thu', mo: 'Đèn ông sao', c: ['#E07B2E', '#F2C230', '#E07B2E'] },
-    { id: 'doi-thuong', ten: 'Cô Thảo cuối tuần', mo: 'Áo len, lo-fi', c: ['#9B7BC4', '#FFFFFF', '#9B7BC4'] }
+    { id: 'doi-thuong', ten: 'Cô Thảo cuối tuần', mo: 'Áo len, thư thái', c: ['#9B7BC4', '#FFFFFF', '#9B7BC4'] }
   ];
   var BY_THEME = { 'mac-dinh': 'chu-nhiem', 'man-chin': 'man-chin', 'van-mieu': 'ao-dai', 'thu-vang': 'man-chin', 'giay-kraft': 'man-chin',
     'cham-mau-nuoc': 'mau-nuoc', 'trung-thu': 'trung-thu', 'dong-ha-noi': 'mua-dong', 'vo-o-ly': 'giang-day', 'bang-phan': 'giang-day',
