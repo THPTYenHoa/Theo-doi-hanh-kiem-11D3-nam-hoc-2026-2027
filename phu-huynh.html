@@ -146,6 +146,8 @@ footer a{color:var(--teal-d)}
   .ttl b{font-size:14.5px}
   .sync span{display:none}
 }
+.tbc{border:1.5px solid var(--teal);padding:12px 14px;margin-bottom:12px}.tbh{display:flex;gap:10px;align-items:center;margin-bottom:6px}.tbh b{display:block;color:var(--teal-d);font-size:15.5px}.tbh span{font-size:13px;color:var(--mute)}.tbc .btn{margin-top:10px}
+.reg{padding:12px 14px}.reg p{margin:0 0 8px;font-size:13.5px;line-height:1.5}.reg .ok{color:#1E8449;font-weight:600}.reg .msg{margin:6px 0 0;color:var(--teal-d)}.rg{display:flex;gap:8px;margin-top:6px}.rg input{flex:1;min-width:0;padding:10px 12px;border:1px solid #CFDDE0;border-radius:10px;font:inherit;font-size:15px}.rg .btn{flex:0 0 auto}
 </style>
 </head>
 <body>
@@ -166,8 +168,9 @@ footer a{color:var(--teal-d)}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=3.6"></script>
+<script src="updates/notes.js?v=3.7"></script>
 <script src="mascot.js?v=3.6"></script>
+<script src="baocao.js?v=3.7"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -252,10 +255,11 @@ function flash(t){ let f=$('#fl'); if(!f){ f=document.createElement('div'); f.id
 function readHash(){
   const h=new URLSearchParams(location.hash.slice(1));
   S.tab=h.has('lop')?'lop':'hs'; S.ma=h.get('hs')||null;
+  S.tb=h.get('tb')?h.get('tb').split(',').filter(Boolean):null;  /* v3.7: link trong email thông báo ⇒ #hs=MA&tb=id1,id2 */
   const k=h.get('ky'); S.ky=k?(k==='nam'?{k:'nam'}:/^hk[12]$/.test(k)?{k:'hk',n:+k[2]}:{k:'thang',m:+k.slice(1)}):null;
 }
 function kyKey(ky){ return ky.k==='nam'?'nam':ky.k==='hk'?'hk'+ky.n:'t'+ky.m; }
-function go(o){ const p=new URLSearchParams(); if(o.lop) p.set('lop','1'); if(o.hs) p.set('hs',o.hs); if(o.ky) p.set('ky',kyKey(o.ky)); location.hash=p.toString(); }
+function go(o){ const p=new URLSearchParams(); if(o.lop) p.set('lop','1'); if(o.hs) p.set('hs',o.hs); if(o.ky) p.set('ky',kyKey(o.ky)); if(o.tb) p.set('tb',o.tb.join(',')); location.hash=p.toString(); }
 window.addEventListener('hashchange',()=>{ readHash(); render(); window.scrollTo(0,0); });
 $$('#tabs [data-t]').forEach(b=>b.onclick=()=>go(b.dataset.t==='lop'?{lop:1}:{}));
 $('#rf').onclick=()=>load(true);
@@ -310,7 +314,7 @@ function renderHS(){
      <span class="tx"><b>${esc(e[E_ND]||e[E_MUC])}</b><span>${esc(ddmm(e[E_LUC]))} · tuần ${e[E_TUAN]} ${esc(tl(e[E_THANG]))} · ghi bởi ${esc(e[E_TEN]||'—')}</span>${e[E_GC]?`<i>${esc(e[E_GC])}</i>`:''}</span></div>`).join('')+'</div>'
      :'<div class="card empty">Không có.</div>';
   const mem=window.MASCOT?MASCOT.img(['vui','co-vu','lo-lang','lo-lang'][x.i]||'chao',64):'';
-  let h=`<button class="back" id="bk">‹ Danh sách học sinh</button>
+  let h=`<button class="back" id="bk">‹ Danh sách học sinh</button>${tbCard(s)}
   <div class="card"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div>${mem}</div>
     <div class="seg" id="ks">${kySeg(ky)}</div>
     <div class="res"><div><div class="lb">Điểm TB tuần</div><div class="big num r${x.i}">${fx(sc)}</div></div>
@@ -319,11 +323,11 @@ function renderHS(){
     <div class="mini">${mini}</div></div>
   <div class="sum"><div class="card"><div class="n num r3">${tru.length}</div><div class="t">Vi phạm · ${tru.reduce((a,e)=>a+e[E_DIEM],0)} điểm</div></div>
     <div class="card"><div class="n num r0">${cong.length}</div><div class="t">Được cộng · ${nz(cong.reduce((a,e)=>a+e[E_DIEM],0))} điểm</div></div></div>
-  <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF / In</button>
+  <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF báo cáo</button>
     <button class="btn gh" id="csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Tải Excel</button></div>
   ${rms.length?'<div class="sec"><h2>Nhận xét của GVCN</h2></div><div class="card">'+rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'')}</div>`).join('')+'</div>':''}
   <div class="sec"><h2>Vi phạm</h2><span>${tru.length} lượt</span></div>${evH(tru)}
-  <div class="sec"><h2>Được cộng điểm</h2><span>${cong.length} lượt</span></div>${evH(cong)}`;
+  <div class="sec"><h2>Được cộng điểm</h2><span>${cong.length} lượt</span></div>${evH(cong)}${regCard(s)}`;
   $('#main').innerHTML=h;
   if(window.MASCOT && S._said!==s.ma+kyKey(ky)){ S._said=s.ma+kyKey(ky); const g=ten1(s.ten), L=kyLabel(ky).toLowerCase();
     const msg=[['vui','Con <b>'+esc(g)+'</b> '+esc(L)+' ngoan lắm, xếp loại <b>'+esc(x.ten)+'</b>. Các bác yên tâm nhé!'],
@@ -335,6 +339,7 @@ function renderHS(){
   $$('#ks [data-ky]').forEach(b=>b.onclick=()=>{ const k=b.dataset.ky; go({hs:s.ma,ky:k==='nam'?{k:'nam'}:/^hk/.test(k)?{k:'hk',n:+k[2]}:{k:'thang',m:+k.slice(1)}}); });
   const on=$('#ks .chip.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'});
   $('#pdf').onclick=()=>printHS(s,ky);
+  regBind(s); const tbp=$('#tbPdf'); if(tbp) tbp.onclick=()=>RPT.open(RPT.notice(D(),s.ma,S.tb||[]),'Thong-bao_'+slug(s.ten));
   $('#csv').onclick=()=>csvHS(s,ky);
 }
 function renderLop(){
@@ -386,14 +391,40 @@ function csvLop(ky){
     r.push(evOf(s.ma,ky).filter(e=>e[E_DIEM]<0).length, xl(s.ma,ky).ten); rows.push(r); });
   dl('hanh-kiem_11D3_'+kyKey(ky)+'.csv',rows);
 }
-function printHS(s,ky){
-  const x=xl(s.ma,ky), ev=evOf(s.ma,ky);
-  $('#pr').innerHTML=`<h1>Sổ hạnh kiểm lớp 11D3 · THPT Yên Hòa</h1><p>Năm học ${esc(S.cfg.namHoc||'')} · In ngày ${new Date().toLocaleDateString('vi-VN')}</p>
-   <h2>${esc(s.ten)} — Tổ ${esc(s.to)}</h2><p>${esc(kyLabel(ky))}: điểm TB tuần <b>${fx(kyScore(s.ma,ky))}</b> · xếp loại <b>${esc(x.ten)}</b></p>
-   <h2>Chi tiết ghi nhận (${ev.length})</h2><table><tr><th>Ngày</th><th>Tháng / tuần</th><th>Nội dung</th><th>Điểm</th><th>Ghi chú</th><th>Người ghi</th></tr>
-   ${ev.map(e=>`<tr><td>${esc(ddmm(e[E_LUC]))}</td><td>${esc(tl(e[E_THANG]))} · T${e[E_TUAN]}</td><td>${esc(e[E_ND]||e[E_MUC])}</td><td>${nz(e[E_DIEM])}</td><td>${esc(e[E_GC]||'')}</td><td>${esc(e[E_TEN]||'')}</td></tr>`).join('')||'<tr><td colspan="6">Không có ghi nhận.</td></tr>'}</table>
-   ${S.remarks.filter(r=>r.maHS===s.ma&&kyMonths(ky).indexOf(r.thang)>=0&&r.nhanXet).map(r=>`<p><b>Nhận xét GVCN ${esc(tl(r.thang,true))}:</b> ${esc(r.nhanXet)}</p>`).join('')}`;
-  window.print();
+/* v3.7: PDF khổ ngang (baocao.js) — biểu đồ, cô Thảo, số liệu so với kỳ trước */
+const D=()=>({cfg:S.cfg,students:S.students,entries:S.entries,remarks:S.remarks});
+function printHS(s,ky){ if(window.RPT) return RPT.open(RPT.student(D(),s.ma,ky,{aud:'ph'}),'Hanh-kiem_'+slug(s.ten)+'_'+kyKey(ky)); }
+/* v3.7: thẻ "Thông báo mới từ cô Thảo" khi mở link trong email */
+function tbCard(s){
+  if(!S.tb||!S.tb.length) return '';
+  const E=S.entries.filter(e=>S.tb.indexOf(String(e[E_ID]))>=0&&e[E_MA]===s.ma);
+  return `<div class="card tbc"><div class="tbh">${window.MASCOT?MASCOT.img(E.some(e=>e[E_DIEM]<0)?'buon':'vui',54):''}<div><b>Thông báo mới từ cô Thảo</b><span>${E.length?E.length+' ghi nhận mới của con '+esc(ten1(s.ten)):'Ghi nhận đang được cập nhật…'}</span></div></div>
+   ${E.map(e=>`<div class="ev"><span class="pill ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span><span class="tx"><b>${esc(e[E_ND]||e[E_MUC])}</b><span>${esc(ddmm(e[E_LUC]))} · tuần ${e[E_TUAN]} ${esc(tl(e[E_THANG]))}</span></span></div>`).join('')}
+   <button class="btn" id="tbPdf">Tải PDF thông báo</button></div>`;
+}
+/* v3.7: phụ huynh đăng ký email nhận thông báo — mã 6 số + cô Thảo duyệt */
+function regCard(s){
+  const st=lsG('hkph_reg_'+s.ma);
+  return `<div class="sec"><h2>Nhận thông báo qua email</h2></div><div class="card reg" id="reg">
+   ${st==='cho'?'<p class="ok">Các bác đã đăng ký. Cô Thảo sẽ duyệt sớm, sau đó mỗi khi con được cộng / bị trừ điểm các bác sẽ nhận email ạ.</p>':''}
+   <p>Các bác nhập email để nhận thư mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm. Hệ thống gửi mã 6 số để xác nhận, sau đó cô Thảo duyệt.</p>
+   <div class="rg"><input id="rgE" type="email" placeholder="email của bác" autocomplete="email"><button class="btn" id="rgS">Gửi mã</button></div>
+   <div class="rg" id="rgC" hidden><input id="rgK" inputmode="numeric" maxlength="6" placeholder="mã 6 số"><button class="btn" id="rgV">Xác nhận</button></div>
+   <p class="msg" id="rgM"></p></div>`;
+}
+function regBind(s){
+  const m=t=>{ const e=$('#rgM'); if(e) e.innerHTML=t; };
+  const send=$('#rgS'); if(!send) return;
+  send.onclick=async()=>{ const em=$('#rgE').value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return m('Email chưa đúng ạ.');
+    send.disabled=true; m('Đang gửi mã…');
+    try{ await api('phDangKy',{ma:s.ma,email:em}); $('#rgC').hidden=false; $('#rgK').focus(); m('Cô đã gửi mã 6 số tới <b>'+esc(em)+'</b>. Các bác mở hộp thư (cả mục Spam) và nhập mã nhé.'); }
+    catch(e){ m(esc(e.message)); } finally{ setTimeout(()=>send.disabled=false,3000); } };
+  $('#rgV').onclick=async()=>{ const em=$('#rgE').value.trim(), code=$('#rgK').value.replace(/\D/g,''); if(code.length!==6) return m('Mã gồm 6 chữ số ạ.');
+    m('Đang xác nhận…');
+    try{ const r=await api('phXacNhan',{email:em,code}); $('#rgC').hidden=true;
+      if(r.daCo) m('Email này đã được nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó các bác nhận email mỗi khi có cập nhật về con ạ.'); }
+      if(window.MASCOT) MASCOT.say('cam-on','Cô cảm ơn các bác đã đăng ký theo dõi cùng cô ạ!',{ms:4200}); }
+    catch(e){ m(esc(e.message)); } };
 }
 function printLop(ky){
   const L=active();

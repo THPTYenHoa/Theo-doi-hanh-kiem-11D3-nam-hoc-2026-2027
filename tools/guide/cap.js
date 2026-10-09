@@ -23,7 +23,7 @@ const shot = async (p, name, marks) => { if (marks) await mark(p, marks); await 
 const closeUpd = p => p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
 const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip'))) { const o = await p.$('#pBody .item, #pBody button.btn'); if (o) await o.click(); await W(250); } };
 (async () => {
-  const b = await chromium.launch(); const IMG = fs.readFileSync('/tmp/claude-0/prod.jpg');
+  const b = await chromium.launch(); const IMG = fs.readFileSync(path.join(__dirname, 'mau', 'so-giam-thi.jpg'));
   // đăng nhập
   let p = await newPage(b, { mobile: true }); await p.goto(U + 'index.html'); await W(600);
   await p.fill('#lgEm', 'loptruong@example.com'); await shot(p, 'login1', [['#lgEm', 1], ['#lgGo', 2], ['a.lgph', 3]]);
@@ -39,7 +39,7 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await p.locator('#listGhi .row').nth(5).click(); await W(400);
   await shot(p, 'student', [['#pBody .seg', 1], ['#pBody [data-add="T06"]', 2]]);
   await p.click('#pBody [data-add="T06"]'); await skipNote(p);
-  const [fc] = await Promise.all([p.waitForEvent('filechooser'), p.click('#evFile')]); await fc.setFiles({ name: 'bien-ban.jpg', mimeType: 'image/jpeg', buffer: IMG }); await W(500);
+  const [fc] = await Promise.all([p.waitForEvent('filechooser'), p.click('#evFile')]); await fc.setFiles({ name: 'so-giam-thi.jpg', mimeType: 'image/jpeg', buffer: IMG }); await W(500);
   await shot(p, 'note', [['#gcTxt', 1], ['#gcMic', 2, 'tr'], ['#pBody .evpick .row2', 3], ['#gcSave', 4, 'tr']]);
   await p.click('#gcSave'); await W(900);
   await shot(p, 'saved', [['#toast', 1], ['#msc', 2]]); await W(2600);
