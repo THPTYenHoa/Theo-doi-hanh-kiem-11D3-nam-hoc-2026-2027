@@ -437,6 +437,27 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(await p.evaluate(() => !isKhach() || S.view !== 'ghi'), 'phụ huynh không bị chuyển vào Ghi điểm');
   await p.context().close();
 
+  // 21. v4.7 — thống kê lỗi vi phạm & hoạt động được tuyên dương
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); S.bcKy = 'thang'; go('bc'); }); await W(900);
+  ok(await p.locator('#vBC .v47 table.v47t tr[data-v47k]').count() > 0 && await p.locator('#vBC .v47 .v47bar').count() > 0, 'v4.7: Báo cáo có bảng lỗi vi phạm + hoạt động được tuyên dương');
+  ok(await p.locator('#vBC .v47 svg').count() >= 4 && await p.locator('#vBC .v47 img').count() >= 4, 'nhiều kiểu biểu đồ (vòng tròn, cột nhỏ, đường) và ảnh cô Thảo');
+  ok(!(await p.evaluate(() => [...document.querySelectorAll('#vBC .sechead h2')].some(h => /Lỗi thường gặp|Vi phạm theo nhóm/.test(h.textContent)))), 'không còn mục trùng lặp cũ');
+  await p.click('#vBC .v47 .v47bar >> nth=0'); await W(300);
+  ok(await p.isVisible('#dr46') && await p.locator('#dr46 .rw').count() > 0, 'bấm hoạt động được khen ⇒ màn chi tiết');
+  await p.keyboard.press('Escape'); await W(200);
+  await p.click('#vBC .v47 td.h >> nth=0'); await W(300); ok(await p.isVisible('#dr46') && /Tổ/.test(await p.textContent('#dr46 h3')), 'bấm ô bản đồ lỗi × tổ ⇒ chi tiết');
+  await p.keyboard.press('Escape'); await W(200);
+  for (const k of ['tuan', 'hk', 'nam']) { await p.evaluate(k => { S.bcKy = k; renderBC(); }, k); await W(200); ok(await p.locator('#vBC .v47').count() === 1, 'Báo cáo kỳ ' + k + ': có khối vi phạm & tuyên dương'); }
+  await p.evaluate(() => { S.bcKy = 'thang'; renderBC(); const o = RPT.open; RPT.open = (h, t) => o(h, t, { dry: true }); }); await p.click('#bcPrint'); await W(300);
+  const d47 = await p.evaluate(() => RPT.last || '');
+  ok(/Thống kê lỗi vi phạm/.test(d47) && /Hoạt động được tuyên dương/.test(d47) && (d47.match(/<section class="pg">/g) || []).length >= 6, 'PDF báo cáo có 2 trang mới: lỗi vi phạm, hoạt động được tuyên dương');
+  await p.evaluate(() => go('tk')); await W(600);
+  ok(await p.locator('#vTK [data-ky="hk"]').count() === 1, 'Thống kê có kỳ Học kỳ');
+  await p.click('#vTK [data-ky="hk"]'); await W(400);
+  ok(/học kỳ/i.test(await p.textContent('#vTK .v47 .sechead')) && await p.locator('#vTK .v47 .v47bar').count() > 0, 'Thống kê học kỳ: top hoạt động được tuyên dương');
+  await p.context().close();
+
   ok(errs.length === 0, 'không lỗi JavaScript' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));
   await b.close(); console.log(fail ? '\n' + fail + ' lỗi' : '\nTất cả đạt'); process.exit(fail ? 1 : 0);
 })();
