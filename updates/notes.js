@@ -1,6 +1,28 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-15-v3.9", version: "3.9", date: "2026-10-15",
+    title: "Giao diện mới gọn gàng, cô Thảo nhiều trang phục",
+    summary: "Cài đặt chia mục rõ ràng, trang Phụ huynh riêng, tìm kiếm thông minh, rê chuột xem điểm từ đâu, dải điểm tuần tự lật, 6 bộ trang phục mới của cô Thảo.",
+    items: [
+      { type: "new", title: "Dải điểm tuần tự lật",
+        text: "Màn Ghi điểm luôn có dải <b>Điểm tuần</b>: tự lật chậm qua mọi lượt cộng / trừ của cả lớp trong tuần (rê chuột để dừng, ‹ › để xem tay). Bấm một lượt ⇒ <b>Xem hồ sơ · Sửa · Nhận xét</b> tuỳ quyền.",
+        img: "updates/v3.9/diem-tuan.jpg" },
+      { type: "new", title: "Tìm kiếm thông minh + rê chuột xem chi tiết",
+        text: "Ở <b>Cập nhật hạnh kiểm</b> và <b>Báo cáo</b>: gõ \"tổ 2 vi phạm\", \"khá\", \"đi muộn\"… hoặc bấm chip để lọc ngay. Rê chuột vào ô điểm ⇒ thấy được cộng / bị trừ từ những nội dung nào.",
+        img: "updates/v3.9/tim-kiem.jpg" },
+      { type: "imp", title: "Cài đặt gọn, menu tài khoản, trang Phụ huynh",
+        text: "Cài đặt chia thành các mục bên trái (Lớp & xếp loại, Danh mục điểm, Tài khoản & quyền…). Bấm <b>avatar góc phải</b> ⇒ tài khoản, Đăng xuất. Menu <b>Phụ huynh</b> (GVCN): đăng ký chờ duyệt, email phụ huynh từng học sinh.",
+        img: "updates/v3.9/cai-dat.jpg" },
+      { type: "imp", title: "Trang phụ huynh mới + nhận xét của cô Thảo",
+        text: "Trang phụ huynh: ô <b>Nhận thông báo qua email</b> đưa lên đầu, bố cục 2 cột trên máy tính, cô xưng \"bác\". Mọi báo cáo PDF (lớp, học sinh, thông báo) đều có mục <b>Nhận xét của cô Thảo</b>.",
+        img: "updates/v3.9/phu-huynh.jpg" },
+      { type: "new", title: "Cô Thảo 6 bộ trang phục",
+        text: "Áo len tím, áo dài trắng, áo dài chàm, cardigan lên lớp, áo blouse STEM, áo khoác mùa đông — hiện ngẫu nhiên theo từng tình huống, cả trong báo cáo và hướng dẫn. Tuần lễ 20/11 cô mặc áo dài.",
+        img: "updates/v3.9/co-thao.jpg" }
+    ]
+  },
+  {
     id: "2026-10-14-v3.8", version: "3.8", date: "2026-10-14",
     title: "Phụ huynh đăng ký — cô Thảo được báo ngay",
     summary: "Có phụ huynh đăng ký nhận email, màn hình cô hiện thông báo và cô nhận email báo. Cô duyệt xong, phụ huynh nhận thư xác nhận kèm file hướng dẫn (PDF).",

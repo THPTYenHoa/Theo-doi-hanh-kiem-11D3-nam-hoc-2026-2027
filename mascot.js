@@ -81,19 +81,49 @@
       '<path d="' + E[1] + '" fill="' + (/z$/.test(E[1]) ? '#B8434F' : 'none') + '" stroke="#8A3A3A" stroke-width="2.2" stroke-linecap="round"/>' + extra + '</svg>';
   }
   /* v3.6: bộ ảnh 3D thật (mascot/<vai>/<biểu-cảm>.webp). Vai chưa có bộ 3D ⇒ dùng bộ 3D "chu-nhiem" (không trộn 2D với 3D). */
-  /* v3.8: bộ trang phục khác có thể chưa đủ biểu cảm — READY[vai] = 1 (đủ) hoặc danh sách biểu cảm đã có; thiếu ⇒ dùng ảnh "chu-nhiem".
-     Thêm bộ mới: thư mục mascot/<vai>/<biểu-cảm>.webp + khai báo ở đây (prompt: docs/prompt-chibi-3d.md ▸ Bước 5). */
-  var READY = { 'chu-nhiem': 1 };
+  /* v3.9: NHIỀU BỘ TRANG PHỤC + CHỌN NGẪU NHIÊN.
+     READY[vai] = 1 (đủ biểu cảm) hoặc danh sách biểu cảm đã có. Thêm đợt ảnh mới: python3 tools/mascot/cut.py <vai> <biểu-cảm>=<ảnh> … rồi thêm vào đây.
+     Chế độ "auto" (mặc định): mỗi biểu cảm chọn ngẫu nhiên trong các bộ có ảnh đó — nhưng chỉ chọn ảnh ĐÃ TẢI XONG (không nháy, không chậm);
+     ảnh chưa tải thì tải ngầm lúc rảnh (requestIdleCallback), lần sau mới dùng. Giữ cùng một ảnh cho cùng biểu cảm ~60 s để vẽ lại không đổi hình liên tục;
+     MASCOT.say() (phản ứng khi thao tác) luôn chọn ảnh mới. Tuần lễ 20/11: ưu tiên áo dài. */
+  var EM8 = ['chao', 'vui', 'khen-lon', 'co-vu', 'buon', 'nghiem', 'chi-tay', 'cam-on', 'goc'];
+  var READY = { 'chu-nhiem': 1,
+    'doi-thuong': EM8, 'ao-dai': EM8, 'giang-day': EM8,
+    'mau-nuoc': EM8.filter(function (e) { return e !== 'buon'; }),
+    'stem': EM8.filter(function (e) { return e !== 'goc'; }), 'mua-dong': EM8.filter(function (e) { return e !== 'goc'; }) };
   function has(st, emo) { var r = READY[st]; return r === 1 || (r && r.indexOf(emo) >= 0); }
-  function url(emo, st) { return 'mascot/' + (has(st, emo) ? st : 'chu-nhiem') + '/' + emo + '.webp'; }
-  /* tải sẵn bộ 3D để lần đầu hiện ra không bị nháy hình */
-  if (typeof Image !== 'undefined') setTimeout(function () { EMO.forEach(function (e) { var u = url(e, 'chu-nhiem'); if (OK[u] !== undefined) return; var t = new Image(); t.onload = function () { OK[u] = true; }; t.onerror = function () { OK[u] = false; }; t.src = u; }); }, 300);
-  function img(emo, size, st) {
+  function path(emo, st) { return 'mascot/' + (has(st, emo) ? st : 'chu-nhiem') + '/' + emo + '.webp'; }
+  function pool(emo) {
+    var all = Object.keys(READY).filter(function (st) { return has(st, emo); });
+    var d = new Date(); if (d.getMonth() === 10 && d.getDate() >= 14 && d.getDate() <= 22) { var ad = all.filter(function (s) { return /ao-dai|mau-nuoc/.test(s); }); if (ad.length) return ad; }
+    return all;
+  }
+  var KEEP = {}, QUEUE = [], IDLE = false;
+  function warm(u) { if (OK[u] !== undefined || QUEUE.indexOf(u) >= 0) return; QUEUE.push(u); if (!IDLE) idle(); }
+  function idle() {
+    if (typeof Image === 'undefined' || !QUEUE.length) { IDLE = false; return; } IDLE = true;
+    var go = function () { var u = QUEUE.shift(); if (!u) { IDLE = false; return; } var t = new Image(); OK[u] = null;
+      t.onload = function () { OK[u] = true; idle(); }; t.onerror = function () { OK[u] = false; idle(); }; t.src = u; };
+    (window.requestIdleCallback || function (f) { setTimeout(f, 400); })(go, { timeout: 4000 });
+  }
+  /* ảnh ngẫu nhiên cho biểu cảm: fresh = chọn mới; any = được chọn cả ảnh chưa tải (PDF / in — trình in chờ ảnh tải) */
+  function rnd(emo, o) {
+    o = o || {}; var P = pool(emo), now = Date.now(), k = KEEP[emo];
+    P.forEach(function (st) { warm('mascot/' + st + '/' + emo + '.webp'); });
+    var ok = o.any ? P : P.filter(function (st) { return OK['mascot/' + st + '/' + emo + '.webp'] === true; });
+    if (!ok.length) ok = ['chu-nhiem'];
+    if (!o.fresh && !o.any && k && now - k.t < 60000 && ok.indexOf(k.st) >= 0) return path(emo, k.st);
+    var st = ok[Math.floor(Math.random() * ok.length)];
+    if (!o.any) KEEP[emo] = { st: st, t: now };
+    return path(emo, st);
+  }
+  function url(emo, st, o) { return (pick() === 'auto' || !READY[st]) ? rnd(emo, o) : path(emo, st); }
+  function img(emo, size, st, o) {
     var cur = styleId(); if (cur === 'off') return '';
     if (st === 'tour') st = pick() === 'auto' ? 'giang-day' : cur;
     st = st || cur;
     size = size || 72;
-    var u = url(emo, st), id = 'm' + Math.random().toString(36).slice(2, 8);
+    var u = emo === 'chay' ? path('chay', 'chu-nhiem') : url(emo, st, o), id = 'm' + Math.random().toString(36).slice(2, 8);
     var fb = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg(emo, st));
     if (OK[u] === false) return '<img class="mascot m-' + emo + '" src="' + fb + '" width="' + size + '" height="' + size + '" alt="">';
     /* ảnh 3D trực tiếp; không tải được (mất mạng) ⇒ hình vẽ dự phòng */
@@ -151,7 +181,7 @@
     if (styleId() === 'off') return;
     var b = document.getElementById('msc');
     if (!b) { b = document.createElement('div'); b.id = 'msc'; document.body.appendChild(b); b.onclick = function () { b.classList.remove('on'); }; }
-    b.innerHTML = img(emo, 108) + (html ? '<div class="bb">' + html + '</div>' : '');
+    b.innerHTML = img(emo, 108, null, { fresh: true }) + (html ? '<div class="bb">' + html + '</div>' : '');
     requestAnimationFrame(function () { b.classList.add('on'); });
     clearTimeout(hideT); hideT = setTimeout(function () { b.classList.remove('on'); }, o.ms || 3400);
   }
@@ -177,7 +207,7 @@
   window.MASCOT = {
     loader: loader,
     EMO: EMO, STYLES: STYLES.filter(function (s) { return READY[s.id]; }), ALL_STYLES: STYLES, BY_THEME: BY_THEME,
-    say: say, img: img, svg: svg, style: styleId, pick: pick,
+    say: say, img: img, svg: svg, style: styleId, pick: pick, rnd: rnd, READY: READY,
     set: function (v) { lsS('hk_mascot', v); }
   };
 })();
