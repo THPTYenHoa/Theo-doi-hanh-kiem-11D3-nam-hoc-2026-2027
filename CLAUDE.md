@@ -88,3 +88,10 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   cán bộ lớp "Mạng lag xíu, các con chờ chút nha…", GVCN "Cô Thảo chờ chút xíu nhé…". Trang phụ huynh: `#ld` "Các bác chờ chút ạ…".
 - Prompt chibi **3D**: `docs/prompt-chibi-3d.md` — mỗi khung lặp đủ REFERENCE + CHARACTER + OUTFIT + STYLE (người dùng yêu cầu lặp lại);
   file `goc.png`, `1.png`…`17.png` (17 = `chay`), video `chay.mp4` (màn chờ), `chao/vui/khen-lon/buon/gian/cam-on.mp4`, nền xanh ⇒ ffmpeg chromakey.
+
+## v3.6 — Bộ ảnh 3D cô Thảo
+- `mascot/chu-nhiem/*.webp` (360×360, nền trong suốt, ~8–12 KB): 16 biểu cảm + `goc` + `chay` (đã lật để chạy sang phải). Tách nền từ ảnh Gemini nền trắng:
+  flood-fill vùng trắng/xám trung tính nối với mép ảnh (PIL, nhớ `.copy()` ảnh từ numpy), bóng chân giữ mờ, cắt theo nhân vật + 6% lề.
+- mascot.js: `READY` = các vai đã có bộ 3D (hiện chỉ `chu-nhiem`); vai khác dùng bộ 3D này (không trộn 2D/3D); ảnh lỗi ⇒ SVG dự phòng; tải sẵn sau 300 ms.
+  `MASCOT.STYLES` chỉ trả vai `READY` (bảng chọn nhân vật). Muốn thêm vai (áo dài…): thêm thư mục + khoá vào `READY`.
+- HDSD: `build.js` lấy ảnh 3D cho phần mẹo (`chibi()`). Ảnh động (video Veo) người dùng gửi sau ⇒ thay `<emo>.webp` bằng WebP động cùng tên.

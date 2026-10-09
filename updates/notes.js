@@ -1,6 +1,19 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-12-v3.6", version: "3.6", date: "2026-10-12",
+    title: "Cô Thảo 3D siêu cute",
+    summary: "Toàn bộ hình cô Thảo đổi sang bộ ảnh 3D mới — vẫy tay chào, vỗ tay khi các con được khen, buồn, nghiêm, giận dễ thương, chạy ở màn chờ…",
+    items: [
+      { type: "new", title: "18 biểu cảm 3D",
+        text: "Cô Thảo 3D xuất hiện ở thẻ tổng quan, bong bóng nhắc khi ghi điểm, hướng dẫn từng bước, báo cáo và trang phụ huynh. Mỗi lần ghi điểm cô phản ứng đúng tình huống: vui khi khen, buồn khi trừ, nghiêm khi tái phạm, giận khi vi phạm nhiều lần.",
+        img: "updates/v3.6/co-thao-3d.jpg" },
+      { type: "imp", title: "Màn chờ cô Thảo 3D chạy",
+        text: "Lúc mở sổ, cô Thảo 3D chạy trên thanh tiến trình kèm lời nhắn cho các con / các bác. File hướng dẫn PDF cũng đổi sang hình mới.",
+        img: "updates/v3.6/man-cho-3d.jpg" }
+    ]
+  },
+  {
     id: "2026-10-11-v3.5", version: "3.5", date: "2026-10-11",
     title: "Màn chờ: cô Thảo chạy cùng thanh tiến trình",
     summary: "Lúc mở sổ hoặc nhập mã đăng nhập, cô Thảo chạy trên thanh tiến trình kèm lời nhắn — các con và các bác biết sổ đang mở, không phải chờ trong im lặng.",
