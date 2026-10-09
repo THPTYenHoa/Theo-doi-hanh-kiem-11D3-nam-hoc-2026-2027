@@ -4624,7 +4624,7 @@ window.openProfile=openProfile=async function(ma,ky){
    · Backend gửi danh sách chờ duyệt (phReg) trong bootstrap + sync (chỉ GVCN) ⇒ có đăng ký mới: thẻ #phNew + chấm đỏ ở Cài đặt; email báo cô (backend).
    · Link trong email: APP_URL#duyet ⇒ mở sổ xong tự vào Cài đặt ▸ Phụ huynh chờ duyệt.
    · Duyệt: gửi pdfVer; máy chủ chưa có PDF hướng dẫn đúng phiên bản ⇒ "Cần gửi kèm file hướng dẫn" ⇒ app tải docs/HDSD_Phu_huynh.pdf, gửi kèm (base64) rồi gọi lại. */
-const PH_PDF_VER='3.8';
+const PH_PDF_VER='3.9';
 let phSeen=[]; try{ phSeen=JSON.parse(localStorage.getItem('hk_phreg_seen')||'[]'); }catch(_){}
 function phBadge(){
   const n=(isGVCN()&&S.phReg)?S.phReg.length:0;
