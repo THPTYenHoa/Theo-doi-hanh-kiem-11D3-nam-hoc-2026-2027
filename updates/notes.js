@@ -1,6 +1,22 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-16-v4.0", version: "4.0", date: "2026-10-16",
+    title: "Chế độ \"Kiểm tra tính năng ứng dụng\"",
+    summary: "Ai cũng thử được toàn bộ sổ hạnh kiểm mà không cần tài khoản: dữ liệu mẫu, đổi vai cô chủ nhiệm · cán bộ lớp · phụ huynh, hộp thư mô phỏng, danh sách việc nên thử.",
+    items: [
+      { type: "new", title: "Vào thử không cần mật khẩu",
+        text: "Màn đăng nhập ▸ <b>Kiểm tra tính năng ứng dụng</b> ⇒ vào ngay sổ với dữ liệu mẫu (tên học sinh giả). Mọi thao tác chỉ diễn ra trên máy, không ảnh hưởng sổ thật.",
+        img: "updates/v4.0/vao-thu.jpg" },
+      { type: "new", title: "Đổi vai + hướng dẫn 9 việc",
+        text: "Thanh trên cùng: đổi vai <b>Cô Thảo · Lớp trưởng · Tổ trưởng · Phụ huynh</b>; <b>Hướng dẫn</b> liệt kê 9 việc (ghi điểm, email phụ huynh, nhận xét, báo cáo PDF, đăng ký & duyệt phụ huynh, chốt tháng) — bấm <b>Làm ngay</b> là tự mở đúng chỗ.",
+        img: "updates/v4.0/huong-dan.jpg" },
+      { type: "new", title: "Hộp thư mô phỏng",
+        text: "Thư hệ thống gửi phụ huynh / cô chủ nhiệm hiện trong <b>Hộp thư</b>: lời cô Thảo theo tình huống, nút mở thông báo, thư duyệt kèm hướng dẫn PDF.",
+        img: "updates/v4.0/hop-thu.jpg" }
+    ]
+  },
+  {
     id: "2026-10-15-v3.9", version: "3.9", date: "2026-10-15",
     title: "Giao diện mới gọn gàng, cô Thảo nhiều trang phục",
     summary: "Cài đặt chia mục rõ ràng, trang Phụ huynh riêng, tìm kiếm thông minh, rê chuột xem điểm từ đâu, dải điểm tuần tự lật, 6 bộ trang phục mới của cô Thảo.",
