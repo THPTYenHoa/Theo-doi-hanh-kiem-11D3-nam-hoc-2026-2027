@@ -1,6 +1,25 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-23-v4.7", version: "4.7", date: "2026-10-23",
+    title: "Thống kê lỗi vi phạm và hoạt động được tuyên dương",
+    summary: "Báo cáo tuần, tháng, học kỳ, cả năm và mục Thống kê có thêm phần lỗi vi phạm, hoạt động được tuyên dương nhiều, với nhiều kiểu biểu đồ và lời nhận xét của cô Thảo.",
+    items: [
+      { type: "new", title: "Báo cáo: lỗi vi phạm và hoạt động được tuyên dương",
+        text: "Mở <b>Báo cáo</b>, chọn Tuần / Tháng / Học kỳ / Cả năm ⇒ mục <b>Vi phạm & tuyên dương</b>: cô Thảo nêu lỗi gặp nhiều nhất và hoạt động được khen nhiều nhất, vòng tròn theo nhóm, bảng lỗi kèm xu hướng, danh sách hoạt động được tuyên dương.",
+        img: "updates/v4.7/bao-cao-vi-pham-tuyen-duong.jpg" },
+      { type: "new", title: "Bản đồ lỗi theo tổ, khen và vi phạm từng tổ",
+        text: "Ô càng đậm, tổ đó mắc lỗi càng nhiều. Biểu đồ hai phía so sánh lượt vi phạm và lượt được khen của từng tổ; biểu đồ đường cho thấy các lỗi chính tăng hay giảm. Bấm vào ô, dòng hay tổ để xem từng lượt.",
+        img: "updates/v4.7/ban-do-loi-dien-bien.jpg" },
+      { type: "new", title: "File PDF báo cáo thêm 2 trang",
+        text: "Bấm <b>Tải PDF</b> trong Báo cáo ⇒ có thêm trang <b>Thống kê lỗi vi phạm</b> (bảng lỗi theo tổ, vòng tròn theo nhóm, diễn biến) và trang <b>Hoạt động được tuyên dương</b> (top hoạt động, theo nhóm, từng tổ), kèm lời của cô Thảo.",
+        img: "updates/v4.7/pdf-loi-vi-pham.jpg" },
+      { type: "imp", title: "Thống kê: thêm Học kỳ và top hoạt động được tuyên dương",
+        text: "Mục <b>Thống kê</b> có thêm nút <b>Học kỳ</b>. Ở kỳ đang chọn (tuần, tháng, học kỳ, cả năm) có thêm phần <b>Hoạt động được tuyên dương nhiều</b> cùng bảng lỗi, bản đồ lỗi theo tổ.",
+        img: "updates/v4.7/thong-ke-hoc-ky.jpg" }
+    ]
+  },
+  {
     id: "2026-10-22-v4.6", version: "4.6", date: "2026-10-22",
     title: "Bấm vào số liệu để xem chi tiết · Ghi điểm cho ngày đã qua",
     summary: "Mọi con số ở Thống kê, Báo cáo, Lịch sử và thẻ tổng quan đều bấm được để xem chi tiết. Mở app là vào ngay Ghi điểm của tuần hiện tại; có thể chọn ngày xảy ra để ghi cho việc đã qua.",

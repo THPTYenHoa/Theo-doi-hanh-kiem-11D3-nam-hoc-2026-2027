@@ -2939,7 +2939,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=4.6"></script>
+<script src="updates/notes.js?v=4.7"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2952,7 +2952,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='4.6';
+const HK_VER='4.7';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -5412,6 +5412,230 @@ try{ if($('#v32h')) mount(); }catch(_){}
   /* gợi ý nhỏ dưới hàng ô số */
   const hint=v=>{ const k=document.querySelector('#'+v+' .kpis'); if(k && !k.nextElementSibling?.classList?.contains('v46hint')) k.insertAdjacentHTML('afterend','<div class="v46hint">Bấm vào số liệu, tên học sinh, lỗi hay tổ để xem chi tiết.</div>'); };
   new MutationObserver(()=>{ ['vTK','vLS','vBC'].forEach(hint); }).observe(document.getElementById('main')||document.body,{childList:true,subtree:true});
+})();
+</script>
+<style id="v47-css">
+/* v4.7 — thống kê lỗi vi phạm & hoạt động được tuyên dương (Báo cáo, Thống kê, PDF) */
+.v47{margin:0 12px}
+@media (min-width:761px){ .v47{margin:0 26px} }
+.v47 .sechead{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
+.v47say{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.v47say>div{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px 14px;background:var(--card,#fff)}
+.v47say>div.t{background:linear-gradient(135deg,#FFF6F4,#fff)}.v47say>div.c{background:linear-gradient(135deg,#F0FAF3,#fff)}
+.v47say img{flex:none}.v47say b{display:block;font-size:14.5px;color:#1B333A}.v47say span{font-size:13px;color:var(--sub);line-height:1.5}
+.v47g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:12px}
+.v47c{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--card,#fff);min-width:0}
+.v47c h3{margin:0 0 8px;font-size:14px;color:var(--teal-d);display:flex;align-items:center;gap:4px 8px;flex-wrap:wrap}
+.v47c h3 img{margin:-10px 0 -10px auto}
+.v47c h3 small{font-weight:600;color:var(--sub);font-size:12px}
+.v47dn{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.v47dn .lgd{display:flex;flex-direction:column;gap:3px;font-size:12.5px;min-width:0}
+.v47dn .lgd [data-v47k]{cursor:pointer;border-radius:6px;padding:1px 4px}.v47dn .lgd [data-v47k]:hover{background:var(--paler,#F5FAFB)}
+.v47dn .lgd i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+table.v47t{width:100%;border-collapse:collapse;font-size:13px}
+table.v47t th{white-space:nowrap;font-size:11.5px;color:var(--sub);font-weight:700;text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}
+table.v47t td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line2,#EEF2F3);vertical-align:middle}
+table.v47t .n{text-align:right;white-space:nowrap}table.v47t tr[data-v47k]{cursor:pointer}table.v47t tr[data-v47k]:hover td{background:var(--paler,#F5FAFB)}
+table.v47t td.h{text-align:center;font-weight:800;border-radius:6px;cursor:pointer;min-width:30px}
+table.v47t .nm{font-weight:700;color:#1B333A}table.v47t .gp{display:block;font-size:11px;color:var(--mute)}
+.v47bar{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:4px 10px;align-items:center;padding:7px 4px;border-bottom:1px solid var(--line2,#EEF2F3);cursor:pointer;border-radius:8px}
+.v47bar:hover{background:var(--paler,#F5FAFB)}.v47bar .k{font-size:13.5px;font-weight:700;color:#1B333A;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v47bar .k small{display:block;font-weight:600;font-size:11.5px;color:var(--mute)}
+.v47bar .tr{grid-column:1/3;height:7px;border-radius:9px;background:var(--line2,#EEF2F3);overflow:hidden}.v47bar .tr i{display:block;height:100%;border-radius:9px}
+.v47bar .v{text-align:right;font-weight:800;font-size:14px}.v47bar .v small{display:block;font-size:11px;color:var(--sub);font-weight:600}
+.v47bf{display:grid;grid-template-columns:1fr 58px 1fr;gap:6px;align-items:center;padding:6px 0;cursor:pointer;border-radius:8px}
+.v47bf:hover{background:var(--paler,#F5FAFB)}.v47bf .l,.v47bf .r{height:18px;display:flex;align-items:center}.v47bf .l{justify-content:flex-end}
+.v47bf .l i,.v47bf .r i{display:block;height:100%;border-radius:5px;min-width:2px}.v47bf .l i{background:#D9534F}.v47bf .r i{background:#2E9E5B}
+.v47bf .l b,.v47bf .r b{font-size:12px;padding:0 6px}.v47bf .l b{color:#C0392B}.v47bf .r b{color:#1E8449}.v47bf .m{text-align:center;font-weight:800;font-size:13px;color:#1B333A}
+.v47bfh{display:grid;grid-template-columns:1fr 58px 1fr;font-size:11.5px;color:var(--sub);font-weight:700;margin-bottom:2px}.v47bfh span:first-child{text-align:right}.v47bfh span:last-child{text-align:left}
+.v47 svg{max-width:100%;height:auto}
+.v47em{color:var(--sub);font-size:13px;padding:10px 0;display:flex;gap:10px;align-items:center}
+@media (max-width:760px){ .v47say,.v47g{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:520px){ table.v47t .dp{display:none} table.v47t .sp svg{width:52px} .v47say img{width:52px!important;height:52px!important} }
+</style>
+<script id="v47-js">
+/* ══ v4.7 — THỐNG KÊ LỖI VI PHẠM & HOẠT ĐỘNG ĐƯỢC TUYÊN DƯƠNG ═══════════════════════════════════════════════
+   • vpStats(E): lỗi (điểm < 0) và hoạt động được khen (điểm > 0) gom theo nội dung / nhóm / tổ / mốc thời gian.
+   • vpBlock(E,P,view): khối HTML dùng chung cho Báo cáo (thay "Vi phạm theo nhóm" + "Lỗi thường gặp") và Thống kê:
+     2 lời cô Thảo · vòng tròn theo nhóm + bảng lỗi có xu hướng · top hoạt động được tuyên dương · bản đồ lỗi × tổ ·
+     khen / vi phạm từng tổ (biểu đồ hai phía) · diễn biến 3 lỗi chính. Bấm dòng / ô / nhóm / tổ ⇒ DRILL (v4.6).
+   • Thống kê có thêm kỳ "Học kỳ" (S.tkKy='hk').
+   • PDF báo cáo lớp: thêm 2 trang "Thống kê lỗi vi phạm" và "Hoạt động được tuyên dương" (chèn trước trang nhận xét). */
+(function(){
+  const PT=['#C0392B','#E67E22','#B9761C','#8E44AD','#7F8C8D','#D35400','#A93226'], PC=['#1E8449','#0E7C86','#1F618D','#27AE60','#16A085','#2E86C1','#7D9D3A'];
+  const KEY=e=>e[E_ND]||e[E_MUC]||'';
+  const TOS=['1','2','3','4'];
+  function mk(arr){ const g={}; arr.forEach(e=>{ const k=KEY(e), o=g[k]=g[k]||{k,nhom:nhomOf(e),n:0,d:0,hs:new Set(),to:{}}; o.n++; o.d+=e[E_DIEM]; o.hs.add(e[E_MA]); const t=String(e[E_TO]); o.to[t]=(o.to[t]||0)+1; });
+    return Object.values(g).sort((a,b)=>b.n-a.n||Math.abs(b.d)-Math.abs(a.d)); }
+  function grp(arr){ const g={}; arr.forEach(e=>{ const k=nhomOf(e); g[k]=(g[k]||0)+1; }); return Object.keys(g).map(k=>({k,v:g[k]})).sort((a,b)=>b.v-a.v); }
+  window.vpStats=function(E){
+    const tru=E.filter(e=>e[E_DIEM]<0), cong=E.filter(e=>e[E_DIEM]>0);
+    const to=TOS.map(t=>({t,tru:tru.filter(e=>String(e[E_TO])===t).length,cong:cong.filter(e=>String(e[E_TO])===t).length}));
+    return {E,tru,cong,loi:mk(tru),khen:mk(cong),gT:grp(tru),gC:grp(cong),to};
+  };
+  /* mốc thời gian: tuần ⇒ thứ trong tuần; 1 tháng ⇒ tuần; nhiều tháng ⇒ tháng có dữ liệu */
+  const THU=['T2','T3','T4','T5','T6','T7','CN'];
+  function units(P,E){
+    if(P.tuan) return {lab:THU, of:e=>{ const d=new Date(String(e[E_LUC]).replace(' ','T')); return isNaN(d)?-1:(d.getDay()+6)%7; }, name:'thứ trong tuần'};
+    if(P.months.length===1) return {lab:Array.from({length:S.cfg.soTuan},(_,i)=>'Tuần '+(i+1)), of:e=>e[E_TUAN]-1, name:'tuần'};
+    const ms=P.months.filter(m=>E.some(e=>e[E_THANG]===m)); return {lab:ms.map(m=>'T'+m), of:e=>ms.indexOf(e[E_THANG]), name:'tháng'};
+  }
+  const cnt=(E,U)=>{ const a=U.lab.map(()=>0); E.forEach(e=>{ const i=U.of(e); if(i>=0&&i<a.length) a[i]++; }); return a; };
+
+  /* ── SVG dùng chung (app + PDF) ── */
+  function donut(items,pal,size,center,sub){
+    const S0=size||130, R=S0/2-6, r=R-20, c=S0/2, tot=items.reduce((a,x)=>a+x.v,0)||1; let a0=-Math.PI/2, g='';
+    if(!items.length) g=`<circle cx="${c}" cy="${c}" r="${(R+r)/2}" fill="none" stroke="#EEF3F4" stroke-width="${R-r}"/>`;
+    items.forEach((x,i)=>{ const col=pal[i%pal.length]; if(x.v===tot){ g+=`<circle cx="${c}" cy="${c}" r="${(R+r)/2}" fill="none" stroke="${col}" stroke-width="${R-r}"/>`; return; }
+      const a1=a0+x.v/tot*Math.PI*2, big=a1-a0>Math.PI?1:0, P=(rr,a)=>(c+rr*Math.cos(a)).toFixed(2)+' '+(c+rr*Math.sin(a)).toFixed(2);
+      g+=`<path d="M${P(R,a0)} A${R} ${R} 0 ${big} 1 ${P(R,a1)} L${P(r,a1)} A${r} ${r} 0 ${big} 0 ${P(r,a0)} Z" fill="${col}"/>`; a0=a1; });
+    return `<svg width="${S0}" height="${S0}" viewBox="0 0 ${S0} ${S0}">${g}<text x="${c}" y="${c+3}" text-anchor="middle" font-size="${S0/6}" font-weight="800" fill="#1B333A">${esc(center)}</text><text x="${c}" y="${c+S0/9+4}" text-anchor="middle" font-size="10.5" fill="#5C7A83">${esc(sub||'')}</text></svg>`;
+  }
+  function spark(a,col){ const W=70,H=22,mx=Math.max(1,...a),bw=W/Math.max(1,a.length); return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`+a.map((v,i)=>`<rect x="${(i*bw+1).toFixed(1)}" y="${(H-1-v/mx*(H-3)).toFixed(1)}" width="${Math.max(2,bw-2).toFixed(1)}" height="${Math.max(1,v/mx*(H-3)).toFixed(1)}" rx="1.5" fill="${v?col:'#E3ECEE'}"/>`).join('')+'</svg>'; }
+  function lines(series,lab,o){
+    o=o||{}; const W=o.w||520,H=o.h||170,PL=26,PR=26,T=16,B=26, mx=Math.max(1,...series.flatMap(s=>s.a));
+    const X=i=>PL+(lab.length<2?(W-PL-PR)/2:i*(W-PL-PR)/(lab.length-1)), Y=v=>T+(1-v/mx)*(H-T-B);
+    let g=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
+    for(let k=0;k<=2;k++){ const v=Math.round(mx*k/2), y=Y(v); g+=`<line x1="${PL}" x2="${W-PR}" y1="${y}" y2="${y}" stroke="#EEF3F4"/><text x="${PL-6}" y="${y+4}" text-anchor="end" font-size="10" fill="#8AA6AD">${v}</text>`; }
+    series.forEach(s=>{ g+=`<path d="${s.a.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ')}" fill="none" stroke="${s.c}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`
+      +s.a.map((v,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3.6" fill="#fff" stroke="${s.c}" stroke-width="2"/>`).join(''); });
+    lab.forEach((l,i)=>{ g+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle" font-size="10.5" fill="#5C7A83" font-weight="600">${esc(l)}</text>`; });
+    return g+'</svg>';
+  }
+  const heat=(v,mx)=>{ if(!v) return 'background:#F6F9FA;color:#B5C7CC'; const a=.12+.7*v/mx; return `background:rgba(192,57,43,${a.toFixed(2)});color:${a>.5?'#fff':'#8E2A20'}`; };
+  const mc=(emo,sz)=>window.MASCOT&&MASCOT.style&&MASCOT.style()!=='off'?MASCOT.img(emo,sz):'';
+  const ten=k=>{ const s=stu(k); return s?s.ten:k; };
+
+  /* ── khối HTML trong app ── */
+  const LAST={};
+  window.vpBlock=function(E,P,view){
+    const v=vpStats(E), U=units(P,E); LAST[view]={E,P};
+    const L0=v.loi[0], K0=v.khen[0], toMax=v.to.slice().sort((a,b)=>b.tru-a.tru)[0];
+    let h=`<div class="v47" data-v47v="${view}"><div class="sechead"><h2>Vi phạm & tuyên dương · ${esc(P.nhan)}</h2></div><div class="v47say">
+      <div class="t">${mc(L0?(L0.n>=5?'nghiem':'lo-lang'):'an-mung',64)}<div><b>${L0?'Lỗi gặp nhiều nhất: '+esc(L0.k):'Không có vi phạm nào'}</b><span>${L0?`${L0.n} lượt · ${L0.hs.size} học sinh · nhóm ${esc(L0.nhom)}. Tổng ${v.tru.length} lượt vi phạm${toMax&&toMax.tru?`, nhiều nhất ở Tổ ${toMax.t} (${toMax.tru} lượt)`:''}.`:'Cả lớp giữ nề nếp rất tốt trong '+esc(P.nhan)+'.'}</span></div></div>
+      <div class="c">${mc(K0?'khen-lon':'co-vu',64)}<div><b>${K0?'Được khen nhiều nhất: '+esc(K0.k):'Chưa có điểm cộng'}</b><span>${K0?`${K0.n} lượt · ${K0.hs.size} học sinh · +${K0.d} điểm. Tổng ${v.cong.length} lượt được tuyên dương.`:'Cô chờ những việc tốt của các con nhé!'}</span></div></div></div>`;
+    /* hàng 1: lỗi · tuyên dương */
+    const lg=(items,pal,t)=>`<div class="lgd">${items.map((x,i)=>`<span data-v47k="${esc(x.k)}" data-v47t="${t}g"><i style="background:${pal[i%pal.length]}"></i>${esc(x.k)} <b>${x.v}</b></span>`).join('')}</div>`;
+    h+=`<div class="v47g"><div class="v47c"><h3>Thống kê lỗi vi phạm <small>${v.tru.length} lượt</small></h3>`
+      +(v.loi.length?`<div class="v47dn">${donut(v.gT,PT,120,String(v.tru.length),'lượt')}${lg(v.gT,PT,'t')}</div>
+      <table class="v47t"><tr><th>Lỗi</th><th class="n">Lượt</th><th class="n">HS</th><th class="n dp">Điểm</th><th class="sp">Theo ${esc(U.name)}</th></tr>
+      ${v.loi.slice(0,8).map(x=>`<tr data-v47k="${esc(x.k)}" data-v47t="t"><td><span class="nm">${esc(x.k)}</span><span class="gp">${esc(x.nhom)}</span></td><td class="n"><b class="r3">${x.n}</b></td><td class="n">${x.hs.size}</td><td class="n dp">${x.d}</td><td class="sp">${spark(cnt(v.tru.filter(e=>KEY(e)===x.k),U),'#D9534F')}</td></tr>`).join('')}</table>`
+      :`<div class="v47em">${mc('an-mung',44)}Không có lỗi vi phạm nào.</div>`)+`</div>`;
+    const km=Math.max(1,...v.khen.map(x=>x.n));
+    h+=`<div class="v47c"><h3>Hoạt động được tuyên dương nhiều <small>${v.cong.length} lượt</small>${mc('vui',44)}</h3>`
+      +(v.khen.length?`<div class="v47dn">${donut(v.gC,PC,120,'+'+v.cong.reduce((a,e)=>a+e[E_DIEM],0),'điểm cộng')}${lg(v.gC,PC,'c')}</div>`
+      +v.khen.slice(0,8).map((x,i)=>`<div class="v47bar" data-v47k="${esc(x.k)}" data-v47t="c"><span class="k">${esc(x.k)}<small>${esc(x.nhom)} · ${x.hs.size} học sinh</small></span><span class="v r0">${x.n} lượt<small>+${x.d} điểm</small></span><span class="tr"><i style="width:${(x.n/km*100).toFixed(0)}%;background:${PC[i%PC.length]}"></i></span></div>`).join('')
+      :`<div class="v47em">${mc('co-vu',44)}Chưa có hoạt động nào được tuyên dương.</div>`)+`</div></div>`;
+    /* hàng 2: bản đồ lỗi × tổ · khen / vi phạm từng tổ */
+    const hm=Math.max(1,...v.loi.slice(0,6).flatMap(x=>TOS.map(t=>x.to[t]||0)));
+    const bm=Math.max(1,...v.to.map(x=>Math.max(x.tru,x.cong)));
+    h+=`<div class="v47g"><div class="v47c"><h3>Bản đồ lỗi theo tổ ${mc('suy-nghi',44)}</h3>`
+      +(v.loi.length?`<table class="v47t"><tr><th>Lỗi</th>${TOS.map(t=>`<th class="n" style="text-align:center">Tổ ${t}</th>`).join('')}</tr>
+        ${v.loi.slice(0,6).map(x=>`<tr><td><span class="nm">${esc(x.k)}</span></td>${TOS.map(t=>`<td class="h" data-v47k="${esc(x.k)}" data-v47t="h" data-v47to="${t}" style="${heat(x.to[t]||0,hm)}">${x.to[t]||'·'}</td>`).join('')}</tr>`).join('')}</table>
+        <div class="note" style="padding:6px 0 0;font-size:12px">Ô càng đậm, tổ đó mắc lỗi càng nhiều. Bấm vào ô để xem từng lượt.</div>`
+      :`<div class="v47em">Không có dữ liệu.</div>`)+`</div>
+      <div class="v47c"><h3>Khen và vi phạm từng tổ ${mc('co-vu',44)}</h3><div class="v47bfh"><span>Vi phạm</span><span></span><span>Được khen</span></div>
+      ${v.to.map(x=>`<div class="v47bf" data-v47k="${x.t}" data-v47t="to"><span class="l"><b>${x.tru||''}</b><i style="width:${(x.tru/bm*100).toFixed(0)}%"></i></span><span class="m">Tổ ${x.t}</span><span class="r"><i style="width:${(x.cong/bm*100).toFixed(0)}%"></i><b>${x.cong||''}</b></span></div>`).join('')}</div></div>`;
+    /* hàng 3: diễn biến 3 lỗi chính + 2 hoạt động khen chính */
+    if(U.lab.length>1 && (v.loi.length||v.khen.length)){
+      const ser=v.loi.slice(0,3).map((x,i)=>({k:x.k,c:['#C0392B','#E67E22','#8E44AD'][i],a:cnt(v.tru.filter(e=>KEY(e)===x.k),U)}))
+        .concat(v.khen.slice(0,2).map((x,i)=>({k:x.k,c:['#1E8449','#0E7C86'][i],a:cnt(v.cong.filter(e=>KEY(e)===x.k),U)})));
+      h+=`<div class="v47c" style="margin-top:12px"><h3>Diễn biến theo ${esc(U.name)} <small>3 lỗi và 2 hoạt động được khen nhiều nhất</small></h3>${lines(ser,U.lab,{w:Math.max(300,Math.min(760,innerWidth-(innerWidth>760?330:60))),h:180})}
+        <div class="v47dn" style="margin:4px 0 0"><div class="lgd" style="flex-direction:row;flex-wrap:wrap;gap:4px 14px">${ser.map(s=>`<span data-v47k="${esc(s.k)}" data-v47t="${s.c==='#1E8449'||s.c==='#0E7C86'?'c':'t'}"><i style="background:${s.c}"></i>${esc(s.k)}</span>`).join('')}</div></div></div>`;
+    }
+    return h+'</div>';
+  };
+
+  /* bấm ⇒ màn chi tiết (đi trước bộ bắt sự kiện v4.6 nhờ capture ở window) */
+  addEventListener('click',ev=>{
+    const t=ev.target; if(!(t instanceof Element)) return; const box=t.closest('.v47'); if(!box) return;
+    ev.stopPropagation();
+    const el=t.closest('[data-v47k]'); if(!el||!window.DRILL) return;
+    const L=LAST[box.dataset.v47v]; if(!L) return;
+    const k=el.dataset.v47k, ty=el.dataset.v47t, E=L.E, sub=L.P.nhan; let o;
+    if(ty==='t') o={title:k,E:E.filter(e=>e[E_DIEM]<0&&KEY(e)===k),nd:k};
+    else if(ty==='c') o={title:k,E:E.filter(e=>e[E_DIEM]>0&&KEY(e)===k),nd:k};
+    else if(ty==='tg') o={title:'Nhóm lỗi: '+k,E:E.filter(e=>e[E_DIEM]<0&&nhomOf(e)===k)};
+    else if(ty==='cg') o={title:'Nhóm được khen: '+k,E:E.filter(e=>e[E_DIEM]>0&&nhomOf(e)===k)};
+    else if(ty==='h'){ const to=el.dataset.v47to; o={title:k+' · Tổ '+to,E:E.filter(e=>e[E_DIEM]<0&&KEY(e)===k&&String(e[E_TO])===to),nd:k,to}; }
+    else if(ty==='to') o={title:'Tổ '+k,E:E.filter(e=>String(e[E_TO])===k&&e[E_DIEM]!==0),to:k};
+    if(o){ ev.preventDefault(); o.sub=sub; DRILL.open(o); }
+  },true);
+
+  /* ── Báo cáo: thay "Vi phạm theo nhóm" + "Lỗi thường gặp" bằng khối mới ── */
+  const rb=window.renderBC;
+  window.renderBC=renderBC=function(){
+    const r=rb.apply(this,arguments);
+    const box=$('#vBC'); if(!box || !box.querySelector('.bcgrid') || box.querySelector('.v47')) return r;
+    [...box.querySelectorAll('.bcgrid .sechead h2')].filter(h=>/Vi phạm theo nhóm|Lỗi thường gặp/.test(h.textContent)).forEach(h=>{ const s=h.closest('.sechead'), n=s.nextElementSibling; if(n) n.remove(); s.remove(); });
+    const P=bcPeriod(), st=bcStats(P);
+    box.querySelector('.bcgrid').insertAdjacentHTML('afterend',vpBlock(st.E,P,'vBC'));
+    return r;
+  };
+
+  /* ── Thống kê: thêm kỳ Học kỳ + khối mới ── */
+  const hkMs=()=>HK_THANG[hkOf(S.thang)];
+  const te=window.tkEntries, ts=window.tkScore, tn=window.tkNhan;
+  window.tkEntries=tkEntries=function(){ if(S.tkKy==='hk'){ const ms=hkMs(); return S.entries.filter(e=>ms.indexOf(e[E_THANG])>=0); } return te.apply(this,arguments); };
+  window.tkScore=tkScore=function(ma){ if(S.tkKy==='hk'){ const ms=hkMs().filter(m=>S.entries.some(e=>e[E_THANG]===m)); return ms.length?ms.reduce((a,m)=>a+monthAvg(ma,m),0)/ms.length:0; } return ts.apply(this,arguments); };
+  window.tkNhan=tkNhan=function(){ if(S.tkKy==='hk') return 'học kỳ '+(hkOf(S.thang)===1?'I':'II'); return tn.apply(this,arguments); };
+  const rt=window.renderTK;
+  window.renderTK=renderTK=function(){
+    const r=rt.apply(this,arguments);
+    const v=$('#vTK'); if(!v) return r;
+    const sb=v.querySelector('.segbar');
+    if(sb && !sb.querySelector('[data-ky="hk"]')){
+      sb.querySelector('[data-ky="nam"]').insertAdjacentHTML('beforebegin',`<button data-ky="hk" class="${S.tkKy==='hk'?'on':''}">Học kỳ ${hkOf(S.thang)===1?'I':'II'}</button>`);
+      if(S.tkKy==='hk') sb.querySelectorAll('[data-ky]').forEach(b=>b.classList.toggle('on',b.dataset.ky==='hk'));
+      sb.querySelectorAll('[data-ky]').forEach(b=>b.onclick=()=>{ S.tkKy=b.dataset.ky; renderTK(); });
+    }
+    if(!v.querySelector('.v47')){
+      const L=activeStudents(), E=tkEntries().filter(e=>L.some(s=>s.ma===e[E_MA]));
+      const P=S.tkKy==='tuan'?{tuan:S.tuan,months:[S.thang],nhan:tkNhan()}:S.tkKy==='thang'?{months:[S.thang],nhan:tkNhan()}:S.tkKy==='hk'?{months:hkMs(),nhan:tkNhan()}:{months:MONTHS_YEAR.slice(),nhan:tkNhan()};
+      /* "Lỗi mắc nhiều nhất" ⇒ thay bằng khối mới (có bảng lỗi + hoạt động được tuyên dương) */
+      const h=[...v.querySelectorAll('.sechead h2')].find(x=>/Lỗi mắc nhiều nhất/.test(x.textContent));
+      const sh=h?h.closest('.sechead'):null, anchor=sh?sh.nextElementSibling:null;
+      if(anchor){ anchor.insertAdjacentHTML('afterend',vpBlock(E,P,'vTK')); anchor.remove(); sh.remove(); } else v.insertAdjacentHTML('beforeend',vpBlock(E,P,'vTK'));
+    }
+    return r;
+  };
+
+  /* ── PDF báo cáo lớp: 2 trang mới ── */
+  function pdfPages(P){
+    const R=RPT, st=bcStats(P), v=vpStats(st.E), U=units(P,st.E), cfg=S.cfg, D={cfg,students:S.students,entries:S.entries,remarks:S.remarks}, foot=R.footTxt(D);
+    const hd=h=>R.head('Báo cáo hạnh kiểm',h,'Lớp <b>'+esc(cfg.lop||'11D3')+'</b> · '+esc(P.nhan)+'<br>'+(cfg.gvcn?'GVCN: <b>'+esc(cfg.gvcn)+'</b> · ':'')+'Năm học '+esc(cfg.namHoc||''));
+    const css='<style>.v47p .lgx div{font-size:9.5pt;margin:1.1mm 0}.v47p .lgx i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1.5mm;vertical-align:-.3mm}.v47p .hc{text-align:center;font-weight:800;border-radius:1.2mm}.v47p .bf{display:grid;grid-template-columns:1fr 16mm 1fr;gap:2mm;align-items:center;margin:2.2mm 0;font-size:9.5pt}.v47p .bf .l{display:flex;justify-content:flex-end;align-items:center;gap:1.5mm}.v47p .bf .r{display:flex;align-items:center;gap:1.5mm}.v47p .bf i{display:block;height:4mm;border-radius:1.2mm}.v47p .bf .m{text-align:center;font-weight:800}</style>';
+    const L0=v.loi[0], K0=v.khen[0], toMax=v.to.slice().sort((a,b)=>b.tru-a.tru)[0], toKh=v.to.slice().sort((a,b)=>b.cong-a.cong)[0];
+    const hm=Math.max(1,...v.loi.slice(0,8).flatMap(x=>TOS.map(t=>x.to[t]||0)));
+    const lgx=(items,pal)=>'<div class="lgx">'+items.slice(0,7).map((x,i)=>`<div><i style="background:${pal[i%pal.length]}"></i>${esc(x.k)} <b>${x.v}</b> <span style="color:#8AA6AD">(${Math.round(x.v*100/(items.reduce((a,y)=>a+y.v,0)||1))}%)</span></div>`).join('')+'</div>';
+    const ser=v.loi.slice(0,3).map((x,i)=>({k:x.k,c:['#C0392B','#E67E22','#8E44AD'][i],a:cnt(v.tru.filter(e=>KEY(e)===x.k),U)}));
+    const pA=css+`<div class="v47p"><div class="say">${R.mc(L0?(L0.n>=5?'nghiem':'lo-lang'):'an-mung',96)}<div class="b">${L0?`<b>Trong ${esc(P.nhan)}, lớp có ${v.tru.length} lượt vi phạm (${st.dTru} điểm).</b><div style="margin-top:1.5mm">Lỗi gặp nhiều nhất là <b>${esc(L0.k)}</b> (${L0.n} lượt, ${L0.hs.size} học sinh)${v.gT[0]?`; nhóm <b>${esc(v.gT[0].k)}</b> chiếm ${Math.round(v.gT[0].v*100/v.tru.length)}%`:''}${toMax&&toMax.tru?`; Tổ <b>${toMax.t}</b> có nhiều lượt nhất (${toMax.tru})`:''}.</div>`:`<b>Trong ${esc(P.nhan)}, lớp không có lượt vi phạm nào.</b> Cô rất vui!`}</div></div>
+      <div class="g3"><div class="card"><h3>Các lỗi vi phạm</h3>${v.loi.length?`<table class="t"><tr><th>Lỗi</th><th>Nhóm</th><th class="n">Lượt</th><th class="n">HS</th><th class="n">Điểm</th>${TOS.map(t=>`<th class="n" style="text-align:center;white-space:nowrap">Tổ ${t}</th>`).join('')}</tr>
+        ${v.loi.slice(0,9).map(x=>`<tr><td><b>${esc(x.k)}</b></td><td style="color:#5C7A83;white-space:nowrap">${esc(x.nhom)}</td><td class="n" style="color:#C0392B;font-weight:800">${x.n}</td><td class="n">${x.hs.size}</td><td class="n">${x.d}</td>${TOS.map(t=>`<td><div class="hc" style="${heat(x.to[t]||0,hm)}">${x.to[t]||'·'}</div></td>`).join('')}</tr>`).join('')}</table>
+        <div style="font-size:8.5pt;color:#8AA6AD;margin-top:2mm">Ô màu đỏ càng đậm: tổ mắc lỗi đó càng nhiều.</div>`:'<div class="none">Không có vi phạm.</div>'}</div>
+      <div><div class="card" style="margin-bottom:4mm"><h3>Vi phạm theo nhóm</h3><div class="dn">${donut(v.gT,PT,128,String(v.tru.length),'lượt')}${lgx(v.gT,PT)}</div></div>
+        <div class="card"><h3>Diễn biến 3 lỗi chính theo ${esc(U.name)}</h3>${U.lab.length>1&&ser.length?lines(ser,U.lab,{w:440,h:140})+`<div class="lg">${ser.map(s=>`<i style="background:${s.c}"></i>${esc(s.k)}&nbsp;&nbsp;`).join('')}</div>`:'<div class="none">Chưa đủ mốc thời gian để vẽ.</div>'}</div></div></div></div>`;
+    const km=Math.max(1,...v.khen.map(x=>x.n)), bm=Math.max(1,...v.to.map(x=>Math.max(x.tru,x.cong)));
+    const pB=css+`<div class="v47p"><div class="say">${R.mc(K0?'khen-lon':'co-vu',96)}<div class="b">${K0?`<b>Trong ${esc(P.nhan)}, lớp có ${v.cong.length} lượt được tuyên dương (+${st.dCong} điểm).</b><div style="margin-top:1.5mm">Hoạt động được khen nhiều nhất: <b>${esc(K0.k)}</b> (${K0.n} lượt, ${K0.hs.size} học sinh)${toKh&&toKh.cong?`; Tổ <b>${toKh.t}</b> được khen nhiều nhất (${toKh.cong} lượt)`:''}. Cô khen các con!</div>`:`<b>Trong ${esc(P.nhan)} chưa có lượt tuyên dương nào.</b> Cô chờ những việc tốt của các con nhé!`}</div></div>
+      <div class="g3"><div class="card"><h3>Hoạt động được tuyên dương nhiều ${R.mc('vui',50)}</h3>${v.khen.length?R.hb(v.khen.slice(0,9).map((x,i)=>({k:'<b>'+esc(x.k)+'</b> <span style="color:#8AA6AD">· '+x.hs.size+' HS</span>',v:x.n,lbl:x.n+' lượt',c:PC[i%PC.length]}))):'<div class="none">Chưa có điểm cộng.</div>'}
+        ${st.khen.length?`<div style="margin-top:3mm;font-size:9.5pt"><b style="color:#0A5C64">Học sinh được khen nhiều:</b> ${st.khen.slice(0,6).map(k=>esc(stu(k.ma).ten)+' <b style="color:#1E8449">+'+k.p+'</b>').join(', ')}</div>`:''}
+        ${U.lab.length>1?`<h3 style="margin-top:4mm">Lượt khen và vi phạm theo ${esc(U.name)}</h3>`+R.bars2((()=>{ const A=cnt(v.cong,U), B=cnt(v.tru,U); return U.lab.map((l,i)=>({k:l,a:A[i],b:B[i]})); })(),{w:470,h:130}):''}</div>
+      <div><div class="card" style="margin-bottom:4mm"><h3>Tuyên dương theo nhóm</h3><div class="dn">${donut(v.gC,PC,128,'+'+st.dCong,'điểm cộng')}${lgx(v.gC,PC)}</div></div>
+        <div class="card"><h3>Khen và vi phạm từng tổ ${R.mc('co-vu',50)}</h3><div class="bf" style="color:#5C7A83;font-weight:700;font-size:8.5pt;margin:0"><span style="text-align:right">Vi phạm</span><span></span><span>Được khen</span></div>
+          ${v.to.map(x=>`<div class="bf"><span class="l"><b style="color:#C0392B">${x.tru}</b><i style="width:${(x.tru/bm*100).toFixed(0)}%;background:#D9534F"></i></span><span class="m">Tổ ${x.t}</span><span class="r"><i style="width:${(x.cong/bm*100).toFixed(0)}%;background:#2E9E5B"></i><b style="color:#1E8449">${x.cong}</b></span></div>`).join('')}</div></div></div></div>`;
+    return R.page(hd('Thống kê lỗi vi phạm'),pA,foot)+R.page(hd('Hoạt động được tuyên dương'),pB,foot);
+  }
+  window.vpPdfPages=pdfPages;
+  const bp=window.bcPrint;
+  window.bcPrint=bcPrint=function(P){
+    const R=window.RPT, o=R&&R.open; if(!o) return bp.apply(this,arguments);
+    R.open=function(html,t,opt){ R.open=o;
+      try{ const parts=html.split('<section class="pg">'); if(parts.length>4){ parts.splice(4,0,pdfPages(P).replace(/^<section class="pg">/,'')); }
+        /* parts[0] = phần trước trang 1; chèn 2 trang mới sau trang 3 (Tuyên dương & nhắc nhở) */
+        html=parts.join('<section class="pg">'); }catch(e){}
+      return o.call(this,html,t,opt); };
+    try{ return bp.apply(this,arguments); } finally { if(R.open!==o) R.open=o; }
+  };
 })();
 </script>
 <script src="demo-ui.js?v=4.5"></script>

@@ -162,3 +162,12 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **Ngày xảy ra** (`#gc46` trong `hoiGhiChu`, `S.ngay46`): `ghiThucTe` đổi tạm `S.thang/S.tuan` quanh lời gọi đồng bộ (các lớp bên trong đọc đồng bộ trước `await`),
   ghi chú thêm "ngày dd/mm"; tháng khoá sổ / tương lai / ngoài năm học ⇒ chặn. Đang xem tuần khác tuần hôm nay ⇒ ô ngày để trống (ghi vào tuần đang xem).
   Số lần tái phạm vẫn tính theo tuần đang xem. `run.js` mục 20.
+
+## v4.7 — Thống kê lỗi vi phạm & hoạt động được tuyên dương
+- **Khối `v47-css` + `v47-js`** (trước `demo-ui.js`): `vpStats(E)` (lỗi / hoạt động khen gom theo nội dung · nhóm `nhomOf` · tổ), `vpBlock(E,P,view)` =
+  khối "Vi phạm & tuyên dương": 2 lời cô Thảo (`MASCOT.img`), vòng tròn theo nhóm + bảng lỗi có cột nhỏ xu hướng, top hoạt động được tuyên dương,
+  bản đồ lỗi × tổ (ô đỏ đậm dần), khen / vi phạm từng tổ (biểu đồ hai phía), đường diễn biến 3 lỗi + 2 hoạt động khen. Mốc thời gian: tuần ⇒ thứ (theo giờ ghi),
+  1 tháng ⇒ tuần, nhiều tháng ⇒ tháng. Bấm `[data-v47k]` ⇒ `DRILL.open` (listener capture ở **window** để đi trước listener v4.6; mọi click trong `.v47` dừng ở đó).
+- Báo cáo: thay "Vi phạm theo nhóm" + "Lỗi thường gặp" bằng khối mới (sau `.bcgrid`). Thống kê: thay "Lỗi mắc nhiều nhất", thêm kỳ **Học kỳ** (`S.tkKy='hk'`,
+  bọc `tkEntries` / `tkScore` / `tkNhan`).
+- PDF báo cáo lớp: `bcPrint` bọc `RPT.open` 1 lần ⇒ chèn 2 trang (`vpPdfPages`) sau trang 3: "Thống kê lỗi vi phạm", "Hoạt động được tuyên dương". `run.js` mục 21.
