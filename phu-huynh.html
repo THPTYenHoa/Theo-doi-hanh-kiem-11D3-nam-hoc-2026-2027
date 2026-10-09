@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<script src="demo.js?v=4.1"></script>
+<script src="demo.js?v=4.3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
 <title>Hạnh kiểm 11D3 · Phụ huynh</title>
@@ -190,9 +190,9 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
 <footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=4.2"></script>
+<script src="updates/notes.js?v=4.3"></script>
 <script src="mascot.js?v=4.1"></script>
-<script src="baocao.js?v=4.1"></script>
+<script src="baocao.js?v=4.3"></script>
 <script src="tour.js?v=3.1"></script>
 <script>
 'use strict';
@@ -339,13 +339,13 @@ function renderHS(){
   const emo=['vui','co-vu','lo-lang','nghiem'][x.i]||'chao', g=ten1(s.ten);
   const mem=window.MASCOT?MASCOT.img(emo,120):'';
   const loi=['Con <b>'+esc(g)+'</b> thực hiện nề nếp rất tốt, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> ngoan, chỉ còn vài lỗi nhỏ. Cô và bác cùng nhắc con cố gắng thêm nhé ạ.','Con <b>'+esc(g)+'</b> còn mắc một số lỗi, bác trò chuyện thêm với con giúp cô nhé.','Con <b>'+esc(g)+'</b> đang mắc nhiều lỗi, bác liên hệ cô Thảo để cô và bác cùng giúp con nhé ạ.'][Math.min(3,x.i)];
-  const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · chốt '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(cô chốt xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
+  const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · xếp loại '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(cô đã xác nhận xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
   const prof=`<div class="card prof"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div></div>
     <div class="seg" id="ks">${kySeg(ky)}</div>
     <div class="hero2">${mem}<div class="bub2">${loi}</div></div>
     <div class="res"><div><div class="lb">Điểm TB tuần</div><div class="big num r${x.i}">${fx(sc)}</div></div>
       <div><div class="lb">Xếp loại · ${esc(kyLabel(ky))}</div><span class="xl g${x.i}">${esc(x.ten)}</span>
-      <div class="ex">${x.chot?'Cô đã chốt xếp loại.':'Tính tự động theo điểm; cô chốt lại cuối kỳ.'}</div></div></div>
+      <div class="ex">${x.chot?'Cô đã xác nhận xếp loại.':'Tính tự động theo điểm; cô xác nhận lại cuối kỳ.'}</div></div></div>
     <div class="mini">${mini}</div>
     <div class="sum2"><div><b class="num r3">${tru.length}</b><span>vi phạm · ${tru.reduce((a,e)=>a+e[E_DIEM],0)} điểm</span></div><div><b class="num r0">${cong.length}</b><span>được cộng · ${nz(cong.reduce((a,e)=>a+e[E_DIEM],0))} điểm</span></div></div>
     <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF báo cáo</button>
@@ -398,7 +398,7 @@ function csvHS(s,ky){
   const x=xl(s.ma,ky), rows=[['Học sinh',s.ten],['Tổ',s.to],['Kỳ',kyLabel(ky)],['Điểm TB tuần',fx(kyScore(s.ma,ky))],['Xếp loại',x.ten],[],
     ['Ngày','Tháng','Tuần','Loại','Nội dung','Điểm','Ghi chú','Người ghi']];
   evOf(s.ma,ky).forEach(e=>rows.push([ddmm(e[E_LUC]),tl(e[E_THANG]),e[E_TUAN],e[E_LOAI],e[E_ND]||e[E_MUC],e[E_DIEM],e[E_GC],e[E_TEN]]));
-  S.remarks.filter(r=>r.maHS===s.ma&&kyMonths(ky).indexOf(r.thang)>=0&&(r.nhanXet||r.xepLoai)).forEach(r=>rows.push(['',tl(r.thang),'','Nhận xét GVCN',r.xepLoai?'Chốt '+r.xepLoai:'','',r.nhanXet,'GVCN']));
+  S.remarks.filter(r=>r.maHS===s.ma&&kyMonths(ky).indexOf(r.thang)>=0&&(r.nhanXet||r.xepLoai)).forEach(r=>rows.push(['',tl(r.thang),'','Nhận xét GVCN',r.xepLoai?'Xếp loại '+r.xepLoai:'','',r.nhanXet,'GVCN']));
   dl('hanh-kiem_'+slug(s.ten)+'_'+kyKey(ky)+'.csv',rows);
 }
 function csvLop(ky){
@@ -470,7 +470,7 @@ function printLop(ky){
     {el:'#toc', t:'Lọc theo tổ', d:'Hoặc các bác bấm số tổ của con để tìm nhanh hơn ạ.'},
     {el:'#lst .st', t:'Mở hồ sơ của con', d:'Bên phải mỗi tên là <b>xếp loại tháng này</b> của con. Các bác chạm vào tên để xem chi tiết ạ.'},
     {el:'#ks', t:'Chọn tháng, học kỳ hoặc cả năm', d:'Các bác xem điểm từng tuần, xếp loại từng tháng, học kỳ 1, học kỳ 2 hoặc cả năm học của con.', pre:()=>{ const s=first(); if(s) go({hs:s.ma}); }, wait:350},
-    {el:'.res', t:'Kết quả hạnh kiểm của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là cô đã chốt xếp loại.'},
+    {el:'.res', t:'Kết quả hạnh kiểm của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là cô đã xác nhận xếp loại.'},
     {el:'.acts', t:'Tải về', d:'<b>Tải PDF / In</b> để các bác lưu hoặc in; <b>Tải Excel</b> để mở bằng Excel. Kéo xuống là từng lần con vi phạm, được khen và <b>nhận xét của cô</b>.'},
     {el:'#tabs [data-t=lop]', t:'Xem cả lớp', d:'Tab <b>Cả lớp</b> để các bác xem tình hình chung của các con trong lớp.'},
     {el:'#hp', t:'Xem lại hướng dẫn', d:'Các bác bấm nút <b>?</b> bất cứ lúc nào để xem lại. Cô Thảo cảm ơn các bác đã luôn đồng hành cùng các con ạ!', pre:()=>go({})}
@@ -493,6 +493,6 @@ function printLop(ky){
   },15000);
 })();
 </script>
-<script src="demo-ui.js?v=4.2"></script>
+<script src="demo-ui.js?v=4.3"></script>
 </body>
 </html>
