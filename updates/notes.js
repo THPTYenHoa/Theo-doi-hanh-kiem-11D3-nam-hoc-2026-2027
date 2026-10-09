@@ -1,6 +1,19 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-19-v4.3", version: "4.3", date: "2026-10-19",
+    title: "\"Chốt tháng\" đổi tên thành \"Khoá sổ tháng\"",
+    summary: "Cách gọi mới, dễ hiểu hơn: khoá sổ tháng (không ai sửa được nữa) và xác nhận xếp loại (giáo viên chọn xếp loại cho từng em).",
+    items: [
+      { type: "imp", title: "Khoá sổ tháng",
+        text: "<b>Cập nhật hạnh kiểm</b> ▸ <b>Khoá sổ tháng</b>: mọi ghi nhận của tháng chỉ còn xem, không thêm, sửa, xoá được. Bấm <b>Mở khoá</b> khi cần sửa lại. Cách dùng không đổi, chỉ đổi tên.",
+        img: "updates/v4.3/khoa-so.jpg" },
+      { type: "imp", title: "Xác nhận xếp loại",
+        text: "Khi nhận xét một em, ô chọn xếp loại nay gọi là <b>Xác nhận xếp loại</b>. Dấu ✓ cạnh xếp loại nghĩa là giáo viên đã xác nhận. Các file hướng dẫn PDF đã cập nhật theo tên mới.",
+        img: "" }
+    ]
+  },
+  {
     id: "2026-10-18-v4.2", version: "4.2", date: "2026-10-18",
     title: "Mở hướng dẫn ngay ở màn đăng nhập",
     summary: "Từ một đường link của sổ, ai cũng mở được: bản dùng thử, trang phụ huynh và các file hướng dẫn.",

@@ -143,7 +143,7 @@
     load(); p = p || {};
     var who = (String(tok || '').match(/^tok\.(\w+)/) || [])[1], me = ME[who], write = false, r;
     var lk = locked(a, p);
-    if (lk) return { ok: false, error: 'Tháng ' + lk + ' đã được GVCN chốt hạnh kiểm — không thêm, sửa, xoá được nữa.' };
+    if (lk) return { ok: false, error: 'Tháng ' + lk + ' đã được GVCN khoá sổ, không thêm, sửa, xoá được nữa.' };
     switch (a) {
       case 'loginKhach': r = { ok: true, token: 'tok.ph', boot: base('ph') }; break;
       case 'bootstrap': r = who ? base(who) : { ok: false, error: 'Phiên đăng nhập hết hạn' }; break;
@@ -170,11 +170,11 @@
       case 'deleteEntry': DB.entries = DB.entries.filter(function (e) { return e[0] !== p.id; }); r = { ok: true }; write = true; break;
       case 'updateEntry': DB.entries.forEach(function (e) { if (e[0] === p.id) { if (p.tuan) e[3] = Number(p.tuan); if (p.diem != null) e[9] = Number(p.diem); if (p.ghiChu != null) e[12] = p.ghiChu; } }); r = { ok: true }; write = true; break;
       case 'saveRemark':
-        if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được nhận xét, chốt xếp loại.' }; break; }
+        if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được nhận xét, xác nhận xếp loại.' }; break; }
         DB.remarks = DB.remarks.filter(function (x) { return !(x.maHS === p.maHS && x.thang === Number(p.thang)); });
         DB.remarks.push({ maHS: p.maHS, thang: Number(p.thang), xepLoai: p.xepLoai || '', nhanXet: p.nhanXet || '' }); r = { ok: true }; write = true; mark('nx'); break;
       case 'lockMonth':
-        if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được chốt / mở khoá tháng.' }; break; }
+        if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được khoá sổ / mở khoá tháng.' }; break; }
         if (p.lock === false) delete DB.khoa[p.thang]; else { DB.khoa[p.thang] = { by: ME.gvcn.name, at: now() }; mark('chot'); }
         r = { ok: true, khoa: DB.khoa }; write = true; break;
       case 'addEvidence': var fid = 'F' + (Object.keys(DB.ev).length + 1); DB.ev[fid] = { n: p.name, m: p.mime, data: p.data };

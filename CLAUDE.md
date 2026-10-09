@@ -96,7 +96,7 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   `MASCOT.STYLES` chỉ trả vai `READY` (bảng chọn nhân vật). Muốn thêm vai (áo dài…): thêm thư mục + khoá vào `READY`.
 - HDSD: `build.js` lấy ảnh 3D (`chibi()`) cho phần mẹo **và góc dưới trái mọi trang nội dung** (`.mc`, biểu cảm theo chủ đề trang `POSE`, `pose:` để chọn riêng, `noMc` để tắt; tự bỏ nếu chạm chữ). Bìa và trang phân cách không có. Ảnh động (video Veo) người dùng gửi sau ⇒ thay `<emo>.webp` bằng WebP động cùng tên.
 
-## v3.7 — Chốt tháng, báo cáo ngang, email phụ huynh
+## v3.7 — Khoá sổ tháng (trước đây gọi "Chốt tháng"; từ v4.3 không dùng chữ "chốt" trên giao diện — dùng "khoá sổ" / "xác nhận xếp loại"), báo cáo ngang, email phụ huynh
 - **Chốt tháng** (khối `v37-js`): backend `lockMonth` (GVCN), trạng thái `khoa` {tháng:{by,at}} trong bootstrap / `sync`; `kiemKhoa_` (backend `KhoaThang.gs`) chặn
   `addEntries` / `saveRemark` / `updateEntry` / `deleteEntry` / `addEvidence` / `delEvidence` của tháng đã chốt. App: `g37()` chặn trước, dải `.lkb`, `body.hk-lk`. GVCN mở khoá được.
 - **PDF khổ ngang** `baocao.js` (`window.RPT`): `student(D,ma,ky,{aud:'ph'|'gv'})`, `notice(D,ma,ids)`, `open(html,title,{dry})` (iframe ẩn ▸ in; iOS mở cửa sổ mới);

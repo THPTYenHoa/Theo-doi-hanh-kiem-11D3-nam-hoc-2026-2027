@@ -95,7 +95,7 @@
     { k: 'hs', r: 'gvcn', t: 'PDF riêng một học sinh', d: 'Bấm <b>kính lúp</b> (hoặc phím /) ▸ gõ tên ▸ mở hồ sơ ▸ <b>Tải PDF báo cáo</b>: điểm từng tuần, lỗi thường mắc, khen thưởng, nhận xét của cô.' },
     { k: 'dk', r: 'ph', t: 'Phụ huynh đăng ký nhận email', d: 'Vai <b>Phụ huynh</b>: mở hồ sơ một học sinh ▸ ô <b>Nhận thông báo qua email</b> ▸ nhập email bất kỳ ▸ <b>Gửi mã</b> ▸ nhập <b>123456</b> ▸ Xác nhận.' },
     { k: 'duyet', r: 'gvcn', t: 'Cô duyệt phụ huynh', d: 'Vai <b>Cô Thảo</b>: thẻ "Phụ huynh vừa đăng ký" hiện ngay ▸ <b>Duyệt</b> (menu <b>Phụ huynh</b>). Phụ huynh nhận thư xác nhận kèm <b>file hướng dẫn PDF</b> — xem trong Hộp thư.' },
-    { k: 'chot', r: 'gvcn', t: 'Chốt hạnh kiểm tháng', d: '<b>Cập nhật hạnh kiểm</b> ▸ <b>Chốt tháng 10</b>. Sau khi chốt, thử xoá / sửa một ghi nhận: hệ thống chặn lại. Cô bấm <b>Mở khoá</b> để chỉnh tiếp.' }];
+    { k: 'chot', r: 'gvcn', t: 'Khoá sổ tháng', d: '<b>Cập nhật hạnh kiểm</b> ▸ <b>Khoá sổ tháng 10</b>. Sau khi khoá sổ, thử xoá / sửa một ghi nhận: hệ thống chặn lại. Cô bấm <b>Mở khoá</b> để chỉnh tiếp.' }];
   function db() { return DEMO.db(); }
   function nDone() { var d = db().done; return STEPS.filter(function (x) { return d[x.k]; }).length; }
   function unread() { return db().mails.filter(function (m) { return m.unread; }).length; }
@@ -149,7 +149,7 @@
     if (k === 'bc') { go('bc'); say('chi-tay', 'Đây là báo cáo tháng. Thử gõ "tổ 2 vi phạm" ở ô Tìm nhanh, rồi bấm <b>In / Lưu PDF</b>.'); }
     if (k === 'hs') { go('bang'); setTimeout(function () { var f = $('#hFind'); if (f) f.click(); }, 500); say('chi-tay', 'Gõ tên một bạn ▸ mở hồ sơ ▸ <b>Tải PDF báo cáo</b>.'); }
     if (k === 'duyet') { go('ph'); say('chi-tay', 'Cô bấm <b>Duyệt</b> ở mục Đăng ký chờ duyệt. Phụ huynh nhận thư kèm hướng dẫn PDF.'); }
-    if (k === 'chot') { go('bang'); say('chi-tay', 'Cô bấm <b>Chốt tháng 10</b>. Sau đó thử xoá một ghi nhận — hệ thống sẽ chặn.'); }
+    if (k === 'chot') { go('bang'); say('chi-tay', 'Cô bấm <b>Khoá sổ tháng 10</b>. Sau đó thử xoá một ghi nhận — hệ thống sẽ chặn.'); }
   }
   function inbox(openId) {
     var M = db().mails;
