@@ -96,5 +96,29 @@ const ready = async p => { await p.waitForSelector('#app.on', { timeout: 20000 }
   await shot(p, 'dm_chot', [['#vBang .lkb', 1], ['#vBang .lkb button', 2, 'tr']]);
   await p.click('#dm-bar [data-a="guide"]'); await W(500);
   await shot(p, 'dm_guide2', [['.dm-ov .dm-pg', 1]]);
+  /* v4.5: chọn vai · hướng dẫn từng bước (zoom) · tải file */
+  { const q = await D.newPage(); q.on('dialog', d => d.accept());
+    await q.evaluate(() => 0).catch(() => {});
+    await q.goto(U + 'index.html?demo=1'); await q.evaluate(() => { localStorage.setItem('hk_token', 'tok.gvcn'); ['hk_cache_v3', 'hk_cache_v4'].forEach(k => localStorage.removeItem(k)); });
+    await q.goto(U + 'index.html?demo=1'); await ready(q);
+    await q.evaluate(() => { document.querySelectorAll('#phNew,.dm-ov').forEach(e => e.remove()); DMG.open(); }); await W(700);
+    await shot(q, 'dm_roles', [['.dmg-rc', 1], ['.dmg-rc li button', 2, 'tr'], ['.dmg-note', 3]]);
+    await q.evaluate(() => document.querySelectorAll('.dm-ov').forEach(e => e.remove()));
+    await q.evaluate(() => { const m = document.getElementById('msc'); if (m) m.style.display = 'none'; DMG.start('gv3', 0); }); await W(2200);
+    await q.screenshot({ path: path.join(OUT, 'dm_tut_gv.png') }); console.log('📸 dm_tut_gv');
+    await q.keyboard.press('Escape'); await W(300);
+    await q.evaluate(() => go('bc')); await W(1000); await q.click('#bcPrint'); await q.waitForSelector('#dl-sh', { timeout: 60000 }); await W(500);
+    await shot(q, 'dm_dlsheet', [['#dl-sh', 1], ['#dl-sh [data-a=open]', 2, 'tr']]);
+    await q.close(); }
+  { const q = await M.newPage(); q.on('dialog', d => d.accept());
+    await q.goto(U + 'index.html?demo=1'); await q.evaluate(() => { localStorage.setItem('hk_token', 'tok.lt'); ['hk_cache_v3', 'hk_cache_v4'].forEach(k => localStorage.removeItem(k)); });
+    await q.goto(U + 'index.html?demo=1'); await ready(q);
+    await q.evaluate(() => { document.querySelectorAll('.dm-ov').forEach(e => e.remove()); const m = document.getElementById('msc'); if (m) m.style.display = 'none'; DMG.start('cb1', 0); }); await W(2200);
+    await q.screenshot({ path: path.join(OUT, 'dm_tut_cb.png') }); console.log('📸 dm_tut_cb');
+    await q.goto(U + 'phu-huynh.html?demo=1'); await W(2500);
+    await q.evaluate(() => { document.querySelectorAll('.dm-ov,.tour,#tourOv').forEach(e => e.remove()); DMG.start('ph3', 0); }); await W(2600);
+    await q.fill('#rgE', 'bo.me@vidu.vn'); await W(300);
+    await q.screenshot({ path: path.join(OUT, 'dm_tut_ph.png') }); console.log('📸 dm_tut_ph');
+    await q.close(); }
   await b.close();
 })();
