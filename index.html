@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<script src="demo.js?v=4.5"></script>
+<script src="demo.js?v=4.8"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C86">
 <title>Sổ theo dõi học sinh 11D3</title>
@@ -2918,6 +2918,8 @@ body,#login{background:var(--bg)}
 #hkupd .ft label{flex:1;min-width:0;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--sub);white-space:nowrap}
 #hkupd .ft .btn{flex:none}
 #hkupd .ft .btn{height:38px}
+#hkupd .ft .btn{width:auto;padding:0 22px}
+@media (max-width:520px){ #hkupd .ft{flex-wrap:wrap;gap:8px} #hkupd .ft label{flex:1 1 100%;font-size:14px} #hkupd .ft label input{width:18px;height:18px} #hkupd .ft .btn{width:100%} }
 
 /* ── điện thoại: gọn hơn, nhiều học sinh trên một màn hình ── */
 @media (max-width:760px){
@@ -2939,7 +2941,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=4.7"></script>
+<script src="updates/notes.js?v=4.8"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2952,7 +2954,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='4.7';
+const HK_VER='4.8';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3713,7 +3715,7 @@ window.openGuide=openGuide=function(sec){
 };
 </script>
 
-<script src="mascot.js?v=4.1"></script>
+<script src="mascot.js?v=4.8"></script>
 <script id="v31m-js">
 'use strict';
 /* ══ v3.1 — NHÂN VẬT CÔ GIÁO (mascot.js): phản ứng khi ghi điểm, khi lưu lỗi, khi chụp bằng chứng; chọn phong cách trong Giao diện ══ */
@@ -4436,7 +4438,7 @@ window.lgVerify=lgVerify=async function(){
 };
 </script>
 
-<script src="baocao.js?v=4.4"></script>
+<script src="baocao.js?v=4.8"></script>
 <script src="taive.js?v=4.5"></script>
 <script src="roadmap.js?v=4.5"></script>
 <style id="v37-css">
@@ -4632,7 +4634,7 @@ window.openProfile=openProfile=async function(ma,ky){
    · Backend gửi danh sách chờ duyệt (phReg) trong bootstrap + sync (chỉ GVCN) ⇒ có đăng ký mới: thẻ #phNew + chấm đỏ ở Cài đặt; email báo cô (backend).
    · Link trong email: APP_URL#duyet ⇒ mở sổ xong tự vào Cài đặt ▸ Phụ huynh chờ duyệt.
    · Duyệt: gửi pdfVer; máy chủ chưa có PDF hướng dẫn đúng phiên bản ⇒ "Cần gửi kèm file hướng dẫn" ⇒ app tải docs/HDSD_Phu_huynh.pdf, gửi kèm (base64) rồi gọi lại. */
-const PH_PDF_VER='4.4';
+const PH_PDF_VER='4.8';
 let phSeen=[]; try{ phSeen=JSON.parse(localStorage.getItem('hk_phreg_seen')||'[]'); }catch(_){}
 function phBadge(){
   const n=(isGVCN()&&S.phReg)?S.phReg.length:0;
@@ -5354,7 +5356,7 @@ try{ if($('#v32h')) mount(); }catch(_){}
     bd.querySelectorAll('.rw[data-tos]').forEach(r=>r.onclick=()=>{ const t=r.dataset.tos; push({mode:'S', title:'Tổ '+t, sub:o.nhan||'', L:activeStudents().filter(s=>String(s.to)===t), sc:o.sc}); });
   }
   function push(o){ stack.push(o); draw(); }
-  window.DRILL={open:o=>{ stack=[o]; draw(); }, close:()=>{ stack=[]; draw(); }};
+  window.DRILL={open:o=>{ stack=[o]; draw(); }, close:()=>{ stack=[]; draw(); }, depth:()=>stack.length, pop:()=>{ stack.pop(); draw(); }};
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&stack.length){ stack.pop(); draw(); } });
 
   /* ngữ cảnh theo màn hình */
@@ -5638,7 +5640,44 @@ table.v47t .nm{font-weight:700;color:#1B333A}table.v47t .gp{display:block;font-s
   };
 })();
 </script>
+<script src="back.js?v=4.8"></script>
+<style id="v48-css">
+/* v4.8 — lời hướng dẫn kèm cô Thảo khi bấm vào ô email (đăng nhập) */
+.emtip{display:flex;gap:10px;align-items:center;margin:8px 0 2px;padding:9px 12px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,var(--paler,#F5FAFB),#fff);animation:emtip .25s ease}
+.emtip img,.emtip svg{width:58px;height:58px;flex:none}
+.emtip div{font-size:13px;line-height:1.5;color:var(--sub)}.emtip b{color:var(--teal-d)}
+@keyframes emtip{from{opacity:0;transform:translateY(-4px)}}
+</style>
+<script id="v48-js">
+/* ══ v4.8 ══════════════════════════════════════════════════════════════════════════════════════════
+   1. Nút Back của trình duyệt / điện thoại (back.js): đổi mục ⇒ ghi lịch sử; các hộp đang mở (khung bên, màn chi tiết,
+      thông báo cập nhật, tìm kiếm, menu tài khoản, hộp thư mô phỏng, tải file…) ⇒ Back đóng hộp; về đầu ⇒ hỏi trước khi thoát.
+   2. Ô email ở màn đăng nhập: bấm vào ⇒ hiện lời hướng dẫn kèm ảnh cô Thảo. */
+(function(){
+  if(!window.BACK) return;
+  const q=s=>document.querySelector(s);
+  [
+    {id:'tour', open:()=>window.TOUR&&TOUR.active&&TOUR.active(), close:()=>TOUR.end&&TOUR.end()},
+    {id:'panel', open:()=>q('#panel.on'), close:()=>closePanel()},
+    {id:'drill', open:()=>q('#dr46'), back:()=>{ if(DRILL.depth()>1){ DRILL.pop(); return true; } return false; }, close:()=>DRILL.close()},
+    {id:'upd', open:()=>q('#hkupd.on'), close:()=>{ const x=q('#hkupd .x'); if(x) x.click(); }},
+    {id:'find', open:()=>q('#hkfind.on'), close:()=>findClose()},
+    {id:'ava', open:()=>q('#ava39.on'), close:()=>q('#ava39').classList.remove('on')},
+    {id:'rm', open:()=>q('#rm-ov'), close:()=>q('#rm-ov').remove()},
+    {id:'dmov', open:()=>q('.dm-ov'), close:()=>q('.dm-ov').remove()},
+    {id:'dlsh', open:()=>q('#dl-sh'), close:()=>q('#dl-sh').remove()}
+  ].forEach(o=>BACK.add(o));
+  const g0=window.go;
+  window.go=go=function(v){ const r=g0.apply(this,arguments); try{ if(S.me && document.querySelector('#app.on')) BACK.view(v,x=>go(x)); }catch(_){} return r; };
+
+  /* 2. lời hướng dẫn ở ô email đăng nhập */
+  document.addEventListener('focusin',e=>{
+    const i=e.target; if(!i || i.id!=='lgEm' || i.parentNode.querySelector('.emtip')) return;
+    i.insertAdjacentHTML('afterend',`<div class="emtip">${window.MASCOT?MASCOT.img('huong-dan',58):''}<div>Nhập <b>email đã được giáo viên chủ nhiệm cấp quyền</b> (thường là Gmail). Hệ thống gửi <b>mã 6 số</b> về hộp thư, có hiệu lực 10 phút. Không thấy thư thì xem cả mục <b>Thư rác / Spam</b>.</div></div>`);
+  });
+})();
+</script>
 <script src="demo-ui.js?v=4.5"></script>
-<script src="demo-guide.js?v=4.5"></script>
+<script src="demo-guide.js?v=4.8"></script>
 </body>
 </html>

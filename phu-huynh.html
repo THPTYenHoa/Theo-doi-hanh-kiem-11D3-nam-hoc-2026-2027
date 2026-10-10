@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<script src="demo.js?v=4.5"></script>
+<script src="demo.js?v=4.8"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
 <title>Sổ theo dõi học sinh 11D3 · Phụ huynh</title>
@@ -149,6 +149,23 @@ footer a{color:var(--teal-d)}
 }
 .tbc{border:1.5px solid var(--teal);padding:12px 14px;margin-bottom:12px}.tbh{display:flex;gap:10px;align-items:center;margin-bottom:6px}.tbh b{display:block;color:var(--teal-d);font-size:15.5px}.tbh span{font-size:13px;color:var(--mute)}.tbc .btn{margin-top:10px}
 .reg{padding:12px 14px}.reg p{margin:0 0 8px;font-size:13.5px;line-height:1.5}.reg .ok{color:#1E8449;font-weight:600}.reg .msg{margin:6px 0 0;color:var(--teal-d)}.rg{display:flex;gap:8px;margin-top:6px}.rg input{flex:1;min-width:0;padding:10px 12px;border:1px solid #CFDDE0;border-radius:10px;font:inherit;font-size:15px}.rg .btn{flex:0 0 auto}
+/* v4.8: tab phụ Danh sách / Hồ sơ · nút Thoát · lời hướng dẫn ô email */
+.tabs2{max-width:1180px;margin:0 auto;display:flex;gap:8px;padding:8px 16px 10px;border-top:1px solid var(--line)}
+.tabs2[hidden]{display:none}
+.tabs2 button{flex:1;min-width:0;height:42px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:14.5px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs2 button.on{background:var(--pale);border-color:var(--teal);color:var(--teal-d)}
+.tabs2 button svg{width:17px;height:17px;flex:none}
+@media(min-width:900px){ .tabs2 button{flex:none;min-width:220px} }
+.back{display:none!important}
+#lo-ov{position:fixed;inset:0;z-index:9800;background:rgba(15,32,38,.42);display:flex;align-items:center;justify-content:center;padding:16px}
+#lo-ov .bx{background:#fff;border-radius:18px;width:min(400px,100%);padding:18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+#lo-ov .bx img,#lo-ov .bx svg.msv{width:110px;height:110px}
+#lo-ov h3{color:var(--teal-d);font-size:18px;margin:4px 0 6px}#lo-ov p{font-size:14px;color:var(--sub);line-height:1.55}
+#lo-ov .bt{display:flex;gap:8px;margin-top:14px}#lo-ov .bt .btn{flex:1;justify-content:center}
+.emtip{display:flex;gap:10px;align-items:center;margin:8px 0 2px;padding:9px 12px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,var(--paler),#fff);animation:emtip .25s ease}
+.emtip img,.emtip svg{width:58px;height:58px;flex:none}.emtip div{font-size:13px;line-height:1.5;color:var(--sub)}.emtip b{color:var(--teal-d)}
+@keyframes emtip{from{opacity:0;transform:translateY(-4px)}}
+@media(max-width:560px){ .ttl b,.ttl span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .ttl b{font-size:14.5px} #top .in{gap:8px;padding:8px 12px} .ib{width:34px;height:34px} .mk{width:34px;height:34px;font-size:12px} }
 /* v3.9: trang phụ huynh mới */
 main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
 .prof .hero2{display:flex;align-items:center;gap:12px;padding:6px 16px 4px}
@@ -180,22 +197,25 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
     <div class="sync" id="sync"><i class="d"></i><span id="syncT">Đang tải…</span></div>
     <button class="ib" id="hp" title="Hướng dẫn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.4-2.8 4"/><path d="M12 17.4h.01"/></svg></button>
     <button class="ib" id="rf" title="Tải lại"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg></button>
+    <button class="ib" id="lo" title="Thoát" aria-label="Thoát"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></button>
   </div>
   <nav class="tabs" id="tabs">
     <button data-t="hs" class="on">Tra cứu học sinh</button>
     <button data-t="lop">Cả lớp</button>
   </nav>
+  <nav class="tabs2" id="tabs2" hidden></nav>
 </header>
 <main id="main"><div id="ld"><div class="spin"></div>Đang tải sổ theo dõi…</div></main>
-<footer><span id="ver"></span><span>Cô Thảo · GVCN lớp 11D3 · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
+<footer><span id="ver"></span><span>Giáo viên chủ nhiệm lớp 11D3: cô Thảo · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=4.7"></script>
-<script src="mascot.js?v=4.1"></script>
-<script src="baocao.js?v=4.4"></script>
+<script src="updates/notes.js?v=4.8"></script>
+<script src="mascot.js?v=4.8"></script>
+<script src="baocao.js?v=4.8"></script>
 <script src="taive.js?v=4.5"></script>
 <script src="roadmap.js?v=4.5"></script>
 <script src="tour.js?v=3.1"></script>
+<script src="back.js?v=4.8"></script>
 <script>
 'use strict';
 /* ══ PHỤ HUYNH v3.0 — xem & tải về (PDF / Excel), không sửa ══
@@ -283,14 +303,25 @@ function readHash(){
   const k=h.get('ky'); S.ky=k?(k==='nam'?{k:'nam'}:/^hk[12]$/.test(k)?{k:'hk',n:+k[2]}:{k:'thang',m:+k.slice(1)}):null;
 }
 function kyKey(ky){ return ky.k==='nam'?'nam':ky.k==='hk'?'hk'+ky.n:'t'+ky.m; }
-function go(o){ const p=new URLSearchParams(); if(o.lop) p.set('lop','1'); if(o.hs) p.set('hs',o.hs); if(o.ky) p.set('ky',kyKey(o.ky)); if(o.tb) p.set('tb',o.tb.join(',')); location.hash=p.toString(); }
+function go(o){ const p=new URLSearchParams(); if(o.lop) p.set('lop','1'); if(o.hs) p.set('hs',o.hs); if(o.ky) p.set('ky',kyKey(o.ky)); if(o.tb) p.set('tb',o.tb.join(',')); if(window.BACK) BACK.hashNav(p.toString()); location.hash=p.toString(); }
 window.addEventListener('hashchange',()=>{ readHash(); render(); window.scrollTo(0,0); });
 $$('#tabs [data-t]').forEach(b=>b.onclick=()=>go(b.dataset.t==='lop'?{lop:1}:{}));
 $('#rf').onclick=()=>load(true);
 
 /* ── vẽ ── */
+function tabs2(){
+  const t=$('#tabs2'); if(!t) return;
+  if(S.tab!=='hs'){ t.hidden=true; return; }
+  if(S.ma && stu(S.ma)) S.lastMa=S.ma;
+  const ls=S.lastMa&&stu(S.lastMa), onHS=!!(S.ma&&stu(S.ma));
+  t.hidden=false;
+  t.innerHTML=`<button data-s="list" class="${onHS?'':'on'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Danh sách học sinh</button>`
+    +(ls?`<button data-s="hs" class="${onHS?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Hồ sơ: ${esc(ten1(ls.ten))}</button>`:'');
+  t.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ if(b.dataset.s==='list'){ if(onHS) go({}); } else if(!onHS) go({hs:S.lastMa}); });
+}
 function render(){
   if(!S.cfg) return;
+  tabs2();
   $$('#tabs [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===S.tab));
   $('#sub').textContent='Phụ huynh · năm học '+String(S.cfg.namHoc||'').replace(/\s+/g,'');
   if(S.tab==='lop') return renderLop();
@@ -340,14 +371,14 @@ function renderHS(){
      :'<div class="card empty">Không có.</div>';
   const emo=['vui','co-vu','lo-lang','nghiem'][x.i]||'chao', g=ten1(s.ten);
   const mem=window.MASCOT?MASCOT.img(emo,120):'';
-  const loi=['Con <b>'+esc(g)+'</b> thực hiện nề nếp rất tốt, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> ngoan, chỉ còn vài lỗi nhỏ. Cô và bác cùng nhắc con cố gắng thêm nhé ạ.','Con <b>'+esc(g)+'</b> còn mắc một số lỗi, bác trò chuyện thêm với con giúp cô nhé.','Con <b>'+esc(g)+'</b> đang mắc nhiều lỗi, bác liên hệ cô Thảo để cô và bác cùng giúp con nhé ạ.'][Math.min(3,x.i)];
-  const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · xếp loại '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(cô đã xác nhận xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
+  const loi=['Con <b>'+esc(g)+'</b> thực hiện nề nếp rất tốt, bác yên tâm nhé!','Con <b>'+esc(g)+'</b> ngoan, chỉ còn vài lỗi nhỏ. Cô Thảo và bác cùng nhắc con cố gắng thêm nhé ạ.','Con <b>'+esc(g)+'</b> còn mắc một số lỗi, bác trò chuyện thêm với con giúp cô Thảo nhé ạ.','Con <b>'+esc(g)+'</b> đang mắc nhiều lỗi, bác liên hệ cô Thảo để cô Thảo và bác cùng giúp con nhé ạ.'][Math.min(3,x.i)];
+  const nx=`<div class="sec"><h2>Nhận xét của cô Thảo</h2></div><div class="card nxc">${rms.length?rms.map(r=>`<div class="gv"><b>${esc(tl(r.thang,true))}${r.xepLoai?' · xếp loại '+esc(r.xepLoai):''}</b>${esc(r.nhanXet||'(giáo viên chủ nhiệm đã xác nhận xếp loại, chưa có lời nhận xét)')}</div>`).join(''):'<div class="gv none">Cô Thảo sẽ cập nhật nhận xét cho con vào cuối tháng ạ.</div>'}</div>`;
   const prof=`<div class="card prof"><div class="ph"><span class="av">${esc(ini(s.ten))}</span><div style="flex:1;min-width:0"><h1>${esc(s.ten)}</h1><p>Tổ ${esc(s.to)} · ${esc(s.chucVu||'Học sinh')} · Lớp 11D3</p></div></div>
     <div class="seg" id="ks">${kySeg(ky)}</div>
     <div class="hero2">${mem}<div class="bub2">${loi}</div></div>
     <div class="res"><div><div class="lb">Điểm TB tuần</div><div class="big num r${x.i}">${fx(sc)}</div></div>
       <div><div class="lb">Xếp loại · ${esc(kyLabel(ky))}</div><span class="xl g${x.i}">${esc(x.ten)}</span>
-      <div class="ex">${x.chot?'Cô đã xác nhận xếp loại.':'Tính tự động theo điểm; cô xác nhận lại cuối kỳ.'}</div></div></div>
+      <div class="ex">${x.chot?'Giáo viên chủ nhiệm đã xác nhận xếp loại.':'Tính tự động theo điểm; giáo viên chủ nhiệm xác nhận lại cuối kỳ.'}</div></div></div>
     <div class="mini">${mini}</div>
     <div class="sum2"><div><b class="num r3">${tru.length}</b><span>vi phạm · ${tru.reduce((a,e)=>a+e[E_DIEM],0)} điểm</span></div><div><b class="num r0">${cong.length}</b><span>được cộng · ${nz(cong.reduce((a,e)=>a+e[E_DIEM],0))} điểm</span></div></div>
     <div class="acts"><button class="btn" id="pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Tải PDF báo cáo</button>
@@ -358,7 +389,7 @@ function renderHS(){
     <div class="sec"><h2>Vi phạm</h2><span>${tru.length} lượt</span></div>${evH(tru)}
     <div class="sec"><h2>Được cộng điểm</h2><span>${cong.length} lượt</span></div>${evH(cong)}</div></div>`;
   $('#main').innerHTML=h;
-  $('#bk').onclick=()=>go({});
+  const bk=$('#bk'); if(bk) bk.onclick=()=>go({});
   $$('#ks [data-ky]').forEach(b=>b.onclick=()=>{ const k=b.dataset.ky; go({hs:s.ma,ky:k==='nam'?{k:'nam'}:/^hk/.test(k)?{k:'hk',n:+k[2]}:{k:'thang',m:+k.slice(1)}}); });
   const on=$('#ks .chip.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'});
   $('#pdf').onclick=()=>printHS(s,ky);
@@ -429,24 +460,27 @@ function tbCard(s){
 function regCard(s){
   const st=lsG('hkph_reg_'+s.ma);
   return `<div class="card reg" id="reg"><div class="rh"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-   <div><b>Nhận thông báo của cô Thảo qua email</b><span>Mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm, bác nhận thư ngay.</span></div></div>
-   ${st==='cho'?'<p class="ok">Bác đã đăng ký — cô Thảo sẽ duyệt sớm, sau đó bác bắt đầu nhận thư ạ.</p>':''}
+   <div><b>Nhận thông báo về con qua email</b><span>Mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm, bác nhận thư ngay.</span></div></div>
+   ${st==='cho'?'<p class="ok">Bác đã đăng ký — giáo viên chủ nhiệm sẽ duyệt sớm, sau đó bác bắt đầu nhận thư ạ.</p>':''}
    <div class="rg"><input id="rgE" type="email" placeholder="Nhập email của bác" autocomplete="email"><button class="btn" id="rgS">Gửi mã</button></div>
    <div class="rg" id="rgC" hidden><input id="rgK" inputmode="numeric" maxlength="6" placeholder="Mã 6 số trong email"><button class="btn" id="rgV">Xác nhận</button></div>
-   <p class="msg" id="rgM">Hệ thống gửi mã 6 số để xác nhận email, sau đó cô Thảo duyệt.</p></div>`;
+   <p class="msg" id="rgM">Hệ thống gửi mã 6 số để xác nhận email, sau đó giáo viên chủ nhiệm duyệt.</p></div>`;
 }
 function regBind(s){
   const m=t=>{ const e=$('#rgM'); if(e) e.innerHTML=t; };
   const send=$('#rgS'); if(!send) return;
-  send.onclick=async()=>{ const em=$('#rgE').value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return m('Email chưa đúng ạ, bác kiểm tra lại giúp cô nhé.');
+  const ip=$('#rgE'); if(ip) ip.addEventListener('focus',()=>{ if($('#reg .emtip')) return;
+    const mm=$('#rgM'); if(mm && /^Hệ thống gửi mã 6 số để xác nhận email/.test(mm.textContent)) mm.textContent='';
+    $('#rgE').closest('.rg').insertAdjacentHTML('afterend',`<div class="emtip">${window.MASCOT?MASCOT.img('huong-dan',58):''}<div>Bác nhập <b>email thường dùng</b> (ví dụ Gmail). Hệ thống gửi <b>mã 6 số</b> để xác nhận (xem cả mục Thư rác / Spam). Sau khi giáo viên chủ nhiệm duyệt, mỗi khi con <b>${esc(ten1(s.ten))}</b> được cộng hoặc bị trừ điểm, bác nhận thư ngay kèm lời nhắn của cô Thảo ạ.</div></div>`); });
+  send.onclick=async()=>{ const em=$('#rgE').value.trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return m('Email chưa đúng ạ, bác kiểm tra lại giúp em nhé.');
     send.disabled=true; m('Đang gửi mã…');
-    try{ await api('phDangKy',{ma:s.ma,email:em}); $('#rgC').hidden=false; $('#rgK').focus(); m('Cô đã gửi mã 6 số tới <b>'+esc(em)+'</b>. Bác mở hộp thư (cả mục Spam) và nhập mã nhé.'); }
+    try{ await api('phDangKy',{ma:s.ma,email:em}); $('#rgC').hidden=false; $('#rgK').focus(); m('Hệ thống đã gửi mã 6 số tới <b>'+esc(em)+'</b>. Bác mở hộp thư (xem cả mục Thư rác / Spam) và nhập mã vào ô bên dưới ạ.'); }
     catch(e){ m(esc(e.message)); } finally{ setTimeout(()=>send.disabled=false,3000); } };
   $('#rgV').onclick=async()=>{ const em=$('#rgE').value.trim(), code=$('#rgK').value.replace(/\D/g,''); if(code.length!==6) return m('Mã gồm 6 chữ số ạ.');
     m('Đang xác nhận…');
     try{ const r=await api('phXacNhan',{email:em,code}); $('#rgC').hidden=true;
-      if(r.daCo) m('Email này đã đăng ký nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Cô Thảo sẽ duyệt sớm — sau đó bác nhận email mỗi khi có cập nhật về con ạ.'); }
-      if(window.MASCOT) MASCOT.say('cam-on','Cô cảm ơn bác đã đăng ký theo dõi cùng cô ạ!',{ms:4200}); }
+      if(r.daCo) m('Email này đã đăng ký nhận thông báo của con rồi ạ.'); else { lsS('hkph_reg_'+s.ma,'cho'); m('Xác nhận xong! Giáo viên chủ nhiệm sẽ duyệt sớm — sau đó bác nhận email mỗi khi có cập nhật về con ạ.'); }
+      if(window.MASCOT) MASCOT.say('cam-on','Cô Thảo cảm ơn bác đã đăng ký đồng hành cùng con ạ!',{ms:4200}); }
     catch(e){ m(esc(e.message)); } };
 }
 function printLop(ky){
@@ -467,22 +501,37 @@ function printLop(ky){
   /* hướng dẫn từng bước cho phụ huynh — tự chạy lần đầu, mở lại bằng nút ? */
   const first=()=>active()[0];
   const steps=()=>[
-    {t:'Cô Thảo chào các bác ạ!', d:'Đây là trang để các bác theo dõi <b>hạnh kiểm của các con lớp 11D3</b>. Các bác chỉ xem và tải về, không sửa được dữ liệu. Các bác bấm <b>Tiếp</b> để cô hướng dẫn nhé (khoảng 30 giây).', pre:()=>go({})},
+    {t:'Cô Thảo chào các bác ạ!', d:'Đây là trang để các bác theo dõi <b>hạnh kiểm của các con lớp 11D3</b>. Các bác chỉ xem và tải về, không sửa được dữ liệu. Các bác bấm <b>Tiếp</b> để em hướng dẫn nhé (khoảng 30 giây).', pre:()=>go({})},
     {el:'#q', t:'Các bác tìm tên con', d:'Các bác gõ tên con vào đây, <b>không cần dấu</b> — ví dụ gõ "an" hoặc "nguyen an".'},
     {el:'#toc', t:'Lọc theo tổ', d:'Hoặc các bác bấm số tổ của con để tìm nhanh hơn ạ.'},
     {el:'#lst .st', t:'Mở hồ sơ của con', d:'Bên phải mỗi tên là <b>xếp loại tháng này</b> của con. Các bác chạm vào tên để xem chi tiết ạ.'},
     {el:'#ks', t:'Chọn tháng, học kỳ hoặc cả năm', d:'Các bác xem điểm từng tuần, xếp loại từng tháng, học kỳ 1, học kỳ 2 hoặc cả năm học của con.', pre:()=>{ const s=first(); if(s) go({hs:s.ma}); }, wait:350},
-    {el:'.res', t:'Kết quả hạnh kiểm của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là cô đã xác nhận xếp loại.'},
-    {el:'.acts', t:'Tải về', d:'<b>Tải PDF / In</b> để các bác lưu hoặc in; <b>Tải Excel</b> để mở bằng Excel. Kéo xuống là từng lần con vi phạm, được khen và <b>nhận xét của cô</b>.'},
+    {el:'.res', t:'Kết quả hạnh kiểm của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là giáo viên chủ nhiệm đã xác nhận xếp loại.'},
+    {el:'.acts', t:'Tải về', d:'<b>Tải PDF báo cáo</b> để các bác lưu hoặc in; <b>Tải Excel</b> để mở bằng Excel. Kéo xuống là từng lần con vi phạm, được khen và <b>nhận xét của cô Thảo</b> về con.'},
     {el:'#tabs [data-t=lop]', t:'Xem cả lớp', d:'Tab <b>Cả lớp</b> để các bác xem tình hình chung của các con trong lớp.'},
     {el:'#hp', t:'Xem lại hướng dẫn', d:'Các bác bấm nút <b>?</b> bất cứ lúc nào để xem lại. Cô Thảo cảm ơn các bác đã luôn đồng hành cùng các con ạ!', pre:()=>go({})}
   ];
   const tour=()=>{ if(window.TOUR) TOUR.run(steps(),{key:'hkph_tour',title:'Phụ huynh'}); };
   if(window.MASCOT && TOUR.seen && TOUR.seen('hkph_tour')) setTimeout(()=>{ if(!TOUR.active()) MASCOT.say('chao',/[#&]hs=/.test(location.hash)?'Cô Thảo chào bác ạ!':'Cô Thảo chào các bác ạ! Các bác gõ tên con để xem nhé.'); },1500);
   $('#hp').onclick=tour;
+  /* v4.8: nút Back trong trang · nút Thoát */
+  if(window.BACK){ BACK.init();
+    [{id:'tour',open:()=>window.TOUR&&TOUR.active(),close:()=>TOUR.end()},{id:'lo',open:()=>$('#lo-ov'),close:()=>$('#lo-ov').remove()},
+     {id:'rm',open:()=>$('#rm-ov'),close:()=>$('#rm-ov').remove()},{id:'dl',open:()=>$('#dl-sh'),close:()=>$('#dl-sh').remove()},
+     {id:'dmov',open:()=>$('.dm-ov'),close:()=>$('.dm-ov').remove()}].forEach(o=>BACK.add(o)); }
+  $('#lo').onclick=()=>{
+    let o=$('#lo-ov'); if(o) o.remove(); o=document.createElement('div'); o.id='lo-ov';
+    o.innerHTML=`<div class="bx" role="dialog" aria-modal="true">${window.MASCOT?MASCOT.img('cam-on',110):''}<h3>Thoát trang phụ huynh?</h3>
+      <p>Dữ liệu sổ đã lưu trên máy này sẽ được xoá. Lần sau, các bác mở lại đường link trang phụ huynh là xem được ngay ạ.</p>
+      <div class="bt"><button class="btn gh" id="loN">Ở lại</button><button class="btn" id="loY">Thoát</button></div></div>`;
+    document.body.appendChild(o);
+    o.onclick=e=>{ if(e.target===o) o.remove(); }; $('#loN').onclick=()=>o.remove();
+    $('#loY').onclick=()=>{ try{ Object.keys(localStorage).filter(k=>/^hkph_(token|cache|reg_)/.test(k)).forEach(k=>localStorage.removeItem(k)); }catch(_){}
+      S.token=''; location.replace('./'); };
+  };
   (function wait(n){ if(!S.cfg || !S.students.length){ if(n<40) setTimeout(()=>wait(n+1),500); return; } if(window.TOUR && !TOUR.seen('hkph_tour')) setTimeout(tour,700); })(0);
   /* v3.5: màn chờ lần đầu — cô Thảo chạy trên thanh tiến trình */
-  if($('#ld') && window.MASCOT) MASCOT.loader($('#ld'),{msgs:['Đang mở sổ theo dõi của các con…','Các bác chờ chút ạ…','Mạng hơi chậm, các bác đợi cô thêm chút nhé…']});
+  if($('#ld') && window.MASCOT) MASCOT.loader($('#ld'),{msgs:['Đang mở sổ theo dõi của các con…','Các bác chờ chút ạ…','Mạng hơi chậm, các bác đợi em thêm chút nhé…']});
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && Date.now()-S.at>120000) load(false); });
   /* v3.2: tự cập nhật — 15 giây hỏi máy chủ một lần (chỉ khi đang mở trang), sổ có thay đổi mới tải lại */
   setInterval(async()=>{
@@ -496,6 +545,6 @@ function printLop(ky){
 })();
 </script>
 <script src="demo-ui.js?v=4.5"></script>
-<script src="demo-guide.js?v=4.5"></script>
+<script src="demo-guide.js?v=4.8"></script>
 </body>
 </html>

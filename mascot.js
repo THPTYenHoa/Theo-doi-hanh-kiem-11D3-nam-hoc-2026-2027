@@ -140,6 +140,7 @@
     '#msc .bb{max-width:min(260px,calc(100vw - 140px));margin-bottom:64px;background:#fff;color:#1B333A;border:1px solid #E3ECEE;border-radius:16px 16px 16px 4px;' +
     'padding:9px 12px;font:600 13.5px/1.45 Aptos,"Segoe UI",system-ui,sans-serif;box-shadow:0 8px 24px rgba(20,40,50,.14);cursor:pointer}' +
     '#msc .bb b{color:var(--teal-d,#0A5C64)}' +
+    '#msc .bb{position:relative;padding-right:26px}#msc .bb .bx{position:absolute;right:7px;top:3px;font-size:17px;line-height:1;color:#8AA6AD;font-weight:700}' +
     '@media (min-width:1024px){#msc{left:calc(var(--rail,0px) + 22px);bottom:22px}}' +
     '@media (prefers-reduced-motion:reduce){#msc,#msc .mascot{animation:none;transition:none}}' +
     '#tg-card .tgm{float:left;margin:-4px 10px 4px -4px}' +
@@ -181,10 +182,23 @@
     if (styleId() === 'off') return;
     var b = document.getElementById('msc');
     if (!b) { b = document.createElement('div'); b.id = 'msc'; document.body.appendChild(b); b.onclick = function () { b.classList.remove('on'); }; }
-    b.innerHTML = img(emo, 108, null, { fresh: true }) + (html ? '<div class="bb">' + html + '</div>' : '');
-    requestAnimationFrame(function () { b.classList.add('on'); });
-    clearTimeout(hideT); hideT = setTimeout(function () { b.classList.remove('on'); }, o.ms || 3400);
+    b.innerHTML = img(emo, 108, null, { fresh: true }) + (html ? '<div class="bb">' + html + '<span class="bx" aria-label="Đóng">×</span></div>' : '');
+    /* v4.8: chỉ hiện khi trang đang hiển thị, và hẹn giờ ẩn tính TỪ LÚC hiện. Trước đây trang mở ở chế độ nền (bấm link từ Zalo / Gmail,
+       tắt màn hình) ⇒ hẹn giờ ẩn chạy trước, rồi khung mới hiện ⇒ bong bóng nằm mãi trên màn hình. */
+    var id = ++sayN;
+    clearTimeout(hideT);
+    var show = function () {
+      if (id !== sayN) return;
+      if (document.visibilityState === 'hidden') { document.addEventListener('visibilitychange', function f() { document.removeEventListener('visibilitychange', f); show(); }); return; }
+      requestAnimationFrame(function () { if (id !== sayN) return; b._t = Date.now(); b.classList.add('on'); clearTimeout(hideT); hideT = setTimeout(function () { b.classList.remove('on'); }, o.ms || 3400); });
+    };
+    show();
   }
+  var sayN = 0;
+  /* chạm ra chỗ khác / cuộn trang ⇒ bong bóng tự ẩn, không che nội dung */
+  function hideSay(e) { var b = document.getElementById('msc'); if (b && b.classList.contains('on') && !(e && e.target && e.target.closest && e.target.closest('#msc'))) b.classList.remove('on'); }
+  if (document.addEventListener) document.addEventListener('pointerdown', hideSay, true);
+  if (typeof addEventListener === 'function') addEventListener('scroll', function () { var b = document.getElementById('msc'); if (b && b.classList.contains('on') && Date.now() - (b._t || 0) > 900) hideSay(); }, true);
 
   /* MASCOT.loader(host, {msgs:[...], every:ms}) — thanh tiến trình + cô Thảo chạy; trả {done()}. Ảnh mascot/<vai>/chay.webp (WebP động) nếu có. */
   function loader(host, o) {

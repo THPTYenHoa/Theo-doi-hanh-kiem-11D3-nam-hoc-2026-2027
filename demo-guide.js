@@ -58,13 +58,13 @@
       { el: ['#hFind'], t: 'Tra cứu học sinh', d: 'Bấm biểu tượng <b>kính lúp</b>.', act: 'click', pre: GO('ghi') },
       { el: ['#fq'], t: 'Gõ tên', d: 'Gõ tên một bạn, không cần dấu, ví dụ <b>an</b>.', act: 'next', until: function () { var q = $('#fq'); return q && q.value.trim().length >= 2 && $('#fls [data-ma]'); } },
       { el: ['#fls [data-ma]'], t: 'Mở hồ sơ', d: 'Chạm vào tên học sinh.', act: 'click' },
-      { el: ['#pfPr'], t: 'Tải PDF', d: 'Bấm <b>Tải PDF</b>: điểm từng tuần, lỗi thường mắc, khen thưởng và nhận xét của cô.', act: 'click' },
+      { el: ['#pfPr'], t: 'Tải PDF', d: 'Bấm <b>Tải PDF</b>: điểm từng tuần, lỗi thường mắc, khen thưởng và nhận xét của cô Thảo.', act: 'click' },
       { el: ['#dl-sh'], t: 'File đã tải về', d: 'Bấm <b>Mở file</b> để xem báo cáo.', act: 'next', wait: 30000 }] },
     { id: 'gv5', r: 'gvcn', t: 'Duyệt phụ huynh đăng ký nhận email', s: [
       { el: ['#vPH .pend'], t: 'Phụ huynh chờ duyệt', d: 'Khi phụ huynh đăng ký, giáo viên thấy thông báo trên màn hình và nhận email.' + MAIL, act: 'next', pre: function () { ensureReg(); setTimeout(GO('ph'), 300); }, wait: 12000 },
       { el: ['#vPH .pend .ok'], t: 'Duyệt', d: 'Bấm <b>Duyệt</b>. Phụ huynh nhận thư xác nhận kèm file hướng dẫn PDF.', act: 'click' },
       { el: ['#dm-bar [data-a=mail]'], t: 'Xem thư đã gửi', d: 'Bấm <b>Hộp thư</b> để xem thư phụ huynh nhận được.', act: 'click' },
-      { el: ['.dm-ib .vw'], t: 'Thư xác nhận', d: 'Thư có lời nhắn của cô và file hướng dẫn đính kèm.', act: 'next' }] },
+      { el: ['.dm-ib .vw'], t: 'Thư xác nhận', d: 'Thư có lời nhắn của cô Thảo và file hướng dẫn đính kèm.', act: 'next' }] },
     { id: 'gv6', r: 'gvcn', t: 'Khoá sổ cuối tháng', s: [
       { el: ['#vBang [data-lk="1"]'], t: 'Khoá sổ tháng', d: 'Xếp loại xong thì bấm <b>Khoá sổ tháng</b>, rồi bấm <b>OK</b> để xác nhận.', act: 'click', pre: GO('bang') },
       { el: ['#vBang .lkb'], t: 'Đã khoá sổ', d: 'Không ai thêm, sửa, xoá được điểm của tháng này nữa.', act: 'next', until: function () { var b = $('#vBang .lkb'); return b && !b.classList.contains('go'); }, hold: 1 },
@@ -107,9 +107,9 @@
       { el: ['#rgM', '.reg'], t: 'Đã đăng ký', d: 'Đăng ký xong. Giáo viên nhận thông báo để duyệt.', act: 'next', opt: 1 }] },
     { id: 'ph4', r: 'ph', t: 'Nhận email khi con được ghi điểm', s: [
       { el: ['#dm-bar [data-a=mail]'], t: 'Hộp thư', d: 'Lớp trưởng vừa ghi điểm cho con. Bấm <b>Hộp thư</b> để xem thư phụ huynh nhận được.' + MAIL, act: 'click', pre: demoEntry },
-      { el: ['.dm-ib a[data-demo-link]'], t: 'Xem chi tiết', d: 'Thư có lời nhắn của cô. Bấm <b>Xem chi tiết &amp; tải PDF thông báo</b>.', act: 'click', nav: 1, pre: function () { try { var m = DEMO.db().mails.filter(function (x) { return x.kind === 'tb'; })[0]; if (m && window.DMUI) { document.querySelectorAll('.dm-ov').forEach(function (e) { e.remove(); }); DMUI.inbox(m.id); } } catch (e) {} } },
+      { el: ['.dm-ib a[data-demo-link]'], t: 'Xem chi tiết', d: 'Thư có lời nhắn của cô Thảo về con. Bấm <b>Xem chi tiết &amp; tải PDF thông báo</b>.', act: 'click', nav: 1, pre: function () { try { var m = DEMO.db().mails.filter(function (x) { return x.kind === 'tb'; })[0]; if (m && window.DMUI) { document.querySelectorAll('.dm-ov').forEach(function (e) { e.remove(); }); DMUI.inbox(m.id); } } catch (e) {} } },
       { el: ['.tbc'], t: 'Thông báo mới', d: 'Trang phụ huynh mở đúng thông báo vừa nhận.', act: 'next', wait: 8000 },
-      { el: ['#tbPdf'], t: 'Tải PDF thông báo', d: 'Bấm để tải PDF thông báo có lời nhắn của cô.', act: 'click' },
+      { el: ['#tbPdf'], t: 'Tải PDF thông báo', d: 'Bấm để tải PDF thông báo có lời nhắn của cô Thảo.', act: 'click' },
       { el: ['#dl-sh'], t: 'Đã tải', d: 'Bấm <b>Mở file</b> để xem.', act: 'next', wait: 30000 }] }];
   function ensureReg() {
     try { var D = DEMO.db(); if ((D.phReg || []).some(function (r) { return !r.st || r.st === 'cho'; })) return;
