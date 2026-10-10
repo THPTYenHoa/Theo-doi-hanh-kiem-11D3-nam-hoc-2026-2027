@@ -1,6 +1,28 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-24-v4.8", version: "4.8", date: "2026-10-24",
+    title: "Nút Quay lại trong app, trang phụ huynh dễ dùng hơn",
+    summary: "Bấm Quay lại của điện thoại là về màn trước trong app, không bị thoát ra trang khác. Trang phụ huynh có nút Thoát, tab Danh sách / Hồ sơ rõ ràng và lời hướng dẫn khi nhập email.",
+    items: [
+      { type: "new", title: "Nút Quay lại của điện thoại / trình duyệt",
+        text: "Bấm <b>Quay lại</b> ⇒ đóng hộp đang mở (khung học sinh, màn chi tiết, thông báo…) hoặc về mục vừa xem. Về tới màn đầu, app nhắc <b>Bấm Quay lại thêm lần nữa để thoát</b> để tránh bấm nhầm.",
+        img: "updates/v4.8/nut-quay-lai.jpg" },
+      { type: "imp", title: "Trang phụ huynh: tab Danh sách học sinh / Hồ sơ",
+        text: "Mở hồ sơ một học sinh ⇒ ngay dưới thanh trên cùng có 2 nút lớn <b>Danh sách học sinh</b> và <b>Hồ sơ: tên con</b> để chuyển qua lại, dễ thấy, dễ bấm.",
+        img: "updates/v4.8/phu-huynh-tab-phu.jpg" },
+      { type: "new", title: "Trang phụ huynh: nút Thoát",
+        text: "Bấm nút <b>Thoát</b> (góc phải trên) ⇒ xác nhận ⇒ dữ liệu sổ lưu trên máy được xoá, về trang đăng nhập. Mở lại đường link trang phụ huynh là xem được ngay.",
+        img: "updates/v4.8/phu-huynh-thoat.jpg" },
+      { type: "imp", title: "Lời hướng dẫn khi nhập email",
+        text: "Bấm vào ô email (đăng ký nhận thông báo ở trang phụ huynh, hoặc đăng nhập) ⇒ hiện lời hướng dẫn kèm ảnh cô Thảo: nhập email nào, mã 6 số gửi về đâu, khi nào nhận thư.",
+        img: "updates/v4.8/phu-huynh-email.jpg" },
+      { type: "fix", title: "Thông báo cập nhật, bong bóng cô Thảo, cách xưng hô",
+        text: "Điện thoại: ô <b>Không hiển thị lại</b> không còn bị nút <b>Đã hiểu</b> che. Bong bóng lời chào của cô Thảo tự ẩn đúng lúc (chạm ra ngoài cũng ẩn). Trang, email và PDF gửi phụ huynh xưng <b>cô Thảo</b> khi nói về con, <b>giáo viên chủ nhiệm</b> trong thông báo, hướng dẫn.",
+        img: "updates/v4.8/thong-bao-dien-thoai.jpg" }
+    ]
+  },
+  {
     id: "2026-10-23-v4.7", version: "4.7", date: "2026-10-23",
     title: "Thống kê lỗi vi phạm và hoạt động được tuyên dương",
     summary: "Báo cáo tuần, tháng, học kỳ, cả năm và mục Thống kê có thêm phần lỗi vi phạm, hoạt động được tuyên dương nhiều, với nhiều kiểu biểu đồ và lời nhận xét của cô Thảo.",

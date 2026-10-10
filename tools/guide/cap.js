@@ -110,7 +110,7 @@ const skipNote = async p => { await W(250); if (!(await p.isVisible('#gcSkip')))
   await shot(p, 'hero', [['#v32h .top', 1], ['#v32h .tiles', 2], ['#tk39', 3]]);
   p.M.ext('HS05', 'Đi học muộn', -2); await W(5200);
   await shot(p, 'live', [['#v32pop', 1], ['#v32live', 2, 'tr'], ['#listGhi .ev.fresh', 3]]);
-  await W(1500); await p.click('#v32h [data-f=warn]'); await W(400); await shot(p, 'hero_loc', [['#v32h .tl.on', 1], ['#v32clr', 2]]);
+  await W(1500); await p.click('#v32h [data-f=warn]'); await W(400); await p.click('#dr46 [data-flt]'); await W(400); await shot(p, 'hero_loc', [['#v32h .tl.on', 1], ['#v32clr', 2]]);
   await p.click('#tabbar [data-v=bc]'); await W(1500); await shot(p, 'm_bc', [['#vBC .segbar', 1], ['#vBC .bcacts', 2], ['#vBC .kpis', 3]]);
   await p.context().close();
   // v3.3 — báo cáo (máy tính)

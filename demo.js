@@ -98,12 +98,12 @@
     if (tru.length) {
       var nTru = me.filter(function (e) { return e[9] < 0; }).length, lan = 0;
       tru.forEach(function (e) { var n = me.filter(function (x) { return x[7] === e[7] && x[9] < 0; }).length; if (n > lan) lan = n; });
-      if (nTru >= 5 || lan >= 3) return { emo: 'lo-lang', loi: 'Tháng này ' + con + ' đã có <b>' + nTru + '</b> lần bị trừ điểm. Cô mong bác dành thời gian trò chuyện và phối hợp cùng cô để giúp con tiến bộ hơn ạ.' };
-      if (lan === 2) return { emo: 'nghiem', loi: 'Đây là lần thứ 2 trong tháng ' + con + ' mắc lỗi này. Bác nhắc nhở con giúp cô để con không tái phạm nữa nhé.' };
-      return { emo: 'buon', loi: 'Đây là lần đầu trong tháng con mắc lỗi này, bác nhắc nhẹ ' + con + ' giúp cô nhé. Cô tin con sẽ cố gắng hơn ạ.' };
+      if (nTru >= 5 || lan >= 3) return { emo: 'lo-lang', loi: 'Tháng này ' + con + ' đã có <b>' + nTru + '</b> lần bị trừ điểm. Cô Thảo mong bác dành thời gian trò chuyện với con và cùng phối hợp để giúp con tiến bộ hơn ạ.' };
+      if (lan === 2) return { emo: 'nghiem', loi: 'Đây là lần thứ 2 trong tháng ' + con + ' mắc lỗi này. Cô Thảo nhờ bác nhắc nhở để con không tái phạm nữa ạ.' };
+      return { emo: 'buon', loi: 'Đây là lần đầu trong tháng con mắc lỗi này. Cô Thảo nhờ bác nhắc nhẹ ' + con + ', cô Thảo tin con sẽ cố gắng hơn ạ.' };
     }
     var t = items.reduce(function (a, e) { return a + e[9]; }, 0);
-    return t >= 3 ? { emo: 'khen-lon', loi: 'Cô rất vui vì ' + con + ' đã cố gắng nhiều. Bác khen con giúp cô nhé!' } : { emo: 'vui', loi: 'Cô báo tin vui để bác cùng động viên ' + con + ' ạ!' };
+    return t >= 3 ? { emo: 'khen-lon', loi: 'Cô Thảo rất vui vì ' + con + ' đã cố gắng nhiều. Bác dành lời khen cho con nhé ạ!' } : { emo: 'vui', loi: 'Cô Thảo báo tin vui để bác cùng động viên ' + con + ' ạ!' };
   }
   function mailPhuHuynh(st, items) {
     if (!st.email || !DB.phMail.on) return;
@@ -206,7 +206,7 @@
         if (rr && p.ok !== false) { var s3 = stu(rr.ma); if (s3) s3.email = (s3.email ? s3.email + ', ' : '') + rr.email; mark('duyet');
           mail({ kind: 'duyet', to: rr.email, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', attach: 'HDSD_Phu_huynh.pdf', attachUrl: BASE + 'docs/HDSD_Phu_huynh.pdf',
             subject: 'Cô Thảo đã duyệt — bác sẽ nhận thông báo hạnh kiểm của con ' + rr.ten,
-            html: '<div style="font-family:Arial,sans-serif;max-width:560px"><img src="' + BASE + 'mascot/chu-nhiem/png/cam-on.png" width="110" style="float:right" alt=""><p>Kính gửi bác,</p><p>Cô Thảo đã duyệt đăng ký của bác. Từ nay, mỗi khi con <b>' + rr.ten + '</b> được cộng hoặc bị trừ điểm, bác sẽ nhận email kèm lời nhắn của cô ạ.</p><p style="clear:both">Hướng dẫn chi tiết dành cho phụ huynh: file PDF đính kèm thư này.</p><p>Cô cảm ơn bác đã luôn đồng hành cùng con ạ!</p></div>' }); }
+            html: '<div style="font-family:Arial,sans-serif;max-width:560px"><img src="' + BASE + 'mascot/chu-nhiem/png/cam-on.png" width="110" style="float:right" alt=""><p>Kính gửi bác,</p><p>Cô Thảo đã duyệt đăng ký của bác. Từ nay, mỗi khi con <b>' + rr.ten + '</b> được cộng hoặc bị trừ điểm, bác sẽ nhận email kèm lời nhắn của cô Thảo về con ạ.</p><p style="clear:both">Hướng dẫn chi tiết dành cho phụ huynh: file PDF đính kèm thư này.</p><p>Cô Thảo cảm ơn bác đã luôn đồng hành cùng con ạ!</p></div>' }); }
         r = { ok: true, dangKy: DB.phReg }; write = true; break;
       case 'saveStudents': if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được sửa danh sách lớp.' }; break; } DB.students = p.students || DB.students; r = { ok: true, students: DB.students }; write = true; break;
       case 'saveAccounts': if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được sửa tài khoản.' }; break; } DB.accounts = p.accounts || DB.accounts; r = { ok: true }; break;

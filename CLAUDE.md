@@ -171,3 +171,15 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - Báo cáo: thay "Vi phạm theo nhóm" + "Lỗi thường gặp" bằng khối mới (sau `.bcgrid`). Thống kê: thay "Lỗi mắc nhiều nhất", thêm kỳ **Học kỳ** (`S.tkKy='hk'`,
   bọc `tkEntries` / `tkScore` / `tkNhan`).
 - PDF báo cáo lớp: `bcPrint` bọc `RPT.open` 1 lần ⇒ chèn 2 trang (`vpPdfPages`) sau trang 3: "Thống kê lỗi vi phạm", "Hoạt động được tuyên dương". `run.js` mục 21.
+
+## v4.8 — Nút Quay lại · trang phụ huynh · xưng hô với phụ huynh
+- **`back.js` (`window.BACK`, cả 2 trang)**: Back của trình duyệt / điện thoại ở lại trong app. `BACK.add({id, open, close, back?})` = hộp được theo dõi
+  (MutationObserver: mở ⇒ `pushState`, đóng bằng nút ⇒ tự `history.back()`; Back ⇒ `close()`, hoặc `back()` lùi 1 tầng — `DRILL.depth/pop`).
+  `BACK.view(key, apply)` (bọc `go` ở index) ⇒ Back về mục trước. Chốt đầu lịch sử ⇒ toast "Bấm Quay lại thêm lần nữa để thoát" (2,5 s).
+  Trang phụ huynh dùng `#hash` ⇒ gọi `BACK.hashNav(hash)` trước khi đổi hash (không bị hiểu là bấm Back). Hộp mới ⇒ thêm vào danh sách `BACK.add` (khối `v48-js` / cuối `phu-huynh.html`).
+- **Trang phụ huynh**: tab phụ `#tabs2` (Danh sách học sinh · Hồ sơ: tên — nhớ `S.lastMa`; bỏ nút "‹ Danh sách" nhỏ), nút **Thoát** `#lo` ⇒ `#lo-ov`
+  (xoá `hkph_token/cache/reg_*`, về `./`), ô email `#rgE` focus ⇒ `.emtip` có ảnh cô Thảo. Ô email đăng nhập `#lgEm` cũng có `.emtip`.
+- **mascot.js `say()`**: hẹn giờ ẩn tính từ lúc bong bóng thật sự hiện (trang ở nền ⇒ chờ `visibilitychange`); chạm ra ngoài / cuộn ⇒ ẩn; có dấu ×.
+- **Xưng hô với phụ huynh** (người dùng yêu cầu 10/10/2026): không xưng "cô" trống không. Câu nói về con ⇒ **"cô Thảo"**; xưng với các bác ⇒ **"em"**;
+  thông báo / hướng dẫn ⇒ **"giáo viên chủ nhiệm"**. Áp dụng `phu-huynh.html`, `baocao.js` (PDF phụ huynh, thông báo), `demo.js` (thư mô phỏng),
+  backend `KhoaThang.gs` (`loiNhan_`, thư duyệt, huỷ nhận thư), HDSD phụ huynh (`build.js`). `run.js` mục 22 kiểm tra. `PH_PDF_VER='4.8'`.

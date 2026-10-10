@@ -127,12 +127,12 @@
     var dCong = X.cong.reduce(function (a, e) { return a + e[9]; }, 0), dTru = X.tru.reduce(function (a, e) { return a + e[9]; }, 0);
     var emo = X.ri === 0 ? (X.cong.length ? 'khen-lon' : 'vui') : EMO_RI[X.ri];
     var trend = PV ? X.sc - PV.sc : 0;
-    var msg = [con + ' <b>' + ten + '</b> ' + (X.ri === 0 ? 'đang thực hiện nề nếp rất tốt' : X.ri === 1 ? 'thực hiện tốt nề nếp, chỉ còn vài lỗi nhỏ' : X.ri === 2 ? 'còn mắc một số lỗi' : 'còn mắc nhiều lỗi') + ' trong ' + kyName(ky).toLowerCase() + ' — xếp loại <b>' + esc(X.xl) + '</b>' + (X.chot ? ' (cô đã xác nhận)' : '') + '.',
+    var msg = [con + ' <b>' + ten + '</b> ' + (X.ri === 0 ? 'đang thực hiện nề nếp rất tốt' : X.ri === 1 ? 'thực hiện tốt nề nếp, chỉ còn vài lỗi nhỏ' : X.ri === 2 ? 'còn mắc một số lỗi' : 'còn mắc nhiều lỗi') + ' trong ' + kyName(ky).toLowerCase() + ' — xếp loại <b>' + esc(X.xl) + '</b>' + (X.chot ? ' (giáo viên chủ nhiệm đã xác nhận)' : '') + '.',
       PV ? (trend > 0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', ' + con.toLowerCase() + ' đã <b style="color:#1E8449">tiến bộ</b> rõ rệt.' : trend < -0.05 ? 'So với ' + kyName(pk).toLowerCase() + ', kết quả của ' + con.toLowerCase() + ' <b style="color:#C0392B">đi xuống</b>, ' + con.toLowerCase() + ' cần cố gắng hơn.' : 'Kết quả giữ ổn định so với ' + kyName(pk).toLowerCase() + '.') : '',
-      ph ? (X.ri <= 1 ? 'Cô cảm ơn bác đã luôn đồng hành cùng con ạ!' : 'Cô mong bác phối hợp cùng cô nhắc nhở con thêm ạ.') : ''].filter(Boolean).join(' ');
+      ph ? (X.ri <= 1 ? 'Cô Thảo cảm ơn bác đã luôn đồng hành cùng con ạ!' : 'Cô Thảo mong bác cùng phối hợp nhắc nhở con thêm ạ.') : ''].filter(Boolean).join(' ');
     var foot = footTxt(D);
     var kpis = '<div class="kp"><div class="kpi" style="--c:' + RC[rankIdx(cfg, X.sc)] + '"><div class="n">' + f1(X.sc) + '</div><div class="l">Điểm TB tuần</div>' + dl(X.sc, PV && PV.sc, true, f1) + '</div>'
-      + '<div class="kpi" style="--c:' + RC[X.ri] + '"><div class="n">' + esc(X.xl) + '</div><div class="l">Xếp loại ' + (X.chot ? '· cô đã xác nhận ✓' : '· tạm tính') + '</div>' + (PV ? '<span class="dl eq">kỳ trước: ' + esc(PV.xl) + '</span>' : '') + '</div>'
+      + '<div class="kpi" style="--c:' + RC[X.ri] + '"><div class="n">' + esc(X.xl) + '</div><div class="l">Xếp loại ' + (X.chot ? '· đã xác nhận ✓' : '· tạm tính') + '</div>' + (PV ? '<span class="dl eq">kỳ trước: ' + esc(PV.xl) + '</span>' : '') + '</div>'
       + '<div class="kpi" style="--c:#1E8449"><div class="n">' + X.cong.length + '</div><div class="l">Lượt được khen · +' + dCong + ' điểm</div>' + dl(X.cong.length, PV && PV.cong.length, true) + '</div>'
       + '<div class="kpi" style="--c:#C0392B"><div class="n">' + X.tru.length + '</div><div class="l">Lượt vi phạm · ' + dTru + ' điểm</div>' + dl(X.tru.length, PV && PV.tru.length, false) + '</div></div>';
     var pts, br;
@@ -147,7 +147,7 @@
     var h = head('Báo cáo hạnh kiểm học sinh', esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b>' + (s.chucVu && s.chucVu !== 'Học sinh' ? ' · ' + esc(s.chucVu) : '') + '<br>' + kyName(ky) + ' · Năm học ' + esc(cfg.namHoc || ''));
     var lastRm = X.rm.filter(function (r) { return r.nhanXet; }).slice(-1)[0];
     var nxTxt = lastRm ? String(lastRm.nhanXet) : '';
-    var nxBox = '<div class="nx1"><b>Nhận xét của cô Thảo' + (lastRm ? ' · tháng ' + lastRm.thang : '') + ':</b> ' + (nxTxt ? esc(nxTxt.length > 230 ? nxTxt.slice(0, 227) + '…' : nxTxt) : '<i>Cô sẽ cập nhật nhận xét vào cuối tháng.</i>') + '</div>';
+    var nxBox = '<div class="nx1"><b>Nhận xét của cô Thảo' + (lastRm ? ' · tháng ' + lastRm.thang : '') + ':</b> ' + (nxTxt ? esc(nxTxt.length > 230 ? nxTxt.slice(0, 227) + '…' : nxTxt) : '<i>Cô Thảo sẽ cập nhật nhận xét cho con vào cuối tháng.</i>') + '</div>';
     var p1 = '<div class="say">' + mc(emo, 104) + '<div class="b">' + msg + nxBox + '</div></div>' + kpis
       + '<div class="g2"><div class="card"><h3>' + (ky.k === 'thang' ? 'Điểm từng tuần' : 'Điểm TB tuần qua các tháng') + '</h3>' + line(pts, { w: 470, h: 172, fmt: ky.k === 'thang' ? nz : f1 }) + '</div>'
       + '<div class="card"><h3>Cộng / trừ ' + (ky.k === 'thang' ? 'theo tuần' : 'theo tháng') + '</h3>' + bars2(br, { w: 470, h: 160 }) + '</div></div>';
@@ -158,8 +158,8 @@
     var kh = X.cong.slice().sort(function (a, b) { return String(b[1]).localeCompare(String(a[1])); }).slice(0, 8);
     var p2 = '<div class="g3"><div><div class="card" style="margin-bottom:4mm"><h3>Lỗi thường mắc' + (lr.length ? mc('nghiem', 46) : '') + '</h3>' + hb(lr, { empty: 'Không có lỗi nào — rất đáng khen!' }) + '</div>'
       + '<div class="card"><h3>Khen thưởng, điểm cộng' + (kh.length ? mc('vui', 46) : '') + '</h3><div class="lst">' + (kh.length ? kh.map(function (e) { return '<div><b class="p">+' + e[9] + '</b><span>' + esc(e[8] || e[7]) + (e[12] ? ' — <i>' + esc(e[12]) + '</i>' : '') + '</span><em style="color:#8AA6AD;font-style:normal;font-size:8.5pt">T' + e[2] + '·tuần ' + e[3] + '</em></div>'; }).join('') : '<div class="none">Chưa có điểm cộng trong kỳ.</div>') + '</div></div></div>'
-      + '<div class="card"><h3>Nhận xét của cô Thảo</h3>' + (X.rm.length ? X.rm.map(function (r) { return '<div style="margin:0 0 3mm"><span class="pill" style="background:#E6F3F4;color:#0A5C64">Tháng ' + r.thang + (r.xepLoai ? ' · ' + esc(r.xepLoai) + ' ✓' : '') + '</span><div class="txt" style="margin-top:1.5mm">' + esc(r.nhanXet || '(chưa có lời nhận xét)') + '</div></div>'; }).join('') : '<div class="none">Cô chưa ghi nhận xét cho kỳ này.</div>')
-      + (ph ? '<div class="txt" style="margin-top:3mm;color:#41566F">' + (X.ri <= 1 ? 'Bác tiếp tục động viên con giữ vững nề nếp nhé.' : 'Bác trò chuyện cùng con về những lỗi trên và liên hệ cô khi cần trao đổi thêm ạ.') + '</div>' : '') + '</div></div>';
+      + '<div class="card"><h3>Nhận xét của cô Thảo</h3>' + (X.rm.length ? X.rm.map(function (r) { return '<div style="margin:0 0 3mm"><span class="pill" style="background:#E6F3F4;color:#0A5C64">Tháng ' + r.thang + (r.xepLoai ? ' · ' + esc(r.xepLoai) + ' ✓' : '') + '</span><div class="txt" style="margin-top:1.5mm">' + esc(r.nhanXet || '(chưa có lời nhận xét)') + '</div></div>'; }).join('') : '<div class="none">Giáo viên chủ nhiệm chưa ghi nhận xét cho kỳ này.</div>')
+      + (ph ? '<div class="txt" style="margin-top:3mm;color:#41566F">' + (X.ri <= 1 ? 'Bác tiếp tục động viên con giữ vững nề nếp nhé.' : 'Bác trò chuyện cùng con về những lỗi trên và liên hệ cô Thảo khi cần trao đổi thêm về con ạ.') + '</div>' : '') + '</div></div>';
     out += page(head('Chi tiết · ' + kyName(ky), esc(s.ten), 'Lỗi thường mắc · Khen thưởng · Nhận xét'), p2, foot);
     /* trang 3+: bảng chi tiết */
     var rows = X.E.slice().sort(function (a, b) { return MONTHS.indexOf(a[2]) - MONTHS.indexOf(b[2]) || a[3] - b[3] || String(a[1]).localeCompare(String(b[1])); });
@@ -182,10 +182,10 @@
     tru.forEach(function (e) { var n = me.filter(function (x) { return x[7] === e[7] && x[9] < 0; }).length; if (n > lanMax) lanMax = n; });
     var t = esc(ten1(s.ten)), emo, msg;
     if (tru.length) {
-      if (nTru >= 5 || lanMax >= 3) { emo = 'lo-lang'; msg = 'Tháng này con <b>' + t + '</b> đã có <b>' + nTru + '</b> lần bị trừ điểm. Cô mong bác dành thời gian trò chuyện và phối hợp cùng cô để giúp con tiến bộ hơn ạ.'; }
-      else if (lanMax === 2) { emo = 'nghiem'; msg = 'Đây là lần thứ 2 trong tháng con <b>' + t + '</b> mắc lỗi này. Bác nhắc nhở con giúp cô để con không tái phạm nữa nhé.'; }
-      else { emo = 'buon'; msg = 'Đây là lần đầu trong tháng con mắc lỗi này, bác nhắc nhẹ con <b>' + t + '</b> giúp cô nhé. Cô tin con sẽ cố gắng hơn ạ.'; }
-    } else { var sum = cong.reduce(function (a, e) { return a + e[9]; }, 0); emo = sum >= 3 ? 'khen-lon' : 'vui'; msg = 'Cô báo tin vui: con <b>' + t + '</b> vừa được cộng điểm. Bác khen và động viên con giúp cô nhé!'; }
+      if (nTru >= 5 || lanMax >= 3) { emo = 'lo-lang'; msg = 'Tháng này con <b>' + t + '</b> đã có <b>' + nTru + '</b> lần bị trừ điểm. Cô Thảo mong bác dành thời gian trò chuyện với con và cùng phối hợp để giúp con tiến bộ hơn ạ.'; }
+      else if (lanMax === 2) { emo = 'nghiem'; msg = 'Đây là lần thứ 2 trong tháng con <b>' + t + '</b> mắc lỗi này. Cô Thảo nhờ bác nhắc nhở để con không tái phạm nữa ạ.'; }
+      else { emo = 'buon'; msg = 'Đây là lần đầu trong tháng con mắc lỗi này. Cô Thảo nhờ bác nhắc nhẹ con <b>' + t + '</b>, cô Thảo tin con sẽ cố gắng hơn ạ.'; }
+    } else { var sum = cong.reduce(function (a, e) { return a + e[9]; }, 0); emo = sum >= 3 ? 'khen-lon' : 'vui'; msg = 'Cô Thảo báo tin vui: con <b>' + t + '</b> vừa được cộng điểm. Bác dành lời khen và động viên con nhé ạ!'; }
     var wk = []; for (var w = 1; w <= (cfg.soTuan || 4); w++) wk.push({ k: 'Tuần ' + w, v: me.filter(function (e) { return e[3] === w; }).reduce(function (a, e) { return a + e[9]; }, 0) });
     var body = '<div style="display:grid;grid-template-columns:86mm 1fr;gap:7mm"><div><div class="bub">' + msg + '</div><div style="text-align:center;margin-top:5mm">' + mc(emo, 230) + '</div></div><div>'
       + E.map(function (e) { return '<div class="ev"><div class="pt ' + (e[9] < 0 ? 'm' : 'p') + '">' + nz(e[9]) + '</div><div class="bd"><b>' + esc(e[8] || e[7]) + '</b><div>Tuần ' + e[3] + ' tháng ' + e[2] + ' · ' + esc(String(e[1]).slice(0, 10)) + ' · ghi bởi ' + esc(e[11] || '') + '</div>' + (e[12] ? '<div style="color:#1B333A">Ghi chú: ' + esc(e[12]) + '</div>' : '') + '</div></div>'; }).join('')
@@ -193,7 +193,7 @@
       + '<div class="kpi" style="--c:' + RC[ri] + '"><div class="n">' + esc(cfg.thresholds[ri].ten) + '</div><div class="l">Xếp loại tạm tính</div></div>'
       + '<div class="kpi" style="--c:#0E7C86"><div class="n" style="font-size:16pt"><span style="color:#1E8449">' + me.filter(function (e) { return e[9] > 0; }).length + ' khen</span> · <span style="color:#C0392B">' + nTru + ' trừ</span></div><div class="l">Trong tháng ' + th + '</div></div></div>'
       + (function () { var r = (D.remarks || []).filter(function (x) { return x.maHS === ma && x.thang === th && x.nhanXet; })[0];
-        return '<div class="nx1" style="margin:0 0 3mm"><b>Nhận xét của cô Thảo · tháng ' + th + ':</b> ' + (r ? esc(r.nhanXet) : '<i>Cô sẽ gửi nhận xét của tháng vào cuối tháng ạ.</i>') + '</div>'; })()
+        return '<div class="nx1" style="margin:0 0 3mm"><b>Nhận xét của cô Thảo · tháng ' + th + ':</b> ' + (r ? esc(r.nhanXet) : '<i>Cô Thảo sẽ gửi nhận xét của tháng về con vào cuối tháng ạ.</i>') + '</div>'; })()
       + '<div class="card"><h3>Điểm từng tuần trong tháng ' + th + '</h3>' + line(wk, { w: 560, h: 118, fmt: nz }) + '</div></div></div>';
     return page(head('Thông báo hạnh kiểm', 'Cô Thảo xin cập nhật cho bác về con ' + esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b><br>Năm học ' + esc(cfg.namHoc || '')), body, footTxt(D));
   }
