@@ -62,7 +62,7 @@ async function record(b, name, o, fn) {
       A._pos = { x, y }; return { x, y }; },
     async click(sel, after = 700) { const { x, y } = await A.move(sel); await W(220); await p.mouse.down(); await W(90); await p.mouse.up(); await W(after); },
     async type(sel, text, d = 75) { await A.click(sel, 200); await p.keyboard.type(text, { delay: d }); await W(400); },
-    async scroll(dy, ms = 900) { const N = Math.round(ms / 30); for (let i = 0; i < N; i++) { await p.mouse.wheel(0, dy / N); await W(30); } await W(300); },
+    async scroll(dy, ms = 900) { if (!o.mobile && (!A._pos || A._pos.x < 320)) await A.move({ x: vp.width * 0.58 - 1, y: vp.height * 0.55 - 1, width: 2, height: 2 }, 500); const N = Math.round(ms / 30); for (let i = 0; i < N; i++) { await p.mouse.wheel(0, dy / N); await W(30); } await W(300); },
     async ev(f, arg) { return p.evaluate(f, arg); }
   };
   try { await fn(A); await A.hold(); await W(500); }
