@@ -1,6 +1,28 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-13-v4.9", version: "4.9", date: "2026-10-13",
+    title: "Logo trường, xếp loại hạnh kiểm chỉ theo tháng và học kỳ",
+    summary: "Màn đăng nhập có logo Trường THPT Yên Hòa. Hạnh kiểm chỉ xếp loại theo tháng và học kỳ — không còn xếp loại, báo cáo theo tuần (GVCN vẫn lấy được báo cáo tuần khi cần). Bỏ mục học phí khỏi Tính năng sắp ra mắt.",
+    items: [
+      { type: "new", title: "Logo trường ở màn đăng nhập",
+        text: "Mở app ⇒ màn đăng nhập có <b>logo Trường THPT Yên Hòa</b> cạnh tên lớp. Biểu tượng trên tab trình duyệt và khi thêm app ra màn hình chính điện thoại cũng là logo trường.",
+        img: "updates/v4.9/logo-dang-nhap.jpg" },
+      { type: "imp", title: "Ghi điểm: số là điểm tuần, nhãn là xếp loại tháng",
+        text: "Màn <b>Ghi điểm</b>: con số bên phải mỗi em là <b>tổng điểm tuần</b> đang chọn, nhãn nhỏ bên dưới là <b>xếp loại tháng (tạm tính)</b>, ví dụ “T10 · Khá”. Ô <b>Cần nhắc nhở</b> và <b>Đạt loại Tốt</b> ở thẻ tổng quan cũng tính theo tháng.",
+        img: "updates/v4.9/ghi-diem-xep-loai-thang.jpg" },
+      { type: "imp", title: "Cập nhật hạnh kiểm, Thống kê: chỉ tháng và học kỳ",
+        text: "Bỏ lựa chọn <b>Tuần</b> ở <b>Cập nhật hạnh kiểm</b> và <b>Thống kê</b> — chỉ còn <b>Tháng · Học kỳ</b> (Thống kê có thêm Cả năm). Điểm từng tuần vẫn hiện trong thẻ học sinh nhưng không còn tô màu xếp loại.",
+        img: "updates/v4.9/hanh-kiem-thang-hoc-ky.jpg" },
+      { type: "imp", title: "Báo cáo tuần: chỉ GVCN, khi cần",
+        text: "Menu <b>Báo cáo</b> mặc định là <b>Tháng · Học kỳ · Cả năm</b>. GVCN cần báo cáo tuần thì bấm nút <b>Tuần</b> ở cuối hàng; cán bộ lớp không thấy nút này.",
+        img: "updates/v4.9/bao-cao-tuan-gvcn.jpg" },
+      { type: "fix", title: "Tính năng sắp ra mắt: bỏ mục học phí",
+        text: "Màn đăng nhập / menu tài khoản ▸ <b>Tính năng sắp ra mắt</b>: không còn mục <b>Học phí, khoản thu</b> — sổ không chứa thông tin học phí.",
+        img: "updates/v4.9/tinh-nang-sap-ra-mat.jpg" }
+    ]
+  },
+  {
     id: "2026-10-24-v4.8", version: "4.8", date: "2026-10-24",
     title: "Nút Quay lại trong app, trang phụ huynh dễ dùng hơn",
     summary: "Bấm Quay lại của điện thoại là về màn trước trong app, không bị thoát ra trang khác. Trang phụ huynh có nút Thoát, tab Danh sách / Hồ sơ rõ ràng và lời hướng dẫn khi nhập email.",
@@ -75,7 +97,7 @@ window.HK_UPDATES = [
         text: "Màn hình tối lại, chỉ sáng đúng chỗ cần bấm, kèm lời chỉ dẫn. Bấm đúng chỗ là tự sang bước sau. Email trong chế độ này là giả định, xem ở nút <b>Hộp thư</b>.",
         img: "updates/v4.5/tung-buoc.jpg" },
       { type: "new", title: "Tính năng sắp ra mắt",
-        text: "Màn đăng nhập, menu tài khoản hoặc trang phụ huynh ▸ <b>Tính năng sắp ra mắt</b>: lộ trình mở rộng thành sổ liên lạc điện tử (Ban giám hiệu, học bạ, học phí, nội quy, hoạt động, thông báo).",
+        text: "Màn đăng nhập, menu tài khoản hoặc trang phụ huynh ▸ <b>Tính năng sắp ra mắt</b>: lộ trình mở rộng thành sổ liên lạc điện tử (Ban giám hiệu, học bạ, nội quy, hoạt động, thông báo).",
         img: "updates/v4.5/sap-ra-mat.jpg" }
     ]
   },

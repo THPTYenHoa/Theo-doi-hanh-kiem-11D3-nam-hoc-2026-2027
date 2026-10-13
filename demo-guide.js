@@ -40,7 +40,7 @@
     { id: 'gv1', r: 'gvcn', t: 'Xem điểm cả lớp và nguồn từng điểm', s: [
       { el: nav('bang'), t: 'Mở mục Cập nhật hạnh kiểm', d: 'Bấm vào mục <b>Cập nhật hạnh kiểm</b>.', act: 'click', pre: GO('ghi') },
       { el: ['#vBang .sq39'], t: 'Tìm nhanh', d: 'Gõ <b>tổ 2</b>, <b>vi phạm</b>, <b>khá</b> hay tên một em để lọc ngay danh sách.', act: 'next', opt: 1 },
-      { el: ['#vBang .hkcard[data-ma]'], t: 'Thẻ từng học sinh', d: 'Mỗi thẻ có điểm từng tuần, điểm trung bình và xếp loại. <b>Rê chuột vào ô điểm</b> (điện thoại: chạm giữ) để xem điểm đến từ việc gì, ai ghi.', act: 'next' }] },
+      { el: ['#vBang .hkcard[data-ma]'], t: 'Thẻ từng học sinh', d: 'Mỗi thẻ có điểm từng tuần, điểm trung bình và xếp loại tháng. <b>Rê chuột vào ô điểm</b> (điện thoại: chạm giữ) để xem điểm đến từ việc gì, ai ghi.', act: 'next' }] },
     { id: 'gv2', r: 'gvcn', t: 'Nhận xét và xác nhận xếp loại', s: [
       { el: ['#vBang .hkcard[data-ma]'], t: 'Chọn một học sinh', d: 'Chạm vào thẻ của một học sinh để mở hồ sơ.', act: 'click', pre: GO('bang') },
       { el: ['#pfNx'], t: 'Nhận xét', d: 'Bấm <b>Nhận xét</b>.', act: 'click' },

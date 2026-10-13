@@ -8,16 +8,14 @@
     hk: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
     bgh: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
     hb: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/>',
-    hp: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/>',
     nq: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
     hd: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
     tb: '<path d="M3 11l18-8v18l-18-8z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'
   };
   var L = [
     { k: 'hk', t: 'Hạnh kiểm và nề nếp', d: 'Ghi điểm hằng ngày, xếp loại, báo cáo, báo tin cho phụ huynh.', on: 1 },
-    { k: 'bgh', t: 'Ban giám hiệu theo dõi thi đua', d: 'Nhiều lớp dùng chung một mẫu; so sánh thi đua các lớp theo tuần, tháng.' },
+    { k: 'bgh', t: 'Ban giám hiệu theo dõi thi đua', d: 'Nhiều lớp dùng chung một mẫu; so sánh thi đua các lớp theo tháng, học kỳ.' },
     { k: 'hb', t: 'Học bạ, điểm số', d: 'Kết quả học tập từng môn, từng kỳ; phụ huynh chỉ xem của con mình.' },
-    { k: 'hp', t: 'Học phí, khoản thu', d: 'Thông báo khoản thu, hạn nộp; gửi riêng từng gia đình.' },
     { k: 'nq', t: 'Nội quy, quy định', d: 'Nội quy trường, lớp; quy định thi đua, khen thưởng.' },
     { k: 'hd', t: 'Hoạt động của trường', d: 'Lịch học, lịch thi, sự kiện, hoạt động ngoại khoá.' },
     { k: 'tb', t: 'Thông báo chung', d: 'Từ Ban giám hiệu, giáo viên tới đúng lớp, đúng phụ huynh.' }];
@@ -45,7 +43,7 @@
       + '<div class="gr">' + L.map(function (x) {
         return '<button class="it' + (x.on ? ' on' : '') + '" type="button"><span class="i">' + SV + IC[x.k] + '</svg></span><span><b>' + x.t + '<span class="tg ' + (x.on ? 'a">ĐANG DÙNG' : 'b">ĐANG PHÁT TRIỂN') + '</span></b><span class="d">' + x.d + '</span>'
           + (x.on ? '' : '<span class="more">Nội dung đang phát triển, sẽ cập nhật trong các phiên bản tới.</span>') + '</span></button>';
-      }).join('') + '</div><div class="ft">Mọi mục mới đều theo nguyên tắc bảo vệ dữ liệu cá nhân: mỗi người chỉ thấy phần thông tin được phép, thông tin riêng (học phí, sức khoẻ…) chỉ gửi tới đúng gia đình.</div></div>';
+      }).join('') + '</div><div class="ft">Mọi mục mới đều theo nguyên tắc bảo vệ dữ liệu cá nhân: mỗi người chỉ thấy phần thông tin được phép, thông tin riêng của từng học sinh chỉ gửi tới đúng gia đình.</div></div>';
     document.body.appendChild(o);
     o.onclick = function (e) { if (e.target === o) o.remove(); };
     o.querySelector('.x').onclick = function () { o.remove(); };

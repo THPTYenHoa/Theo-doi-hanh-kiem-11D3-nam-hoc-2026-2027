@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <script src="demo.js?v=4.8"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/logo-180.png">
 <meta name="theme-color" content="#0E7C86">
 <title>Sổ theo dõi học sinh 11D3</title>
 <link rel="preconnect" href="https://script.google.com" crossorigin>
@@ -69,6 +71,9 @@ svg{display:block}
 .mark{font-size:13.5px;letter-spacing:.02em;color:var(--sub);font-weight:600}
 .classname{font-size:64px;font-weight:800;letter-spacing:-.04em;line-height:.94;color:var(--teal-d);margin:8px 0 4px}
 .subline{font-size:14.5px;color:var(--sub);margin-bottom:30px}
+.lghead{display:flex;align-items:center;gap:14px} .lghead .lgtx{flex:1;min-width:0}
+.lglogo{width:96px;height:96px;flex:none;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(20,40,80,.14)}
+@media (max-width:380px){ .lglogo{width:76px;height:76px} }
 .subline b{color:var(--ink);font-weight:700}
 .fld{margin-bottom:13px}
 .fld label{display:block;font-size:11.5px;font-weight:700;color:var(--sub);margin-bottom:6px;letter-spacing:.3px}
@@ -566,7 +571,7 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
       <h3>Chế độ phụ huynh — chỉ xem</h3>
       <p>Vào thẳng, không cần mật khẩu. Bạn xem được đầy đủ tình hình hạnh kiểm của cả lớp:</p>
       <ul>
-        <li>Điểm và xếp loại từng tuần, từng tháng, cả học kỳ</li>
+        <li>Điểm từng tuần; xếp loại theo tháng, học kỳ</li>
         <li>Từng lỗi bị trừ, ai ghi nhận, ngày nào, kèm diễn giải</li>
         <li>Các thành tích được cộng điểm</li>
         <li>Nhận xét của giáo viên chủ nhiệm</li>
@@ -1076,7 +1081,7 @@ const HELP = {
     ['Chạm nhầm','Có 5 giây để bấm Hoàn tác ở thông báo hiện dưới màn hình.'],
     ['Ghi cho nhiều em một lượt','Bấm Chọn nhiều, tick các em cần ghi, bấm Ghi điểm rồi chọn lý do. Ghi chú chung áp cho cả nhóm.'],
     ['Xoá nhanh','Mỗi thẻ lý do dưới tên học sinh có dấu ✕ — chạm là xoá mục đó, không cần mở panel.'],
-    ['Đọc con số bên phải','Đó là tổng điểm của tuần đang chọn kèm xếp loại. Đường kẻ nhỏ là xu hướng qua các tuần.'],
+    ['Đọc con số bên phải','Số là tổng điểm của tuần đang chọn; nhãn bên dưới là xếp loại tháng (tạm tính). Đường kẻ nhỏ là xu hướng qua các tuần.'],
     ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi cô muốn trừ điểm như lần đầu hay trừ tăng dần theo quy định của trường.'],
     ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
   ]},
@@ -1265,7 +1270,7 @@ function renderGhi(){
   let h='', curTo=null;
   list.forEach((s,i)=>{
     if(S.filterTo==='all' && s.to!==curTo){ curTo=s.to; h+=`<div class="grouphead">Tổ ${esc(curTo)}</div>`; }
-    const v=weekScore(s.ma,S.tuan), ri=rankIdx(v), locked=!canScore(s.to);
+    const v=weekScore(s.ma,S.tuan), ri=rankIdx(monthAvg(s.ma)), locked=!canScore(s.to);   /* v4.9: không xếp loại theo tuần — nhãn = xếp loại tháng (tạm tính) */
     h+=`<button class="row ${S.sel.has(s.ma)?'sel':''}" data-ma="${esc(s.ma)}">
       <span class="rowmain">
         ${S.multi ? `<span class="check ${S.sel.has(s.ma)?'on':''}">
@@ -1274,8 +1279,8 @@ function renderGhi(){
         <span class="nm"><b>${esc(s.ten)}</b>
           <span>${esc(s.chucVu)}${locked?' · chỉ xem':''}</span></span>
         ${sparkline(s.ma)}
-        <span class="score"><span class="n ${v===0?'zero':'r'+ri}">${v===0?'0':nz(v)}</span>
-          <span class="l ${v===0?'zero':'r'+ri}">${esc(rankName(v))}</span></span>
+        <span class="score"><span class="n ${v<0?'r3':v>0?'r0':'zero'}" title="Điểm tuần ${S.tuan}">${v===0?'0':nz(v)}</span>
+          <span class="l ${'r'+ri}" title="Xếp loại tháng ${S.thang} (tạm tính)">T${S.thang} · ${esc(S.cfg.thresholds[ri].ten)}</span></span>
       </span>
       ${rowExtra(s)}
     </button>`;
@@ -1430,7 +1435,7 @@ function hkCard(s){
   }else if(S.hkKy==='thang'){
     for(let w=1;w<=S.cfg.soTuan;w++){
       const v=weekScore(s.ma,w);
-      mini+=`<div><div class="k">TUẦN ${w}</div><div class="v ${v===0?'zero':'r'+rankIdx(v)}">${v===0?'–':nz(v)}</div></div>`;
+      mini+=`<div><div class="k">TUẦN ${w}</div><div class="v ${v===0?'zero':''}">${v===0?'–':nz(v)}</div></div>`;
     }
     mini+=`<div><div class="k">TB TUẦN</div><div class="v ${'r'+ri}">${sc.toFixed(1)}</div></div>`;
   }else{
@@ -1489,7 +1494,7 @@ function hkTable(){
     }else if(S.hkKy==='thang'){
       for(let w=1;w<=S.cfg.soTuan;w++){
         const v=weekScore(s.ma,w);
-        h+=`<td class="v ${v===0?'':'c'+rankIdx(v)}">${v===0?'–':nz(v)}</td>`;
+        h+=`<td class="v">${v===0?'–':nz(v)}</td>`;
       }
       const t=monthTotal(s.ma);
       h+=`<td class="v">${t===0?'–':nz(t)}</td><td class="v">${monthAvg(s.ma).toFixed(1)}</td>`;
@@ -1507,8 +1512,8 @@ function hkTable(){
 
 function renderBang(){
   const list=activeStudents();
+  if(S.hkKy==='tuan') S.hkKy='thang';   /* v4.9: hạnh kiểm chỉ xếp loại theo tháng / học kỳ */
   let h=`<div class="segbar">
-    <button data-hk="tuan"  class="${S.hkKy==='tuan'?'on':''}">Tuần ${S.tuan}</button>
     <button data-hk="thang" class="${S.hkKy==='thang'?'on':''}">${esc(thangLabel(S.thang))}</button>
     <button data-hk="hk"    class="${S.hkKy==='hk'?'on':''}">Học kỳ</button>
   </div>`;
@@ -1616,7 +1621,7 @@ function drawStudentPanel(){
   h += `<div class="pform"><button class="btn ghost" id="pMonth">Xem cả tháng ${S.thang}</button></div>`;
 
   openPanel(s.ten,
-    `Tổ ${s.to} · Tuần ${S.tuan}: cộng ${sp.p} · trừ ${sp.m} · tổng ${nz(v)} · ${rankName(v)}`, h, 'student');
+    `Tổ ${s.to} · Tuần ${S.tuan}: cộng ${sp.p} · trừ ${sp.m} · tổng ${nz(v)} · ${thangLabel(S.thang)}: ${rankName(monthAvg(s.ma))}`, h, 'student');
   wirePanelEntries();
   $$('#pBody [data-tab]').forEach(b=>b.onclick=()=>{ S.ctxTab=b.dataset.tab; drawStudentPanel(); });
   $$('#pBody [data-add]').forEach(b=>b.onclick=()=>addEntry([s.ma], b.dataset.add));
@@ -1846,7 +1851,7 @@ function openStudentMonth(ma){
   for(let w=1;w<=S.cfg.soTuan;w++){
     const v=weekScore(ma,w), sp=weekSplit(ma,w);
     h+=`<div class="entry"><span class="pt ${v<0?'r3':v>0?'r0':'zero'}">${nz(v)}</span>
-      <span class="bd"><b>Tuần ${w}</b><span class="meta">cộng ${sp.p} · trừ ${sp.m} · ${rankName(v)}</span></span></div>`;
+      <span class="bd"><b>Tuần ${w}</b><span class="meta">cộng ${sp.p} · trừ ${sp.m}</span></span></div>`;
   }
   const list=entriesOf(ma,S.thang,null);
   h+=`<div class="grouphead">Toàn bộ ghi nhận ${esc(thangLabel(S.thang,true))} · ${list.length} lượt</div>`;
@@ -1998,6 +2003,7 @@ function chiTieuHTML(cnt){
 }
 
 function renderTK(){
+  if(S.tkKy==='tuan') S.tkKy='thang';   /* v4.9: không thống kê xếp loại theo tuần */
   const list=activeStudents();
   const ofKy=tkEntries();
   const luotCong=ofKy.filter(e=>e[E_DIEM]>0).length;
@@ -2009,7 +2015,6 @@ function renderTK(){
   const tong=list.length||1;
 
   let h=`<div class="segbar">
-    <button data-ky="tuan"  class="${S.tkKy==='tuan'?'on':''}">Tuần ${S.tuan}</button>
     <button data-ky="thang" class="${S.tkKy==='thang'?'on':''}">Tháng ${S.thang}</button>
     <button data-ky="nam"   class="${S.tkKy==='nam'?'on':''}">Cả năm</button>
   </div>`;
@@ -2941,7 +2946,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=4.8"></script>
+<script src="updates/notes.js?v=4.9"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2954,7 +2959,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='4.8';
+const HK_VER='4.9';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3035,7 +3040,8 @@ function lgErr(m){ const e=$('#lgErr3'); if(!e) return; e.innerHTML=m||''; e.cla
 function lgBusy(on,label){ LG.busy=on; const b=$('#lgGo'); if(!b) return; b.disabled=!!on; b.innerHTML=on?'<span class="spin sm"></span> '+esc(label):esc(b.dataset.l); }
 function lgShell(inner){
   const w=$('#login .lgwrap');
-  w.innerHTML=`<div class="mark">Sổ theo dõi học sinh · Hạnh kiểm &amp; nề nếp</div><div class="classname">11D3</div>
+  w.innerHTML=`<div class="lghead"><div class="lgtx"><div class="mark">Sổ theo dõi học sinh · Hạnh kiểm &amp; nề nếp</div><div class="classname">11D3</div></div>
+    <img class="lglogo" src="img/logo-yenhoa.webp" alt="Logo Trường THPT Yên Hòa" width="96" height="96"></div>
     <div class="subline">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
     <div class="lgcard">${inner}<div class="lgerr" id="lgErr3"></div></div>
     <a class="lgph" href="phu-huynh.html"><span class="i">${SV}<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
@@ -3335,7 +3341,7 @@ async function openProfile(ma, ky){
     .sort((a,b)=>MONTHS_YEAR.indexOf(b[E_THANG])-MONTHS_YEAR.indexOf(a[E_THANG])||b[E_TUAN]-a[E_TUAN]||String(b[E_LUC]).localeCompare(String(a[E_LUC])));
   const tru=ev.filter(e=>e[E_DIEM]<0), cong=ev.filter(e=>e[E_DIEM]>0);
   let mini='';
-  if(cur.ms.length===1){ for(let w=1;w<=S.cfg.soTuan;w++){ const v=weekScore(ma,w,cur.ms[0]); mini+=`<div><div class="k">TUẦN ${w}</div><div class="v ${v?'r'+rankIdx(v):'zero'}">${v===0?'0':nz(v)}</div></div>`; } }
+  if(cur.ms.length===1){ for(let w=1;w<=S.cfg.soTuan;w++){ const v=weekScore(ma,w,cur.ms[0]); mini+=`<div><div class="k">TUẦN ${w}</div><div class="v ${v?'':'zero'}">${v===0?'0':nz(v)}</div></div>`; } }
   else cur.ms.forEach(m=>{ const co=S.entries.some(e=>e[E_THANG]===m), v=co?monthAvg(ma,m):null; mini+=`<div><div class="k">${esc(thangLabel(m))}</div><div class="v ${v===null?'zero':'r'+rankIdx(v)}">${v===null?'–':v.toFixed(1)}</div></div>`; });
   const rms=S.remarks.filter(r=>r.maHS===ma && cur.ms.indexOf(r.thang)>=0 && (r.nhanXet||r.xepLoai));
   let h=`<div class="pf-seg">${opts.map(o=>`<button class="chip tiny ${o.k===cur.k?'on':''}" data-pk="${o.k}">${esc(o.lb)}</button>`).join('')}</div>
@@ -3664,7 +3670,7 @@ const TOURS={
     {el:firstRow(), t:'Ghi điểm cho một học sinh', d:'Chạm vào tên học sinh ▸ chọn <b>Trừ điểm</b> hoặc <b>Cộng điểm</b> ▸ chạm lý do ▸ thêm diễn giải, ảnh bằng chứng nếu cần ▸ <b>Lưu điểm</b>. Điểm hiện ngay, máy tự lưu phía sau.'},
     {el:'#multiBtn', t:'Ghi cho nhiều em một lượt', d:'Bấm <b>Chọn nhiều</b>, tick các em ▸ <b>Ghi điểm</b> ▸ chọn lý do. Dùng cho lỗi tập thể hoặc khen thưởng chung.'},
     {el:'#hkq, .topline .sync', t:'Trạng thái lưu', d:'Khi chữ <b>Đang lưu…</b> đổi thành <b>Đã lưu vào sổ</b> là điểm đã vào Google Sheet. Mạng yếu thì máy tự gửi lại, không bị ghi trùng.'},
-    {el:nav('bang'), t:'Cập nhật hạnh kiểm', d:'Xem xếp loại theo <b>tuần / tháng / học kỳ</b>. Chạm một em để mở <b>hồ sơ</b>, viết <b>nhận xét</b> và <b>xác nhận xếp loại</b> cuối tháng.', pre:()=>go('ghi')},
+    {el:nav('bang'), t:'Cập nhật hạnh kiểm', d:'Xem xếp loại theo <b>tháng / học kỳ</b>. Chạm một em để mở <b>hồ sơ</b>, viết <b>nhận xét</b> và <b>xác nhận xếp loại</b> cuối tháng.', pre:()=>go('ghi')},
     {el:nav('tk'), t:'Thống kê', d:'Em vi phạm nhiều nhất, em được tuyên dương, lỗi cả lớp hay mắc, so sánh tổ và xu hướng theo tháng.'},
     {el:nav('ls'), t:'Lịch sử & xuất file', d:'Lọc theo tháng / tổ / học sinh ▸ <b>Tải Excel</b> hoặc <b>Tải PDF</b> để nộp bản giấy.'},
     {el:'#hFind', t:'Tra cứu nhanh', d:'Bấm kính lúp (hoặc phím <b>/</b>) ▸ gõ tên không cần dấu ▸ mở hồ sơ cả năm của em đó.'},
@@ -3921,7 +3927,7 @@ window.visibleStudents=visibleStudents=function(){
   const wk=ma=>entriesOf(ma,S.thang,S.tuan);
   if(f==='bad')  l=l.filter(s=>wk(s.ma).some(e=>e[E_DIEM]<0));
   if(f==='good') l=l.filter(s=>wk(s.ma).some(e=>e[E_DIEM]>0));
-  if(f==='warn') l=l.filter(s=>rankIdx(weekScore(s.ma,S.tuan))>0);
+  if(f==='warn') l=l.filter(s=>rankIdx(monthAvg(s.ma))>0);
   return l;
 };
 /* xoá: thu gọn mục trên màn hình rồi mới xoá dữ liệu */
@@ -3959,8 +3965,8 @@ function v32Hero(){
   const f0=S.v32f; S.v32f=null; const list=visibleStudents(); S.v32f=f0;
   const wk=S.entries.filter(e=>e[E_THANG]===S.thang && e[E_TUAN]===S.tuan && list.some(s=>s.ma===e[E_MA]));
   const nBad=wk.filter(e=>e[E_DIEM]<0).length, nGood=wk.filter(e=>e[E_DIEM]>0).length;
-  const nWarn=list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))>0).length;
-  const pTot=list.length?Math.round(100*list.filter(s=>rankIdx(weekScore(s.ma,S.tuan))===0).length/list.length):0;
+  const nWarn=list.filter(s=>rankIdx(monthAvg(s.ma))>0).length;   /* v4.9: xếp loại theo tháng (tạm tính), không theo tuần */
+  const pTot=list.length?Math.round(100*list.filter(s=>rankIdx(monthAvg(s.ma))===0).length/list.length):0;
   const gv=S.me.role==='GVCN'||S.me.role==='Quản trị';
   const hi=S.me.role==='GVCN'?'Chào cô '+esc(ten1(S.me.name))+'!':'Chào '+esc(ten1(S.me.name))+'!';   /* Quản trị (không phải cô chủ nhiệm) ⇒ không gọi "cô" */
   const emo=nBad===0?(nGood?'vui':'chao'):(nWarn>=Math.max(5,list.length/3)?'lo-lang':nGood>=nBad?'co-vu':'huong-dan');
@@ -3972,7 +3978,7 @@ function v32Hero(){
     const T=(k,cls,ic,l,ls,fmt)=>`<button class="tl ${cls}${f0===k?' on':''}" data-f="${k}"><span class="ic2">${ic}</span><div class="n" data-k="${k}"${fmt?` data-fmt="${fmt}"`:''}>0</div><div class="l"><span class="lf">${l}</span><span class="ls">${ls}</span></div></button>`;
     h.innerHTML=`<div class="top"><span class="msc">${window.MASCOT&&MASCOT.style()!=='off'?MASCOT.img(emo,72):''}</span>
       <div class="hi"><b>${hi}</b><span><em class="ph">${pham} · </em>Tuần ${S.tuan} · ${esc(thangLabel(S.thang,true))}</span></div><span id="v32live"><i></i><span>Trực tiếp</span></span></div>
-      <div class="tiles">${T('bad','bad','−','Lượt trừ điểm','Lượt trừ')}${T('good','good','+','Lượt khen','Lượt khen')}${T('warn','warn','!','Cần nhắc nhở','Cần nhắc')}${T('tot','tot','✓','Đạt loại Tốt','Đạt Tốt','#%')}</div>
+      <div class="tiles">${T('bad','bad','−','Lượt trừ điểm','Lượt trừ')}${T('good','good','+','Lượt khen','Lượt khen')}${T('warn','warn','!','Cần nhắc nhở · tháng','Cần nhắc')}${T('tot','tot','✓','Đạt loại Tốt · tháng','Đạt Tốt','#%')}</div>
       ${f0?`<button class="clr" id="v32clr">Đang lọc: ${{bad:'bạn bị trừ điểm',good:'bạn được khen',warn:'bạn cần nhắc nhở'}[f0]} · Bỏ lọc ✕</button>`:''}
       ${feed.length?`<div class="feed"><h5>Vừa cập nhật trong tháng</h5><div class="fl">${feed.map(e=>{ const s=stu(e[E_MA]);
         return `<button class="fi" data-ma="${esc(e[E_MA])}">${avHTML(s,1)}<span class="tx"><b>${esc(ten1(s&&s.ten))} · ${esc(e[E_ND]||e[E_MUC])}</b><span>${esc(e[E_TEN])} · ${esc(agoTxt(e[E_LUC]))}</span></span><span class="pt ${e[E_DIEM]<0?'m':'p'}">${nz(e[E_DIEM])}</span></button>`; }).join('')}</div></div>`:''}`;
@@ -4242,9 +4248,10 @@ function bcCols(P){
 function renderBC(){
   const box=$('#vBC'); if(!box || !S.cfg) return;
   if(box.contains(document.activeElement) && /TEXTAREA/.test(document.activeElement.tagName)) return;   /* đang gõ nhận xét */
+  if(S.bcKy==='tuan' && !isGVCN()) S.bcKy='thang';   /* v4.9: báo cáo tuần chỉ GVCN lấy khi cần */
   const P=bcPeriod(), st=bcStats(P), pv=bcPrevStats(P), T=bcTxt(P,st,pv), th=S.cfg.thresholds;
   const nTot=st.cnt[0], gv=isGVCN();
-  let h=`<div class="segbar">${[['tuan','Tuần '+S.tuan],['thang','Tháng '+S.thang],['hk','Học kỳ '+(hkOf(S.thang)===1?'I':'II')],['nam','Cả năm']].map(([k,l])=>`<button data-bk="${k}" class="${S.bcKy===k?'on':''}">${l}</button>`).join('')}</div>`;
+  let h=`<div class="segbar">${[['thang','Tháng '+S.thang],['hk','Học kỳ '+(hkOf(S.thang)===1?'I':'II')],['nam','Cả năm']].concat(gv?[['tuan','Tuần '+S.tuan]]:[]).map(([k,l])=>`<button data-bk="${k}" class="${S.bcKy===k?'on':''}">${l}</button>`).join('')}</div>`;
   h+=`<div class="bchead"><span class="msc">${window.MASCOT&&MASCOT.style()!=='off'?MASCOT.img(st.care.length>st.list.length/4?'lo-lang':nTot>=st.list.length/2?'vui':'huong-dan',56):''}</span>
     <div class="tt"><small>Báo cáo hạnh kiểm</small><b>Lớp ${esc(S.cfg.lop||'11D3')} · ${esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))}</b>
     <span>${[S.cfg.truong,'Năm học '+(S.cfg.namHoc||''),P.prev?'so sánh với '+P.prev.nhan:''].filter(Boolean).map(esc).join(' · ')}</span></div></div>`;
@@ -5380,8 +5387,8 @@ try{ if($('#v32h')) mount(); }catch(_){}
       const k=el.dataset.f;
       if(k==='bad') o={title:'Lượt trừ điểm',E:neg};
       else if(k==='good') o={title:'Lượt khen',E:pos};
-      else if(k==='warn') o={mode:'S',title:'Cần nhắc nhở',L:c.L.filter(s=>rankIdx(c.sc(s.ma))>0),sc:c.sc};
-      else if(k==='tot') o={mode:'S',title:'Đạt loại '+S.cfg.thresholds[0].ten,L:c.L.filter(s=>rankIdx(c.sc(s.ma))===0),sc:c.sc};
+      else if(k==='warn'){ const sm=ma=>monthAvg(ma,S.thang); o={mode:'S',title:'Cần nhắc nhở · '+thangLabel(S.thang),L:c.L.filter(s=>rankIdx(sm(s.ma))>0),sc:sm}; }
+      else if(k==='tot'){ const sm=ma=>monthAvg(ma,S.thang); o={mode:'S',title:'Đạt loại '+S.cfg.thresholds[0].ten+' · '+thangLabel(S.thang),L:c.L.filter(s=>rankIdx(sm(s.ma))===0),sc:sm}; }
     }
     else if((el=t.closest('.kpi'))){
       const l=(el.querySelector('.l')||el).textContent;
