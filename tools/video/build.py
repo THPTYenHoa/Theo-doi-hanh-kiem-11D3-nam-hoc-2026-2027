@@ -63,7 +63,7 @@ parts, srt, t_abs = [], [], 0.0
 def enc(): return ['-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', str(FPS)]
 for s in SEQ:
     if s[0] == 'card':
-        d = s[2]; o = f'{TMP}/part_{len(parts):02d}.mp4'
+        d = max(s[2], round(1.6 + len(s[4]) * 0.072, 1)); o = f'{TMP}/part_{len(parts):02d}.mp4'   # đủ thời gian cho lời thuyết minh
         sh(['ffmpeg', '-y', '-loop', '1', '-t', str(d), '-i', f'{TMP}/card_{s[1]}.png', '-vf', f'fade=t=in:st=0:d=0.5:color={FADE},fade=t=out:st={d-0.5}:d=0.5:color={FADE},format=yuv420p'] + enc() + [o])
         srt.append((t_abs + 0.3, t_abs + d - 0.3, s[4])); parts.append(o); t_abs += d; print('▣', s[1], d); continue
     m = metas[s[1]]; lay = 'mob' if m['mobile'] else 'desk'; g = L[lay]

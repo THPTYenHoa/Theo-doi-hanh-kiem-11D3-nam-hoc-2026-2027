@@ -52,7 +52,7 @@ async function record(b, name, o, fn) {
   const A = {
     p, W,
     /* chú thích hiện bên phải video; min = thời gian tối thiểu (ms) trước chú thích kế tiếp */
-    async cap(text, sub, min) { const t = now(); if (t < minNext) await W((minNext - t) * 1000); caps.push({ t: now(), text, sub: sub || '' }); minNext = now() + (min || Math.max(3800, 900 + text.length * 55)) / 1000; },
+    async cap(text, sub, min) { const t = now(); if (t < minNext) await W((minNext - t) * 1000); caps.push({ t: now(), text, sub: sub || '' }); minNext = now() + Math.max(min || 0, 1600 + (text.length + (sub || '').length) * 72) / 1000;   /* đủ thời gian đọc / lồng giọng (~14 chữ cái/giây) */ },
     async hold() { const t = now(); if (t < minNext) await W((minNext - t) * 1000 + 300); },
     async box(sel) { const l = p.locator(sel).first(); await l.waitFor({ state: 'visible', timeout: 8000 });
       await l.evaluate(e => e.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })).catch(() => {}); await W(650); return l.boundingBox(); },
