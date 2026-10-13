@@ -145,7 +145,7 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   pointerdown) ⇒ tự sang bước. Bước `{el, t, d, act:'click'|'next', until, pre, nav, opt, hold, wait}` trong `T`. Đổi vai/trang ⇒ `sessionStorage.dm_next='tut:<id>:<bước>'`.
   Đầu mỗi bài `clean()` đóng bảng/hộp còn mở; bài ghi điểm tự `unlock()` tháng mẫu. Email = giả định (Hộp thư). `DMUI` (demo-ui) = switchRole / bar / inbox.
   Không viết kiểu "đóng vai…/như một…" — tên việc ngắn, tự nhiên. Kiểm thử cả 14 bài (máy tính + điện thoại) bằng kịch bản tự bấm theo vòng sáng.
-- **`roadmap.js` (`window.ROADMAP`)**: hộp "Tính năng sắp ra mắt" (Hạnh kiểm & nề nếp = ĐANG DÙNG; Ban giám hiệu, học bạ, học phí, nội quy, hoạt động,
+- **`roadmap.js` (`window.ROADMAP`)**: hộp "Tính năng sắp ra mắt" (Hạnh kiểm & nề nếp = ĐANG DÙNG; Ban giám hiệu, học bạ, nội quy, hoạt động,
   thông báo = ĐANG PHÁT TRIỂN) — lối vào: màn đăng nhập (`.lgdocs`), menu avatar, trang phụ huynh (cạnh "Tải hướng dẫn").
 - Vai trong demo: `ROLE_T` = Giáo viên chủ nhiệm · Lớp trưởng · Tổ trưởng (tổ 2) · Phụ huynh.
 
@@ -183,3 +183,11 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **Xưng hô với phụ huynh** (người dùng yêu cầu 10/10/2026): không xưng "cô" trống không. Câu nói về con ⇒ **"cô Thảo"**; xưng với các bác ⇒ **"em"**;
   thông báo / hướng dẫn ⇒ **"giáo viên chủ nhiệm"**. Áp dụng `phu-huynh.html`, `baocao.js` (PDF phụ huynh, thông báo), `demo.js` (thư mô phỏng),
   backend `KhoaThang.gs` (`loiNhan_`, thư duyệt, huỷ nhận thư), HDSD phụ huynh (`build.js`). `run.js` mục 22 kiểm tra. `PH_PDF_VER='4.8'`.
+
+## v4.9 — Logo trường · xếp loại chỉ theo tháng / học kỳ · bỏ học phí
+- Logo `img/logo-yenhoa.webp` (tròn, nền trong) ở màn đăng nhập (`lgShell` ▸ `.lghead` / `.lglogo`); favicon `img/favicon.png`, `img/logo-180.png` (cả 2 trang).
+- **Không xếp loại hạnh kiểm theo tuần** (người dùng yêu cầu 13/10/2026): Cập nhật hạnh kiểm chỉ Tháng · Học kỳ; Thống kê Tháng · Học kỳ · Cả năm;
+  Báo cáo kỳ Tuần chỉ hiện với GVCN (`isGVCN()`, nút cuối hàng). Ghi điểm: số = điểm tuần (màu theo dấu), nhãn = xếp loại tháng tạm tính `T<tháng> · <loại>`;
+  thẻ tổng quan "Cần nhắc nhở" / "Đạt loại Tốt" tính theo `monthAvg`. Điểm từng tuần vẫn hiện nhưng không tô màu xếp loại. Không thêm lại xếp loại tuần ở màn mới.
+- **Không có thông tin học phí** trong app / tài liệu (roadmap, bài dự thi .pptx đã bỏ).
+- `run.js` mục 8 "thấy ≥ 6 học sinh trên điện thoại" đỏ sẵn từ trước (5 em) — chưa sửa.
