@@ -26,9 +26,10 @@
     gvcn: { name: 'Nguyễn Thị Thu Thảo', role: 'GVCN', email: 'co.thao@demo.vn', to: '' },
     lt: { name: 'Nguyễn Minh An', role: 'Lớp trưởng', email: 'loptruong@demo.vn', to: '1' },
     tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@demo.vn', to: '2' },
-    ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' }
+    ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' },
+    gvtoan: { name: 'Phạm Thu Hà', role: 'Giáo viên bộ môn', email: 'gvtoan@demo.vn', to: '', mon: ['TOAN'] }
   };
-  var ROLE_T = { gvcn: 'Giáo viên chủ nhiệm', lt: 'Lớp trưởng', tt: 'Tổ trưởng (tổ 2)', ph: 'Phụ huynh' };
+  var ROLE_T = { gvcn: 'Giáo viên chủ nhiệm', lt: 'Lớp trưởng', tt: 'Tổ trưởng (tổ 2)', ph: 'Phụ huynh', gvtoan: 'Giáo viên bộ môn (Toán)' };
   function rnd(seed) { var x = seed; return function () { x = (x * 9301 + 49297) % 233280; return x / 233280; }; }
   function pad(n) { return String(n).padStart(2, '0'); }
   function build() {
@@ -82,7 +83,7 @@
   }
   var DB = null;
   function load() { try { DB = JSON.parse(g('hk_demo_db_v1') || 'null'); } catch (e) { DB = null; } if (!DB || DB.v !== 1) { DB = build(); save(); } return DB; }
-  function save() { try { LS.setItem('hk_demo_db_v1', JSON.stringify(DB)); } catch (e) { /* đầy bộ nhớ ⇒ bỏ ảnh bằng chứng */ DB.ev = {}; try { LS.setItem('hk_demo_db_v1', JSON.stringify(DB)); } catch (e2) {} } }
+  function save() { try { LS.setItem('hk_demo_db_v1', JSON.stringify(DB)); } catch (e) { /* đầy bộ nhớ ⇒ bỏ ảnh bằng chứng */ DB.ev = {}; if (DB.ht) DB.ht.img = {}; try { LS.setItem('hk_demo_db_v1', JSON.stringify(DB)); } catch (e2) {} } }
   function now() { var d = new Date(); return '2026-10-' + pad(Math.min(28, Math.max(10, d.getDate()))) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
   function stu(ma) { return DB.students.filter(function (x) { return x.ma === ma; })[0]; }
   function nz(n) { return (n > 0 ? '+' : '') + n; }
@@ -113,7 +114,7 @@
     var rows = items.map(function (e) { return '<tr><td style="padding:6px 10px;border-bottom:1px solid #EEF2F3;text-align:left">' + e[8] + (e[12] ? '<div style="color:#6C8A93;font-size:12px">' + e[12] + '</div>' : '') + '</td><td style="padding:6px 10px;border-bottom:1px solid #EEF2F3;text-align:right;font-weight:800;color:' + (e[9] < 0 ? '#C0392B' : '#1E8449') + '">' + nz(e[9]) + '</td></tr>'; }).join('');
     var link = BASE + 'phu-huynh.html?demo=1#hs=' + st.ma + '&tb=' + items.map(function (e) { return e[0]; }).join(',');
     mail({ kind: 'tb', to: st.email, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', ma: st.ma, link: link,
-      subject: (tru ? '[11D3] Cô Thảo cập nhật hạnh kiểm của con ' : 'Tin vui: con ') + st.ten + (tru ? '' : ' được cộng điểm'),
+      subject: (tru ? '[11D3] Cô Thảo cập nhật rèn luyện của con ' : 'Tin vui: con ') + st.ten + (tru ? '' : ' được cộng điểm'),
       html: '<div style="font-family:Arial,sans-serif;max-width:560px;color:#1B333A"><img src="' + BASE + 'mascot/chu-nhiem/png/' + L.emo + '.png" width="110" style="float:right;margin:0 0 6px 10px" alt="">'
         + '<div style="color:#6C8A93;font-size:12px">LỚP 11D3 · THPT YÊN HÒA</div><div style="font-size:19px;font-weight:800;color:#0A5C64;margin:4px 0">Cô Thảo xin cập nhật cho bác về con ' + st.ten + '</div>'
         + '<p style="line-height:1.55">' + L.loi + '</p><table style="border-collapse:collapse;width:100%;clear:both;font-size:14px">' + rows + '</table>'
@@ -144,6 +145,14 @@
     var who = (String(tok || '').match(/^tok\.(\w+)/) || [])[1], me = ME[who], write = false, r;
     var lk = locked(a, p);
     if (lk) return { ok: false, error: 'Tháng ' + lk + ' đã được GVCN khoá sổ, không thêm, sửa, xoá được nữa.' };
+    if (window.HTDEMO) {   /* ★ v5.0: kết quả học tập, sổ chủ nhiệm (htdemo.js) */
+      DB.ht = DB.ht || HTDEMO.build(DB.students);
+      var hr = HTDEMO.api(DB.ht, a, p, who, DB.students);
+      if (hr) {
+        (DB.ht.mails || []).splice(0).forEach(function (m) { mail({ kind: 'ht', to: m.to, from: 'Giáo viên chủ nhiệm ' + ME.gvcn.name, subject: m.subject, html: m.html + (m.files && m.files.length ? '<p><i>Tệp đính kèm: ' + m.files.join(', ') + '</i></p>' : '') }); });
+        save(); return hr;
+      }
+    }
     switch (a) {
       case 'loginKhach': r = { ok: true, token: 'tok.ph', boot: base('ph') }; break;
       case 'bootstrap': r = who ? base(who) : { ok: false, error: 'Phiên đăng nhập hết hạn' }; break;
@@ -187,8 +196,8 @@
         var em = String(p.email || '').trim().toLowerCase(), sx = stu(p.ma);
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { r = { ok: false, error: 'Email chưa đúng.' }; break; }
         DB.reg['ph:' + em] = p.ma; save();
-        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', subject: 'Mã xác nhận đăng ký nhận thông báo hạnh kiểm: 123456',
-          html: '<div style="font-family:Arial,sans-serif;max-width:480px"><p>Kính gửi bác,</p><p>Mã xác nhận để nhận thông báo hạnh kiểm của con <b>' + (sx ? sx.ten : '') + '</b> là:</p><p style="font-size:30px;font-weight:800;letter-spacing:6px;color:#0A5C64">123456</p><p style="color:#6C8A93;font-size:13px">(Chế độ trải nghiệm: mã luôn là 123456.)</p></div>' });
+        mail({ kind: 'code', to: em, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', subject: 'Mã xác nhận đăng ký nhận thông báo rèn luyện: 123456',
+          html: '<div style="font-family:Arial,sans-serif;max-width:480px"><p>Kính gửi bác,</p><p>Mã xác nhận để nhận thông báo rèn luyện của con <b>' + (sx ? sx.ten : '') + '</b> là:</p><p style="font-size:30px;font-weight:800;letter-spacing:6px;color:#0A5C64">123456</p><p style="color:#6C8A93;font-size:13px">(Chế độ trải nghiệm: mã luôn là 123456.)</p></div>' });
         r = { ok: true, ten: sx && sx.ten }; break;
       case 'phXacNhan':
         var em2 = String(p.email || '').trim().toLowerCase(), ma2 = DB.reg['ph:' + em2];
@@ -198,14 +207,14 @@
         var rec = { id: 'R' + (Date.now() % 100000), ma: ma2, ten: s2 ? s2.ten : ma2, email: em2, at: now() };
         DB.phReg.push(rec); write = true; mark('dk');
         mail({ kind: 'gv', to: ME.gvcn.email, from: 'Sổ theo dõi học sinh 11D3', subject: '[11D3] Phụ huynh của ' + rec.ten + ' đăng ký nhận thông báo — cô duyệt giúp nhé',
-          html: '<div style="font-family:Arial,sans-serif;max-width:520px"><p>Chào cô Thảo,</p><p>Phụ huynh của <b>' + rec.ten + '</b> (' + em2 + ') vừa đăng ký nhận email thông báo hạnh kiểm. Hiện có <b>' + DB.phReg.length + '</b> đăng ký chờ cô duyệt.</p><p><a data-demo-role="gvcn" data-demo-go="ph" href="#" style="display:inline-block;background:#0E7C86;color:#fff;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:bold">Mở sổ để duyệt</a></p></div>' });
+          html: '<div style="font-family:Arial,sans-serif;max-width:520px"><p>Chào cô Thảo,</p><p>Phụ huynh của <b>' + rec.ten + '</b> (' + em2 + ') vừa đăng ký nhận email thông báo rèn luyện. Hiện có <b>' + DB.phReg.length + '</b> đăng ký chờ cô duyệt.</p><p><a data-demo-role="gvcn" data-demo-go="ph" href="#" style="display:inline-block;background:#0E7C86;color:#fff;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:bold">Mở sổ để duyệt</a></p></div>' });
         r = { ok: true, cho: true }; break;
       case 'phDuyet':
         if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN duyệt đăng ký của phụ huynh.' }; break; }
         var rr = DB.phReg.filter(function (x) { return x.id === p.id; })[0]; DB.phReg = DB.phReg.filter(function (x) { return x.id !== p.id; });
         if (rr && p.ok !== false) { var s3 = stu(rr.ma); if (s3) s3.email = (s3.email ? s3.email + ', ' : '') + rr.email; mark('duyet');
           mail({ kind: 'duyet', to: rr.email, from: 'Cô Thảo · Sổ theo dõi học sinh 11D3', attach: 'HDSD_Phu_huynh.pdf', attachUrl: BASE + 'docs/HDSD_Phu_huynh.pdf',
-            subject: 'Cô Thảo đã duyệt — bác sẽ nhận thông báo hạnh kiểm của con ' + rr.ten,
+            subject: 'Cô Thảo đã duyệt — bác sẽ nhận thông báo rèn luyện của con ' + rr.ten,
             html: '<div style="font-family:Arial,sans-serif;max-width:560px"><img src="' + BASE + 'mascot/chu-nhiem/png/cam-on.png" width="110" style="float:right" alt=""><p>Kính gửi bác,</p><p>Cô Thảo đã duyệt đăng ký của bác. Từ nay, mỗi khi con <b>' + rr.ten + '</b> được cộng hoặc bị trừ điểm, bác sẽ nhận email kèm lời nhắn của cô Thảo về con ạ.</p><p style="clear:both">Hướng dẫn chi tiết dành cho phụ huynh: file PDF đính kèm thư này.</p><p>Cô Thảo cảm ơn bác đã luôn đồng hành cùng con ạ!</p></div>' }); }
         r = { ok: true, dangKy: DB.phReg }; write = true; break;
       case 'saveStudents': if (who !== 'gvcn') { r = { ok: false, error: 'Chỉ GVCN được sửa danh sách lớp.' }; break; } DB.students = p.students || DB.students; r = { ok: true, students: DB.students }; write = true; break;

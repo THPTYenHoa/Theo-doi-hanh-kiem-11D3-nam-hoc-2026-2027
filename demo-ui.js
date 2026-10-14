@@ -90,19 +90,19 @@
     { k: 'ghi', r: 'lt', t: 'Ghi điểm cho một bạn', d: 'Đóng vai <b>Lớp trưởng</b>: chạm tên một bạn ▸ chọn lỗi (vd. "Đi học muộn") hoặc điểm cộng ▸ <b>Bỏ qua, lưu luôn</b>. Điểm hiện ngay, tự lưu phía sau.' },
     { k: 'mail', r: '', t: 'Xem email phụ huynh vừa nhận', d: 'Bấm <b>Hộp thư</b> trên thanh này: phụ huynh của bạn vừa được ghi điểm sẽ nhận thư, kèm lời nhắn của cô Thảo hợp với từng trường hợp.' },
     { k: 'phtb', r: 'ph', t: 'Mở thông báo và tải PDF', d: 'Trong email, bấm <b>Xem chi tiết &amp; tải PDF thông báo</b> ⇒ trang phụ huynh mở đúng thông báo; bấm <b>Tải PDF thông báo</b> (PDF khổ ngang có ảnh cô Thảo).' },
-    { k: 'nx', r: 'gvcn', t: 'Nhận xét học sinh', d: 'Vai <b>Cô Thảo</b>: <b>Cập nhật hạnh kiểm</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết nhận xét ▸ Lưu. Rê chuột vào ô điểm để xem điểm từ đâu.' },
+    { k: 'nx', r: 'gvcn', t: 'Nhận xét học sinh', d: 'Vai <b>Cô Thảo</b>: <b>Kết quả rèn luyện</b> ▸ chạm thẻ một học sinh ▸ <b>Nhận xét</b> ▸ chọn xếp loại, viết nhận xét ▸ Lưu. Rê chuột vào ô điểm để xem điểm từ đâu.' },
     { k: 'bc', r: 'gvcn', t: 'Xem báo cáo tháng & tải PDF', d: 'Menu <b>Báo cáo</b>: số liệu so với tháng trước, xếp hạng tổ, tuyên dương, nhắc nhở; thử ô <b>Tìm nhanh</b> ("tổ 2 vi phạm"). Bấm <b>In / Lưu PDF</b> ⇒ báo cáo khổ ngang có biểu đồ.' },
     { k: 'hs', r: 'gvcn', t: 'PDF riêng một học sinh', d: 'Bấm <b>kính lúp</b> (hoặc phím /) ▸ gõ tên ▸ mở hồ sơ ▸ <b>Tải PDF báo cáo</b>: điểm từng tuần, lỗi thường mắc, khen thưởng, nhận xét của cô.' },
     { k: 'dk', r: 'ph', t: 'Phụ huynh đăng ký nhận email', d: 'Vai <b>Phụ huynh</b>: mở hồ sơ một học sinh ▸ ô <b>Nhận thông báo qua email</b> ▸ nhập email bất kỳ ▸ <b>Gửi mã</b> ▸ nhập <b>123456</b> ▸ Xác nhận.' },
     { k: 'duyet', r: 'gvcn', t: 'Cô duyệt phụ huynh', d: 'Vai <b>Cô Thảo</b>: thẻ "Phụ huynh vừa đăng ký" hiện ngay ▸ <b>Duyệt</b> (menu <b>Phụ huynh</b>). Phụ huynh nhận thư xác nhận kèm <b>file hướng dẫn PDF</b> — xem trong Hộp thư.' },
-    { k: 'chot', r: 'gvcn', t: 'Khoá sổ tháng', d: '<b>Cập nhật hạnh kiểm</b> ▸ <b>Khoá sổ tháng 10</b>. Sau khi khoá sổ, thử xoá / sửa một ghi nhận: hệ thống chặn lại. Cô bấm <b>Mở khoá</b> để chỉnh tiếp.' }];
+    { k: 'chot', r: 'gvcn', t: 'Khoá sổ tháng', d: '<b>Kết quả rèn luyện</b> ▸ <b>Khoá sổ tháng 10</b>. Sau khi khoá sổ, thử xoá / sửa một ghi nhận: hệ thống chặn lại. Cô bấm <b>Mở khoá</b> để chỉnh tiếp.' }];
   function db() { return DEMO.db(); }
   function nDone() { var d = db().done; return STEPS.filter(function (x) { return d[x.k]; }).length; }
   function unread() { return db().mails.filter(function (m) { return m.unread; }).length; }
   var role = curRole();
   function bar() {
     var b = $('#dm-bar'); if (!b) { b = document.createElement('div'); b.id = 'dm-bar'; document.body.appendChild(b); }
-    var R = ['gvcn', 'lt', 'tt', 'ph'];
+    var R = ['gvcn', 'lt', 'tt', 'gvtoan', 'ph'];
     b.innerHTML = '<span class="tag">TRẢI NGHIỆM · DỮ LIỆU MẪU</span><span class="roles">' + R.map(function (r) { return '<button data-r="' + r + '" class="' + (r === role ? 'on' : '') + '">' + DEMO.ROLE_T[r] + '</button>'; }).join('') + '</span>'
       + '<select aria-label="Đổi vai">' + R.map(function (r) { return '<option value="' + r + '"' + (r === role ? ' selected' : '') + '>' + DEMO.ROLE_T[r] + '</option>'; }).join('') + '</select><span class="sp"></span>'
       + '<button class="bt hl" data-a="guide">' + SV + '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="t">Hướng dẫn</span> ' + (window.DMG ? DMG.count().join('/') : nDone() + '/' + STEPS.length) + '</button>'

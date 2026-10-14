@@ -1,6 +1,31 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v5.0", version: "5.0", date: "2026-10-14",
+    title: "Kết quả học tập, Sổ công tác chủ nhiệm, kết nối giáo viên bộ môn",
+    summary: "Sổ theo dõi học sinh nay theo dõi cả kết quả học tập (điểm số, nhận xét theo Thông tư 22), lập Sổ công tác chủ nhiệm đúng mẫu của trường (xuất Word, gửi Ban giám hiệu), giáo viên bộ môn tự nhập điểm, gửi phiếu báo kết quả tới cha mẹ học sinh. Cách gọi các mục theo ngôn ngữ hành chính: Theo dõi nề nếp, Kết quả rèn luyện, Kết quả học tập.",
+    items: [
+      { type: "new", title: "Kết quả học tập: bảng điểm từng môn",
+        text: "Menu <b>Kết quả học tập</b> ▸ chọn môn, học kì ▸ bấm vào ô để nhập điểm ĐĐGtx, giữa kì, cuối kì (môn nhận xét nhập Đ / CĐ). ĐTB môn học kì, cả năm tự tính theo Thông tư 22/2021. <b>Thêm đầu điểm</b> để tạo cột mới; bấm tiêu đề cột để đổi tên hoặc xoá.",
+        img: "updates/v5.0/bang-diem.jpg" },
+      { type: "new", title: "Nhập, thay điểm hàng loạt từ Excel",
+        text: "Bấm <b>Nhập từ Excel</b> ▸ chọn tệp (mỗi trang tính một môn, có cột Họ và tên hoặc Mã HS) ▸ xem trước ▸ <b>Lưu vào sổ</b>. Chọn <b>Thay hàng loạt</b> hoặc <b>Chỉ cập nhật</b>; cột chưa có trong sổ được lưu thành đầu điểm mới.",
+        img: "updates/v5.0/nhap-excel.jpg" },
+      { type: "new", title: "Tổng kết, phiếu báo kết quả gửi cha mẹ học sinh",
+        text: "Thẻ <b>Tổng kết</b>: ĐTB các môn, mức kết quả học tập Tốt · Khá · Đạt · Chưa đạt, kết quả rèn luyện, danh hiệu cả năm theo giữa kì, học kì, cả năm. Bấm <b>Gửi phiếu báo cha mẹ HS</b> ▸ xem trước ▸ <b>Gửi</b>: mỗi gia đình nhận email kết quả của riêng con mình.",
+        img: "updates/v5.0/tong-ket.jpg" },
+      { type: "new", title: "Giáo viên bộ môn nhập điểm, nhận xét",
+        text: "Thẻ <b>Môn học &amp; giáo viên</b>: nhập danh sách giáo viên bộ môn kèm email. Giáo viên đăng nhập bằng email của mình (mã 6 số), <b>chỉ thấy và nhập điểm, nhận xét môn mình dạy</b>. Nút <b>Đề nghị GVBM nhập</b> gửi email kèm đường dẫn.",
+        img: "updates/v5.0/giao-vien-bo-mon.jpg" },
+      { type: "new", title: "Sổ công tác chủ nhiệm: xuất Word đúng mẫu, gửi Ban giám hiệu",
+        text: "Menu <b>Sổ công tác chủ nhiệm</b>: các mục theo đúng sổ của trường. Phần có nhãn <b>Tự động</b> lấy từ dữ liệu đã lưu (sơ kết tuần, xếp loại rèn luyện, chất lượng hai mặt…), phần còn lại GVCN điền, tải ảnh sơ đồ lớp, biên bản họp. Bấm <b>Xuất file Word</b> hoặc <b>Gửi Ban giám hiệu</b> (email kèm file).",
+        img: "updates/v5.0/so-chu-nhiem.jpg" },
+      { type: "imp", title: "Ngôn ngữ hành chính, mức đánh giá theo Thông tư 22",
+        text: "Các mục đổi tên: <b>Theo dõi nề nếp</b>, <b>Kết quả rèn luyện</b>, <b>Báo cáo thi đua</b>, <b>Nhật ký theo dõi</b>, <b>Cha mẹ học sinh</b>. Mức xếp loại hiển thị Tốt · Khá · Đạt · Chưa đạt.",
+        img: "updates/v5.0/menu-moi.jpg" }
+    ]
+  },
+  {
     id: "2026-10-13-v4.9", version: "4.9", date: "2026-10-13",
     title: "Logo trường, xếp loại hạnh kiểm chỉ theo tháng và học kỳ",
     summary: "Màn đăng nhập có logo Trường THPT Yên Hòa. Hạnh kiểm chỉ xếp loại theo tháng và học kỳ — không còn xếp loại, báo cáo theo tuần (GVCN vẫn lấy được báo cáo tuần khi cần). Bỏ mục học phí khỏi Tính năng sắp ra mắt.",

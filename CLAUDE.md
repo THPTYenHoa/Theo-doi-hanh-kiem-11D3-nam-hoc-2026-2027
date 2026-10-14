@@ -191,3 +191,21 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   thẻ tổng quan "Cần nhắc nhở" / "Đạt loại Tốt" tính theo `monthAvg`. Điểm từng tuần vẫn hiện nhưng không tô màu xếp loại. Không thêm lại xếp loại tuần ở màn mới.
 - **Không có thông tin học phí** trong app / tài liệu (roadmap, bài dự thi .pptx đã bỏ).
 - `run.js` mục 8 "thấy ≥ 6 học sinh trên điện thoại" đỏ sẵn từ trước (5 em) — chưa sửa.
+
+## v5.0 — Kết quả học tập · Sổ công tác chủ nhiệm · giáo viên bộ môn · ngôn ngữ hành chính
+- **Backend** (`HocTap.gs` ở yenhoa-backend): sheet tự tạo `MonHoc`, `GiaoVienBM`, `CachTinhDiem`, `DiemSo` (mỗi dòng 1 đầu điểm: mã HS · môn · HK · đầu điểm · giá trị),
+  `HoSoHS`, `SoChuNhiem` (khoá · giá trị). Lệnh: `htBoot`, `htSaveMon/GV/Rule/Diem/HoSo`, `scnSave`, `scnImg/ImgDel/ImgGet`, `htMailBGH/GV/PH`.
+  GVBM có email trong `GiaoVienBM` ⇒ tài khoản vai trò **"Giáo viên bộ môn"** (`themGVBM_` trong `accountsMap`, `me.mon`), chỉ đọc / ghi điểm môn mình dạy.
+- **`hoctap.js` (`window.HT`, menu `ht` "Kết quả học tập")**: bảng điểm (ô sửa tại chỗ, thêm / đổi tên / xoá cột; đầu điểm `TX1…`, `GK`, `CK`, `HK` (ghi đè KQ học kì),
+  `NXGV` (nhận xét GVBM), tên khác = đầu điểm mới, không tính ĐTB), nhập Excel nhiều trang tính (tên trang = tên / mã môn, "HK2" ⇒ học kì II; thay hàng loạt = `replace`),
+  tổng kết `HT.ketQua(ma, 'gk1'|'hk1'|'gk2'|'hk2'|'cn')` theo tham số `CachTinhDiem` (mặc định TT22), `HT.renLuyen` (từ xếp loại tháng), `HT.danhHieu`,
+  phiếu báo cha mẹ HS `HT.phieuHTML` ⇒ `htMailPH`. Hàng đợi ghi `HTQ` (`hk_htq_v1`), đệm `hk_ht_v1`. GVBM: `navItems` chỉ còn `ht`, không tự chạy tour.
+  Tên mức cũ "Trung bình / Yếu" hiển thị thành "Đạt / Chưa đạt" (`chuanTen`).
+- **`socn.js` (`window.SCN`, menu `scn`, chỉ GVCN)**: 8 thẻ theo đúng sổ; `SCN.data()` = dữ liệu điền khuôn (tự động + GVCN điền, khoá trong `SoChuNhiem`);
+  ảnh `img.<khoá>` (sodo1, sodo2, quydinh_lop, sk_hk1, tk_nam, bb_daunam, bb_hk1, bb_cuoinam). Xuất: `SCN.taoWord()` ⇒ `templates/so-chu-nhiem.docx` + `docxfill.js`.
+- **Khuôn Word**: `tools/socn/lam_khuon.py <file mẫu> templates/so-chu-nhiem.docx` — giữ trình bày file mẫu, thay dữ liệu bằng ô `{{…}}` (cú pháp ở đầu `docxfill.js`).
+  **File mẫu gốc có dữ liệu thật của lớp khác — KHÔNG đưa vào repo.** Đổi mẫu ⇒ dựng lại khuôn, kiểm tra không còn tên / số điện thoại thật, tăng `?v=` trong `taoWord`.
+- **Máy chủ mô phỏng** `htdemo.js` dùng chung cho `demo.js` (chế độ trải nghiệm, vai mới "Giáo viên bộ môn (Toán)") và `tools/test/mock.js` (email `gvtoan@example.com`).
+  Lệnh backend mới ⇒ thêm vào `htdemo.js`. `run.js` mục 23.
+- **Ngôn ngữ** (người dùng yêu cầu 14/10/2026, theo sổ công tác chủ nhiệm): Theo dõi nề nếp · Kết quả rèn luyện · Kết quả học tập · Báo cáo thi đua · Sổ công tác chủ nhiệm ·
+  Nhật ký theo dõi · Cha mẹ học sinh; không dùng "hạnh kiểm" trên giao diện / email (dùng "rèn luyện").

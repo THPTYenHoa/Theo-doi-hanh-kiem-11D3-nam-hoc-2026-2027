@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
+<script src="htdemo.js?v=5.0"></script>
 <script src="demo.js?v=4.8"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" type="image/png" href="img/favicon.png">
@@ -549,7 +550,7 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
 <!-- ═══════════════════ ĐĂNG NHẬP ═══════════════════ -->
 <section id="login" class="hide">
  <div class="lgwrap">
-  <div class="mark">Sổ theo dõi học sinh · Hạnh kiểm &amp; nề nếp</div>
+  <div class="mark">Sổ theo dõi học sinh · Học tập · Rèn luyện · Nề nếp</div>
   <div class="classname">11D3</div>
   <div class="subline">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
 
@@ -569,7 +570,7 @@ tr:hover td,tr:hover td.name{background:var(--paler)}
   <div id="lgPH" class="hide">
     <div class="phbox">
       <h3>Chế độ phụ huynh — chỉ xem</h3>
-      <p>Vào thẳng, không cần mật khẩu. Bạn xem được đầy đủ tình hình hạnh kiểm của cả lớp:</p>
+      <p>Vào thẳng, không cần mật khẩu. Bạn xem được đầy đủ tình hình rèn luyện, nề nếp của cả lớp:</p>
       <ul>
         <li>Điểm từng tuần; xếp loại theo tháng, học kỳ</li>
         <li>Từng lỗi bị trừ, ai ghi nhận, ngày nào, kèm diễn giải</li>
@@ -730,10 +731,10 @@ const ICON = {
   check:'<path d="m4 12 5 5L20 6"/>'
 };
 const NAV = [
-  {v:'ghi',  t:'Ghi điểm',            s:'Ghi điểm',  el:'#vGhi'},
-  {v:'bang', t:'Cập nhật hạnh kiểm',  s:'Hạnh kiểm', el:'#vBang'},
+  {v:'ghi',  t:'Theo dõi nề nếp',     s:'Nề nếp',    el:'#vGhi'},
+  {v:'bang', t:'Kết quả rèn luyện',   s:'Rèn luyện', el:'#vBang'},
   {v:'tk',   t:'Thống kê',            s:'Thống kê',  el:'#vTK'},
-  {v:'ls',   t:'Lịch sử',             s:'Lịch sử',   el:'#vLS'},
+  {v:'ls',   t:'Nhật ký theo dõi',    s:'Nhật ký',   el:'#vLS'},
   {v:'cai',  t:'Cài đặt',             s:'Cài đặt',   el:'#vCai'}
 ];
 function navItems(){ return isKhach() ? NAV.filter(n=>n.v!=='ghi') : NAV; }
@@ -1085,7 +1086,7 @@ const HELP = {
     ['Lỗi tái phạm','Nếu em đó đã mắc cùng lỗi trong tháng, app hỏi cô muốn trừ điểm như lần đầu hay trừ tăng dần theo quy định của trường.'],
     ['Phạm vi của tổ trưởng','Tổ trưởng chỉ ghi được cho tổ mình. Học sinh tổ khác hiện chữ "chỉ xem".']
   ]},
-  bang: { t:'Cập nhật hạnh kiểm', items:[
+  bang: { t:'Kết quả rèn luyện', items:[
     ['Chọn kỳ','Ba nút đầu trang: Tuần, Tháng, Học kỳ. Học kỳ 1 gồm 5 tháng, từ T09/2026 đến T01/2027.'],
     ['Thẻ chi tiết','Mỗi học sinh một thẻ: điểm, xếp loại, từng lỗi bị trừ kèm người ghi và ngày, thành tích được cộng, diễn giải, và nhận xét của GVCN.'],
     ['Bảng tổng hợp','Dạng bảng để nhìn nhanh cả lớp. Kéo ngang để xem hết cột.'],
@@ -1512,7 +1513,7 @@ function hkTable(){
 
 function renderBang(){
   const list=activeStudents();
-  if(S.hkKy==='tuan') S.hkKy='thang';   /* v4.9: hạnh kiểm chỉ xếp loại theo tháng / học kỳ */
+  if(S.hkKy==='tuan') S.hkKy='thang';   /* v4.9: rèn luyện chỉ xếp loại theo tháng / học kỳ */
   let h=`<div class="segbar">
     <button data-hk="thang" class="${S.hkKy==='thang'?'on':''}">${esc(thangLabel(S.thang))}</button>
     <button data-hk="hk"    class="${S.hkKy==='hk'?'on':''}">Học kỳ</button>
@@ -2231,7 +2232,7 @@ function exportCSV(){
 
 function printReport(){
   const rows=lsData(), months=lsRange(), f=S.lsFilter;
-  let h=`<h1>Sổ theo dõi học sinh lớp 11D3 · Hạnh kiểm</h1>
+  let h=`<h1>Sổ theo dõi học sinh lớp 11D3 · Rèn luyện</h1>
     <div class="sub">THPT Yên Hòa · Năm học ${esc(S.cfg.namHoc)} · ${esc(lsTitle())}
       · In ngày ${new Date().toLocaleDateString('vi-VN')}</div>`;
 
@@ -2946,7 +2947,7 @@ body,#login{background:var(--bg)}
 </style>
 <div id="hkq" role="status"></div>
 
-<script src="updates/notes.js?v=4.9"></script>
+<script src="updates/notes.js?v=5.0"></script>
 <script id="v3-js">
 'use strict';
 /* ══ ⭐ v3.0 ══
@@ -2959,7 +2960,7 @@ body,#login{background:var(--bg)}
    5. CHỦ ĐỀ (THEME): bảng màu + hình nền (themes/<id>/d.webp | m.webp, thiếu ảnh ⇒ nền hoạ tiết CSS);
       mỗi người tự chọn (localStorage.hk_theme), GVCN đặt mặc định cho lớp (backend saveTheme ⇒ bootstrap.theme).
    6. THÔNG BÁO CẬP NHẬT: updates/notes.js (window.HK_UPDATES), hiện 7 ngày, badge phiên bản mở lại lịch sử. */
-const HK_VER='4.9';
+const HK_VER='5.0';
 const nk3=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').toLowerCase().trim();
 const SV='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 
@@ -3040,7 +3041,7 @@ function lgErr(m){ const e=$('#lgErr3'); if(!e) return; e.innerHTML=m||''; e.cla
 function lgBusy(on,label){ LG.busy=on; const b=$('#lgGo'); if(!b) return; b.disabled=!!on; b.innerHTML=on?'<span class="spin sm"></span> '+esc(label):esc(b.dataset.l); }
 function lgShell(inner){
   const w=$('#login .lgwrap');
-  w.innerHTML=`<div class="lghead"><div class="lgtx"><div class="mark">Sổ theo dõi học sinh · Hạnh kiểm &amp; nề nếp</div><div class="classname">11D3</div></div>
+  w.innerHTML=`<div class="lghead"><div class="lgtx"><div class="mark">Sổ theo dõi học sinh · Học tập · Rèn luyện · Nề nếp</div><div class="classname">11D3</div></div>
     <img class="lglogo" src="img/logo-yenhoa.webp" alt="Logo Trường THPT Yên Hòa" width="96" height="96"></div>
     <div class="subline">THPT Yên Hòa · Năm học <b>2026 – 2027</b></div>
     <div class="lgcard">${inner}<div class="lgerr" id="lgErr3"></div></div>
@@ -3355,7 +3356,7 @@ async function openProfile(ma, ky){
   if(rms.length) h+='<div class="grouphead">Nhận xét của GVCN</div>'+rms.map(r=>`<div class="remarkbox" style="margin:8px 18px"><div class="h">${esc(thangLabel(r.thang,true))}${r.xepLoai?' · xếp loại '+esc(r.xepLoai):''}</div>${r.nhanXet?'<p>'+esc(r.nhanXet)+'</p>':''}</div>`).join('');
   h+=`<div class="grouphead">Vi phạm · ${tru.length}</div>`+(tru.length?tru.map(entryHTML).join(''):'<div class="note">Không có.</div>');
   h+=`<div class="grouphead">Được cộng điểm · ${cong.length}</div>`+(cong.length?cong.map(entryHTML).join(''):'<div class="note">Không có.</div>');
-  openPanel(s.ten, 'Tổ '+s.to+' · '+(s.chucVu||'Học sinh')+' · hồ sơ hạnh kiểm', h, 'profile');
+  openPanel(s.ten, 'Tổ '+s.to+' · '+(s.chucVu||'Học sinh')+' · hồ sơ học sinh', h, 'profile');
   try{ wirePanelEntries(); }catch(_){}
   $$('#pBody [data-pk]').forEach(b=>b.onclick=()=>openProfile(ma,b.dataset.pk));
   const on=$('#pBody .pf-seg .chip.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'});
@@ -3371,7 +3372,7 @@ async function openProfile(ma, ky){
     a.download='hanh-kiem_'+nk3(s.ten).replace(/[^a-z0-9]+/g,'_')+'_'+cur.k+'.csv'; document.body.appendChild(a); a.click(); a.remove(); toast('Đang tạo file Excel…'); };
 }
 window.openProfile=openProfile;
-/* chạm tên học sinh ở Hạnh kiểm / Thống kê ⇒ mở hồ sơ cả năm (Ghi điểm giữ nguyên: mở bảng ghi) */
+/* chạm tên học sinh ở Rèn luyện / Thống kê ⇒ mở hồ sơ cả năm (Ghi điểm giữ nguyên: mở bảng ghi) */
 document.addEventListener('click',e=>{
   const el=e.target.closest && e.target.closest('#vBang [data-ma], #vTK [data-ma]');
   if(!el) return; e.stopPropagation(); e.preventDefault(); openProfile(el.dataset.ma);
@@ -3670,7 +3671,7 @@ const TOURS={
     {el:firstRow(), t:'Ghi điểm cho một học sinh', d:'Chạm vào tên học sinh ▸ chọn <b>Trừ điểm</b> hoặc <b>Cộng điểm</b> ▸ chạm lý do ▸ thêm diễn giải, ảnh bằng chứng nếu cần ▸ <b>Lưu điểm</b>. Điểm hiện ngay, máy tự lưu phía sau.'},
     {el:'#multiBtn', t:'Ghi cho nhiều em một lượt', d:'Bấm <b>Chọn nhiều</b>, tick các em ▸ <b>Ghi điểm</b> ▸ chọn lý do. Dùng cho lỗi tập thể hoặc khen thưởng chung.'},
     {el:'#hkq, .topline .sync', t:'Trạng thái lưu', d:'Khi chữ <b>Đang lưu…</b> đổi thành <b>Đã lưu vào sổ</b> là điểm đã vào Google Sheet. Mạng yếu thì máy tự gửi lại, không bị ghi trùng.'},
-    {el:nav('bang'), t:'Cập nhật hạnh kiểm', d:'Xem xếp loại theo <b>tháng / học kỳ</b>. Chạm một em để mở <b>hồ sơ</b>, viết <b>nhận xét</b> và <b>xác nhận xếp loại</b> cuối tháng.', pre:()=>go('ghi')},
+    {el:nav('bang'), t:'Kết quả rèn luyện', d:'Xem xếp loại theo <b>tháng / học kỳ</b>. Chạm một em để mở <b>hồ sơ</b>, viết <b>nhận xét</b> và <b>xác nhận xếp loại</b> cuối tháng.', pre:()=>go('ghi')},
     {el:nav('tk'), t:'Thống kê', d:'Em vi phạm nhiều nhất, em được tuyên dương, lỗi cả lớp hay mắc, so sánh tổ và xu hướng theo tháng.'},
     {el:nav('ls'), t:'Lịch sử & xuất file', d:'Lọc theo tháng / tổ / học sinh ▸ <b>Tải Excel</b> hoặc <b>Tải PDF</b> để nộp bản giấy.'},
     {el:'#hFind', t:'Tra cứu nhanh', d:'Bấm kính lúp (hoặc phím <b>/</b>) ▸ gõ tên không cần dấu ▸ mở hồ sơ cả năm của em đó.'},
@@ -3835,7 +3836,7 @@ THEME.open=function(){
 #v32pop.on{transform:translate(-50%,0)}
 #v32pop .tx{font-size:13px;line-height:1.4;min-width:0} #v32pop .tx span{display:block;font-size:11.5px;color:var(--mute)}
 #v32pop .lv{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ok);animation:v32p 1.8s infinite}
-/* thẻ số liệu ở Hạnh kiểm / Thống kê */
+/* thẻ số liệu ở Rèn luyện / Thống kê */
 .kpis{gap:8px;background:transparent;border:0;box-shadow:none}
 .kpi{border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-1);position:relative;overflow:hidden}
 .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal-l)}
@@ -4151,7 +4152,7 @@ THEME.apply=function(t){ thApply32.apply(this,arguments); const c=(t||THEME.cur(
    Xuất: In / PDF (mẫu văn bản: quốc hiệu, mục La Mã, chữ ký GVCN) · Excel (CSV) · Sao chép tóm tắt gửi nhóm phụ huynh
    (KHÔNG nêu tên học sinh vi phạm). */
 ICON.bc='<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>';
-NAV.splice(NAV.findIndex(n=>n.v==='tk')+1,0,{v:'bc',t:'Báo cáo',s:'Báo cáo',el:'#vBC'});
+NAV.splice(NAV.findIndex(n=>n.v==='tk')+1,0,{v:'bc',t:'Báo cáo thi đua',s:'Báo cáo',el:'#vBC'});
 (function(){ const tk=$('#vTK'); if(tk && !$('#vBC')){ const s=document.createElement('section'); s.className='view hide'; s.id='vBC'; tk.after(s); } })();
 const navItems33=navItems;
 window.navItems=navItems=function(){ return navItems33.apply(this,arguments).filter(n=>n.v!=='bc' || !isKhach()); };
@@ -4253,7 +4254,7 @@ function renderBC(){
   const nTot=st.cnt[0], gv=isGVCN();
   let h=`<div class="segbar">${[['thang','Tháng '+S.thang],['hk','Học kỳ '+(hkOf(S.thang)===1?'I':'II')],['nam','Cả năm']].concat(gv?[['tuan','Tuần '+S.tuan]]:[]).map(([k,l])=>`<button data-bk="${k}" class="${S.bcKy===k?'on':''}">${l}</button>`).join('')}</div>`;
   h+=`<div class="bchead"><span class="msc">${window.MASCOT&&MASCOT.style()!=='off'?MASCOT.img(st.care.length>st.list.length/4?'lo-lang':nTot>=st.list.length/2?'vui':'huong-dan',56):''}</span>
-    <div class="tt"><small>Báo cáo hạnh kiểm</small><b>Lớp ${esc(S.cfg.lop||'11D3')} · ${esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))}</b>
+    <div class="tt"><small>Báo cáo kết quả rèn luyện</small><b>Lớp ${esc(S.cfg.lop||'11D3')} · ${esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))}</b>
     <span>${[S.cfg.truong,'Năm học '+(S.cfg.namHoc||''),P.prev?'so sánh với '+P.prev.nhan:''].filter(Boolean).map(esc).join(' · ')}</span></div></div>`;
   h+=`<div class="bcacts"><button class="p" id="bcPrint"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg><span class="lg">Tải PDF</span><span class="sh">PDF</span></button>
     <button id="bcXls"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></svg><span class="lg">Tải Excel</span><span class="sh">Excel</span></button>
@@ -4315,7 +4316,7 @@ function bcPrint(P){
   const tr=(cells,tag)=>'<tr>'+cells.map(c=>`<${tag||'td'}>${c}</${tag||'td'}>`).join('')+'</tr>';
   let h=`<div class="bcdoc"><table class="hd"><tr><td>${esc(String(S.cfg.truong||'TRƯỜNG THPT YÊN HÒA').toUpperCase())}<br><b>LỚP ${esc(S.cfg.lop||'11D3')}</b></td>
     <td><b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><br><b><u>Độc lập – Tự do – Hạnh phúc</u></b></td></tr></table>
-    <h1>Báo cáo tình hình hạnh kiểm ${esc(P.TIT)}</h1><div class="sub">Năm học ${esc(S.cfg.namHoc||'')}</div>`;
+    <h1>Báo cáo tình hình rèn luyện, thi đua ${esc(P.TIT)}</h1><div class="sub">Năm học ${esc(S.cfg.namHoc||'')}</div>`;
   h+=`<h2>I. Tình hình chung</h2><p>${esc(T.nx)}</p>`;
   h+=`<table class="t">${tr(['Chỉ số','Kỳ này'].concat(pv?['Kỳ trước ('+esc(P.prev.nhan)+')']:[]),'th')}
     ${tr(['Điểm TB tuần của lớp',f1(st.tb)].concat(pv?[f1(pv.tb)]:[]))}${tr(['Lượt vi phạm (điểm)',st.tru.length+' ('+st.dTru+')'].concat(pv?[pv.tru.length+' ('+pv.dTru+')']:[]))}
@@ -4327,7 +4328,7 @@ function bcPrint(P){
   h+=`<h2>VI. Học sinh cần quan tâm</h2>${st.care.length?`<table class="t">${tr(['STT','Họ tên','Tổ','Nội dung','Biện pháp'],'th')}${st.care.map((c,i)=>tr([i+1,esc(c.s.ten),esc(c.s.to),esc(c.why.join('; ')),c.lv>1?'Trao đổi phụ huynh':'Nhắc nhở'])).join('')}</table>`:'<p>Không có.</p>'}`;
   h+=`<h2>VII. Phương hướng ${P.ky==='tuan'?'tuần':P.ky==='thang'?'tháng':'kỳ'} tới</h2><p>${esc(T.ph)}</p>`;
   h+=`<table class="sig"><tr><td></td><td><i>Hà Nội, ngày ${d.getDate()} tháng ${d.getMonth()+1} năm ${d.getFullYear()}</i><br><b>GIÁO VIÊN CHỦ NHIỆM</b><br><i>(Ký, ghi rõ họ tên)</i><br><br><br><br><b>${esc(S.cfg.gvcn||'')}</b></td></tr></table>`;
-  h+=`<div class="pb"></div><h2>Phụ lục: Bảng tổng hợp hạnh kiểm từng học sinh</h2><table class="t">${tr(['STT','Họ tên','Tổ'].concat(cols.map(c=>c.h),['TB','Xếp loại']),'th')}
+  h+=`<div class="pb"></div><h2>Phụ lục: Bảng tổng hợp kết quả rèn luyện từng học sinh</h2><table class="t">${tr(['STT','Họ tên','Tổ'].concat(cols.map(c=>c.h),['TB','Xếp loại']),'th')}
     ${st.list.map((s,i)=>{ const x=st.xl[s.ma]; return tr([i+1,esc(s.ten),esc(s.to)].concat(cols.map(c=>c.f(s)),[f1(x.sc),esc(x.ten)])); }).join('')}</table></div>`;
   $('#printArea').innerHTML=h; setTimeout(()=>window.print(),60);
 }
@@ -4345,7 +4346,7 @@ function bcExcel(P){
 }
 function bcCopy(P){
   const st=bcStats(P), pv=bcPrevStats(P), n=st.list.length||1, th=S.cfg.thresholds;
-  let t=`[Lớp ${S.cfg.lop||'11D3'}] Báo cáo hạnh kiểm ${P.nhan}\n`;
+  let t=`[Lớp ${S.cfg.lop||'11D3'}] Báo cáo kết quả rèn luyện ${P.nhan}\n`;
   t+=`• Điểm TB tuần của lớp: ${f1(st.tb)} (${rankName(st.tb)})${pv?`, ${st.tb>=pv.tb?'tăng':'giảm'} ${f1(Math.abs(st.tb-pv.tb))} so với ${P.prev.nhan}`:''}\n`;
   t+=`• Xếp loại: ${th.map((x,i)=>st.cnt[i]?`${x.ten} ${st.cnt[i]} em (${Math.round(st.cnt[i]*100/n)}%)`:'').filter(Boolean).join(', ')}\n`;
   t+=`• ${st.cong.length} lượt được khen, ${st.tru.length} lượt vi phạm\n`;
@@ -4600,9 +4601,9 @@ window.bcPrint=bcPrint=function(P){
     <div class="card"><h3>Nhắc nhở · cần quan tâm (${st.care.length}) ${st.care.length?R.mc('nghiem',52):''}</h3>${st.care.length?`<table class="t"><tr><th>Học sinh</th><th>Tổ</th><th>Lý do</th><th>Biện pháp</th></tr>${st.care.slice(0,11).map(c=>`<tr><td><b>${esc(c.s.ten)}</b></td><td>${esc(c.s.to)}</td><td>${esc(c.why.join('; '))}</td><td style="color:${c.lv>1?'#C0392B':'#B9761C'};font-weight:700">${c.lv>1?'Trao đổi phụ huynh':'Nhắc nhở'}</td></tr>`).join('')}</table>`:'<div class="none">Không có em nào cần lưu ý — cả lớp thực hiện tốt.</div>'}</div></div>`;
   const p4=`<div class="g2"><div class="card"><h3>Nhận xét của cô Thảo</h3><div class="txt">${esc(T.nx)}</div></div><div class="card"><h3>Phương hướng ${P.ky==='tuan'?'tuần':P.ky==='thang'?'tháng':'kỳ'} tới</h3><div class="txt">${esc(T.ph)}</div></div></div>
     <div class="sig"><i>Ngày ${new Date().getDate()} tháng ${new Date().getMonth()+1} năm ${new Date().getFullYear()}</i><br><b>GIÁO VIÊN CHỦ NHIỆM</b><br><br><br><br><b>${esc(cfg.gvcn||'')}</b></div>`;
-  let html=R.page(hd('Báo cáo hạnh kiểm','Tổng quan · '+esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))),p1,foot)
-    +R.page(hd('Báo cáo hạnh kiểm','Diễn biến & thi đua tổ'),p2,foot)+R.page(hd('Báo cáo hạnh kiểm','Tuyên dương & nhắc nhở'),p3,foot)
-    +R.page(hd('Báo cáo hạnh kiểm','Nhận xét của cô Thảo & phương hướng'),p4,foot);
+  let html=R.page(hd('Báo cáo kết quả rèn luyện','Tổng quan · '+esc(P.nhan.charAt(0).toUpperCase()+P.nhan.slice(1))),p1,foot)
+    +R.page(hd('Báo cáo kết quả rèn luyện','Diễn biến & thi đua tổ'),p2,foot)+R.page(hd('Báo cáo kết quả rèn luyện','Tuyên dương & nhắc nhở'),p3,foot)
+    +R.page(hd('Báo cáo kết quả rèn luyện','Nhận xét của cô Thảo & phương hướng'),p4,foot);
   const cols=bcCols(P);
   for(let i=0;i<st.list.length;i+=16) html+=R.page(hd('Phụ lục','Bảng tổng hợp từng học sinh'+(st.list.length>16?' · phần '+(i/16+1):'')),
     `<table class="t"><tr><th>#</th><th>Họ tên</th><th>Tổ</th>${cols.map(c=>`<th class="n">${c.h}</th>`).join('')}<th class="n">TB</th><th>Xếp loại</th></tr>${st.list.slice(i,i+16).map((s,j)=>{ const x=st.xl[s.ma];
@@ -4655,7 +4656,7 @@ function phCheck(){
   const r=neu[neu.length-1], k=neu.length;
   let c=$('#phNew'); if(c) c.remove(); c=document.createElement('div'); c.id='phNew'; c.setAttribute('role','alert');
   c.innerHTML=(window.MASCOT?MASCOT.img('chi-tay',58):'')+`<div><b>${k>1?k+' phụ huynh vừa đăng ký':'Phụ huynh vừa đăng ký'}</b>
-    <p>${k>1?'Trong đó có phụ huynh của <b>'+esc(r.ten)+'</b>. ':'Phụ huynh của <b>'+esc(r.ten)+'</b> ('+esc(r.email)+') '}muốn nhận email thông báo hạnh kiểm. Cô duyệt giúp nhé!</p>
+    <p>${k>1?'Trong đó có phụ huynh của <b>'+esc(r.ten)+'</b>. ':'Phụ huynh của <b>'+esc(r.ten)+'</b> ('+esc(r.email)+') '}muốn nhận email thông báo rèn luyện. Cô duyệt giúp nhé!</p>
     <div class="bt"><button class="go" id="phGo">Duyệt ngay</button><button id="phLater">Để sau</button></div></div>`;
   document.body.appendChild(c);
   $('#phGo').onclick=()=>{ c.remove(); phOpen(); };
@@ -4817,9 +4818,9 @@ if(location.hash==='#duyet'){ (function w(n){ if($('#app.on') && S.me){ history.
       danh sách học sinh + email phụ huynh (Sửa ⇒ openStudentForm). Phần phụ huynh rời khỏi Cài đặt.
    2. CÀI ĐẶT chia tab (`cai39`): gom các mục theo tiêu đề (CAI_TABS) sau khi renderCai vẽ xong; nhớ tab ở localStorage hk_cai_tab.
    3. MENU TÀI KHOẢN `#ava39` ở avatar góc phải: tên, email, vai trò, Phụ huynh, Cài đặt, Giao diện, Hướng dẫn, Đăng xuất.
-   4. TÌM KIẾM THÔNG MINH `.sq39` ở Cập nhật hạnh kiểm + Báo cáo: tên (bỏ dấu), "tổ 2", xếp loại (tốt/khá/tb/yếu), "vi phạm", "khen", "không lỗi",
+   4. TÌM KIẾM THÔNG MINH `.sq39` ở Kết quả rèn luyện + Báo cáo: tên (bỏ dấu), "tổ 2", xếp loại (tốt/khá/tb/yếu), "vi phạm", "khen", "không lỗi",
       nội dung lỗi / khen ("đi muộn", "điện thoại"…). Lọc thẻ, dòng bảng; nhớ theo màn hình (S.sq39).
-   5. CHÚ THÍCH KHI RÊ CHUỘT `#tip39`: ô điểm ở Ghi điểm, thẻ / bảng Cập nhật hạnh kiểm, bảng Báo cáo ⇒ điểm cộng / trừ từ đâu (gộp theo nội dung). */
+   5. CHÚ THÍCH KHI RÊ CHUỘT `#tip39`: ô điểm ở Ghi điểm, thẻ / bảng Kết quả rèn luyện, bảng Báo cáo ⇒ điểm cộng / trừ từ đâu (gộp theo nội dung). */
 (function(){
 const IC39={ph:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
   out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>', gear:ICON.cai, pal:'<circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A5.6 5.6 0 0 0 22 10c0-4.4-4.5-8-10-8Z"/>',
@@ -4831,7 +4832,7 @@ const isMob=()=>innerWidth<=760;
 
 /* ── 1. TRANG PHỤ HUYNH ── */
 ICON.ph=IC39.ph;
-NAV.splice(NAV.findIndex(n=>n.v==='cai'),0,{v:'ph',t:'Phụ huynh',s:'Phụ huynh',el:'#vPH'});
+NAV.splice(NAV.findIndex(n=>n.v==='cai'),0,{v:'ph',t:'Cha mẹ học sinh',s:'CMHS',el:'#vPH'});
 (function(){ const c=$('#vCai'); if(c && !$('#vPH')){ const s=document.createElement('section'); s.className='view hide'; s.id='vPH'; c.before(s); } })();
 const navItems39=navItems;
 window.navItems=navItems=function(){ return navItems39.apply(this,arguments).filter(n=>n.v!=='ph' || (S.me && isGVCN())); };
@@ -5612,7 +5613,7 @@ table.v47t .nm{font-weight:700;color:#1B333A}table.v47t .gp{display:block;font-s
   /* ── PDF báo cáo lớp: 2 trang mới ── */
   function pdfPages(P){
     const R=RPT, st=bcStats(P), v=vpStats(st.E), U=units(P,st.E), cfg=S.cfg, D={cfg,students:S.students,entries:S.entries,remarks:S.remarks}, foot=R.footTxt(D);
-    const hd=h=>R.head('Báo cáo hạnh kiểm',h,'Lớp <b>'+esc(cfg.lop||'11D3')+'</b> · '+esc(P.nhan)+'<br>'+(cfg.gvcn?'GVCN: <b>'+esc(cfg.gvcn)+'</b> · ':'')+'Năm học '+esc(cfg.namHoc||''));
+    const hd=h=>R.head('Báo cáo kết quả rèn luyện',h,'Lớp <b>'+esc(cfg.lop||'11D3')+'</b> · '+esc(P.nhan)+'<br>'+(cfg.gvcn?'GVCN: <b>'+esc(cfg.gvcn)+'</b> · ':'')+'Năm học '+esc(cfg.namHoc||''));
     const css='<style>.v47p .lgx div{font-size:9.5pt;margin:1.1mm 0}.v47p .lgx i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1.5mm;vertical-align:-.3mm}.v47p .hc{text-align:center;font-weight:800;border-radius:1.2mm}.v47p .bf{display:grid;grid-template-columns:1fr 16mm 1fr;gap:2mm;align-items:center;margin:2.2mm 0;font-size:9.5pt}.v47p .bf .l{display:flex;justify-content:flex-end;align-items:center;gap:1.5mm}.v47p .bf .r{display:flex;align-items:center;gap:1.5mm}.v47p .bf i{display:block;height:4mm;border-radius:1.2mm}.v47p .bf .m{text-align:center;font-weight:800}</style>';
     const L0=v.loi[0], K0=v.khen[0], toMax=v.to.slice().sort((a,b)=>b.tru-a.tru)[0], toKh=v.to.slice().sort((a,b)=>b.cong-a.cong)[0];
     const hm=Math.max(1,...v.loi.slice(0,8).flatMap(x=>TOS.map(t=>x.to[t]||0)));
@@ -5684,6 +5685,9 @@ table.v47t .nm{font-weight:700;color:#1B333A}table.v47t .gp{display:block;font-s
   });
 })();
 </script>
+<script src="docxfill.js?v=5.0"></script>
+<script src="hoctap.js?v=5.0"></script>
+<script src="socn.js?v=5.0"></script>
 <script src="demo-ui.js?v=4.5"></script>
 <script src="demo-guide.js?v=4.8"></script>
 </body>

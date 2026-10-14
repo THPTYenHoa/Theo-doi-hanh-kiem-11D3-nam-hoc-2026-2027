@@ -32,15 +32,17 @@ function build() {
   const remarks = [{ maHS: 'HS03', thang: 9, nhanXet: 'Có tiến bộ, cần đúng giờ hơn.', xepLoai: '' }];
   return { students, tru, cong, entries, remarks };
 }
-const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt' };
+const HTDEMO = require('../../htdemo.js');
+const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt', 'gvtoan@example.com': 'gvtoan' };
 const ME = { gvcn: { name: 'Nguyễn Thu Thảo', role: 'GVCN', email: 'gvcn@example.com', to: '' },
   lt: { name: 'Nguyễn Minh An', role: 'Lớp trưởng', email: 'loptruong@example.com', to: '1' },
   tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@example.com', to: '2' },
-  ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' } };
+  ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' },
+  gvtoan: { name: 'Phạm Thu Hà', role: 'Giáo viên bộ môn', email: 'gvtoan@example.com', to: '', mon: ['TOAN'] } };
 async function newPage(browser, o = {}) {
   const ctx = await browser.newContext(Object.assign(o.mobile ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 } : { viewport: { width: 1360, height: 860 } }, { locale: 'vi-VN' }, o.ctx || {}));
   const page = await ctx.newPage();
-  const D = build(), M = page.M = { CALLS: [], D, rev: 1, khoa: o.khoa || {}, phMail: { on: true, cong: true }, phReg: o.phReg || [], REG: {} };
+  const D = build(), M = page.M = { HT: null, CALLS: [], D, rev: 1, khoa: o.khoa || {}, phMail: { on: true, cong: true }, phReg: o.phReg || [], REG: {} };
   /* v3.2: người khác ghi / xoá (giả lập) ⇒ đổi rev */
   M.ext = (ma, muc, diem, who = 'Lớp trưởng') => { const s = D.students.find(x => x.ma === ma); const e = ['X' + Date.now() + Math.random().toString(36).slice(2, 5), '2026-10-08 10:05', 10, 1, ma, s.to, diem < 0 ? 'Trừ' : 'Cộng', 'T01', muc, diem, 'loptruong@example.com', who, '']; D.entries.push(e); M.rev++; return e[0]; };
   M.phNew = (ma, email) => { const s = D.students.find(x => x.ma === ma); M.phReg.push({ id: 'R' + (M.phReg.length + 100), ma, ten: s.ten, email, at: '2026-10-09 10:00' }); M.rev++; };
@@ -63,6 +65,8 @@ async function newPage(browser, o = {}) {
       data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks }, rev: o.oldBackend ? undefined : String(M.rev),
       khoa: M.khoa, phMail: who === 'gvcn' ? M.phMail : undefined, phReg: who === 'gvcn' ? M.phReg : undefined });
     let res;
+    if (!M.HT) M.HT = HTDEMO.build(D.students);
+    { const hr = HTDEMO.api(M.HT, a, p, who, D.students); if (hr) { M.CALLS[M.CALLS.length - 1].ht = 1; if (o.lag) await new Promise(r => setTimeout(r, o.lag)); return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(hr) }); } }
     /* v3.7: tháng đã chốt ⇒ chặn ghi (giống kiemKhoa_ ở backend) */
     const thOf = () => /^(addEntries|saveRemark)$/.test(a) ? Number(p.thang) : /^(updateEntry|deleteEntry)$/.test(a) ? ((D.entries.find(e => e[0] === p.id) || [])[2]) : /^(addEvidence)$/.test(a) ? ((D.entries.find(e => e[0] === (p.entryIds || [])[0]) || [])[2]) : /^delEvidence$/.test(a) ? ((D.entries.find(e => e[0] === p.entryId) || [])[2]) : null;
     const lk = thOf();
