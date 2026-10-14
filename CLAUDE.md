@@ -205,7 +205,21 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   ảnh `img.<khoá>` (sodo1, sodo2, quydinh_lop, sk_hk1, tk_nam, bb_daunam, bb_hk1, bb_cuoinam). Xuất: `SCN.taoWord()` ⇒ `templates/so-chu-nhiem.docx` + `docxfill.js`.
 - **Khuôn Word**: `tools/socn/lam_khuon.py <file mẫu> templates/so-chu-nhiem.docx` — giữ trình bày file mẫu, thay dữ liệu bằng ô `{{…}}` (cú pháp ở đầu `docxfill.js`).
   **File mẫu gốc có dữ liệu thật của lớp khác — KHÔNG đưa vào repo.** Đổi mẫu ⇒ dựng lại khuôn, kiểm tra không còn tên / số điện thoại thật, tăng `?v=` trong `taoWord`.
-- **Máy chủ mô phỏng** `htdemo.js` dùng chung cho `demo.js` (chế độ trải nghiệm, vai mới "Giáo viên bộ môn (Toán)") và `tools/test/mock.js` (email `gvtoan@example.com`).
+- **Máy chủ mô phỏng** `tools/test/htdemo.js` (v6.0: chỉ còn dùng cho `tools/test/mock.js`, email `gvtoan@example.com`).
   Lệnh backend mới ⇒ thêm vào `htdemo.js`. `run.js` mục 23.
 - **Ngôn ngữ** (người dùng yêu cầu 14/10/2026, theo sổ công tác chủ nhiệm): Theo dõi nề nếp · Kết quả rèn luyện · Kết quả học tập · Báo cáo thi đua · Sổ công tác chủ nhiệm ·
   Nhật ký theo dõi · Cha mẹ học sinh; không dùng "hạnh kiểm" trên giao diện / email (dùng "rèn luyện").
+
+## v6.0 — Giao diện gọn: Tổng quan · Cập nhật · Báo cáo & sổ · Quản lý (`v6.js`, nạp cuối `index.html`)
+- **ĐÃ BỎ chế độ "Kiểm tra tính năng ứng dụng"** (`demo.js`, `demo-ui.js`, `demo-guide.js`, `docs/HD_Trai_nghiem.pdf` đã xoá — người dùng yêu cầu 14/10/2026).
+  Các mục v4.0 / v4.5 (DEMO, DMUI, DMG) ở trên chỉ còn là lịch sử; không thêm lại.
+- **Điều hướng theo nhóm** `V6_GROUPS`: Tổng quan (`tq`) · Cập nhật (`ghi` Theo dõi nề nếp, `ht` Điểm bộ môn) · Báo cáo & sổ (`bang`, `bc`, `scn`, `ls`) · Quản lý (`ph`, `cai`).
+  `tk` (Thống kê cũ) không còn trên menu (gộp vào Tổng quan, vẫn `go('tk')` được). Thanh bên có tiêu đề nhóm `.v6gh`; điện thoại 4 nút `#tabbar [data-g]` + dải tab phụ `#v6sub`.
+  Mục mới ⇒ thêm vào 1 nhóm + `SUBT` / `SUBS`; biểu tượng mới vào `ICON6` (nét mảnh, không emoji). Thanh hướng dẫn `#helpBar` ẩn (dùng nút ?).
+- **Tổng quan `TQ`** (`#vTQ`): tab Thi đua · nề nếp / Học lực / Top điểm (2 tab sau chỉ GVCN, cần `HT`), kỳ Tháng / Học kỳ / Năm học, tự vẽ lại ở `renderAll`
+  (LIVE gọi renderAll khi có lượt ghi mới), `TQ.pdf()` ⇒ `DL.pdfHtml`. Biểu đồ SVG tự vẽ (`cols`, `donut`, `stack`, `hrows`). GVCN mở app ⇒ `tq`; cán bộ lớp ⇒ `ghi`.
+- **Cán bộ lớp**: vai Lớp trưởng / Tổ trưởng / "Cán bộ lớp" ⇒ `S.me.role='Cán bộ lớp'` (`S.me.role0` = vai gốc), ghi nề nếp cả lớp (backend `isCanBo_`).
+  Tài khoản mới chọn vai GVCN · Quản trị · Cán bộ lớp. Không viết "tổ trưởng chỉ ghi tổ mình" ở giao diện / hướng dẫn nữa.
+- **Đăng nhập** (`lgShell` trong v6.js): logo, "Trường Trung học phổ thông" + **YÊN HÒA** cỡ lớn, KHÔNG hiện tên lớp (tên lớp chỉ hiện bên trong).
+- **Tính năng sắp ra mắt** (`roadmap.js`): thêm "Mở rộng cho nhiều lớp" (file mẫu `templates/mau-danh-sach-lop.xlsx`: DanhSachLop · PhanQuyen · HuongDan) và
+  "Phân quyền từ quản trị" (bảng quyền mẫu).

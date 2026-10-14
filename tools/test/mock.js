@@ -32,10 +32,10 @@ function build() {
   const remarks = [{ maHS: 'HS03', thang: 9, nhanXet: 'Có tiến bộ, cần đúng giờ hơn.', xepLoai: '' }];
   return { students, tru, cong, entries, remarks };
 }
-const HTDEMO = require('../../htdemo.js');
+const HTDEMO = require('./htdemo.js');
 const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt', 'gvtoan@example.com': 'gvtoan' };
 const ME = { gvcn: { name: 'Nguyễn Thu Thảo', role: 'GVCN', email: 'gvcn@example.com', to: '' },
-  lt: { name: 'Nguyễn Minh An', role: 'Lớp trưởng', email: 'loptruong@example.com', to: '1' },
+  lt: { name: 'Nguyễn Minh An', role: 'Cán bộ lớp', email: 'loptruong@example.com', to: '1' },
   tt: { name: 'Trần Hải Bình', role: 'Tổ trưởng', email: 'totruong2@example.com', to: '2' },
   ph: { name: 'Phụ huynh', role: 'Phụ huynh', email: '', to: '' },
   gvtoan: { name: 'Phạm Thu Hà', role: 'Giáo viên bộ môn', email: 'gvtoan@example.com', to: '', mon: ['TOAN'] } };
@@ -59,7 +59,7 @@ async function newPage(browser, o = {}) {
     const who = (tok.match(/^tok\.(\w+)/) || [])[1];
     const cfg = { namHoc: '2026 - 2027', thang: 10, soTuan: 4, thresholds: [{ ten: 'Tốt', san: 0 }, { ten: 'Khá', san: -6 }, { ten: 'Trung bình', san: -12 }, { ten: 'Yếu', san: -9999 }] };
     const base = () => ({ ok: true, me: ME[who] || ME.ph, cfg, students: D.students, cong: D.cong, tru: D.tru,
-      accounts: [{ email: 'gvcn@example.com', ten: 'Nguyễn Thu Thảo', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Lớp trưởng', to: '1', active: true }],
+      accounts: [{ email: 'gvcn@example.com', ten: 'Nguyễn Thu Thảo', role: 'GVCN', to: '', active: true }, { email: 'loptruong@example.com', ten: 'Nguyễn Minh An', role: 'Cán bộ lớp', to: '', active: true }],
       thongBao: { mode: 'Ngay', emails: '', nguong: 0, baoCong: true }, sheetUrl: 'https://docs.google.com/spreadsheets/d/FAKE/edit',
       quyDinh: { xepThuLop: 5, heSoTaiPham: 2, chiTieu: [{ tu: 1, den: 5, min: 0, max: 1 }, { tu: 6, den: 8, min: 1, max: 2 }] }, thang: 10, theme: M.theme || '',
       data: { entries: D.entries.filter(e => e[2] === 10), remarks: D.remarks }, rev: o.oldBackend ? undefined : String(M.rev),

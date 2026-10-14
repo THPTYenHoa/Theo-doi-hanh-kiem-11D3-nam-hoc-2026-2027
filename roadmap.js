@@ -10,10 +10,16 @@
     hb: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/>',
     nq: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
     hd: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
-    tb: '<path d="M3 11l18-8v18l-18-8z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'
+    tb: '<path d="M3 11l18-8v18l-18-8z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+    lop: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11M15 9v11"/>',
+    qt: '<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>'
   };
   var L = [
     { k: 'hk', t: 'Học tập, rèn luyện và nề nếp', d: 'Theo dõi nề nếp hằng ngày, kết quả học tập theo Thông tư 22, Sổ công tác chủ nhiệm, báo tin cho cha mẹ học sinh.', on: 1 },
+    { k: 'lop', t: 'Mở rộng cho nhiều lớp', d: 'Mỗi lớp có sổ riêng trên cùng một hệ thống. Nhà trường nhập danh sách lớp bằng file Excel mẫu có sẵn bảng biểu (mã HS, họ tên, ngày sinh, tổ, chức vụ, email cha mẹ học sinh).',
+      more: '<a href="templates/mau-danh-sach-lop.xlsx" download class="rmdl">Tải file Excel mẫu danh sách lớp</a>' },
+    { k: 'qt', t: 'Phân quyền từ quản trị', d: 'Quản trị viên phân vai cho từng lớp: giáo viên chủ nhiệm, cán bộ lớp, giáo viên bộ môn, Ban giám hiệu; đặt quyền xem, nhập, sửa cho từng mục.',
+      more: '<table class="rmq"><tr><th></th><th>Nề nếp</th><th>Điểm</th><th>Báo cáo, sổ</th><th>Cài đặt</th></tr><tr><td>GVCN</td><td>Ghi, sửa</td><td>Xem, sửa</td><td>Lập, xuất</td><td>Có</td></tr><tr><td>Cán bộ lớp</td><td>Ghi</td><td>—</td><td>Xem</td><td>—</td></tr><tr><td>GV bộ môn</td><td>—</td><td>Môn mình</td><td>—</td><td>—</td></tr><tr><td>Ban giám hiệu</td><td>Xem</td><td>Xem</td><td>Xem các lớp</td><td>—</td></tr></table>' },
     { k: 'bgh', t: 'Ban giám hiệu theo dõi thi đua', d: 'Nhiều lớp dùng chung một mẫu; so sánh thi đua các lớp theo tháng, học kỳ.' },
     { k: 'hb', t: 'Cổng tra cứu cho cha mẹ học sinh', d: 'Mỗi gia đình đăng nhập xem điểm số, nhận xét của riêng con mình.' },
     { k: 'nq', t: 'Nội quy, quy định', d: 'Nội quy trường, lớp; quy định thi đua, khen thưởng.' },
@@ -34,6 +40,8 @@
     + '#rm-ov .tg.a{background:#0E7C86;color:#fff}#rm-ov .tg.b{background:#FFF1E0;color:#9A5B13}'
     + '#rm-ov .it .more{display:none;font-size:12.5px;color:#9A5B13;margin-top:6px}#rm-ov .it.op .more{display:block}'
     + '#rm-ov .ft{padding:2px 18px 16px;font-size:12.5px;color:#5C7A83;line-height:1.5}'
+    + '#rm-ov .rmdl{display:inline-block;margin-top:2px;background:#0E7C86;color:#fff;border-radius:8px;padding:6px 10px;font-weight:700;text-decoration:none}'
+    + '#rm-ov .rmq{border-collapse:collapse;font-size:12px;color:#1B333A;margin-top:4px;width:100%}#rm-ov .rmq th,#rm-ov .rmq td{border:1px solid #E6EEF0;padding:3px 5px;text-align:left}#rm-ov .rmq th{background:#EEF7F8}'
     + '@media(max-width:700px){#rm-ov .gr{grid-template-columns:1fr}}';
   document.head.appendChild(css);
   function open() {
@@ -41,13 +49,13 @@
     o = document.createElement('div'); o.id = 'rm-ov';
     o.innerHTML = '<div class="bx" role="dialog" aria-label="Tính năng sắp ra mắt"><div class="hd"><div><h3>Tính năng sắp ra mắt</h3><p>Sổ theo dõi học sinh đang dùng để theo dõi kết quả học tập, rèn luyện và nề nếp, lập Sổ công tác chủ nhiệm. Các mục bên dưới đang được phát triển để trở thành sổ liên lạc điện tử của nhà trường.</p></div><button class="x" aria-label="Đóng">×</button></div>'
       + '<div class="gr">' + L.map(function (x) {
-        return '<button class="it' + (x.on ? ' on' : '') + '" type="button"><span class="i">' + SV + IC[x.k] + '</svg></span><span><b>' + x.t + '<span class="tg ' + (x.on ? 'a">ĐANG DÙNG' : 'b">ĐANG PHÁT TRIỂN') + '</span></b><span class="d">' + x.d + '</span>'
-          + (x.on ? '' : '<span class="more">Nội dung đang phát triển, sẽ cập nhật trong các phiên bản tới.</span>') + '</span></button>';
+        return '<div role="button" tabindex="0" class="it' + (x.on ? ' on' : '') + '"><span class="i">' + SV + IC[x.k] + '</svg></span><span><b>' + x.t + '<span class="tg ' + (x.on ? 'a">ĐANG DÙNG' : 'b">ĐANG PHÁT TRIỂN') + '</span></b><span class="d">' + x.d + '</span>'
+          + (x.on ? '' : '<span class="more">' + (x.more || 'Nội dung đang phát triển, sẽ cập nhật trong các phiên bản tới.') + '</span>') + '</span></div>';
       }).join('') + '</div><div class="ft">Mọi mục mới đều theo nguyên tắc bảo vệ dữ liệu cá nhân: mỗi người chỉ thấy phần thông tin được phép, thông tin riêng của từng học sinh chỉ gửi tới đúng gia đình.</div></div>';
     document.body.appendChild(o);
     o.onclick = function (e) { if (e.target === o) o.remove(); };
     o.querySelector('.x').onclick = function () { o.remove(); };
-    o.querySelectorAll('.it:not(.on)').forEach(function (b) { b.onclick = function () { b.classList.toggle('op'); }; });
+    o.querySelectorAll('.it:not(.on)').forEach(function (b) { b.onclick = function (e) { if (e.target.closest('a')) return; b.classList.toggle('op'); }; });
   }
   window.ROADMAP = { open: open, LIST: L };
   /* gắn lối vào */
