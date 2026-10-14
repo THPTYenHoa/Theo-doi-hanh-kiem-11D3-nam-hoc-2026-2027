@@ -1,5 +1,8 @@
 # Sổ hạnh kiểm 11D3 — quy tắc làm việc cho Claude
 
+> **ĐÃ CHUYỂN (14/10/2026)** sang kho `THPTYenHoa/So-theo-doi-hoc-tap-va-ne-nep` (https://thptyenhoa.github.io/So-theo-doi-hoc-tap-va-ne-nep/).
+> Kho này chỉ giữ trang tự chuyển hướng `index.html`, `phu-huynh.html`, `demo.html`, `demo-phu-huynh.html` — không sửa code ở đây.
+
 App 1 file `index.html` (GitHub Pages từ `main`) + trang phụ huynh `phu-huynh.html`, dữ liệu ở Google Sheet qua Apps Script.
 Người dùng là giáo viên chủ nhiệm (không rành kỹ thuật) — **trả lời và viết nội dung bằng tiếng Việt**. Quy trình giống
 MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nhà giáo sáng tạo với công nghệ số và AI 2026" (nộp trước 25/10/2026).
