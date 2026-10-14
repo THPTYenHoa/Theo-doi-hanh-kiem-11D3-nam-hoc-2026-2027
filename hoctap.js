@@ -11,7 +11,9 @@
   const ROLE_GV = 'Giáo viên bộ môn';
   const HT = window.HT = { d: null, loading: null, tab: 'diem', hk: 1, mon: '', ky: 'hk1', edit: null };
   const isGV = () => S.me && S.me.role === ROLE_GV;
-  const canHT = () => S.me && (isGVCN() || isGV());
+  const isCB = () => S.me && S.me.role === 'Cán bộ lớp';   /* ★ v6.3: cán bộ lớp nhập điểm kiểm tra giữa / cuối kì, kỳ thi */
+  const canHT = () => S.me && (isGVCN() || isGV() || isCB());
+  HT.isCB = isCB; HT.canHT = canHT;
   const LV = ['Tốt', 'Khá', 'Đạt', 'Chưa đạt'];
   const LVC = ['r0', 'r1', 'r2', 'r3'];
   const bo = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -25,9 +27,9 @@
     D.diem.forEach(r => { D.ix[r[0] + '|' + r[1] + '|' + r[2] + '|' + r[3]] = r; });
   }
   function apply(j) {
-    HT.d = { mon: j.mon || [], gv: j.gv || [], rule: j.rule || {}, diem: j.diem || [], hoso: j.hoso || null, scn: j.scn || null, myMon: j.myMon || null, quota: j.mailQuota, ts: Date.now() };
+    HT.d = { mon: j.mon || [], gv: j.gv || [], rule: j.rule || {}, diem: j.diem || [], hoso: j.hoso || null, scn: j.scn || null, myMon: j.myMon || null, quota: j.mailQuota, kyThi: j.kyThi || [], ts: Date.now() };
     idx(); htqOverlay();
-    if (!isGV()) ls.set('hk_ht_v1', { mon: HT.d.mon, gv: HT.d.gv, rule: HT.d.rule, diem: HT.d.diem, hoso: HT.d.hoso, scn: HT.d.scn, me: S.me && S.me.email });
+    if (!isGV()) ls.set('hk_ht_v1', { mon: HT.d.mon, gv: HT.d.gv, rule: HT.d.rule, diem: HT.d.diem, hoso: HT.d.hoso, scn: HT.d.scn, kyThi: HT.d.kyThi, me: S.me && S.me.email });
   }
   HT.load = async function (force) {
     if (!canHT()) return null;
@@ -48,7 +50,10 @@
   const ddKind = dd => /^TX\d*$/.test(dd) ? 'tx' : dd === 'GK' ? 'gk' : dd === 'CK' ? 'ck' : dd === 'HK' ? 'hk' : dd === 'NXGV' ? 'nx' : 'khac';
   HT.ddKind = ddKind;
   /** Danh sách đầu điểm của môn/học kì: TX1…TXn (theo số ĐĐGtx hoặc nhiều hơn nếu đã có), GK, CK, các đầu điểm mới. */
-  HT.dds = function (mon, hk) {
+  /* ★ v6.3: KHÔNG nhập ĐĐGtx nữa (điểm thường xuyên đã có ở phần mềm quản lý điểm của trường) — bảng điểm chỉ Giữa kì, Cuối kì
+     (+ "TB môn" = đầu điểm HK, giáo viên dán từ phần mềm kia nếu cần xếp mức học tập). Kỳ thi khác: đầu điểm KT#<mã> (kythi.js). */
+  HT.dds = function (mon, hk) { return isCB() ? ['GK', 'CK'] : ['GK', 'CK', 'HK']; };
+  HT.ddsCu = function (mon, hk) {
     const m = HT.monOf(mon) || { tx: 3 };
     const have = new Set(HT.d.diem.filter(r => r[1] === mon && r[2] === hk).map(r => r[3]));
     const extra = (ls.get('hk_ht_cols') || {})[mon + '|' + hk] || [];
@@ -66,7 +71,7 @@
   /** Điểm trung bình môn học kì (môn điểm số) hoặc kết quả Đ / CĐ (môn nhận xét). null = chưa đủ đầu điểm. */
   HT.tbHK = function (ma, mon, hk) {
     const m = HT.monOf(mon); if (!m) return null; const R = HT.d.rule;
-    const vals = HT.dds(mon, hk).map(dd => [dd, HT.val(ma, mon, hk, dd)]).filter(x => x[1] !== '');
+    const vals = HT.ddsCu(mon, hk).map(dd => [dd, HT.val(ma, mon, hk, dd)]).filter(x => x[1] !== '');
     const ov = HT.val(ma, mon, hk, 'HK');
     if (m.ht === 'nx') {
       if (ov) return isD(ov) ? 'Đ' : isCD(ov) ? 'CĐ' : null;
@@ -293,16 +298,18 @@
     const box = $('#vHT'); if (!box || S.view !== 'ht') return;
     if (!HT.d) { box.innerHTML = '<div class="empty"><b>Chưa tải được dữ liệu</b>Kiểm tra mạng rồi bấm lại menu Kết quả học tập.</div>'; return; }
     if (box.contains(document.activeElement) && /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName) && HT.edit == null) return;
-    const tabs = isGV() ? [['diem', 'Bảng điểm']] : [['diem', 'Bảng điểm'], ['tk', 'Tổng kết'], ['mon', 'Môn học & giáo viên'], ['rule', 'Cách tính điểm']];
+    const tabs = isGV() || isCB() ? [['diem', 'Giữa kì · cuối kì'], ['kt', 'Kỳ thi & ôn luyện']] : [['diem', 'Giữa kì · cuối kì'], ['kt', 'Kỳ thi & ôn luyện'], ['tk', 'Tổng kết'], ['mon', 'Môn học & giáo viên'], ['rule', 'Cách tính điểm']];
     if (!tabs.some(t => t[0] === HT.tab)) HT.tab = 'diem';
     let h = `<div class="httabs">${tabs.map(([k, l]) => `<button data-htt="${k}" class="${HT.tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
     if (HT.tab === 'diem') h += viewDiem();
+    if (HT.tab === 'kt' && HT.viewKT) h += HT.viewKT();
     if (HT.tab === 'tk') h += viewTK();
     if (HT.tab === 'mon') h += viewMon();
     if (HT.tab === 'rule') h += viewRule();
     box.innerHTML = h;
     box.querySelectorAll('[data-htt]').forEach(b => b.onclick = () => { HT.tab = b.dataset.htt; HT.edit = null; HT.render(); });
     if (HT.tab === 'diem') bindDiem(box);
+    if (HT.tab === 'kt' && HT.bindKT) HT.bindKT(box);
     if (HT.tab === 'tk') bindTK(box);
     if (HT.tab === 'mon') bindMon(box);
     if (HT.tab === 'rule') bindRule(box);
@@ -319,26 +326,25 @@
       <select id="htMon" aria-label="Môn học">${ms.map(x => `<option value="${esc(x.ma)}"${x.ma === m.ma ? ' selected' : ''}>${esc(x.ten)}</option>`).join('')}</select>
       <select id="htHK" aria-label="Học kì"><option value="1"${hk === 1 ? ' selected' : ''}>Học kì I</option><option value="2"${hk === 2 ? ' selected' : ''}>Học kì II</option></select>
       <span class="sp"></span>
-      <button class="hb" id="htAddCol">${IC.plus}<span class="lg">Thêm đầu điểm</span></button>
       <button class="hb" id="htImp">${IC.up}<span class="lg">Nhập từ Excel</span></button>
       <button class="hb" id="htExp">${IC.down}<span class="lg">Tải Excel</span></button>
       ${isGVCN() ? `<button class="hb" id="htAskGV">${IC.mail}<span class="lg">Đề nghị GVBM nhập</span></button>` : ''}</div>`;
-    h += `<div class="htnote">${m.ht === 'nx' ? 'Môn <b>đánh giá bằng nhận xét</b>: mỗi ô nhập <b>Đ</b> (Đạt) hoặc <b>CĐ</b> (Chưa đạt).' : 'Môn <b>đánh giá bằng điểm số</b>: ĐTBmhk = (Tổng ĐĐGtx + 2 × ĐĐGgk + 3 × ĐĐGck) ÷ (số ĐĐGtx + 5).'}
-      Bấm vào ô để nhập / sửa (Enter: lưu, xuống dòng; Delete: xoá). Bấm tiêu đề cột để đổi tên hoặc xoá đầu điểm.${gv ? ' · Giáo viên bộ môn: <b>' + esc(gv) + '</b>' : ''}</div>`;
-    h += `<div class="htg tablewrap"><table><thead><tr><th>TT</th><th class="name">Họ và tên</th>${dds.map(d => `<th class="dd${HT.ddKind(d) === 'khac' ? ' new' : ''}" data-dd="${esc(d)}" title="Bấm để đổi tên / xoá">${esc(ddLabel(d))}</th>`).join('')}<th>${m.ht === 'nx' ? 'KQ học kì' : 'ĐTBmhk'}</th>${hk === 2 ? `<th>${m.ht === 'nx' ? 'KQ cả năm' : 'ĐTBmcn'}</th>` : ''}<th>Nhận xét của GVBM</th></tr></thead><tbody>`;
+    h += `<div class="htnote">Nhập điểm bài <b>kiểm tra giữa kì, cuối kì</b>${m.ht === 'nx' ? ' (môn đánh giá bằng nhận xét: <b>Đ</b> / <b>CĐ</b>)' : ''}. Bấm vào ô để nhập (Enter: lưu, xuống dòng) hoặc <b>Nhập từ Excel</b>.
+      ${isCB() ? '' : 'Điểm thường xuyên giáo viên bộ môn nhập ở phần mềm quản lý điểm của trường; cột <b>TB môn</b> dán từ phần mềm đó nếu cần xếp mức học tập.'}${gv ? ' · Giáo viên bộ môn: <b>' + esc(gv) + '</b>' : ''}${HT.baoTxt ? HT.baoTxt() : ''}</div>`;
+    const gvx = !isCB();
+    h += `<div class="htg tablewrap"><table><thead><tr><th>TT</th><th class="name">Họ và tên</th>${dds.map(d => `<th data-dd="${esc(d)}">${esc(ddLabel(d))}</th>`).join('')}${gvx && hk === 2 ? `<th>${m.ht === 'nx' ? 'KQ cả năm' : 'TB cả năm'}</th>` : ''}${gvx ? '<th>Nhận xét của GVBM</th>' : ''}</tr></thead><tbody>`;
     L.forEach((s, i) => {
       const tb = HT.tbHK(s.ma, m.ma, hk), cn = hk === 2 ? HT.tbCN(s.ma, m.ma) : null;
       h += `<tr data-ma="${esc(s.ma)}"><td>${i + 1}</td><td class="name">${esc(s.ten)}</td>`;
       dds.forEach(d => { const v = HT.val(s.ma, m.ma, hk, d); const n = num(v); h += `<td class="c${n != null && n < 5 || isCD(v) ? ' lo' : ''}" data-dd="${esc(d)}">${esc(fmtV(v))}</td>`; });
-      h += `<td class="tb${(typeof tb === 'number' && tb < 5) || tb === 'CĐ' ? ' lo' : ''}">${tb == null ? '' : typeof tb === 'number' ? f1(tb) : tb}</td>`;
-      if (hk === 2) h += `<td class="tb">${cn == null ? '' : typeof cn === 'number' ? f1(cn) : cn}</td>`;
-      h += `<td class="c nxgv" data-dd="NXGV">${esc(HT.val(s.ma, m.ma, hk, 'NXGV'))}</td></tr>`;
+      if (gvx && hk === 2) h += `<td class="tb">${cn == null ? '' : typeof cn === 'number' ? f1(cn) : cn}</td>`;
+      h += (gvx ? `<td class="c nxgv" data-dd="NXGV">${esc(HT.val(s.ma, m.ma, hk, 'NXGV'))}</td>` : '') + '</tr>';
     });
     h += '</tbody></table></div>';
     return h;
   }
   const fmtV = v => { const n = num(v); return n != null ? String(n).replace('.', ',') : isD(v) ? 'Đ' : isCD(v) ? 'CĐ' : v; };
-  const ddLabel = d => /^TX(\d+)$/.test(d) ? 'ĐĐGtx ' + d.slice(2) : d === 'GK' ? 'Giữa kì' : d === 'CK' ? 'Cuối kì' : d;
+  const ddLabel = d => /^TX(\d+)$/.test(d) ? 'ĐĐGtx ' + d.slice(2) : d === 'GK' ? 'Giữa kì' : d === 'CK' ? 'Cuối kì' : d === 'HK' ? 'TB môn' : /^KT#/.test(d) && HT.ktOf ? (HT.ktOf(d.slice(3)) || {}).ten || d : d;
   HT.ddLabel = ddLabel;
   function normV(v, m) {
     v = String(v == null ? '' : v).trim();
@@ -352,11 +358,9 @@
     const m = HT.monOf(HT.mon); if (!m) return;
     const sel = box.querySelector('#htMon'); if (sel) sel.onchange = () => { HT.mon = sel.value; HT.render(); };
     const hk = box.querySelector('#htHK'); if (hk) hk.onchange = () => { HT.hk = +hk.value; HT.render(); };
-    box.querySelector('#htAddCol').onclick = addCol;
     box.querySelector('#htImp').onclick = () => importExcel();
     box.querySelector('#htExp').onclick = () => exportExcel();
     const ag = box.querySelector('#htAskGV'); if (ag) ag.onclick = askGV;
-    box.querySelectorAll('th.dd').forEach(th => th.onclick = () => colMenu(th.dataset.dd));
     box.querySelectorAll('td.c').forEach(td => td.onclick = () => editCell(td));
   }
   function editCell(td) {
@@ -375,7 +379,7 @@
       let v = dd === 'NXGV' ? inp.value.trim() : normV(inp.value, m);
       if (v === null) { toast('Giá trị chưa hợp lệ: ' + (m.ht === 'nx' ? 'nhập Đ hoặc CĐ.' : 'nhập điểm từ 0 đến 10.')); v = cur; }
       const nextMa = tr.nextElementSibling && tr.nextElementSibling.dataset ? tr.nextElementSibling.dataset.ma : '';
-      if (v !== cur) HT.saveDiem([{ ma, mon: m.ma, hk, dd, v }]);
+      if (v !== cur) { HT.saveDiem([{ ma, mon: m.ma, hk, dd, v }]); if (HT.henBao && dd !== 'NXGV' && dd !== 'HK') HT.henBao([{ mon: m.ma, hk, dd }]); }
       HT.render();
       if (move && nextMa) { const next = document.querySelector(`#vHT tr[data-ma="${CSS.escape(nextMa)}"] td.c[data-dd="${CSS.escape(dd)}"]`); if (next) editCell(next); }
     };
@@ -466,14 +470,15 @@
   /** Nhận diện cột: trả mã đầu điểm hoặc null (cột thông tin). */
   function colDD(h, m) {
     const b = bo(h).replace(/[.:()]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (/^(dtb|dtbm|tbm|tb mon|diem tb|diem trung binh|trung binh mon|dtbmhk|tbmhk|tb hoc ki|tb hoc ky)$/.test(b)) return isCB() ? null : 'HK';
     if (!b || /^(stt|tt|ma|ma hs|ma hoc sinh|ho ten|ho va ten|ten|lop|to|ngay sinh|gioi tinh|ghi chu|dtb.*|tbm.*|diem tb.*|trung binh.*|xep loai.*|kq.*|ket qua.*)$/.test(b)) return null;
-    if (/nhan xet/.test(b)) return 'NXGV';
-    let k = b.match(/^(?:tx|ddgtx|dgtx|kttx|thuong xuyen|ktx|diem tx|danh gia thuong xuyen)\s*(\d+)$/); if (k) return 'TX' + (+k[1]);
+    if (/nhan xet/.test(b)) return isCB() ? null : 'NXGV';
+    let k = b.match(/^(?:tx|ddgtx|dgtx|kttx|thuong xuyen|ktx|diem tx|danh gia thuong xuyen)\s*(\d+)$/); if (k) return null;   /* v6.3: không nhập ĐĐGtx */
     k = b.match(/^(?:mieng|15 phut|15p|kiem tra 15 phut)\s*(\d*)$/); if (k && m) return null;
     if (/^(gk|ddggk|giua ki|giua ky|kiem tra giua ki|kiem tra giua ky|giua hoc ki|giua hoc ky)$/.test(b)) return 'GK';
     if (/^(ck|ddgck|cuoi ki|cuoi ky|kiem tra cuoi ki|kiem tra cuoi ky|cuoi hoc ki|cuoi hoc ky)$/.test(b)) return 'CK';
-    if (/^hk$|^ket qua hoc ki$/.test(b)) return 'HK';
-    return String(h).trim().toUpperCase().slice(0, 24);
+    if (/^hk$|^ket qua hoc ki$/.test(b)) return isCB() ? null : 'HK';
+    return null;
   }
   /** Khớp học sinh: theo mã HS, rồi theo họ tên (trùng họ tên ⇒ lần lượt theo thứ tự trong tệp và trong danh sách lớp). */
   function matchStudent(row, iMa, iTen, seen) {
@@ -536,7 +541,7 @@
         ${p.bad.length ? `<div class="mut" style="color:var(--dang)">Bỏ qua ${p.bad.length} ô sai định dạng: ${esc(p.bad.slice(0, 4).join('; '))}${p.bad.length > 4 ? '…' : ''}</div>` : ''}</div>`;
     }).join('') + `<label class="ck"><input type="radio" name="md" value="rep" checked> <span><b>Thay hàng loạt</b>: xoá điểm cũ của các cột có trong tệp (theo môn, học kì) rồi ghi điểm trong tệp.</span></label>
       <label class="ck"><input type="radio" name="md" value="upd"> <span><b>Chỉ cập nhật</b> ô có giá trị trong tệp; giữ nguyên điểm khác.</span></label>
-      <p class="mut">Cột chưa có trong sổ sẽ được lưu thành <b>đầu điểm mới</b>.</p>`;
+      <p class="mut">Nhận các cột: Giữa kì, Cuối kì${isCB() ? '' : ', TB môn, Nhận xét'}. Cột điểm thường xuyên (ĐĐGtx) và cột lạ được bỏ qua.</p>`;
     const o = ov('Nhập điểm từ Excel', body, `<button class="hb" data-x>Huỷ</button><button class="hb p" data-ok>${IC.save} Lưu vào sổ</button>`);
     o.$('[data-x]').onclick = o.close;
     o.$$('select[data-hk]').forEach(s => s.onchange = () => { plan[+s.dataset.hk].hk = +s.value; });
@@ -546,6 +551,7 @@
         const items = p.items.map(it => ({ ma: it.ma, mon: p.m.ma, hk: p.hk, dd: it.dd, v: it.v }));
         n += items.length;
         HT.saveDiem(items, rep ? { mon: p.m.ma, hk: p.hk, dds: p.cols.map(c => c.dd) } : undefined);
+        if (HT.henBao) HT.henBao(p.cols.filter(c => c.dd === 'GK' || c.dd === 'CK').map(c => ({ mon: p.m.ma, hk: p.hk, dd: c.dd })), true);
       });
       o.close(); HT.mon = plan[0].m.ma; HT.hk = plan[0].hk; HT.render(); toast('Đã nhập ' + n + ' ô điểm. Hệ thống đang lưu lên máy chủ.');
     };
@@ -560,7 +566,7 @@
     const kq = L.map(s => ({ s, k: HT.ketQua(s.ma, ky), rl: HT.renLuyen(s.ma, ky[0] === 'g' ? 'hk' + ky[2] : ky), dh: ky === 'cn' ? HT.danhHieu(s.ma) : '' }));
     const cnt = [0, 0, 0, 0]; let chua = 0; kq.forEach(x => x.k.muc == null ? chua++ : cnt[x.k.muc]++);
     let h = `<div class="htbar"><select id="htKy">${KY.map(([k, l]) => `<option value="${k}"${k === ky ? ' selected' : ''}>${l}</option>`).join('')}</select><span class="sp"></span>
-      <button class="hb" id="htTkX">${IC.down}<span class="lg">Tải Excel</span></button><button class="hb p" id="htPH">${IC.mail}<span class="lg">Gửi phiếu báo cha mẹ HS</span></button></div>`;
+      <button class="hb" id="htTkP">${IC.down}<span class="lg">Tải PDF báo cáo</span></button><button class="hb" id="htTkX">${IC.down}<span class="lg">Tải Excel</span></button><button class="hb p" id="htPH">${IC.mail}<span class="lg">Gửi phiếu báo cha mẹ HS</span></button></div>`;
     h += `<div class="kpis" style="margin:0 12px 12px">${LV.map((l, i) => `<div class="kpi"><div class="n ${LVC[i]}">${cnt[i]}</div><div class="l">Kết quả học tập ${l}</div><div class="sub">${String(L.length ? Math.round(cnt[i] * 1000 / L.length) / 10 : 0).replace('.', ',')}% sĩ số</div></div>`).join('')}</div>`;
     if (chua) h += `<div class="htnote">${chua} học sinh chưa đủ điểm để xếp mức kết quả học tập ${esc((l => l[0].toLowerCase() + l.slice(1))(KY.find(k => k[0] === ky)[1]))}.${ky[0] === 'g' ? ' Kết quả giữa kì tính theo điểm giữa kì (tham khảo).' : ''}</div>`;
     else if (ky[0] === 'g') h += `<div class="htnote">Kết quả giữa kì tính theo điểm giữa kì (tham khảo).</div>`;
@@ -582,6 +588,7 @@
       const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, X.utils.aoa_to_sheet(rows), 'Tong ket');
       X.writeFile(wb, 'Tong_ket_' + (S.cfg.lop || '') + '_' + ky + '.xlsx');
     }).catch(err);
+    box.querySelector('#htTkP').onclick = () => { try { HT.pdfLop(HT.ky); } catch (e) { err(e); } };
     box.querySelector('#htPH').onclick = () => phieuBao();
     box.querySelectorAll('tbody tr[data-ma]').forEach(tr => tr.onclick = () => { if (typeof openProfile === 'function') openProfile(tr.dataset.ma); });
   }
@@ -633,6 +640,117 @@
       } catch (e) { b.disabled = false; b.textContent = 'Gửi'; err(e); }
     };
   }
+
+  /* ── v6.3: ĐIỂM KIỂM TRA (giữa kì, cuối kì, TB môn nếu có) + KỲ THI ⇒ PDF lớp (Tổng kết ▸ Tải PDF báo cáo) và trang "Kết quả học tập" trong báo cáo học sinh ── */
+  const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const cDiem = v => v >= 8 ? '#1E8449' : v >= 6.5 ? '#1F618D' : v >= 5 ? '#B9761C' : '#C0392B';
+  const kyLabel = ky => KY.find(x => x[0] === ky)[1];
+  const kyHKs = ky => ky === 'cn' ? [1, 2] : [+ky[2]];
+  /** Kỳ của báo cáo nề nếp (RPT: {k:'thang',m} | {k:'hk',n} | {k:'nam'}) ⇒ kỳ học tập (hk1 | hk2 | cn) */
+  HT.kyOfRpt = k => k.k === 'nam' || k.k === 'cn' ? 'cn' : k.k === 'hk' ? 'hk' + k.n : ([9, 10, 11, 12, 1].indexOf(k.m) >= 0 ? 'hk1' : 'hk2');
+  /** Điểm 1 môn trong kỳ: TB môn (dán từ phần mềm điểm) nếu có, không thì TB các bài kiểm tra giữa / cuối kì (tham khảo). */
+  HT.monKT = function (ma, mon, ky) {
+    const out = []; kyHKs(ky).forEach(hk => {
+      const hkv = num(HT.val(ma, mon, hk, 'HK')); if (hkv != null && ky[0] !== 'g') { out.push(hkv); return; }
+      const g = num(HT.val(ma, mon, hk, 'GK')), c = ky[0] === 'g' ? null : num(HT.val(ma, mon, hk, 'CK'));
+      const v = [g, c].filter(x => x != null); if (v.length) out.push(v.reduce((x, y) => x + y, 0) / v.length);
+    });
+    return out.length ? out.reduce((x, y) => x + y, 0) / out.length : null;
+  };
+  HT.tbKT = function (ma, ky) { const v = HT.monList().filter(m => m.ht !== 'nx').map(m => HT.monKT(ma, m.ma, ky)).filter(x => x != null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+  const ktTrongKy = ky => (HT.ktList ? HT.ktList() : []).filter(k => kyHKs(ky).indexOf(k.hk) >= 0 && HT.monList().some(m => m.ma === k.mon)).sort((a, b) => String(a.ngay).localeCompare(String(b.ngay)));
+  const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  const fv = v => v == null || v === '' ? '' : typeof v === 'number' ? f1(v) : escH(fmtV(v));
+  HT.gradePage = function (D, ma, rk, o) {
+    if (!HT.d || !window.RPT || !HT.monList().length) return '';
+    const ky = HT.kyOfRpt(rk), s = stu(ma) || { ten: ma }, ms = HT.monList(), hks = kyHKs(ky), ph = o && o.aud === 'ph';
+    const kts = ktTrongKy(ky).filter(k => HT.ktDiem && HT.ktDiem(ma, k) != null);
+    const has = ms.some(m => hks.some(hk => HT.val(ma, m.ma, hk, 'GK') !== '' || HT.val(ma, m.ma, hk, 'CK') !== '' || HT.val(ma, m.ma, hk, 'HK') !== ''));
+    if (!has && !kts.length) return '';
+    const cols = [], cv = [];
+    hks.forEach(hk => { const t = hks.length > 1 ? (hk === 1 ? ' I' : ' II') : '';
+      cols.push('Giữa kì' + t, 'Cuối kì' + t); cv.push(m => HT.val(ma, m.ma, hk, 'GK'), m => HT.val(ma, m.ma, hk, 'CK')); });
+    const coTB = ms.some(m => hks.some(hk => HT.val(ma, m.ma, hk, 'HK') !== ''));
+    if (coTB) { cols.push('TB môn'); cv.push(m => { const v = hks.map(hk => num(HT.val(ma, m.ma, hk, 'HK'))).filter(x => x != null); return v.length ? avg(v) : hks.map(hk => HT.val(ma, m.ma, hk, 'HK')).filter(Boolean).pop() || ''; }); }
+    const cell = v => { const n = typeof v === 'number' ? v : num(v); return `<td class="n" style="color:${n != null ? cDiem(n) : isCD(v) ? '#C0392B' : '#1B333A'}">${fv(n != null ? n : v)}</td>`; };
+    const rows = ms.map(m => `<tr><td>${escH(m.ten)}</td>${cv.map(f => cell(f(m))).join('')}</tr>`).join('');
+    const tbK = HT.tbKT(ma, ky), k = coTB ? HT.ketQua(ma, ky) : null, rl = HT.renLuyen(ma, ky[0] === 'g' ? 'hk' + ky[2] : ky);
+    const bars = ms.filter(m => m.ht !== 'nx').map(m => ({ m, v: HT.monKT(ma, m.ma, ky) })).filter(x => x.v != null).map(x => ({ k: escH(x.m.vt || x.m.ten), v: x.v, c: cDiem(x.v), lbl: f1(x.v) }));
+    const nx = ms.map(m => ({ m, t: hks.map(hk => HT.val(ma, m.ma, hk, 'NXGV')).filter(Boolean).pop() })).filter(x => x.t);
+    const rm = (D.remarks || []).filter(r => r.maHS === ma && r.nhanXet).slice(-1)[0];
+    const kp = `<div class="kp" style="grid-template-columns:repeat(3,1fr)"><div class="kpi" style="--c:${tbK == null ? '#5C7A83' : cDiem(tbK)}"><div class="n">${tbK == null ? '—' : f1(tbK)}</div><div class="l">${coTB ? 'Điểm TB các môn' : 'TB bài kiểm tra'}</div></div>`
+      + (k && k.muc != null ? `<div class="kpi" style="--c:${RPT.RC[k.muc]}"><div class="n">${LV[k.muc]}</div><div class="l">Kết quả học tập${k.tam ? ' · tạm xếp' : ''}</div></div>` : `<div class="kpi" style="--c:#B9761C"><div class="n">${kts.length}</div><div class="l">Kỳ thi, bài ôn luyện đã dự</div></div>`)
+      + `<div class="kpi" style="--c:${RPT.RC[rl == null ? 1 : rl]}"><div class="n">${rl == null ? '—' : LV[rl]}</div><div class="l">Kết quả rèn luyện</div></div></div>`;
+    const ktCard = kts.length ? `<div class="card" style="margin-top:3mm"><h3>Kỳ thi &amp; ôn luyện</h3><table class="t"><tr><th>Ngày</th><th>Kỳ thi</th><th>Môn</th><th class="n">Điểm</th><th class="n">Hạng</th></tr>`
+      + kts.slice(-6).map(kt => { const v = HT.ktDiem(ma, kt), all = activeStudents().map(x => HT.ktDiem(x.ma, kt)).filter(x => x != null).sort((a, b) => b - a);
+        return `<tr><td>${escH(String(kt.ngay).split('-').reverse().slice(0, 2).join('/'))}</td><td>${escH(kt.ten)}</td><td>${escH((HT.monOf(kt.mon) || {}).vt || kt.mon)}</td><td class="n" style="font-weight:800;color:${cDiem(v / kt.thang * 10)}">${f1(v)}${kt.thang !== 10 ? '/' + kt.thang : ''}</td><td class="n">${all.indexOf(v) + 1}/${all.length}</td></tr>`; }).join('') + '</table></div>' : '';
+    const body = `<div class="g2" style="grid-template-columns:1.05fr 1fr"><div><div class="card"><h3>Điểm kiểm tra các môn · ${escH(kyLabel(ky))}</h3><table class="t"><tr><th>Môn học</th>${cols.map(c => `<th class="n">${c}</th>`).join('')}</tr>${rows}</table></div>${hks.length === 1 ? ktCard : ''}</div>`
+      + `<div>${kp}<div class="card" style="margin-bottom:3mm"><h3>${coTB ? 'Điểm trung bình từng môn' : 'Điểm kiểm tra trung bình từng môn'}</h3>${RPT.hb(bars, { empty: 'Chưa có điểm.', max: 10 })}</div>`
+      + `<div class="card"><h3>Nhận xét của giáo viên</h3>${nx.length ? nx.slice(0, 5).map(x => `<div class="txt" style="margin:0 0 1.6mm"><b>${escH(x.m.ten)}:</b> ${escH(x.t.length > 140 ? x.t.slice(0, 137) + '…' : x.t)}</div>`).join('') : '<div class="none">Giáo viên bộ môn chưa ghi nhận xét.</div>'}`
+      + `<div class="nx1"><b>Giáo viên chủ nhiệm${rm ? ' · tháng ' + rm.thang : ''}:</b> ${rm ? escH(rm.nhanXet) : '<i>Giáo viên chủ nhiệm sẽ cập nhật nhận xét.</i>'}</div></div>${hks.length > 1 ? ktCard : ''}</div></div>`;
+    return RPT.page(RPT.head('Kết quả học tập · ' + escH(kyLabel(ky)), escH(s.ten), (ph ? 'Gửi cha mẹ học sinh' : 'Lớp <b>' + escH(S.cfg.lop || '11D3') + '</b>') + '<br>Năm học ' + escH(S.cfg.namHoc || '')), body, RPT.footTxt(D));
+  };
+  /** PDF báo cáo kết quả học tập cả lớp theo kỳ (Điểm bộ môn ▸ Tổng kết ▸ Tải PDF báo cáo). */
+  HT.pdfLop = function (ky) {
+    const ms = HT.monList(), msD = ms.filter(m => m.ht !== 'nx'), L = activeStudents(), D = { cfg: S.cfg, students: S.students, entries: S.entries, remarks: S.remarks }, kyL = kyLabel(ky), hks = kyHKs(ky);
+    const kq = L.map(s => ({ s, tb: HT.tbKT(s.ma, ky), mon: Object.fromEntries(msD.map(m => [m.ma, HT.monKT(s.ma, m.ma, ky)])), rl: HT.renLuyen(s.ma, ky[0] === 'g' ? 'hk' + ky[2] : ky) }));
+    const coTb = kq.filter(x => x.tb != null), tbL = avg(coTb.map(x => x.tb));
+    const gkL = avg(L.flatMap(s => msD.flatMap(m => hks.map(hk => num(HT.val(s.ma, m.ma, hk, 'GK'))))).filter(x => x != null));
+    const ckL = ky[0] === 'g' ? null : avg(L.flatMap(s => msD.flatMap(m => hks.map(hk => num(HT.val(s.ma, m.ma, hk, 'CK'))))).filter(x => x != null));
+    const kts = ktTrongKy(ky);
+    const BIN = [['Từ 8,0', x => x >= 8], ['6,5 – dưới 8', x => x >= 6.5 && x < 8], ['5,0 – dưới 6,5', x => x >= 5 && x < 6.5], ['Dưới 5,0', x => x < 5]];
+    const bins = BIN.map(([, f]) => coTb.filter(x => f(x.tb)).length);
+    const hd = (k, r) => RPT.head(k, 'Lớp ' + escH(S.cfg.lop || '11D3') + ' · ' + escH(kyL), r || ('Sĩ số <b>' + L.length + '</b><br>Năm học ' + escH(S.cfg.namHoc || '')));
+    const pct = n => L.length ? String(Math.round(n * 1000 / L.length) / 10).replace('.', ',') + '%' : '0%';
+    const so = msD.map(m => { const v = kq.map(x => x.mon[m.ma]).filter(n => n != null);
+      const g = L.flatMap(s => hks.map(hk => num(HT.val(s.ma, m.ma, hk, 'GK')))).filter(x => x != null), c = L.flatMap(s => hks.map(hk => num(HT.val(s.ma, m.ma, hk, 'CK')))).filter(x => x != null);
+      return { m, n: v.length, tb: avg(v), gk: avg(g), ck: ky[0] === 'g' ? null : avg(c), hi: v.length ? Math.max(...v) : null, lo: v.length ? Math.min(...v) : null, g8: v.filter(n => n >= 8).length, d5: v.filter(n => n < 5).length }; }).filter(x => x.n);
+    let html = RPT.page(hd('Báo cáo kết quả học tập'),
+      `<div class="kp"><div class="kpi" style="--c:#0E7C86"><div class="n">${tbL == null ? '—' : f1(tbL)}</div><div class="l">Điểm TB cả lớp</div></div>`
+      + `<div class="kpi" style="--c:#1F618D"><div class="n">${gkL == null ? '—' : f1(gkL)}</div><div class="l">TB bài kiểm tra giữa kì</div></div>`
+      + `<div class="kpi" style="--c:#1E8449"><div class="n">${ckL == null ? '—' : f1(ckL)}</div><div class="l">TB bài kiểm tra cuối kì</div></div>`
+      + `<div class="kpi" style="--c:#B9761C"><div class="n">${kts.length}</div><div class="l">Kỳ thi, bài ôn luyện</div></div></div>`
+      + `<div class="g2"><div class="card"><h3>Phân bố điểm trung bình của học sinh</h3>${RPT.donut(bins, BIN.map(x => x[0]), { size: 170, center: tbL == null ? '' : f1(tbL), sub: 'TB cả lớp' })}<div class="txt" style="color:#5C7A83">${coTb.length}/${L.length} học sinh có điểm${coTb.length < L.length ? ' · ' + pct(L.length - coTb.length) + ' chưa có điểm' : ''}.</div></div>`
+      + `<div class="card"><h3>Điểm trung bình cả lớp từng môn</h3>${RPT.hb(so.map(x => ({ k: escH(x.m.vt || x.m.ten), v: x.tb, c: cDiem(x.tb), lbl: f1(x.tb) })), { empty: 'Chưa có điểm.', max: 10 })}</div></div>`
+      + `<div class="txt" style="color:#5C7A83;margin-top:3mm">Điểm môn = TB môn (lấy từ phần mềm quản lý điểm, nếu đã nhập) hoặc trung bình bài kiểm tra giữa kì / cuối kì — số liệu tham khảo.</div>`, RPT.footTxt(D));
+    const top = coTb.slice().sort((a, b) => b.tb - a.tb).slice(0, 10);
+    const yeu = kq.filter(x => msD.some(m => x.mon[m.ma] != null && x.mon[m.ma] < 5)).slice(0, 9);
+    html += RPT.page(hd('Thống kê theo môn · học sinh tiêu biểu'),
+      `<div class="g2" style="grid-template-columns:1.25fr 1fr"><div class="card"><h3>Thống kê điểm theo môn</h3><table class="t"><tr><th>Môn học</th><th class="n">TB giữa kì</th>${ky[0] === 'g' ? '' : '<th class="n">TB cuối kì</th>'}<th class="n">Cao nhất</th><th class="n">Thấp nhất</th><th class="n">Từ 8,0</th><th class="n">Dưới 5,0</th></tr>`
+      + so.map(x => `<tr><td>${escH(x.m.ten)}</td><td class="n" style="color:${x.gk == null ? '#1B333A' : cDiem(x.gk)}">${x.gk == null ? '' : f1(x.gk)}</td>${ky[0] === 'g' ? '' : `<td class="n" style="font-weight:800;color:${x.ck == null ? '#1B333A' : cDiem(x.ck)}">${x.ck == null ? '' : f1(x.ck)}</td>`}<td class="n">${f1(x.hi)}</td><td class="n">${f1(x.lo)}</td><td class="n" style="color:#1E8449">${x.g8}</td><td class="n" style="color:${x.d5 ? '#C0392B' : '#8AA6AD'}">${x.d5}</td></tr>`).join('') + '</table></div>'
+      + `<div><div class="card" style="margin-bottom:3mm"><h3>10 học sinh có điểm trung bình cao nhất</h3>${RPT.hb(top.map(x => ({ k: escH(x.s.ten), v: x.tb, c: '#1E8449', lbl: f1(x.tb) })), { empty: 'Chưa có điểm.', max: 10 })}</div>`
+      + `<div class="card"><h3>Học sinh cần hỗ trợ thêm</h3>${yeu.length ? '<div class="lst">' + yeu.map(x => `<div><span>${escH(x.s.ten)}</span><em style="color:#C0392B;font-style:normal;font-size:8.5pt">${msD.filter(m => x.mon[m.ma] != null && x.mon[m.ma] < 5).map(m => escH(m.vt || m.ten)).join(', ')}</em></div>`).join('') + '</div>' : '<div class="none">Không có học sinh dưới 5,0 môn nào.</div>'}</div></div></div>`, RPT.footTxt(D));
+    if (kts.length) {
+      const nhat = kt => { const r = L.map(s => ({ s, v: HT.ktDiem(s.ma, kt) })).filter(x => x.v != null).sort((a, b) => b.v - a.v); return r; };
+      html += RPT.page(hd('Kỳ thi học sinh giỏi · ôn luyện trên app', kts.length + ' kỳ thi'),
+        `<table class="t"><tr><th>Ngày</th><th>Kỳ thi</th><th>Loại</th><th>Môn</th><th class="n">Dự thi</th><th class="n">TB</th><th class="n">Cao nhất</th><th>Điểm cao nhất</th></tr>`
+        + kts.slice(-14).map(kt => { const r = nhat(kt), tb = avg(r.map(x => x.v)), sc = kt.thang !== 10 ? '/' + kt.thang : '';
+          return `<tr><td>${escH(String(kt.ngay).split('-').reverse().join('/'))}</td><td>${escH(kt.ten)}</td><td>${{ HSG: 'Học sinh giỏi', OL: 'Ôn luyện', KT: 'Kiểm tra' }[kt.loai] || ''}</td><td>${escH((HT.monOf(kt.mon) || {}).ten || kt.mon)}</td><td class="n">${r.length}</td><td class="n">${tb == null ? '' : f1(tb) + sc}</td><td class="n" style="font-weight:800;color:#1E8449">${r.length ? f1(r[0].v) + sc : ''}</td><td>${r.filter(x => r.length && x.v === r[0].v).slice(0, 3).map(x => escH(x.s.ten)).join(', ')}</td></tr>`; }).join('') + '</table>', RPT.footTxt(D));
+    }
+    const per = 20, cellM = (s, m) => hks.map(hk => [HT.val(s.ma, m.ma, hk, 'GK'), ky[0] === 'g' ? '' : HT.val(s.ma, m.ma, hk, 'CK')]);
+    for (let i = 0; i < kq.length; i += per) {
+      html += RPT.page(hd('Bảng tổng hợp điểm kiểm tra · ' + escH(kyL), (kq.length > per ? 'Phần ' + (i / per + 1) + '/' + Math.ceil(kq.length / per) : L.length + ' học sinh') + '<br>Mỗi ô: giữa kì' + (ky[0] === 'g' ? '' : ' · cuối kì')),
+        `<table class="t" style="font-size:8.3pt"><tr><th>TT</th><th>Họ và tên</th>${msD.map(m => `<th class="n">${escH(m.vt || m.ten.split(/[ ,]/)[0])}</th>`).join('')}<th class="n">TB</th><th>Rèn luyện</th></tr>`
+        + kq.slice(i, i + per).map((x, j) => `<tr><td>${i + j + 1}</td><td>${escH(x.s.ten)}</td>${msD.map(m => `<td class="n" style="white-space:nowrap">${cellM(x.s, m).map(p => p.filter(v => v !== '').map(v => `<span style="color:${num(v) != null ? cDiem(num(v)) : '#1B333A'}">${fv(v)}</span>`).join(' · ')).filter(Boolean).join(' | ')}</td>`).join('')}<td class="n" style="font-weight:800;color:${x.tb == null ? '#1B333A' : cDiem(x.tb)}">${x.tb == null ? '' : f1(x.tb)}</td><td>${x.rl == null ? '' : LV[x.rl]}</td></tr>`).join('') + '</table>', RPT.footTxt(D));
+    }
+    return RPT.open(html, 'Ket_qua_hoc_tap_' + (S.cfg.lop || '11D3') + '_' + ky);
+  };
+
+  /* hồ sơ học sinh: nút PDF nạp điểm trước (để có trang Kết quả học tập) + nút "PDF gửi cha mẹ HS" (lời văn gửi phụ huynh) */
+  document.addEventListener('click', async e => {
+    const b = e.target.closest && e.target.closest('#pfPr,#pfPrPh'); if (!b || HT.d || !canHT() || b.dataset.htw) return;
+    e.stopImmediatePropagation(); e.preventDefault(); b.dataset.htw = '1'; const t = b.textContent; b.textContent = 'Đang lấy điểm…';
+    try { await HT.load(); } catch (_) {} b.textContent = t; delete b.dataset.htw; b.click();
+  }, true);
+  const openProfileHT = window.openProfile;
+  if (openProfileHT) window.openProfile = openProfile = async function (ma) {
+    const r = await openProfileHT.apply(this, arguments);
+    const b = $('#pfPr'); if (!b || !isGVCN() || $('#pfPrPh')) return r;
+    const b2 = b.cloneNode(false); b2.id = 'pfPrPh'; b2.textContent = 'PDF gửi cha mẹ HS'; b.after(b2);
+    b2.onclick = () => { const k = PF.ky || ('t' + S.thang), K = k === 'nam' ? { k: 'nam' } : /^hk/.test(k) ? { k: 'hk', n: +k[2] } : { k: 'thang', m: +k.slice(1) };
+      RPT.open(RPT.student({ cfg: S.cfg, students: S.students, entries: S.entries, remarks: S.remarks }, ma, K, { aud: 'ph' }), 'Bao_cao_gui_cha_me_' + String(stu(ma).ten || ma).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/\W+/g, '_')); };
+    return r;
+  };
 
   /* ── Môn học & giáo viên ── */
   function viewMon() {

@@ -23,6 +23,10 @@ const U = 'http://localhost:8768/';
     const name = await p.evaluate(() => (document.body.innerText.match(/Nguyễn Thu Thảo|cô Thảo/) || [''])[0]);
     ok(/Thảo/.test(name), tag + 'vai GVCN: ' + name);
     await p.screenshot({ path: 'tools/test/out/demo_' + (mobile ? 'm' : 'd') + '_tq.png' });
+    ok(await p.evaluate(() => new Set(DEMO.db().students.map(x => x.ten)).size === DEMO.db().students.length), tag + 'tên học sinh ảo không trùng');
+    await p.evaluate(async () => { go('ht'); await new Promise(r => setTimeout(r, 1200)); HT.tab = 'kt'; HT.render(); }); await p.waitForTimeout(400);
+    ok(await p.$$eval('.ktc', a => a.length) >= 4, tag + 'thẻ Kỳ thi & ôn luyện có dữ liệu mẫu');
+    ok(/Theo dõi thi đua và nề nếp/.test(await p.title()), tag + 'tiêu đề trang: ' + await p.title());
     /* ghi điểm qua API của app (giống bấm) ⇒ thư phụ huynh vào hộp thư mô phỏng */
     const r = await p.evaluate(async () => { const th = DEMO.db().cfg.thang; return await rawApi('addEntries', { thang: th, tuan: 1, rid: 'x1', items: [{ maHS: 'HS01', loai: 'Trừ', maMuc: 'T01', noiDung: 'Đi học muộn', diem: -2 }] }); });
     ok(r.ok && r.ids.length === 1, tag + 'ghi điểm vào máy chủ ảo');

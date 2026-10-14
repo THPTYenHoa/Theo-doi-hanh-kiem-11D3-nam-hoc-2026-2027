@@ -234,3 +234,17 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   GV bộ môn Toán / Cha mẹ HS, Hộp thư mô phỏng, Làm lại dữ liệu ảo, Thoát). Ẩn "Có gì mới" của sổ thật. Link tới trang thật trong file dùng chung ⇒ đổi sang trang demo.
 - Kiểm thử: `NODE_PATH=$(npm root -g) node tools/demo/test.js` (máy tính + điện thoại; bắt buộc 0 lệnh tới máy chủ thật, bộ nhớ sổ thật nguyên vẹn). Ảnh: `tools/demo/cap.js`.
 - QR trong video dự thi trỏ tới `…/demo.html`.
+
+## v6.3 — Điểm kiểm tra & kỳ thi (thay nhập ĐĐGtx), email báo điểm, PDF kết quả học tập
+- **KHÔNG nhập ĐĐGtx** (người dùng 14/10/2026: điểm thường xuyên đã có ở phần mềm khác, GV bộ môn tự điền). `HT.dds` = GK, CK (+ `HK` "TB môn" cho giáo viên, dán từ phần mềm kia);
+  `HT.ddsCu` giữ cách tính TT22 cũ khi sổ còn ĐĐGtx. Excel bỏ qua cột ĐĐGtx / cột lạ; cột "ĐTB / TB môn" ⇒ `HK`.
+- **Cán bộ lớp** (`HT.isCB`) vào Điểm bộ môn: chỉ thẻ Giữa kì · cuối kì + Kỳ thi & ôn luyện, không TB môn / nhận xét GV. Backend `htCanEnter_` / `ktDdCanBo_` (yenhoa-backend `KyThi.gs`).
+- **`kythi.js`** (sau hoctap.js): thẻ Kỳ thi & ôn luyện — loại HSG / OL (ôn luyện trên app) / KT, 1 môn, ngày, thang điểm; điểm ở DiemSo đầu điểm `KT#<mã>`; nhập tay, Excel (cột Họ tên + cột điểm).
+  Backend `htSaveKyThi` (op save / del), boot trả `kyThi`.
+- **Email báo điểm**: `HT.henBao(keys)` ⇒ `htBaoDiem` 90 s sau lần sửa cuối (4 s sau nhập Excel); máy chủ chỉ gửi điểm mới / đã sửa (sheet `DaBaoDiem`), theo cài đặt email phụ huynh
+  + huỷ nhận thư như email rèn luyện. Tắt / bật trên máy: `localStorage.hk_bao_diem`.
+- **Điểm môn dùng chung** `HT.monKT(ma, mon, ky)` = TB môn nếu có, không thì TB bài giữa / cuối kì (tham khảo); `HT.tbKT`. Tổng quan Học lực / Top điểm dùng `monKT`.
+- **PDF**: `HT.pdfLop(ky)` (Tổng kết ▸ Tải PDF báo cáo: tổng quan, theo môn, kỳ thi, bảng tổng hợp) và `HT.gradePage` chèn vào `RPT.student` (trang "Kết quả học tập":
+  điểm từng môn, biểu đồ, kỳ thi đã dự + hạng, nhận xét GV bộ môn + GVCN). Hồ sơ học sinh có thêm nút **PDF gửi cha mẹ HS**. Trang phụ huynh (`phu-huynh.html`) CHƯA có điểm
+  (phụ huynh xem được cả lớp ⇒ cần thiết kế riêng quyền xem điểm từng con).
+- Web demo: tiêu đề "Theo dõi thi đua và nề nếp", tên học sinh ảo không trùng, `htdemo.js` có kỳ thi mẫu + `htSaveKyThi` / `htBaoDiem` (thư vào Hộp thư mô phỏng). Ảnh: `tools/demo/cap63.js`.
