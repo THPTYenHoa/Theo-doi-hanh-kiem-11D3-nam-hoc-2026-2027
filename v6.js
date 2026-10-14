@@ -241,7 +241,8 @@
   const kyHT = P => P.ky === 'nam' ? 'cn' : 'hk' + (P.hk || hkNow());
   const kyHTL = P => P.ky === 'nam' ? 'cả năm' : 'học kì ' + ((P.hk || hkNow()) === 1 ? 'I' : 'II');
   function tbAll(ma, ky) {
-    const k = HT.ketQua(ma, ky), v = Object.values(k.mon).filter(x => typeof x === 'number');
+    /* v6.3: điểm môn = TB môn (nếu đã dán từ phần mềm điểm) hoặc TB bài kiểm tra giữa / cuối kì */
+    const k = HT.ketQua(ma, ky), v = HT.monKT ? HT.monList().filter(m => m.ht !== 'nx').map(m => HT.monKT(ma, m.ma, ky)).filter(x => x != null) : Object.values(k.mon).filter(x => typeof x === 'number');
     return { k, tb: v.length ? v.reduce((a, b) => a + b, 0) / v.length : null, n: v.length };
   }
   function viewHL(P) {
@@ -253,7 +254,7 @@
     let h = P.ky === 'thang' ? `<div class="v6note">${ic('book')}<span>Điểm bộ môn được tổng kết theo học kì — đang hiện <b>${esc(kyHTL(P))}</b> (chứa ${esc(P.nhan.toLowerCase())}).</span></div>` : '';
     h += `<div class="v6kp">${kpi(fmt(avg, 2), 'Điểm TB các môn của lớp', esc(kyHTL(P)), '#0A5C64', 'tb')}${LV.slice(0, 3).map((l, i) => kpi(cnt[i], 'Học tập ' + l, fmt(pct(cnt[i], L.length), 0) + '% sĩ số', XC[i], i ? 'hs' : 'tot')).join('')}</div>`;
     if (!tbs.length) return h + `<div class="v6empty">${ic('book')}<b>Chưa có điểm ${esc(kyHTL(P))}</b><span>Nhập ở Cập nhật ▸ Điểm bộ môn (nhập tay hoặc từ file Excel).</span></div>`;
-    const mon = ms.map(m => { const v = L.map(s => { const k = HT.ketQua(s.ma, ky).mon[m.ma]; return typeof k === 'number' ? k : null; }).filter(x => x != null); return { m, v, a: v.length ? v.reduce((x, y) => x + y, 0) / v.length : null }; }).filter(x => x.a != null).sort((a, b) => b.a - a.a);
+    const mon = ms.map(m => { const v = L.map(s => { const k = HT.monKT ? HT.monKT(s.ma, m.ma, ky) : HT.ketQua(s.ma, ky).mon[m.ma]; return typeof k === 'number' ? k : null; }).filter(x => x != null); return { m, v, a: v.length ? v.reduce((x, y) => x + y, 0) / v.length : null }; }).filter(x => x.a != null).sort((a, b) => b.a - a.a);
     const colr = a => a >= 8 ? '#1E8449' : a >= 6.5 ? '#1F618D' : a >= 5 ? '#B9761C' : '#C0392B';
     const bins = [['< 5', 0, 5], ['5 – 6,5', 5, 6.5], ['6,5 – 8', 6.5, 8], ['8 – 9', 8, 9], ['≥ 9', 9, 11]].map(([l, a, b]) => ({ l, n: tbs.filter(x => x >= a - 1e-9 && x < b - 1e-9).length, c: colr(a + .01) }));
     const bm = Math.max(1, ...bins.map(b => b.n));
@@ -268,7 +269,7 @@
     const ky = kyHT(P), L = activeStudents(), ms = HT.monList().filter(m => m.ht !== 'nx');
     if (TQ.mon !== '__tb' && !ms.some(m => m.ma === TQ.mon)) TQ.mon = '__tb';
     let h = `<div class="v6chips">${[['__tb', 'TB các môn']].concat(ms.map(m => [m.ma, m.ten])).map(([k, l]) => `<button data-tqmon="${esc(k)}" class="${TQ.mon === k ? 'on' : ''}">${esc(l)}</button>`).join('')}</div>`;
-    const R = L.map(s => { if (TQ.mon === '__tb') { const t = tbAll(s.ma, ky); return { s, v: t.tb, k: t.k }; } const v = HT.ketQua(s.ma, ky).mon[TQ.mon]; return { s, v: typeof v === 'number' ? v : null }; }).filter(r => r.v != null);
+    const R = L.map(s => { if (TQ.mon === '__tb') { const t = tbAll(s.ma, ky); return { s, v: t.tb, k: t.k }; } const v = HT.monKT ? HT.monKT(s.ma, TQ.mon, ky) : HT.ketQua(s.ma, ky).mon[TQ.mon]; return { s, v: typeof v === 'number' ? v : null }; }).filter(r => r.v != null);
     const monL = TQ.mon === '__tb' ? 'Điểm TB các môn' : (HT.monOf(TQ.mon) || {}).ten;
     if (!R.length) return h + `<div class="v6empty">${ic('star')}<b>Chưa có điểm ${esc(monL)} · ${esc(kyHTL(P))}</b></div>`;
     R.sort((a, b) => b.v - a.v || a.s.ten.localeCompare(b.s.ten, 'vi'));

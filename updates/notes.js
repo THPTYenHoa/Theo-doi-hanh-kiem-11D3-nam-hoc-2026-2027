@@ -1,6 +1,25 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v6.3", version: "6.3", date: "2026-10-14",
+    title: "Điểm kiểm tra, kỳ thi học sinh giỏi, ôn luyện — email báo điểm và báo cáo PDF",
+    summary: "Phần điểm chỉ còn những gì lớp cần theo dõi: điểm kiểm tra giữa kì, cuối kì, các kỳ thi học sinh giỏi và bài ôn luyện trên app. Cán bộ lớp nhập được, cha mẹ nhận email báo điểm, báo cáo PDF có thêm phần kết quả học tập.",
+    items: [
+      { type: "imp", title: "Không nhập điểm thường xuyên nữa",
+        text: "Điểm bộ môn ▸ <b>Giữa kì · cuối kì</b>: chỉ nhập điểm bài kiểm tra giữa kì, cuối kì (gõ tay hoặc <b>Nhập từ Excel</b>). Điểm thường xuyên giáo viên bộ môn vẫn nhập ở phần mềm quản lý điểm của trường; cột <b>TB môn</b> dán từ đó nếu cần xếp mức học tập.",
+        img: "" },
+      { type: "new", title: "Kỳ thi & ôn luyện",
+        text: "Điểm bộ môn ▸ <b>Kỳ thi &amp; ôn luyện</b> ▸ <b>Tạo kỳ thi</b> (thi học sinh giỏi, ôn luyện trên app, bài kiểm tra khác — chọn môn, ngày, thang điểm) ▸ bấm vào kỳ thi để nhập điểm từng bạn hoặc nhập từ Excel. Có điểm trung bình, cao nhất, xếp hạng.",
+        img: "updates/v6.3/ky-thi.jpg" },
+      { type: "new", title: "Cán bộ lớp nhập điểm, cha mẹ nhận email báo điểm",
+        text: "Cán bộ lớp vào được Điểm bộ môn để nhập điểm giữa kì, cuối kì và các kỳ thi. Nhập xong, cha mẹ đã đăng ký nhận thông báo tự nhận email báo điểm (mỗi điểm chỉ báo một lần). Bấm dòng <b>Email báo điểm cho cha mẹ</b> để tắt / bật.",
+        img: "updates/v6.3/nhap-diem.jpg" },
+      { type: "new", title: "Báo cáo PDF kết quả học tập",
+        text: "Điểm bộ môn ▸ <b>Tổng kết</b> ▸ <b>Tải PDF báo cáo</b>: báo cáo cả lớp (điểm trung bình, phân bố điểm, thống kê từng môn, học sinh tiêu biểu, các kỳ thi). Hồ sơ học sinh ▸ <b>Tải PDF báo cáo</b> / <b>PDF gửi cha mẹ HS</b> có thêm trang kết quả học tập: điểm từng môn, biểu đồ, kỳ thi đã dự, nhận xét của giáo viên.",
+        img: "updates/v6.3/bao-cao-hs.jpg" }
+    ]
+  },
+  {
     id: "2026-10-14-v6.2", version: "6.2", date: "2026-10-14",
     title: "Web demo cho ban giám khảo: dùng thử mọi tính năng bằng mã truy cập",
     summary: "Có thêm một trang demo riêng với dữ liệu ảo và máy chủ ảo: chỉ cần nhập mã truy cập là dùng thử được mọi tính năng, không ảnh hưởng gì tới sổ thật của lớp.",

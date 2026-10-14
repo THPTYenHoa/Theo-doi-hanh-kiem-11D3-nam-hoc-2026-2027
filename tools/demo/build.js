@@ -17,8 +17,8 @@ function make(src, dst, title, extra) {
   fs.writeFileSync(path.join(R, dst), h);
   console.log(dst, (h.length / 1024).toFixed(0) + ' KB');
 }
-make('index.html', 'demo.html', 'Demo · Sổ theo dõi học sinh 11D3', []);
-make('phu-huynh.html', 'demo-phu-huynh.html', 'Demo · Sổ theo dõi học sinh 11D3 · Phụ huynh', [
+make('index.html', 'demo.html', 'Demo · Theo dõi thi đua và nề nếp', []);
+make('phu-huynh.html', 'demo-phu-huynh.html', 'Demo · Theo dõi thi đua và nề nếp · Cha mẹ học sinh', [
   ['Object.keys(localStorage)', 'DEMO.keys()'],
   ["location.replace('./')", "location.replace('demo.html')"],
   ['<a href="./">', '<a href="demo.html">']]);

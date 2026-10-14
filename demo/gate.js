@@ -60,7 +60,7 @@
   /* ── màn nhập mã ── */
   if (!D.unlocked) {
     var g = el('<div id="dg"><form class="bx" autocomplete="off"><img src="img/logo-yenhoa.webp" alt="Logo THPT Yên Hòa">'
-      + '<h1>THPT YÊN HÒA</h1><div class="sub">Sổ theo dõi học sinh</div><div class="tag">BẢN DEMO · DỮ LIỆU ẢO</div>'
+      + '<h1>THPT YÊN HÒA</h1><div class="sub">Theo dõi thi đua và nề nếp</div><div class="tag">BẢN DEMO · DỮ LIỆU ẢO</div>'
       + '<p>Bản trải nghiệm có đầy đủ tính năng như ứng dụng thật, dùng dữ liệu ảo và máy chủ ảo riêng — mọi thao tác không ảnh hưởng tới sổ thật của lớp.</p>'
       + '<input id="dgc" placeholder="Nhập mã truy cập" aria-label="Mã truy cập" autocapitalize="off" spellcheck="false">'
       + '<div class="er" id="dge"></div><button type="submit">Vào bản demo</button>'

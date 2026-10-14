@@ -19,14 +19,25 @@
     students.forEach(function (s, i) {
       var lv = 5.6 + r() * 3.6 + (i % 7 === 0 ? 0.6 : 0) - (i % 11 === 3 ? 1.2 : 0);
       MON.forEach(function (m) {
-        [1].forEach(function (hk) {
-          if (m[2] === 'nx') { for (var k = 1; k <= m[3]; k++) diem.push([s.ma, m[0], hk, 'TX' + k, r() < 0.93 ? 'Đ' : 'CĐ']); diem.push([s.ma, m[0], hk, 'GK', 'Đ']); diem.push([s.ma, m[0], hk, 'CK', r() < 0.95 ? 'Đ' : 'CĐ']); return; }
+        [1].forEach(function (hk) {   /* v6.3: không có ĐĐGtx — chỉ giữa kì, cuối kì, TB môn (dán từ phần mềm điểm của trường) */
+          if (m[2] === 'nx') { diem.push([s.ma, m[0], hk, 'GK', 'Đ']); diem.push([s.ma, m[0], hk, 'CK', r() < 0.95 ? 'Đ' : 'CĐ']); diem.push([s.ma, m[0], hk, 'HK', r() < 0.95 ? 'Đ' : 'CĐ']); return; }
           var cl = function (x) { return Math.max(2, Math.min(10, Math.round(x * 4) / 4)); };
-          for (var k2 = 1; k2 <= m[3]; k2++) diem.push([s.ma, m[0], hk, 'TX' + k2, String(cl(lv + (r() - 0.45) * 2.4))]);
-          diem.push([s.ma, m[0], hk, 'GK', String(cl(lv + (r() - 0.5) * 2))]);
-          diem.push([s.ma, m[0], hk, 'CK', String(cl(lv + (r() - 0.5) * 2))]);
+          var gk = cl(lv + (r() - 0.5) * 2), ck = cl(lv + (r() - 0.5) * 2);
+          diem.push([s.ma, m[0], hk, 'GK', String(gk)]);
+          diem.push([s.ma, m[0], hk, 'CK', String(ck)]);
+          diem.push([s.ma, m[0], hk, 'HK', String(Math.round(((lv + (r() - 0.5)) * 5 + gk * 2 + ck * 3) / 10 * 10) / 10)]);
+          if (i % 6 === 1 && (m[0] === 'TOAN' || m[0] === 'VAN' || m[0] === 'ANH')) diem.push([s.ma, m[0], hk, 'NXGV', gk >= 8 ? 'Tiếp thu nhanh, chăm chỉ (nhận xét mẫu).' : 'Cần làm bài tập đầy đủ hơn (nhận xét mẫu).']);
         });
       });
+    });
+    /* kỳ thi mẫu: ôn luyện trên app (cả lớp) + thi học sinh giỏi (một số bạn) */
+    var KT = [['OL2610ANH1', 'OL', 'ANH', 'Ôn luyện tiếng Anh trên app · tuần 1', '2026-10-05', 10, 1], ['OL2610TOAN2', 'OL', 'TOAN', 'Luyện đề Toán trên app · đề 2', '2026-10-09', 10, 1],
+      ['HSG2610TOAN', 'HSG', 'TOAN', 'Thi học sinh giỏi cấp trường môn Toán · vòng 1', '2026-10-12', 20, 0.25], ['HSG2610VAN', 'HSG', 'VAN', 'Thi học sinh giỏi cấp trường môn Ngữ văn · vòng 1', '2026-10-12', 20, 0.15]];
+    var kyThi = KT.map(function (k) { return { id: k[0], loai: k[1], mon: k[2], ten: k[3], ngay: k[4], hk: 1, thang: k[5], gc: k[1] === 'OL' ? 'Ứng dụng luyện thi (ví dụ)' : '', by: 'Nguyễn Thu Thảo' }; });
+    students.forEach(function (s, i) {
+      var lv = 5.6 + r() * 3.6;
+      KT.forEach(function (k) { if (r() > (k[6] === 1 ? 0.92 : k[6])) return;   /* tỉ lệ học sinh dự thi */
+        var v = Math.max(1, Math.min(k[5], Math.round((lv / 10 * k[5] + (r() - 0.5) * k[5] * 0.25) * 4) / 4)); diem.push([s.ma, k[2], 1, 'KT#' + k[0], String(v)]); });
     });
     var hoso = students.map(function (s, i) {
       return { ma: s.ma, ten: s.ten, gt: i % 3 === 0 ? 'Nam' : 'Nữ', ns: '', dv: i % 5 === 4 ? '' : 'x', dc: 'Phường Yên Hòa, Hà Nội (địa chỉ mẫu)', dt: '', dien: i === 6 ? 'Đặc biệt' : '',
@@ -35,26 +46,29 @@
     });
     return { mon: MON.map(function (m, i) { return { ma: m[0], ten: m[1], ht: m[2], tx: m[3], tt: i + 1, on: true, vt: VT[m[0]] }; }),
       gv: GV.map(function (g) { return { ma: g[0], ten: g[1], mon: g[2], email: g[3], dt: g[4], dc: '', gc: '', on: true }; }),
-      rule: JSON.parse(JSON.stringify(RULE)), diem: diem.map(function (d) { return d.concat(['Giáo viên bộ môn', '2026-10-10 08:00']); }),
+      kyThi: kyThi, rule: JSON.parse(JSON.stringify(RULE)), diem: diem.map(function (d) { return d.concat(['Giáo viên bộ môn', '2026-10-10 08:00']); }),
       hoso: hoso, scn: { 'cfg.bgh_email': 'bgh@example.com' }, mails: [] };
   }
   var GV_EMAIL = { 'tok.gvtoan': ['TOAN'] };
   function api(st, a, p, who, students) {
-    var gvcn = who === 'gvcn', gvMon = who === 'gvtoan' ? ['TOAN'] : null;
+    var gvcn = who === 'gvcn', gvMon = who === 'gvtoan' ? ['TOAN'] : null, cb = who === 'lt' || who === 'tt';
+    var ddCB = function (dd) { return dd === 'GK' || dd === 'CK' || /^KT#/.test(dd); };
+    st.kyThi = st.kyThi || []; st.bao = st.bao || {};
     var need = function () { if (!gvcn) throw new Error('Chỉ giáo viên chủ nhiệm được thực hiện thao tác này.'); };
     try {
       switch (a) {
         case 'htBoot':
-          if (!gvcn && !gvMon) return { ok: false, error: 'Chỉ giáo viên chủ nhiệm và giáo viên bộ môn xem được kết quả học tập.' };
-          var o = { ok: true, mon: st.mon, gv: st.gv, rule: st.rule, diem: gvMon ? st.diem.filter(function (d) { return gvMon.indexOf(d[1]) >= 0; }) : st.diem };
-          if (gvMon) o.myMon = gvMon; else { o.hoso = st.hoso; o.scn = st.scn; o.mailQuota = 90; }
+          if (!gvcn && !gvMon && !cb) return { ok: false, error: 'Chỉ giáo viên và cán bộ lớp xem được điểm kiểm tra.' };
+          var o = { ok: true, mon: st.mon, gv: st.gv, rule: st.rule, kyThi: st.kyThi, diem: gvMon ? st.diem.filter(function (d) { return gvMon.indexOf(d[1]) >= 0; }) : cb ? st.diem.filter(function (d) { return ddCB(d[3]); }) : st.diem };
+          if (gvMon) o.myMon = gvMon; else if (cb) o.canBo = true; else { o.hoso = st.hoso; o.scn = st.scn; o.mailQuota = 90; }
           return o;
         case 'htSaveMon': need(); st.mon = p.mon; return { ok: true, mon: st.mon };
         case 'htSaveGV': need(); st.gv = p.gv; return { ok: true, gv: st.gv };
         case 'htSaveRule': need(); Object.keys(p.rule || {}).forEach(function (k) { st.rule[k] = p.rule[k]; }); return { ok: true, rule: st.rule };
         case 'htSaveDiem':
-          if (!gvcn && !gvMon) throw new Error('Không có quyền nhập điểm.');
+          if (!gvcn && !gvMon && !cb) throw new Error('Không có quyền nhập điểm.');
           var items = p.items || [];
+          if (cb && (items.some(function (it) { return !ddCB(it.dd); }) || (p.replace && !(p.replace.dds || []).every(ddCB)))) throw new Error('Cán bộ lớp chỉ nhập điểm kiểm tra giữa kì, cuối kì và các kỳ thi.');
           if (gvMon && items.some(function (it) { return gvMon.indexOf(it.mon) < 0; })) throw new Error('Thầy/cô chỉ nhập được điểm môn mình dạy.');
           if (p.replace && p.replace.mon) { var dds = p.replace.dds || []; st.diem = st.diem.filter(function (d) { return !(d[1] === p.replace.mon && d[2] === +p.replace.hk && (!dds.length || dds.indexOf(d[3]) >= 0)); }); }
           items.forEach(function (it) {
@@ -63,6 +77,26 @@
             if (i >= 0) st.diem[i][4] = it.v; else st.diem.push([it.ma, it.mon, +it.hk, it.dd, it.v, 'Người nhập', '']);
           });
           return { ok: true, them: items.length };
+        case 'htSaveKyThi':
+          if (!gvcn && !gvMon && !cb) throw new Error('Chỉ giáo viên và cán bộ lớp được tạo kỳ thi.');
+          if (p.op === 'del') { st.kyThi = st.kyThi.filter(function (k) { return k.id !== p.id; }); st.diem = st.diem.filter(function (d) { return d[3] !== 'KT#' + p.id; }); return { ok: true, kyThi: st.kyThi }; }
+          var k = p.kt || {}; if (!k.mon || !k.ten) throw new Error('Cần chọn môn và đặt tên kỳ thi.');
+          if (gvMon && gvMon.indexOf(k.mon) < 0) throw new Error('Thầy/cô chỉ tạo kỳ thi cho môn mình dạy.');
+          var id = k.id || (String(k.loai || 'KT') + Date.now().toString(36).toUpperCase());
+          var row = { id: id, loai: k.loai || 'KT', mon: k.mon, ten: k.ten, ngay: k.ngay || '', hk: +k.hk === 2 ? 2 : 1, thang: +k.thang || 10, gc: k.gc || '', by: k.by || 'Người dùng demo' };
+          var at = -1; st.kyThi.forEach(function (x, i) { if (x.id === id) at = i; }); if (at >= 0) { row.by = st.kyThi[at].by; st.kyThi[at] = row; } else st.kyThi.push(row);
+          return { ok: true, id: id, kyThi: st.kyThi };
+        case 'htBaoDiem':
+          if (!gvcn && !gvMon && !cb) throw new Error('Không có quyền gửi báo điểm.');
+          var keys = (p.keys || []).map(function (x) { return x.mon + '|' + (+x.hk === 2 ? 2 : 1) + '|' + x.dd; }), theo = {}, nB = 0;
+          st.diem.forEach(function (d) { var key = d[1] + '|' + d[2] + '|' + d[3]; if (keys.indexOf(key) < 0 || !ddCB(d[3])) return; var bk = d[0] + '|' + key; if (st.bao[bk] === d[4]) return; st.bao[bk] = d[4]; nB++; (theo[d[0]] = theo[d[0]] || []).push(d); });
+          var gui2 = 0;
+          Object.keys(theo).forEach(function (ma) { var s2 = (students || []).filter(function (x) { return x.ma === ma; })[0]; if (!s2 || !/@/.test(s2.email || '')) return; gui2++;
+            st.mails.push({ kind: 'diem', to: s2.email, subject: '[11D3] Điểm kiểm tra của con ' + String(s2.ten).split(' ').pop(),
+              html: '<p>Kính gửi bác, giáo viên chủ nhiệm xin thông báo kết quả bài kiểm tra / kỳ thi vừa được cập nhật của con <b>' + s2.ten + '</b>:</p><table style="border-collapse:collapse;width:100%">'
+                + theo[ma].map(function (d) { var kt = st.kyThi.filter(function (x) { return 'KT#' + x.id === d[3]; })[0], mon = (st.mon.filter(function (x) { return x.ma === d[1]; })[0] || {}).ten || d[1];
+                  return '<tr><td style="padding:8px;border-bottom:1px solid #EDF4F5"><b>' + mon + '</b><br><span style="color:#6C8A93;font-size:13px">' + (kt ? kt.ten : (d[3] === 'GK' ? 'Kiểm tra giữa kì' : 'Kiểm tra cuối kì') + ' · học kì ' + (d[2] === 2 ? 'II' : 'I')) + '</span></td><td style="padding:8px;border-bottom:1px solid #EDF4F5;text-align:right;font-size:20px;font-weight:800">' + String(d[4]).replace('.', ',') + (kt && kt.thang !== 10 ? '/' + kt.thang : '') + '</td></tr>'; }).join('') + '</table>' }); });
+          return { ok: true, n: nB, mail: 'đã gửi ' + gui2 + ' thư báo điểm' };
         case 'htSaveHoSo': need();
           (p.rows || []).forEach(function (o2) { var h = st.hoso.filter(function (x) { return x.ma === o2.ma; })[0]; if (h) Object.keys(o2).forEach(function (k) { h[k] = o2[k]; }); else st.hoso.push(o2); });
           return { ok: true, hoso: st.hoso };

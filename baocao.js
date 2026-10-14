@@ -1,5 +1,5 @@
 /* ══ RPT — báo cáo PDF KHỔ NGANG (A4 landscape) dùng chung cho index.html + phu-huynh.html ══
-   RPT.student(D, ma, ky, {aud})  · hồ sơ 1 học sinh (tháng / học kỳ / cả năm): số nổi bật, biểu đồ, lỗi, khen, nhận xét, chi tiết
+   RPT.student(D, ma, ky, {aud})  · hồ sơ 1 học sinh (tháng / học kỳ / cả năm): số nổi bật, biểu đồ, KẾT QUẢ HỌC TẬP (HT.gradePage), lỗi, khen, nhận xét, chi tiết
    RPT.notice(D, ma, ids)          · thông báo gửi phụ huynh: "Cô Thảo xin cập nhật…" cho các mục vừa ghi
    RPT.cls(M)                      · báo cáo lớp (mô hình số liệu do index.html dựng từ bcStats)
    RPT.open(html, title)           · in / lưu PDF qua iframe ẩn (khổ ngang). RPT.last = HTML vừa dựng (kiểm thử).
@@ -70,7 +70,7 @@
   }
   function hb(rows, o) {
     o = o || {}; if (!rows.length) return '<div class="none">' + esc(o.empty || 'Không có') + '</div>';
-    var mx = Math.max.apply(null, rows.map(function (r) { return Math.abs(r.v); })) || 1;
+    var mx = o.max || Math.max.apply(null, rows.map(function (r) { return Math.abs(r.v); })) || 1;
     return rows.map(function (r) { return '<div class="hb"><span class="t">' + r.k + '</span><span class="tr"><i style="width:' + (Math.abs(r.v) / mx * 100).toFixed(0) + '%;background:' + (r.c || '#C0392B') + '"></i></span><b style="color:' + (r.c || '#C0392B') + '">' + (r.lbl != null ? r.lbl : r.v) + '</b></div>'; }).join('');
   }
   var CSS = '.nx1{margin-top:2.5mm;padding:2.2mm 3mm;border-left:3px solid #0E7C86;background:#F2F8F9;border-radius:0 2mm 2mm 0;font-size:10pt;line-height:1.45;color:#1B333A}.nx1 b{color:#0A5C64}.nx1 i{color:#6C8A93}.cmp .cr{display:grid;grid-template-columns:30mm 1fr 18mm;grid-template-rows:auto auto;column-gap:3mm;align-items:center;margin:0 0 3.2mm}.cmp .ck{grid-row:1/3;font-weight:700;font-size:9.5pt;color:#1B333A}.cmp .cb{position:relative;height:4.6mm;display:flex;align-items:center;gap:2mm}.cmp .cb i{display:block;flex:none;height:100%;border-radius:2mm;min-width:1mm}.cmp .cb b{font-size:9pt;font-weight:800;color:#1B333A}.cmp .cb.pv{height:3.2mm;margin-top:.8mm}.cmp .cb.pv i{background:#C9D6DA}.cmp .cb.pv b{color:#8AA6AD;font-weight:600;font-size:8pt}.cmp .cd{grid-row:1/3;grid-column:3;font-weight:800;font-size:10pt;text-align:right}.cmp .cd.up{color:#1E8449}.cmp .cd.dn{color:#C0392B}.cmp .cd.eq{color:#8AA6AD}.cmp .clg{display:flex;gap:4mm;flex-wrap:wrap;font-size:8pt;color:#5C7A83;margin-top:1mm}.cmp .clg i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1mm;vertical-align:-.4mm}@page{size:A4 landscape;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Be Vietnam Pro",Aptos,"Segoe UI",Arial,sans-serif;color:#1B333A;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}'
@@ -152,6 +152,8 @@
       + '<div class="g2"><div class="card"><h3>' + (ky.k === 'thang' ? 'Điểm từng tuần' : 'Điểm TB tuần qua các tháng') + '</h3>' + line(pts, { w: 470, h: 172, fmt: ky.k === 'thang' ? nz : f1 }) + '</div>'
       + '<div class="card"><h3>Cộng / trừ ' + (ky.k === 'thang' ? 'theo tuần' : 'theo tháng') + '</h3>' + bars2(br, { w: 470, h: 160 }) + '</div></div>';
     var out = page(h, p1, foot);
+    /* v6.3: trang Kết quả học tập (điểm các môn, biểu đồ, nhận xét GV bộ môn + chủ nhiệm) khi sổ có dữ liệu điểm */
+    if (o.grades !== false && window.HT && HT.gradePage) { try { out += HT.gradePage(D, ma, ky, o); } catch (e) {} }
     /* trang 2: lỗi, khen, nhận xét */
     var loi = {}; X.tru.forEach(function (e) { var k = e[8] || e[7]; loi[k] = (loi[k] || 0) + 1; });
     var lr = Object.keys(loi).map(function (k) { return { k: esc(k), v: loi[k], lbl: loi[k] + ' lần' }; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 7);

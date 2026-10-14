@@ -50,9 +50,12 @@
   var ROLE_T = { gvcn: 'Giáo viên chủ nhiệm', lt: 'Cán bộ lớp', gvtoan: 'Giáo viên bộ môn (Toán)', ph: 'Cha mẹ học sinh' };
   function rnd(seed) { var x = seed; return function () { x = (x * 9301 + 49297) % 233280; return x / 233280; }; }
   function build() {
-    var r = rnd(11), students = [], i;
+    var r = rnd(11), students = [], i, used = {};
     for (i = 0; i < 40; i++) {
-      students.push({ ma: 'HS' + pad(i + 1), ten: HO[(i * 7) % 10] + ' ' + DEM[(i * 3) % 10] + ' ' + TEN[(i * 11) % 20], to: String(1 + (i % 4)),
+      var ten, j = 0;   /* tên giả, không trùng nhau */
+      do { ten = HO[(i * 7 + j) % 10] + ' ' + DEM[(i * 3 + j * 7) % 10] + ' ' + TEN[(i * 11 + j * 3) % 20]; j++; } while (used[ten]);
+      used[ten] = 1;
+      students.push({ ma: 'HS' + pad(i + 1), ten: ten, to: String(1 + (i % 4)),
         chucVu: i === 0 ? 'Lớp trưởng' : (i < 4 ? 'Tổ trưởng' : 'Học sinh'), trangThai: 'Đang học',
         email: i % 5 !== 4 ? 'phuhuynh.hs' + pad(i + 1) + '@demo.vn' : '' });
     }
@@ -82,7 +85,7 @@
       if (th !== THANG) { khoa[th] = { by: ME.gvcn.name, at: (th === 12 ? (Y0 + 1) + '-01' : yearOf(th % 12 + 1) + '-' + pad(th % 12 + 1)) + '-01 16:30' };
         remarks.push({ maHS: 'HS03', thang: th, nhanXet: 'Em tiến bộ rõ, cần đúng giờ hơn.', xepLoai: 'Khá' }, { maHS: 'HS05', thang: th, nhanXet: 'Ngoan, tích cực phát biểu.', xepLoai: 'Tốt' }); }
     });
-    return { v: 2, made: THANG + '-' + TUAN, rev: 1, students: students, tru: tru, cong: cong, entries: entries, remarks: remarks, nid: id,
+    return { v: 3, made: THANG + '-' + TUAN, rev: 1, students: students, tru: tru, cong: cong, entries: entries, remarks: remarks, nid: id,
       cfg: { namHoc: '2026 - 2027', lop: '11D3', gvcn: ME.gvcn.name, thang: THANG, soTuan: 4,
         thresholds: [{ ten: 'Tốt', san: 0 }, { ten: 'Khá', san: -6 }, { ten: 'Trung bình', san: -12 }, { ten: 'Yếu', san: -9999 }] },
       khoa: khoa, phMail: { on: true, cong: true },
@@ -96,7 +99,7 @@
       theme: '', mails: [], ev: {}, reg: {} };
   }
   var DB = null;
-  function load() { if (DB) return DB; try { DB = JSON.parse(g('hk_demo_db_v2') || 'null'); } catch (e) { DB = null; } if (!DB || DB.v !== 2) { DB = build(); save(); } return DB; }
+  function load() { if (DB) return DB; try { DB = JSON.parse(g('hk_demo_db_v2') || 'null'); } catch (e) { DB = null; } if (!DB || DB.v !== 3) { DB = build(); save(); } return DB; }
   function save() { try { LS.setItem('hk_demo_db_v2', JSON.stringify(DB)); } catch (e) { DB.ev = {}; if (DB.ht) DB.ht.img = {}; try { LS.setItem('hk_demo_db_v2', JSON.stringify(DB)); } catch (e2) {} } }
   function now() { var d = new Date(); return yearOf(THANG) + '-' + pad(THANG) + '-' + pad(DAY) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
   function stu(ma) { return DB.students.filter(function (x) { return x.ma === ma; })[0]; }
