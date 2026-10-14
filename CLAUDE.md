@@ -205,7 +205,7 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   ảnh `img.<khoá>` (sodo1, sodo2, quydinh_lop, sk_hk1, tk_nam, bb_daunam, bb_hk1, bb_cuoinam). Xuất: `SCN.taoWord()` ⇒ `templates/so-chu-nhiem.docx` + `docxfill.js`.
 - **Khuôn Word**: `tools/socn/lam_khuon.py <file mẫu> templates/so-chu-nhiem.docx` — giữ trình bày file mẫu, thay dữ liệu bằng ô `{{…}}` (cú pháp ở đầu `docxfill.js`).
   **File mẫu gốc có dữ liệu thật của lớp khác — KHÔNG đưa vào repo.** Đổi mẫu ⇒ dựng lại khuôn, kiểm tra không còn tên / số điện thoại thật, tăng `?v=` trong `taoWord`.
-- **Máy chủ mô phỏng** `tools/test/htdemo.js` (v6.0: chỉ còn dùng cho `tools/test/mock.js`, email `gvtoan@example.com`).
+- **Máy chủ mô phỏng** `demo/htdemo.js` (dùng cho web demo + `tools/test/mock.js`, email `gvtoan@example.com`).
   Lệnh backend mới ⇒ thêm vào `htdemo.js`. `run.js` mục 23.
 - **Ngôn ngữ** (người dùng yêu cầu 14/10/2026, theo sổ công tác chủ nhiệm): Theo dõi nề nếp · Kết quả rèn luyện · Kết quả học tập · Báo cáo thi đua · Sổ công tác chủ nhiệm ·
   Nhật ký theo dõi · Cha mẹ học sinh; không dùng "hạnh kiểm" trên giao diện / email (dùng "rèn luyện").
@@ -223,3 +223,14 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
 - **Đăng nhập** (`lgShell` trong v6.js): logo + **THPT YÊN HÒA** cỡ chữ đều, lớn (v6.1), KHÔNG hiện tên lớp (tên lớp chỉ hiện bên trong).
 - **Tính năng sắp ra mắt** (`roadmap.js`): thêm "Mở rộng cho nhiều lớp" (file mẫu `templates/mau-danh-sach-lop.xlsx`: DanhSachLop · PhanQuyen · HuongDan) và
   "Phân quyền từ quản trị" (bảng quyền mẫu).
+
+## v6.2 — Web demo (cho ban giám khảo, QR trong video)
+- **`demo.html` + `demo-phu-huynh.html` TỰ SINH** từ `index.html` / `phu-huynh.html` bằng `node tools/demo/build.js` — **chạy lại mỗi lần sửa 2 trang thật** (cùng PR), không sửa tay.
+  Cùng thư mục với app thật ⇒ dùng chung mọi script / ảnh; chỉ chèn thêm `demo/htdemo.js` + `demo/server.js` (đầu `<head>`) và `demo/gate.js` (cuối `<body>`).
+- `demo/server.js`: máy chủ ẢO trong trình duyệt — chặn mọi `fetch` tới script.google.com, trả lời bằng `DEMO.api` (dữ liệu ảo theo ngày hôm nay, tháng 9 → tháng hiện tại,
+  tháng cũ đã khoá sổ); **tách bộ nhớ**: `Storage.prototype` get/set/remove của localStorage tự thêm tiền tố `d11:` ⇒ không đụng sổ thật trên cùng máy.
+  Lệnh backend mới ⇒ thêm `case` ở đây (phần học tập: `htdemo.js`). Email hệ thống ⇒ Hộp thư mô phỏng (`DEMO.mails`).
+- `demo/gate.js`: màn nhập **mã truy cập `11D3Yenhoa`** (không phân biệt hoa thường, bỏ dấu cách) ⇒ vào vai GVCN; nút **Bản demo** (đổi vai GVCN / Cán bộ lớp /
+  GV bộ môn Toán / Cha mẹ HS, Hộp thư mô phỏng, Làm lại dữ liệu ảo, Thoát). Ẩn "Có gì mới" của sổ thật. Link tới trang thật trong file dùng chung ⇒ đổi sang trang demo.
+- Kiểm thử: `NODE_PATH=$(npm root -g) node tools/demo/test.js` (máy tính + điện thoại; bắt buộc 0 lệnh tới máy chủ thật, bộ nhớ sổ thật nguyên vẹn). Ảnh: `tools/demo/cap.js`.
+- QR trong video dự thi trỏ tới `…/demo.html`.

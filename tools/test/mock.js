@@ -32,7 +32,7 @@ function build() {
   const remarks = [{ maHS: 'HS03', thang: 9, nhanXet: 'Có tiến bộ, cần đúng giờ hơn.', xepLoai: '' }];
   return { students, tru, cong, entries, remarks };
 }
-const HTDEMO = require('./htdemo.js');
+const HTDEMO = require('../../demo/htdemo.js');
 const EMAILS = { 'gvcn@example.com': 'gvcn', 'loptruong@example.com': 'lt', 'totruong2@example.com': 'tt', 'gvtoan@example.com': 'gvtoan' };
 const ME = { gvcn: { name: 'Nguyễn Thu Thảo', role: 'GVCN', email: 'gvcn@example.com', to: '' },
   lt: { name: 'Nguyễn Minh An', role: 'Cán bộ lớp', email: 'loptruong@example.com', to: '1' },

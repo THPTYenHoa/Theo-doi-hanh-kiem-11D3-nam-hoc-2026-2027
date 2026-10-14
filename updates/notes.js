@@ -1,6 +1,19 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v6.2", version: "6.2", date: "2026-10-14",
+    title: "Web demo cho ban giám khảo: dùng thử mọi tính năng bằng mã truy cập",
+    summary: "Có thêm một trang demo riêng với dữ liệu ảo và máy chủ ảo: chỉ cần nhập mã truy cập là dùng thử được mọi tính năng, không ảnh hưởng gì tới sổ thật của lớp.",
+    items: [
+      { type: "new", title: "Trang demo, vào bằng mã 11D3Yenhoa",
+        text: "Mở địa chỉ <b>…/demo.html</b> (hoặc quét mã QR trong video) ⇒ nhập mã <b>11D3Yenhoa</b> ⇒ vào sổ với vai giáo viên chủ nhiệm. Dữ liệu là học sinh ảo, mọi thao tác chỉ lưu trên máy đang dùng, không gửi tới Google Sheet của lớp.",
+        img: "updates/v6.2/demo-ma.jpg" },
+      { type: "new", title: "Đổi vai và xem email mô phỏng",
+        text: "Bấm nút <b>Bản demo</b> ở góc màn hình ⇒ đổi vai (giáo viên chủ nhiệm, cán bộ lớp, giáo viên bộ môn, cha mẹ học sinh), mở <b>Hộp thư mô phỏng</b> để xem email hệ thống sẽ gửi, hoặc <b>Làm lại dữ liệu ảo</b>.",
+        img: "updates/v6.2/demo-hop-thu.jpg" }
+    ]
+  },
+  {
     id: "2026-10-14-v6.1", version: "6.1", date: "2026-10-14",
     title: "Màn đăng nhập: tên trường THPT YÊN HÒA cỡ chữ đều",
     summary: "Tên trường ở màn đăng nhập hiện đầy đủ \"THPT YÊN HÒA\" cùng một cỡ chữ lớn, gọn và dễ đọc trên cả máy tính lẫn điện thoại.",
