@@ -1,5 +1,5 @@
 /* ══ v5.0 — Máy chủ mô phỏng phần KẾT QUẢ HỌC TẬP / SỔ CHỦ NHIỆM (dữ liệu GIẢ) ══
-   Dùng chung cho: demo.js (chế độ "Kiểm tra tính năng ứng dụng") và tools/test/mock.js (kiểm thử Playwright).
+   Dùng chung cho: web demo (demo/server.js ▸ demo.html) và tools/test/mock.js (kiểm thử Playwright).
    HTDEMO.build(students) ⇒ trạng thái {mon, gv, rule, diem, hoso, scn, mails}
    HTDEMO.api(st, action, p, who, students) ⇒ kết quả như backend HocTap.gs (null nếu không phải lệnh của phần này). */
 (function (root) {
