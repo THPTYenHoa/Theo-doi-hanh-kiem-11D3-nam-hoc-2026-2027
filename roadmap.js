@@ -1,5 +1,5 @@
 /* ══ v4.5 — TÍNH NĂNG SẮP RA MẮT (window.ROADMAP) ══════════════════════════════════════
-   Một trang (hộp) liệt kê lộ trình mở rộng, khớp phần "Mở rộng" của bài dự thi: Hạnh kiểm & nề nếp (đang dùng) +
+   Một trang (hộp) liệt kê lộ trình mở rộng, khớp phần "Mở rộng" của bài dự thi: Rèn luyện & nề nếp (đang dùng) +
    các mảng đang phát triển. Mở từ: menu tài khoản (avatar), màn đăng nhập (dưới link hướng dẫn), trang phụ huynh. */
 (function () {
   if (window.ROADMAP) return;
@@ -13,9 +13,9 @@
     tb: '<path d="M3 11l18-8v18l-18-8z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'
   };
   var L = [
-    { k: 'hk', t: 'Hạnh kiểm và nề nếp', d: 'Ghi điểm hằng ngày, xếp loại, báo cáo, báo tin cho phụ huynh.', on: 1 },
+    { k: 'hk', t: 'Học tập, rèn luyện và nề nếp', d: 'Theo dõi nề nếp hằng ngày, kết quả học tập theo Thông tư 22, Sổ công tác chủ nhiệm, báo tin cho cha mẹ học sinh.', on: 1 },
     { k: 'bgh', t: 'Ban giám hiệu theo dõi thi đua', d: 'Nhiều lớp dùng chung một mẫu; so sánh thi đua các lớp theo tháng, học kỳ.' },
-    { k: 'hb', t: 'Học bạ, điểm số', d: 'Kết quả học tập từng môn, từng kỳ; phụ huynh chỉ xem của con mình.' },
+    { k: 'hb', t: 'Cổng tra cứu cho cha mẹ học sinh', d: 'Mỗi gia đình đăng nhập xem điểm số, nhận xét của riêng con mình.' },
     { k: 'nq', t: 'Nội quy, quy định', d: 'Nội quy trường, lớp; quy định thi đua, khen thưởng.' },
     { k: 'hd', t: 'Hoạt động của trường', d: 'Lịch học, lịch thi, sự kiện, hoạt động ngoại khoá.' },
     { k: 'tb', t: 'Thông báo chung', d: 'Từ Ban giám hiệu, giáo viên tới đúng lớp, đúng phụ huynh.' }];
@@ -39,7 +39,7 @@
   function open() {
     var o = document.getElementById('rm-ov'); if (o) o.remove();
     o = document.createElement('div'); o.id = 'rm-ov';
-    o.innerHTML = '<div class="bx" role="dialog" aria-label="Tính năng sắp ra mắt"><div class="hd"><div><h3>Tính năng sắp ra mắt</h3><p>Giai đoạn đầu, Sổ theo dõi học sinh dùng để theo dõi, đánh giá hạnh kiểm và nề nếp. Các mục bên dưới đang được phát triển để trở thành sổ liên lạc điện tử của nhà trường.</p></div><button class="x" aria-label="Đóng">×</button></div>'
+    o.innerHTML = '<div class="bx" role="dialog" aria-label="Tính năng sắp ra mắt"><div class="hd"><div><h3>Tính năng sắp ra mắt</h3><p>Sổ theo dõi học sinh đang dùng để theo dõi kết quả học tập, rèn luyện và nề nếp, lập Sổ công tác chủ nhiệm. Các mục bên dưới đang được phát triển để trở thành sổ liên lạc điện tử của nhà trường.</p></div><button class="x" aria-label="Đóng">×</button></div>'
       + '<div class="gr">' + L.map(function (x) {
         return '<button class="it' + (x.on ? ' on' : '') + '" type="button"><span class="i">' + SV + IC[x.k] + '</svg></span><span><b>' + x.t + '<span class="tg ' + (x.on ? 'a">ĐANG DÙNG' : 'b">ĐANG PHÁT TRIỂN') + '</span></b><span class="d">' + x.d + '</span>'
           + (x.on ? '' : '<span class="more">Nội dung đang phát triển, sẽ cập nhật trong các phiên bản tới.</span>') + '</span></button>';

@@ -211,7 +211,7 @@ main{max-width:1180px}#top .in,.tabs,footer{max-width:1180px}
 <footer><span id="ver"></span><span>Giáo viên chủ nhiệm lớp 11D3: cô Thảo · trang chỉ để xem.</span><a href="docs/HDSD_Phu_huynh.pdf" target="_blank">Tải hướng dẫn (PDF)</a><a href="./">Cán bộ lớp / GVCN đăng nhập ›</a></footer>
 <div id="pr"></div>
 
-<script src="updates/notes.js?v=4.9"></script>
+<script src="updates/notes.js?v=5.0"></script>
 <script src="mascot.js?v=4.8"></script>
 <script src="baocao.js?v=4.8"></script>
 <script src="taive.js?v=4.5"></script>
@@ -503,12 +503,12 @@ function printLop(ky){
   /* hướng dẫn từng bước cho phụ huynh — tự chạy lần đầu, mở lại bằng nút ? */
   const first=()=>active()[0];
   const steps=()=>[
-    {t:'Cô Thảo chào các bác ạ!', d:'Đây là trang để các bác theo dõi <b>hạnh kiểm của các con lớp 11D3</b>. Các bác chỉ xem và tải về, không sửa được dữ liệu. Các bác bấm <b>Tiếp</b> để em hướng dẫn nhé (khoảng 30 giây).', pre:()=>go({})},
+    {t:'Cô Thảo chào các bác ạ!', d:'Đây là trang để các bác theo dõi <b>rèn luyện, nề nếp của các con lớp 11D3</b>. Các bác chỉ xem và tải về, không sửa được dữ liệu. Các bác bấm <b>Tiếp</b> để em hướng dẫn nhé (khoảng 30 giây).', pre:()=>go({})},
     {el:'#q', t:'Các bác tìm tên con', d:'Các bác gõ tên con vào đây, <b>không cần dấu</b> — ví dụ gõ "an" hoặc "nguyen an".'},
     {el:'#toc', t:'Lọc theo tổ', d:'Hoặc các bác bấm số tổ của con để tìm nhanh hơn ạ.'},
     {el:'#lst .st', t:'Mở hồ sơ của con', d:'Bên phải mỗi tên là <b>xếp loại tháng này</b> của con. Các bác chạm vào tên để xem chi tiết ạ.'},
     {el:'#ks', t:'Chọn tháng, học kỳ hoặc cả năm', d:'Các bác xem điểm từng tuần, xếp loại từng tháng, học kỳ 1, học kỳ 2 hoặc cả năm học của con.', pre:()=>{ const s=first(); if(s) go({hs:s.ma}); }, wait:350},
-    {el:'.res', t:'Kết quả hạnh kiểm của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là giáo viên chủ nhiệm đã xác nhận xếp loại.'},
+    {el:'.res', t:'Kết quả rèn luyện của con', d:'Điểm trung bình tuần và <b>xếp loại</b>. Dấu ✓ nghĩa là giáo viên chủ nhiệm đã xác nhận xếp loại.'},
     {el:'.acts', t:'Tải về', d:'<b>Tải PDF báo cáo</b> để các bác lưu hoặc in; <b>Tải Excel</b> để mở bằng Excel. Kéo xuống là từng lần con vi phạm, được khen và <b>nhận xét của cô Thảo</b> về con.'},
     {el:'#tabs [data-t=lop]', t:'Xem cả lớp', d:'Tab <b>Cả lớp</b> để các bác xem tình hình chung của các con trong lớp.'},
     {el:'#hp', t:'Xem lại hướng dẫn', d:'Các bác bấm nút <b>?</b> bất cứ lúc nào để xem lại. Cô Thảo cảm ơn các bác đã luôn đồng hành cùng các con ạ!', pre:()=>go({})}

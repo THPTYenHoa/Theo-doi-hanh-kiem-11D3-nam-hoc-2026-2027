@@ -144,7 +144,7 @@
       br = X.ms.filter(function (m) { return X.has.indexOf(m) >= 0; }).map(function (m) { var me = X.E.filter(function (e) { return e[2] === m; });
         return { k: 'T' + m, a: me.filter(function (e) { return e[9] > 0; }).reduce(function (a, e) { return a + e[9]; }, 0), b: -me.filter(function (e) { return e[9] < 0; }).reduce(function (a, e) { return a + e[9]; }, 0) }; });
     }
-    var h = head('Báo cáo hạnh kiểm học sinh', esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b>' + (s.chucVu && s.chucVu !== 'Học sinh' ? ' · ' + esc(s.chucVu) : '') + '<br>' + kyName(ky) + ' · Năm học ' + esc(cfg.namHoc || ''));
+    var h = head('Báo cáo kết quả rèn luyện của học sinh', esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b>' + (s.chucVu && s.chucVu !== 'Học sinh' ? ' · ' + esc(s.chucVu) : '') + '<br>' + kyName(ky) + ' · Năm học ' + esc(cfg.namHoc || ''));
     var lastRm = X.rm.filter(function (r) { return r.nhanXet; }).slice(-1)[0];
     var nxTxt = lastRm ? String(lastRm.nhanXet) : '';
     var nxBox = '<div class="nx1"><b>Nhận xét của cô Thảo' + (lastRm ? ' · tháng ' + lastRm.thang : '') + ':</b> ' + (nxTxt ? esc(nxTxt.length > 230 ? nxTxt.slice(0, 227) + '…' : nxTxt) : '<i>Cô Thảo sẽ cập nhật nhận xét cho con vào cuối tháng.</i>') + '</div>';
@@ -195,7 +195,7 @@
       + (function () { var r = (D.remarks || []).filter(function (x) { return x.maHS === ma && x.thang === th && x.nhanXet; })[0];
         return '<div class="nx1" style="margin:0 0 3mm"><b>Nhận xét của cô Thảo · tháng ' + th + ':</b> ' + (r ? esc(r.nhanXet) : '<i>Cô Thảo sẽ gửi nhận xét của tháng về con vào cuối tháng ạ.</i>') + '</div>'; })()
       + '<div class="card"><h3>Điểm từng tuần trong tháng ' + th + '</h3>' + line(wk, { w: 560, h: 118, fmt: nz }) + '</div></div></div>';
-    return page(head('Thông báo hạnh kiểm', 'Cô Thảo xin cập nhật cho bác về con ' + esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b><br>Năm học ' + esc(cfg.namHoc || '')), body, footTxt(D));
+    return page(head('Thông báo kết quả rèn luyện', 'Cô Thảo xin cập nhật cho bác về con ' + esc(s.ten), 'Lớp <b>' + esc(cfg.lop || '11D3') + '</b> · Tổ <b>' + esc(s.to) + '</b><br>Năm học ' + esc(cfg.namHoc || '')), body, footTxt(D));
   }
   /* ── mở bản in ── */
   function open(html, title, o) {
