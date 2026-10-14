@@ -330,7 +330,7 @@
       const w = $('#login .lgwrap'); if (!w) return;
       w.classList.add('lg6');
       w.innerHTML = `<div class="lg6h"><img class="lg6logo" src="img/logo-yenhoa.webp" alt="Logo Trường THPT Yên Hòa" width="104" height="104">
-        <div class="lg6k">Trường Trung học phổ thông</div><h1 class="lg6s">YÊN HÒA</h1><div class="lg6a">Sổ theo dõi học sinh · Năm học ${esc(NAMHOC)}</div></div>
+        <h1 class="lg6s">THPT YÊN HÒA</h1><div class="lg6a">Sổ theo dõi học sinh · Năm học ${esc(NAMHOC)}</div></div>
         <div class="lgcard">${inner}<div class="lgerr" id="lgErr3"></div></div>
         <a class="lgph" href="phu-huynh.html"><span class="i">${ic('ph')}</span><span><b>Cha mẹ học sinh xem sổ</b><span>Không cần đăng nhập · xem và tải báo cáo của con</span></span><span class="ar">›</span></a>
         <div class="lgdocs"><a href="docs/HDSD_Day_du.pdf" target="_blank" rel="noopener">Hướng dẫn sử dụng</a></div>
@@ -461,14 +461,14 @@
 #login .lg6 .lg6h{text-align:center;margin:0 0 18px}
 #login .lg6 .lg6logo{width:104px;height:104px;border-radius:50%;background:#fff;box-shadow:0 6px 22px rgba(20,40,80,.14);display:block;margin:0 auto 14px}
 #login .lg6 .lg6k{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#5C7A83)}
-#login .lg6 .lg6s{margin:2px 0 6px;font-size:44px;line-height:1.05;font-weight:800;letter-spacing:.02em;color:var(--teal-d,#0A5C64)}
+#login .lg6 .lg6s{margin:2px 0 8px;font-size:42px;white-space:nowrap;line-height:1.05;font-weight:800;letter-spacing:.02em;color:var(--teal-d,#0A5C64)}
 #login .lg6 .lg6a{font-size:14.5px;color:var(--sub,#5C7A83)}
 #login .lg6 .lgcard{box-shadow:0 2px 14px rgba(27,51,58,.06)}
 #login .lg6 .lgph{margin-top:12px}
 #login .lg6 .lgph .i .ic{width:20px;height:20px}
 #login .lg6 .lgdocs{margin-top:14px}
 #login .emtip{display:none!important}
-@media (max-width:420px){ #login .lg6 .lg6s{font-size:38px} #login .lg6 .lg6logo{width:88px;height:88px} }
+@media (max-width:420px){ #login .lg6 .lg6s{font-size:34px} #login .lg6 .lg6logo{width:88px;height:88px} }
 `;
   document.head.appendChild(css);
 })();

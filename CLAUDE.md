@@ -220,6 +220,6 @@ MMH Report Hub / CRM (skill `gh-webapp-upgrader`). App dùng để dự thi "Nh�
   (LIVE gọi renderAll khi có lượt ghi mới), `TQ.pdf()` ⇒ `DL.pdfHtml`. Biểu đồ SVG tự vẽ (`cols`, `donut`, `stack`, `hrows`). GVCN mở app ⇒ `tq`; cán bộ lớp ⇒ `ghi`.
 - **Cán bộ lớp**: vai Lớp trưởng / Tổ trưởng / "Cán bộ lớp" ⇒ `S.me.role='Cán bộ lớp'` (`S.me.role0` = vai gốc), ghi nề nếp cả lớp (backend `isCanBo_`).
   Tài khoản mới chọn vai GVCN · Quản trị · Cán bộ lớp. Không viết "tổ trưởng chỉ ghi tổ mình" ở giao diện / hướng dẫn nữa.
-- **Đăng nhập** (`lgShell` trong v6.js): logo, "Trường Trung học phổ thông" + **YÊN HÒA** cỡ lớn, KHÔNG hiện tên lớp (tên lớp chỉ hiện bên trong).
+- **Đăng nhập** (`lgShell` trong v6.js): logo + **THPT YÊN HÒA** cỡ chữ đều, lớn (v6.1), KHÔNG hiện tên lớp (tên lớp chỉ hiện bên trong).
 - **Tính năng sắp ra mắt** (`roadmap.js`): thêm "Mở rộng cho nhiều lớp" (file mẫu `templates/mau-danh-sach-lop.xlsx`: DanhSachLop · PhanQuyen · HuongDan) và
   "Phân quyền từ quản trị" (bảng quyền mẫu).

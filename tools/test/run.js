@@ -363,7 +363,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   // 19. v6.0 — giao diện gọn: không còn chế độ trải nghiệm · đăng nhập (tên trường lớn, không tên lớp) · Tổng quan · Cập nhật · Cán bộ lớp
   p = await P({}); await p.goto(U); await W(1200);
   ok(!(await p.$('#dm-enter')) && !(await p.evaluate(() => !!window.DEMO)), 'không còn chế độ "Kiểm tra tính năng ứng dụng"');
-  ok(/YÊN HÒA/.test(await p.textContent('#login .lg6s')) && !/11D3/.test(await p.textContent('#login')), 'đăng nhập: tên trường lớn, không hiện tên lớp');
+  ok(/^THPT YÊN HÒA$/.test((await p.textContent('#login .lg6s')).trim()) && !/11D3/.test(await p.textContent('#login')), 'đăng nhập: tên trường lớn, không hiện tên lớp');
   await p.click('#login [data-rm]'); await W(400);
   ok(/Mở rộng cho nhiều lớp/.test(await p.textContent('#rm-ov')) && /Phân quyền từ quản trị/.test(await p.textContent('#rm-ov')) && !!(await p.$('#rm-ov a[href$="mau-danh-sach-lop.xlsx"]')), 'Tính năng sắp ra mắt: nhiều lớp (file Excel mẫu) + phân quyền');
   await p.context().close();

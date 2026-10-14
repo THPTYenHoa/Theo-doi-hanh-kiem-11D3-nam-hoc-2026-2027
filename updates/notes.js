@@ -1,6 +1,16 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v6.1", version: "6.1", date: "2026-10-14",
+    title: "Màn đăng nhập: tên trường THPT YÊN HÒA cỡ chữ đều",
+    summary: "Tên trường ở màn đăng nhập hiện đầy đủ \"THPT YÊN HÒA\" cùng một cỡ chữ lớn, gọn và dễ đọc trên cả máy tính lẫn điện thoại.",
+    items: [
+      { type: "imp", title: "Tên trường to, đều ở màn đăng nhập",
+        text: "Mở đường link của sổ ⇒ màn đăng nhập có logo và dòng <b>THPT YÊN HÒA</b> cùng một cỡ chữ lớn; bên dưới là tên sổ và năm học.",
+        img: "updates/v6.1/dang-nhap.jpg" }
+    ]
+  },
+  {
     id: "2026-10-14-v6.0", version: "6.0", date: "2026-10-14",
     title: "Giao diện mới gọn gàng: Tổng quan · Cập nhật · Báo cáo & sổ",
     summary: "Sổ được sắp xếp lại thành 4 khu: Tổng quan (biểu đồ thi đua, học lực, top điểm), Cập nhật (theo dõi nề nếp, điểm bộ môn), Báo cáo & sổ, Quản lý. Lớp trưởng, tổ trưởng gọi chung là cán bộ lớp và ghi nề nếp được cho cả lớp. Màn đăng nhập gọn hơn, bỏ chế độ chạy thử.",
