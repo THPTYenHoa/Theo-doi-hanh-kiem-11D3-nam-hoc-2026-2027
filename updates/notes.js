@@ -1,6 +1,31 @@
 /* Thông báo cập nhật — Sổ hạnh kiểm 11D3. Mục mới thêm lên ĐẦU mảng (xem CLAUDE.md). */
 window.HK_UPDATES = [
   {
+    id: "2026-10-14-v6.0", version: "6.0", date: "2026-10-14",
+    title: "Giao diện mới gọn gàng: Tổng quan · Cập nhật · Báo cáo & sổ",
+    summary: "Sổ được sắp xếp lại thành 4 khu: Tổng quan (biểu đồ thi đua, học lực, top điểm), Cập nhật (theo dõi nề nếp, điểm bộ môn), Báo cáo & sổ, Quản lý. Lớp trưởng, tổ trưởng gọi chung là cán bộ lớp và ghi nề nếp được cho cả lớp. Màn đăng nhập gọn hơn, bỏ chế độ chạy thử.",
+    items: [
+      { type: "new", title: "Tổng quan: thi đua, học lực, top điểm",
+        text: "Mở sổ ⇒ <b>Tổng quan</b>. Chọn <b>Thi đua · nề nếp</b>, <b>Học lực</b> hoặc <b>Top điểm</b>, rồi chọn <b>Tháng / Học kỳ / Năm học</b>. Số liệu tự cập nhật khi cán bộ lớp vừa ghi; bấm <b>Tải PDF</b> để lưu báo cáo.",
+        img: "updates/v6.0/tong-quan.jpg" },
+      { type: "new", title: "Top điểm theo môn hoặc điểm TB các môn",
+        text: "Tổng quan ▸ <b>Top điểm</b> ▸ chạm tên môn (hoặc <b>TB các môn</b>) ⇒ 3 bạn dẫn đầu, danh sách top 10 và các bạn cần hỗ trợ thêm. Chạm tên học sinh để mở hồ sơ.",
+        img: "updates/v6.0/top-diem.jpg" },
+      { type: "imp", title: "Menu theo nhóm, điện thoại 4 nút",
+        text: "Thanh bên chia nhóm <b>Cập nhật</b> (Theo dõi nề nếp, Điểm bộ môn), <b>Báo cáo &amp; sổ</b>, <b>Quản lý</b>. Trên điện thoại: 4 nút dưới cùng, các mục con hiện thành dải tab ngay dưới tiêu đề.",
+        img: "updates/v6.0/dien-thoai.jpg" },
+      { type: "imp", title: "Cán bộ lớp ghi nề nếp cho cả lớp",
+        text: "Lớp trưởng, tổ trưởng nay gọi chung là <b>Cán bộ lớp</b>: ghi được cho mọi bạn trong lớp, không còn giới hạn theo tổ. GVCN cấp quyền ở Cài đặt ▸ Tài khoản, chọn vai <b>Cán bộ lớp</b>.",
+        img: "updates/v6.0/dien-thoai.jpg" },
+      { type: "imp", title: "Màn đăng nhập gọn, tên trường nổi bật",
+        text: "Màn đăng nhập chỉ còn logo, <b>tên trường</b>, ô email và lối vào cho cha mẹ học sinh. Tên lớp hiện bên trong sổ. Đã bỏ chế độ chạy thử dữ liệu mẫu.",
+        img: "updates/v6.0/dang-nhap.jpg" },
+      { type: "new", title: "Sắp ra mắt: nhiều lớp, phân quyền từ quản trị",
+        text: "Đăng nhập ▸ <b>Tính năng sắp ra mắt</b>: mở rộng cho nhiều lớp (tải <b>file Excel mẫu danh sách lớp</b> có sẵn bảng biểu) và phân quyền từ quản trị (GVCN, cán bộ lớp, giáo viên bộ môn, Ban giám hiệu).",
+        img: "updates/v6.0/mo-rong.jpg" }
+    ]
+  },
+  {
     id: "2026-10-14-v5.0", version: "5.0", date: "2026-10-14",
     title: "Kết quả học tập, Sổ công tác chủ nhiệm, kết nối giáo viên bộ môn",
     summary: "Sổ theo dõi học sinh nay theo dõi cả kết quả học tập (điểm số, nhận xét theo Thông tư 22), lập Sổ công tác chủ nhiệm đúng mẫu của trường (xuất Word, gửi Ban giám hiệu), giáo viên bộ môn tự nhập điểm, gửi phiếu báo kết quả tới cha mẹ học sinh. Cách gọi các mục theo ngôn ngữ hành chính: Theo dõi nề nếp, Kết quả rèn luyện, Kết quả học tập.",

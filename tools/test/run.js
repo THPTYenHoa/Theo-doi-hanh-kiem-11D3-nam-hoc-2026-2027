@@ -21,7 +21,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/chưa đúng/.test(await p.textContent('#lgErr3')), 'mã sai ⇒ báo lỗi');
   await p.fill('#lgCode', '123456'); await W(1200);
   ok(await p.isVisible('#app.on'), 'mã đúng ⇒ vào sổ');
-  ok(/Tổ trưởng/.test(await p.textContent('#rlRole')), 'vai trò tổ trưởng lấy từ tài khoản');
+  ok(/Cán bộ lớp/.test(await p.textContent('#rlRole')), 'vai trò lấy từ tài khoản (tổ trưởng ⇒ Cán bộ lớp)');
   ok(await p.isVisible('#hkupd.on'), 'hiện thông báo cập nhật v3.0');
   await p.click('#updOk');
   await p.context().close();
@@ -134,8 +134,8 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   p = await P({ as: 'gvcn', tour: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(3500);
   ok(await p.isVisible('#tg-card'), 'GVCN đăng nhập lần đầu ⇒ tự mở hướng dẫn từng bước');
-  ok(/GVCN · Bước 1\/11/.test(await p.textContent('#tg-card')), 'hướng dẫn GVCN có 11 bước');
-  for (let i = 0; i < 10; i++) { await p.click('#tg-card [data-a=n]'); await W(350); }
+  ok(/GVCN · Bước 1\/9/.test(await p.textContent('#tg-card')), 'hướng dẫn GVCN có 9 bước (bố cục v6.0)');
+  for (let i = 0; i < 8; i++) { await p.click('#tg-card [data-a=n]'); await W(350); }
   ok(/Xem lại hướng dẫn/.test(await p.textContent('#tg-card')), 'đi hết đến bước cuối');
   await p.click('#tg-card [data-a=n]'); await W(300);
   ok(!(await p.isVisible('#tg-card')) && await p.evaluate(() => localStorage.getItem('hk_tour_gvcn') === '1'), 'xong ⇒ không tự hiện lại');
@@ -144,7 +144,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.context().close();
   p = await P({ as: 'tt', tour: true, mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(3500);
-  ok(/Cán bộ lớp/.test(await p.textContent('#tg-card')) && /tổ trưởng tổ 2/.test(await p.textContent('#tg-card')), 'tổ trưởng: hướng dẫn riêng cho cán bộ lớp (điện thoại)');
+  ok(/Cán bộ lớp/.test(await p.textContent('#tg-card')) && /cán bộ lớp/.test(await p.textContent('#tg-card')), 'tổ trưởng: hướng dẫn chung cho cán bộ lớp (điện thoại)');
   await p.context().close();
   p = await P({ tour: true }); await p.goto(PH); await W(2500);
   ok(await p.isVisible('#tg-card') && /Phụ huynh/.test(await p.textContent('#tg-card')), 'trang phụ huynh: hướng dẫn riêng tự mở lần đầu');
@@ -155,6 +155,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   // 12. v3.2 — đồng bộ trực tiếp + hiệu ứng + thẻ tổng quan
   p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1500);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
+  await W(300); await p.evaluate(() => go('ghi')); await W(500);   /* v6.0: GVCN mở vào Tổng quan */
   ok(await p.isVisible('#v32h') && await p.locator('#v32h .tl').count() === 4, 'thẻ tổng quan tuần có 4 ô số');
   ok(await p.locator('#listGhi .row .av32').count() >= 30, 'avatar theo tổ cạnh tên học sinh');
   await W(1500); ok(/Trực tiếp/.test(await p.textContent('#v32live')), 'nhãn "Trực tiếp" khi đồng bộ chạy');
@@ -204,7 +205,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.context().close();
   p = await P({ as: 'tt', mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(1200);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); });
-  await p.click('#tabbar [data-v=bc]'); await W(1200);
+  await p.click('#tabbar [data-g=bc]'); await W(600); await p.click('#v6sub [data-v6=bc]'); await W(1200);   /* v6.0: nhóm Báo cáo ▸ Thi đua */
   ok(await p.evaluate(() => document.querySelector('#bcNx').readOnly), 'tổ trưởng xem được báo cáo, không sửa lời nhận xét');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && [...document.querySelectorAll('#vBC .panelbox')].every(e => e.getBoundingClientRect().right <= innerWidth + 1)), 'điện thoại: báo cáo không tràn ngang');
   await p.context().close();
@@ -214,10 +215,10 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); go('cai'); }); await W(500);
   await p.click('[data-ct="quyen"]'); await W(200); const q1 = await p.isVisible('#qTbl') && await p.isVisible('#accAdd'); await p.click('[data-ct="lop"]'); await W(200);
   ok(q1 && await p.isVisible('#hsTo') && await p.isVisible('.cai39 .ctabs'), 'GVCN: thấy bảng phân quyền, tài khoản, đổi tổ, danh sách lớp');
-  await p.click('[data-ct="quyen"]'); await W(200); await p.click('#accAdd'); await W(300); await p.fill('#aEm', 'totruong3@example.com'); await p.fill('#aTen', 'Tổ trưởng 3'); await p.selectOption('#aRole', 'Tổ trưởng'); await p.selectOption('#aTo', '3');
+  await p.click('[data-ct="quyen"]'); await W(200); await p.click('#accAdd'); await W(300); await p.fill('#aEm', 'totruong3@example.com'); await p.fill('#aTen', 'Cán bộ 3'); await p.selectOption('#aRole', 'Cán bộ lớp'); await p.selectOption('#aTo', '3');
   await p.click('#aSave'); await W(500);
   const sa = p.M.CALLS.filter(c => c.a === 'saveAccounts').pop();
-  ok(sa && sa.p.accounts.some(a => a.email === 'totruong3@example.com' && a.role === 'Tổ trưởng' && a.to === '3'), 'GVCN cấp quyền cho email mới (tổ trưởng tổ 3)');
+  ok(sa && sa.p.accounts.some(a => a.email === 'totruong3@example.com' && a.role === 'Cán bộ lớp'), 'GVCN cấp quyền cho email mới (vai Cán bộ lớp)');
   await p.click('[data-ct="lop"]'); await W(200); await p.click('#hsTo'); await W(300); for (const i of [0, 1]) { await p.locator('#pBody [data-p]').nth(i).click(); await W(150); }
   await p.selectOption('#btTo', '4'); await p.click('#btSave'); await W(500);
   ok(p.M.D.students.filter(s => s.to === '4').length === 12, 'đổi tổ hàng loạt: 2 bạn sang tổ 4');
@@ -338,6 +339,7 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   // 18. v3.9 — menu tài khoản, tìm kiếm thông minh, chú thích, dải điểm tuần, Cài đặt chia tab
   p = await P({ as: 'gvcn' }); p.on('dialog', d => d.accept()); await p.goto(U); await p.waitForSelector('#app.on'); await W(1800);
   await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(300);
+  await p.evaluate(() => go('ghi')); await W(500);   /* v6.0: GVCN mở vào Tổng quan */
   ok(await p.locator('#tk39 .it').count() >= 1 && /lượt/.test(await p.textContent('#tk39 .ct')), 'màn chính: dải "Điểm tuần" hiện các lượt cộng / trừ của tuần');
   const k0 = await p.evaluate(() => document.querySelector('#tk39 .it').dataset.id); await p.mouse.move(2, 2); await W(6800);
   ok(await p.evaluate(() => document.querySelector('#tk39 .it').dataset.id) !== k0, 'dải điểm tuần tự lật sang lượt khác (6 giây / lần)');
@@ -358,26 +360,38 @@ const W = ms => new Promise(r => setTimeout(r, ms));
   ok(/\d+\/\d+ học sinh/.test(await p.textContent('#vBC .sq39 .ct')), 'Báo cáo cũng có tìm kiếm thông minh');
   await p.context().close();
 
-  // 19. v4.0 — chế độ "Kiểm tra tính năng ứng dụng" (dữ liệu mẫu, không gọi máy chủ)
-  p = await P({}); p.on('dialog', d => d.accept()); await p.goto(U); await W(1200);
-  ok(await p.isVisible('#dm-enter'), 'màn đăng nhập có nút "Kiểm tra tính năng ứng dụng"');
-  await p.click('#dm-enter'); await p.waitForSelector('#app.on', { timeout: 15000 }); await W(1500);
-  ok(/Thảo/.test(await p.textContent('#rlName')) && await p.isVisible('#dm-bar') && await p.isVisible('.dmg-roles'), 'vào ngay vai giáo viên (không mật khẩu) + thanh trải nghiệm + bảng chọn vai');
-  ok((await p.$$('.dmg-rc')).length === 3 && /Giáo viên chủ nhiệm/.test(await p.textContent('.dmg-roles')) && /Cán bộ lớp/.test(await p.textContent('.dmg-roles')), 'hướng dẫn chia 3 vai: giáo viên, cán bộ lớp, phụ huynh');
-  const nDm = p.M.CALLS.length;
-  await p.click('.dm-ov [data-t="cb1"]'); await p.waitForSelector('#app.on', { timeout: 15000 }); await W(1800);
-  ok(/Lớp trưởng/.test(await p.textContent('#rlRole')), 'chọn việc của cán bộ lớp ⇒ tự đổi sang vai Lớp trưởng');
-  await p.waitForSelector('#dmg-tip', { timeout: 15000 });
-  ok(await p.isVisible('#dmg-ring') && /Bước 1\//.test(await p.textContent('#dmg-tip')), 'hướng dẫn từng bước: làm nổi bật chỗ cần bấm');
-  await p.keyboard.press('Escape'); await W(300);
-  await p.evaluate(() => { const m = document.getElementById('msc'); if (m) m.remove(); });
-  await p.locator('#listGhi .row[data-ma="HS01"]').click(); await W(300); await p.click('#pBody [data-add="T01"]'); await W(200); await p.click('#gcSkip'); await W(3000);
-  ok(await p.isVisible('#dm-toast') && await p.evaluate(() => DEMO.db().mails.some(m => m.kind === 'tb')), 'ghi điểm ⇒ phụ huynh nhận email mô phỏng (có thông báo + hộp thư)');
-  ok(p.M.CALLS.length === nDm, 'chế độ trải nghiệm không gọi máy chủ thật');
-  await p.click('#dm-toast button'); await W(400); await p.click('.dm-ib a[data-demo-link]'); await W(2500);
-  ok(/phu-huynh/.test(p.url()) && await p.isVisible('.tbc'), 'bấm nút trong email ⇒ trang phụ huynh mở đúng thông báo');
-  await p.click('#dm-bar [data-a="out"]'); await W(1500);
-  ok(await p.isVisible('#dm-enter') && !(await p.isVisible('#dm-bar')), 'Thoát ⇒ về màn đăng nhập thường');
+  // 19. v6.0 — giao diện gọn: không còn chế độ trải nghiệm · đăng nhập (tên trường lớn, không tên lớp) · Tổng quan · Cập nhật · Cán bộ lớp
+  p = await P({}); await p.goto(U); await W(1200);
+  ok(!(await p.$('#dm-enter')) && !(await p.evaluate(() => !!window.DEMO)), 'không còn chế độ "Kiểm tra tính năng ứng dụng"');
+  ok(/YÊN HÒA/.test(await p.textContent('#login .lg6s')) && !/11D3/.test(await p.textContent('#login')), 'đăng nhập: tên trường lớn, không hiện tên lớp');
+  await p.click('#login [data-rm]'); await W(400);
+  ok(/Mở rộng cho nhiều lớp/.test(await p.textContent('#rm-ov')) && /Phân quyền từ quản trị/.test(await p.textContent('#rm-ov')) && !!(await p.$('#rm-ov a[href$="mau-danh-sach-lop.xlsx"]')), 'Tính năng sắp ra mắt: nhiều lớp (file Excel mẫu) + phân quyền');
+  await p.context().close();
+  p = await P({ as: 'gvcn' }); await p.goto(U); await p.waitForSelector('#app.on'); await W(2500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(600);
+  ok(await p.evaluate(() => S.view === 'tq') && await p.isVisible('#vTQ .v6kp'), 'GVCN mở app ⇒ Tổng quan (thẻ số liệu)');
+  ok(await p.evaluate(() => [...document.querySelectorAll('#railNav .v6gh')].map(x => x.textContent).join('|')) === 'Cập nhật|Báo cáo & sổ|Quản lý', 'thanh bên chia nhóm Cập nhật · Báo cáo & sổ · Quản lý');
+  ok(await p.evaluate(() => ['ghi', 'ht'].every(v => document.querySelector('#railNav [data-v="' + v + '"]'))), 'Cập nhật = Theo dõi nề nếp + Điểm bộ môn');
+  for (const t of ['hl', 'top']) { await p.click(`[data-tqt="${t}"]`); await W(1200); }
+  ok(await p.isVisible('.v6pod') && (await p.$$('#vTQ .v6hr .r')).length >= 10, 'Top điểm: bục 3 bạn + danh sách top 10');
+  await p.click('[data-tqt="td"]'); await p.click('[data-tqky="nam"]'); await W(2500);
+  ok(/Cả năm học/.test(await p.textContent('#vTQ .v6cap')) && /T9/.test(await p.textContent('#vTQ .v6ch')), 'kỳ Năm học: diễn biến theo tháng');
+  const before = await p.textContent('#vTQ .v6kp');
+  await p.evaluate(() => { S.thang = 10; TQ.ky = 'thang'; TQ.render(); });
+  const b1 = await p.textContent('#vTQ .v6k[data-tqk="tru"] b');
+  p.M.ext('HS05', 'Đi học muộn', -2); await W(7000);
+  ok(+(await p.textContent('#vTQ .v6k[data-tqk="tru"] b')) === +b1 + 1, 'Tổng quan tự cập nhật trực tiếp khi có lượt ghi mới');
+  await p.click('#tqPdf'); await p.waitForSelector('#dl-sh', { timeout: 30000 }).catch(() => {});
+  ok(await p.isVisible('#dl-sh'), 'Tổng quan: tải PDF');
+  await p.context().close();
+  p = await P({ as: 'tt', mobile: true }); await p.goto(U); await p.waitForSelector('#app.on'); await W(2500);
+  await p.evaluate(() => { const c = document.querySelector('#updOk'); c && c.click(); }); await W(500);
+  ok(await p.evaluate(() => S.me.role === 'Cán bộ lớp' && S.view === 'ghi' && S.filterTo === 'all' && canScore('1') && canScore('3')), 'tổ trưởng cũ ⇒ "Cán bộ lớp", ghi được cả lớp');
+  ok((await p.$$('#tabbar [data-g]')).length >= 2 && !(await p.$('#tabbar [data-v="ht"]')), 'điện thoại: thanh dưới theo nhóm');
+  await p.locator('#listGhi .row[data-ma="HS07"]').click(); await W(300); await p.click('#pBody [data-add="T01"]'); await W(200);
+  if (await p.isVisible('#pBody [data-tp="nhan"]')) await p.click('#pBody [data-tp="nhan"]');
+  await p.click('#gcSkip'); await W(3000);
+  ok(p.M.CALLS.some(c => c.a === 'addEntries' && (c.p.items || c.p.entries || [c.p]).length), 'cán bộ lớp ghi cho bạn tổ khác ⇒ gửi addEntries');
   await p.context().close();
 
   // 9. trang phụ huynh
